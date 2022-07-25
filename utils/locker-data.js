@@ -9,7 +9,7 @@ export const LockedPages = [
   'staking-id',
   'referral',
   'auction',
-  'collateral',
+  // 'collateral',
   'insuring',
   'insuring-id',
   'lending',

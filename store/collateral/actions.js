@@ -6,7 +6,7 @@ import {
 } from '~/utils/wallet';
 
 import { success, error } from '~/utils/web3';
-import { WQRouter } from '~/abi';
+import { ERC20, WQRouter } from '~/abi';
 import ENV from '~/utils/addresses';
 
 export default {
@@ -79,11 +79,11 @@ export default {
           id, collateral, debt, deposit, price, produced, removed, moved,
         },
       } = await this.$axiosLiquidator.$get(`/user/collateral/${address}/${collateralId}`, { params });
-      // TODO когда появится timestamp сортировать от нового к старому
-      const rows = [...produced, ...removed, ...moved];
+      if (produced.length) produced[0].status = 4;
+      if (removed.length) removed[0].status = -1;
+      const rows = [...removed, ...moved, ...produced];
       commit('setHistoryCollateral', {
         rows: rows.map((row, i) => {
-          // TODO need add type of action
           // TODO by status of deposit need add border color
 
           const _price = Number(new BigNumber(row.price).shiftedBy(-18).toFixed(4, 1));
@@ -130,8 +130,14 @@ export default {
   async collateralAction({ dispatch }, { payload, method }) {
     try {
       await dispatch('oracle/setCurrentPriceTokens', null, { root: true });
-      const inst = await createInstance(WQRouter, ENV.WORKNET_ROUTER);
-      console.log(payload);
+
+      if (method === 'removeCollateral') {
+        await dispatch('wallet/approve', {
+          tokenAddress: ENV.WORKNET_WUSD_TOKEN,
+          spenderAddress: ENV.WORKNET_ROUTER,
+          amount: payload[1],
+        }, { root: true });
+      }
 
       const { gasPrice, gas } = await getGasPrice(
         WQRouter,
@@ -146,6 +152,7 @@ export default {
         return error();
       }
 
+      const inst = await createInstance(WQRouter, ENV.WORKNET_ROUTER);
       await inst.methods[method](...payload).send({
         from: getWalletAddress(),
         gasPrice,

@@ -46,7 +46,7 @@ export default {
       await dispatch('getCurrentTokensPrices');
 
       const {
-        nonce: timestamp, v, r, s,
+        nonce, v, r, s,
       } = getters.getCurrentPrices;
       const [prices, symbols, maxRatio] = [getters.getPrices, getters.getSymbols, getters.getMaxRatio];
 
@@ -54,7 +54,7 @@ export default {
         WQOracle,
         ENV.WORKNET_ORACLE,
         'setTokenPricesUSD',
-        [timestamp, v, r, s, prices, maxRatio, symbols],
+        [nonce, v, r, s, prices, maxRatio, symbols],
       );
       return success(fee);
     } catch (e) {
@@ -66,9 +66,9 @@ export default {
   async setCurrentPriceTokens({ getters, dispatch }) {
     try {
       const { result: { gas, gasPrice } } = await dispatch('feeSetTokensPrices');
-      await dispatch('getCurrentTokensPrices');
+
       const {
-        nonce: timestamp, v, r, s,
+        nonce, v, r, s,
       } = getters.getCurrentPrices;
       const [prices, symbols, maxRatio] = [getters.getPrices, getters.getSymbols, getters.getMaxRatio];
 
@@ -77,10 +77,11 @@ export default {
          * @property setTokenPricesUSD - method of oracle
          */
         const inst = await createInstance(WQOracle, ENV.WORKNET_ORACLE);
-        await inst.methods.setTokenPricesUSD(timestamp, v, r, s, prices, maxRatio, symbols).send({
+        await inst.methods.setTokenPricesUSD(nonce, v, r, s, prices, maxRatio, symbols).send({
           from: getWalletAddress(),
+          // because sometimes the wrong amount of gas is calculated
+          gas: 300000,
           gasPrice,
-          gas,
         });
         return success();
       }

@@ -20,9 +20,11 @@
         :key="i"
         class="collateral__item item"
         :class="{item_full: i === idxHistory}"
-        @click.stop="toggleHistory(i, item)"
       >
-        <div class="item__wrapper table_grid">
+        <div
+          class="item__wrapper table_grid"
+          @click.stop="toggleHistory(i, item)"
+        >
           <div class="item__coin">
             <img
               :src="getCollateralIcon(item.symbol)"
@@ -51,20 +53,23 @@
             <base-btn
               class="item__btn"
               data-selector="GENERATE"
-              @click.stop="handleCollateralAction(item, 'claimExtraDebt')"
+              :disabled="!isAvailableToClaim"
+              @click.stop="handleGenerate(item)"
             >
               {{ $t('meta.btns.generate') }}
             </base-btn>
             <base-btn
               class="item__btn"
               data-selector="DEPOSIT"
-              @click.stop="handleCollateralAction(item, 'disposeDebt')"
+              :disabled="!isAvailableToDeposit"
+              @click.stop="handleDeposit(item)"
             >
               {{ $t('meta.deposit') }}
             </base-btn>
             <base-btn
               class="item__btn"
               data-selector="REVERT"
+              :disabled="!isAvailableToRemove"
               @click.stop="handleCollateralAction(item, 'removeCollateral')"
             >
               {{ $t('meta.btns.remove') }}
@@ -84,7 +89,7 @@
               :key="`row-${j}`"
               class="history__row history__table"
             >
-              <div>type</div>
+              <div>{{ movedEventStatus[row.status] }}</div>
               <div>{{ row.lockedAmount }}</div>
               <div>{{ row.wusdGenerated }}</div>
               <div>{{ row._price }}</div>
@@ -93,9 +98,9 @@
                 :href="`${$options.ExplorerUrl}/tx/${item.txHash}`"
                 target="_blank"
               >
-                {{ CutTxn( row.txHash || '0xdcfe0996e2f645809e011136aa6b77b353d67f66b543e7a503067f2d07b53645') }}
+                {{ CutTxn( row.transactionHash) }}
               </a>
-              <div>{{ row.time || $moment().format('MMMM Do YYYY, hh:mm a') }}</div>
+              <div>{{ $moment(row.timestamp * 1000).format('MMMM Do YYYY, hh:mm a') }}</div>
             </div>
             <base-pager
               v-if="totalHistoryPages > 1"
@@ -141,9 +146,10 @@ export default {
       availableToClaim: null,
       isAvailableToClaim: false,
       availableToDepositWUSD: null,
-      isAvailableToDepositWUSD: false,
+      isAvailableToDeposit: false,
       availableToAddCollateral: null,
       isAvailableToAddCollateral: false,
+      isAvailableToRemove: true,
       historyParams: {
         page: 1,
         limit: HISTORY_LIMIT,
@@ -165,6 +171,16 @@ export default {
 
       walletAddress: 'user/getUserWalletAddress',
     }),
+    movedEventStatus() {
+      return {
+        '-1': 'Removed',
+        0: 'Generated',
+        1: 'Burn',
+        2: 'Deposit',
+        3: 'LotLiquid',
+        4: 'Produced',
+      };
+    },
     totalPages() {
       return Math.ceil(this.collateralsCount / LIMIT) || 0;
     },
@@ -174,6 +190,7 @@ export default {
   },
   watch: {
     async page() {
+      this.idxHistory = null;
       await this.fetchCollaterals({
         address: this.walletAddress,
         params: { limit: LIMIT, offset: (this.page - 1) * LIMIT },
@@ -214,8 +231,15 @@ export default {
     },
 
     async checkActionsPossibilities({
-      symbol, collateral, price, deposit, debt,
+      symbol, collateral, price, deposit, lockedAmount,
     }) {
+      if (new BigNumber(lockedAmount).isEqualTo(0)) {
+        this.isAvailableToClaim = false;
+        this.isAvailableToDeposit = false;
+        this.isAvailableToRemove = false;
+        return;
+      }
+
       await this.updatePrices();
       const oraclePrice = this.prices[this.symbols.indexOf(symbol)];
       if ([TokenSymbols.USDT, TokenSymbols.USDC].includes(symbol)) {
@@ -223,55 +247,79 @@ export default {
       }
 
       // available for claimExtraDebt
-      const availableToClaim = new BigNumber(oraclePrice).minus(price)
+      this.availableToClaim = new BigNumber(oraclePrice).minus(price)
         .multipliedBy(collateral)
         .dividedBy(deposit)
         .shiftedBy(-18)
         .toNumber();
+      this.isAvailableToClaim = new BigNumber(this.availableToClaim).isGreaterThan(0);
 
       // available for disposeDebt
-      const availableToDepositWUSD = new BigNumber(price).minus(oraclePrice)
+      this.availableToDepositWUSD = new BigNumber(price).minus(oraclePrice)
         .multipliedBy(collateral)
         .dividedBy(deposit)
         .shiftedBy(-18)
         .toNumber();
+      this.isAvailableToDepositWUSD = new BigNumber(this.availableToDepositWUSD).isGreaterThan(0);
 
       // available for addCollateral
-      // const divideOn = new BigNumber();
-      // const availableToAddCollateral = new BigNumber(price)
-      //   .multipliedBy(collateral)
-      //   .dividedBy(deposit)
-      //   .shiftedBy(-18)
-      //   .toNumber();
+      this.availableToAddCollateral = new BigNumber(price)
+        .multipliedBy(collateral)
+        .dividedBy(oraclePrice)
+        .minus(collateral)
+        .shiftedBy(-18)
+        .toNumber();
+      this.isAvailableToAddCollateral = new BigNumber(this.availableToAddCollateral).isGreaterThan(0);
+      this.isAvailableToDeposit = this.isAvailableToDepositWUSD || this.isAvailableToAddCollateral;
 
-      console.log('availableToClaim', availableToClaim);
-      console.log('availableToDepositWUSD', availableToDepositWUSD);
-      // console.log('availableToClaim',availableToClaim)
+      this.isAvailableToRemove = true;
+    },
+
+    async handleGenerate(item) {
+      if (!this.isAvailableToClaim) return;
+
+      this.ShowModal({
+        key: modals.status,
+        title: this.$t('meta.btns.generate'),
+        subtitle: this.$t('wallet.collateral.attentionInfoRise'),
+        isNotClose: true,
+        submitMethod: async () => await this.handleCollateralAction(item, 'claimExtraDebt'),
+      });
+    },
+
+    async handleDeposit(item) {
+      if (!this.isAvailableToDeposit) return;
+      const mode = this.isAvailableToDepositWUSD ? 'disposeDebt' : 'addCollateral';
+
+      this.ShowModal({
+        key: modals.status,
+        title: this.$t('meta.attention'),
+        subtitle: this.$t('wallet.collateral.attentionInfoFalling'),
+        isNotClose: true,
+        submitMethod: async () => await this.handleCollateralAction(item, mode),
+      });
     },
 
     async handleCollateralAction({
-      index, symbol, price, collateral, deposit, lockedAmount, id, debt, _debt, pullValue,
+      index, symbol, lockedAmount, debt,
     }, mode) {
-      let availableAmount = this.availableToClaim;
-      if (mode === 'disposeDebt') availableAmount = this.availableToDepositWUSD;
-      else if (mode === 'removeCollateral') availableAmount = _debt;
+      if (!this.isAvailableToRemove) return;
 
       this.ShowModal({
         key: modals.collateralTransaction,
         mode,
         symbol,
         lockedAmount,
-        availableAmount,
-        submit: async (method) => {
+        availableToClaim: this.availableToClaim,
+        availableToDepositWUSD: this.availableToDepositWUSD,
+        availableToDepositCollateral: this.availableToAddCollateral,
+        amountToRemoveCollateral: new BigNumber(debt).shiftedBy(-18).toString(),
+        submit: async (method, currency) => {
           this.SetLoader(true);
 
-          const payload = [index, symbol];
+          const payload = [index, currency];
           if (method === 'removeCollateral') {
-            // if ([TokenSymbols.USDT, TokenSymbols.USDC].includes(symbol)) {
-            //   pullValue = new BigNumber(pullValue).shiftedBy(-18).toString();
-            // }
-
-            payload.splice(1, 0, '11.76');
+            payload.splice(1, 0, debt);
           }
 
           const { ok } = await this.collateralAction({ method, payload });
@@ -336,10 +384,10 @@ export default {
   height: 72px;
   background: white;
   border-radius: 6px;
-  cursor: pointer;
 
   &__wrapper {
     height: 72px;
+    cursor: pointer;
   }
 
   &_full {

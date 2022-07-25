@@ -4,29 +4,93 @@
     :title="modalTitle"
   >
     <div class="collateral__content content">
-      <div class="content__header">
-        {{ $t('wallet.collateral.generationSubTitle') }}
-      </div>
-      <div class="content__header">
-        {{ $t('wallet.collateral.tokenQuantity') }}
-      </div>
-      <div class="content__label">
-        {{ options.symbol }}
-      </div>
-      <base-field
-        data-selector="COLLATERAL-SYMBOL"
-        disabled
-        :value="options.lockedAmount"
-      />
-      <div class="content__label">
-        {{ $t('wallet.collateral.availableAmount') }}
-      </div>
-      <base-field
-        data-selector="WUSD"
-        placeholder="10"
-        disabled
-        :value="options.availableAmount"
-      />
+      <template v-if="options.mode === 'claimExtraDebt'">
+        <div class="content__header">
+          {{ $t('wallet.collateral.generationSubTitle') }}
+        </div>
+        <div class="content__header">
+          {{ $t('wallet.collateral.tokenQuantity') }}
+        </div>
+        <div class="content__label">
+          {{ options.symbol }}
+        </div>
+        <base-field
+          data-selector="COLLATERAL-SYMBOL"
+          disabled
+          :value="options.lockedAmount"
+        />
+        <div class="content__label">
+          {{ $t('wallet.collateral.availableAmount') }}
+        </div>
+        <base-field
+          data-selector="WUSD"
+          placeholder="10"
+          disabled
+          :value="options.availableToClaim"
+        />
+      </template>
+      <template v-else-if="options.mode === 'removeCollateral'">
+        <div class="content__header">
+          {{ $t('wallet.collateral.tokenQuantity') }}
+        </div>
+        <div class="content__label">
+          {{ options.symbol }}
+        </div>
+        <base-field
+          data-selector="COLLATERAL-SYMBOL"
+          disabled
+          :value="options.lockedAmount"
+        />
+        <div class="content__label">
+          {{ $t('wallet.collateral.needToRevert') }}
+        </div>
+        <base-field
+          data-selector="WUSD"
+          placeholder="10"
+          disabled
+          :value="options.amountToRemoveCollateral"
+        />
+      </template>
+      <template v-else>
+        <div class="content__checkpoints checkpoints">
+          <label
+            for="checkpoints__main"
+            class="checkpoints__label"
+          >
+            {{ $t('modals.chooseTheCurrency') }}
+          </label>
+          <div
+            id="checkpoints__main"
+            class="checkpoints__main"
+          >
+            <div
+              v-for="(item, i) in checkpoints"
+              :key="i"
+              class="checkpoints__array"
+            >
+              <input
+                :id="item.name"
+                v-model="selCurrencyID"
+                type="radio"
+                class="checkpoints__item"
+                :value="item.name"
+              >
+              <label
+                class="checkpoints__name"
+                :for="item.name"
+              >
+                {{ item.name }}
+              </label>
+            </div>
+          </div>
+          <base-field
+            data-selector="WUSD"
+            placeholder="10"
+            disabled
+            :value="selCurrencyID === $options.TokenSymbols.WUSD ? options.availableToDepositWUSD : options.availableToDepositCollateral"
+          />
+        </div>
+      </template>
       <base-btn
         class="content__actions"
         @click="handleSubmit"
@@ -39,37 +103,53 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { TokenMap, TokenSymbols } from '~/utils/enums';
 
 export default {
   name: 'CollateralTransaction',
+  TokenSymbols,
   data() {
     return {
+      selCurrencyID: TokenSymbols.WUSD,
       currentDeposit: null,
-      selectedMethod: null,
+    // selectedMethod: null,
     };
   },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
-    isGenerate() {
-      return this.options.mode === 'claimExtraDebt';
+    checkpoints() {
+      return [
+        { name: TokenSymbols.WUSD, address: TokenMap.WUSD },
+        { name: TokenSymbols[this.options.symbol], address: TokenMap[this.options.symbol] },
+      ];
     },
     modalTitle() {
-      return this.isGenerate ? this.$t('meta.btns.generate') : this.$t('meta.deposit');
+      return {
+        claimExtraDebt: this.$t('meta.btns.generate'),
+        disposeDebt: this.$t('meta.deposit'),
+        addCollateral: this.$t('meta.deposit'),
+        removeCollateral: this.$t('wallet.collateral.removeCollateral'),
+      }[this.options.mode];
     },
     submitText() {
-      return this.isGenerate ? this.$t('meta.btns.generate') : this.$t('meta.deposit');
+      return {
+        claimExtraDebt: this.$t('meta.btns.generate'),
+        disposeDebt: this.$t('meta.deposit'),
+        addCollateral: this.$t('meta.deposit'),
+        removeCollateral: this.$t('meta.btns.remove'),
+      }[this.options.mode];
     },
   },
   mounted() {
-    this.selectedMethod = this.options.mode;
+    this.selCurrencyID = this.options.selCurrencyID || this.options.symbol;
   },
   methods: {
     handleSubmit() {
-      const { submit } = this.options;
+      const { submit, mode } = this.options;
       this.CloseModal();
-      submit(this.selectedMethod);
+      submit(mode, this.selCurrencyID);
     },
   },
 };
@@ -92,6 +172,52 @@ export default {
     display: flex;
     max-width: 250px;
     margin: 0 auto;
+  }
+
+  &__checkpoints {
+    margin-bottom: 25px;
+
+    &_label {
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.checkpoints {
+  &__label {
+    margin-bottom: 15px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 130%;
+  }
+
+  &__main {
+    display: grid;
+    grid-template-rows: repeat(2,1fr);
+    text-align: left;
+    justify-content: flex-start;
+    gap: 13px;
+    margin-bottom: 25px;
+  }
+
+  &__array {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 10px;
+
+    > label {
+      margin: unset;
+    }
+  }
+
+  &__item {
+    font-size: 16px;
+    font-weight: 400;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    border: 1px solid #0083C7;
+    cursor: pointer;
   }
 }
 </style>

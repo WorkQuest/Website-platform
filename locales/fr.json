@@ -209,7 +209,8 @@
     "disputes": "Litiges",
     "type": "Type",
     "success": "Succès",
-    "fail": "Fail"
+    "fail": "Fail",
+    "attention": "Attention!"
   },
   "info": {
     "yourMessage": " Your message:",
@@ -1474,9 +1475,14 @@
       "ratio": "Ratio (%)",
       "generatedAmount": "WUSD generated",
       "lockedAmount": "Locked",
+      "removeCollateral": "Remove collateral",
+      "needToRevert": "You need to revert WUSD (unchangeable amount):",
       "generationTime": "Generation time",
-      "addTitle": "Add collateral",
-      "takeTitle": "Take collateral"
+      "generationSubTitle": "Your collateral is over-secured. You can get generate extra WUSD.",
+      "tokenQuantity": "Collateral Token Quantity (unchangeable amount)",
+      "availableAmount": "MAX amount available to generate (unchangeable amount):",
+      "attentionInfoRise": "Collateral asset price rise, and now you can generate additional WUSD. Please note that if the price of collateral assets decreases, the risk of collateral being liquidated increases.",
+      "attentionInfoFalling": "Collateral asset price is falling, and now is a high risk of liquidation. Please note that you can deposit more collateral assets and decrease the risk of collateral liquidation."
     },
     "table": {
       "trx": "Transactions",

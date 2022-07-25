@@ -71,6 +71,12 @@ const WQRouter = [
       },
       {
         indexed: false,
+        internalType: 'uint8',
+        name: 'status',
+        type: 'uint8',
+      },
+      {
+        indexed: false,
         internalType: 'string',
         name: 'symbol',
         type: 'string',
@@ -424,19 +430,6 @@ const WQRouter = [
   },
   {
     inputs: [],
-    name: 'fee',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
     name: 'fixedRate',
     outputs: [
       {
@@ -519,11 +512,6 @@ const WQRouter = [
         internalType: 'uint256',
         name: '',
         type: 'uint256',
-      },
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
       },
     ],
     stateMutability: 'view',
@@ -645,11 +633,6 @@ const WQRouter = [
         internalType: 'uint256',
         name: '_annualInterestRate',
         type: 'uint256',
-      },
-      {
-        internalType: 'address',
-        name: '_feeReceiver',
-        type: 'address',
       },
     ],
     name: 'initialize',
@@ -804,29 +787,16 @@ const WQRouter = [
       },
       {
         internalType: 'address',
-        name: 'debt_auction',
+        name: '_debtAuction',
         type: 'address',
       },
       {
         internalType: 'address',
-        name: 'surplus_auction',
+        name: '_surplusAuction',
         type: 'address',
       },
     ],
     name: 'setContracts',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '_feeReceiver',
-        type: 'address',
-      },
-    ],
-    name: 'setFeeReceiver',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -841,11 +811,6 @@ const WQRouter = [
       {
         internalType: 'uint256',
         name: '_annualInterestRate',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: '_fee',
         type: 'uint256',
       },
     ],
@@ -904,6 +869,29 @@ const WQRouter = [
       },
     ],
     stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'user',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: 'index',
+        type: 'uint256',
+      },
+      {
+        internalType: 'string',
+        name: 'symbol',
+        type: 'string',
+      },
+    ],
+    name: 'syncState',
+    outputs: [],
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
