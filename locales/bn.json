@@ -181,6 +181,7 @@
     "raiseViews": "মতামত দিন",
     "educations": "শিক্ষা",
     "login": "লগইন করুন",
+    "wrongToken": "Wrong confirmation token. Please check the last letter on your email",
     "signUp": "নিবন্ধন করুন",
     "securityCheckBig": "নিরাপত্তা পরীক্ষা",
     "securityCheckSmall": "নিরাপত্তা পরীক্ষা",

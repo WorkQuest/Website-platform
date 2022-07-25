@@ -447,7 +447,7 @@ export default {
             sessionStorage.setItem('resend-timer', JSON.stringify(this.timer));
           }
           this.continueTimer();
-          this.ShowToast(this.$t('login.wrongToken'), this.$t('registration.emailConfirmTitle'));
+          this.ShowToast(this.$t('meta.wrongToken'), this.$t('registration.emailConfirmTitle'));
         }
         this.SetLoader(false);
         return;
