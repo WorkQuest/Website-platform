@@ -365,9 +365,7 @@ export default {
       this.model.email = this.model.email.trim();
       const { email, password } = this.model;
       if (!email.trim() || !password) {
-        await this.$store.dispatch('main/showToast', {
-          text: this.$tc('signIn.enterEmail'),
-        });
+        this.ShowToast(this.$tc('signIn.enterEmail'));
         return;
       }
       if (!this.$cookies.get('access')) {
@@ -379,10 +377,7 @@ export default {
       }
       if (this.$cookies.get('access')) {
         await this.$store.dispatch('user/resendEmail', { email });
-        await this.$store.dispatch('main/showToast', {
-          title: this.$t('registration.emailConfirmTitle'),
-          text: this.$t('registration.emailConfirmNewLetter'),
-        });
+        this.ShowToast(this.$t('registration.emailConfirmNewLetter'), this.$t('registration.emailConfirmTitle'));
         this.startTimer();
       }
     },
@@ -509,10 +504,7 @@ export default {
       }
 
       // Session & Storage invalid mnemonics
-      await this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.error'),
-        text: this.$t('messages.mnemonic'),
-      });
+      this.ShowToast(this.$t('messages.mnemonic'), this.$t('toasts.error'));
       this.step = WalletState.ImportMnemonic;
     },
     async assignWallet(wallet) {
@@ -527,10 +519,7 @@ export default {
       }
       if (res.code === 400011) {
         // На данный mnemonic уже привязан какой-то аккаунт
-        await this.$store.dispatch('main/showToast', {
-          title: this.$t('toasts.error'),
-          text: this.$t('messages.mnemonic'),
-        });
+        this.ShowToast(this.$t('messages.mnemonic'), this.$t('toasts.error'));
       }
     },
     async importWallet(wallet) {
@@ -547,10 +536,7 @@ export default {
         return;
       }
       // Phrase not assigned to this account
-      await this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.error'),
-        text: this.$t('messages.mnemonic'),
-      });
+      this.ShowToast(this.$t('messages.mnemonic'), this.$t('toasts.error'));
     },
     saveToStorage(wallet) {
       initWallet(wallet.address, wallet.privateKey);
