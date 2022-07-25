@@ -129,6 +129,15 @@ extend('numeric', {
   },
 });
 
+extend('symbols', {
+  validate(value) {
+    const regex = /^\d+(?:[.,]\d+)?$/;
+    return {
+      valid: regex.test(value),
+    };
+  },
+});
+
 extend('decimalPlaces', {
   validate(value, { places }) {
     const regex = new RegExp(`^\\d+\\.\\d{0,${places}}$`);
