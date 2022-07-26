@@ -6,10 +6,7 @@
                'switcher_default': connectionType !== $options.ConnectionTypes.WQ_WALLET}"
       @click="handleSelect($options.ConnectionTypes.WQ_WALLET)"
     >
-      <img
-        :src="$options.images.WQ_LOGO"
-        class="switcher__icon"
-      > Wallet
+      WQWallet
     </div>
     <div
       class="switcher__item"
@@ -17,10 +14,7 @@
                'switcher_default': connectionType !== $options.ConnectionTypes.WEB3}"
       @click="handleSelect($options.ConnectionTypes.WEB3)"
     >
-      <img
-        :src="$options.images.ETH_BLACK"
-        class="switcher__icon"
-      > MetaMask
+      Other wallet
     </div>
   </div>
 </template>
@@ -87,6 +81,7 @@ export default {
     align-items: center;
     padding: 5px 20px;
     user-select: none;
+    color: $black600;
   }
 
   &_default {
@@ -96,14 +91,9 @@ export default {
     }
   }
 
-  &__icon {
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
-  }
-
   &_selected {
-    background: $black0;
+    font-weight: 600;
+    background: $black0 !important;
   }
 }
 
