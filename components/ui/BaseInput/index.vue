@@ -48,7 +48,7 @@
         :placeholder="placeholder"
         :data-selector="`BASE-INPUT-FIELD-${dataSelector.toUpperCase()}`"
         :value="mode === 'convertDate' ? convertDate(value) : value"
-        :type="type"
+        :type="customType"
         :autocomplete="autocomplete"
         :disabled="disabled"
         @input="input"
@@ -175,30 +175,46 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      customType: '',
+    };
+  },
   mounted() {
+    this.customType = this.type === 'number' ? 'customNumber' : this.type;
     this.focus();
   },
   methods: {
     focus() {
       if (this.autoFocus) this.$refs.input.focus();
     },
-    enter($event) {
-      this.$emit('enter', $event.target.value);
+    enter(e) {
+      this.$emit('enter', e.target.value);
     },
-    input($event) {
-      if (this.type === 'number' && $event.target.value) {
-        let val = $event.target.value.toString().replace(',', '.').replace(/[^0-9.]/g, '');
+    input(e) {
+      const selStart = this.$refs.input.selectionStart;
+      if (this.customType === 'customNumber') {
+        let val = e.target.value.toString().replace(/,/g, '.').replace(/[^0-9.]/g, '');
+
+        const dotIndex = val.indexOf('.');
+        const dotIndexLast = val.lastIndexOf('.');
+        if (dotIndex !== dotIndexLast) {
+          const len = val.length;
+          val = val.substr(0, dotIndex + 1) + val.substr(dotIndex + 1, len).replace(/[.]/g, '');
+        }
 
         if (val[0] === '.') val = `${0}${val}`;
         while (val.startsWith('0') && val.length > 1 && !(val.startsWith('0,') || val.startsWith('0.'))) {
           val = val.substr(1, val.length);
         }
-        $event.target.value = val;
+        e.target.value = val;
       }
+      this.$emit('input', e.target.value);
+      this.$refs.input.selectionStart = selStart;
+      this.$refs.input.selectionEnd = selStart;
 
-      this.$emit('input', $event.target.value);
       if (this.selector) {
-        this.$emit('selector', $event.target.value);
+        this.$emit('selector', e.target.value);
       }
     },
     clear() {
