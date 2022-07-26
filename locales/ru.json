@@ -1,4 +1,8 @@
 {
+  "walletSwitcher": {
+    "wqWallet": "WQWallet",
+    "otherWallet": "Другой кошелек"
+  },
   "kyc": {
     "KYC": "KYC",
     "alreadyVerified": "Ваш профиль уже подтвержден!"

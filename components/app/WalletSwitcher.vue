@@ -6,7 +6,7 @@
                'switcher_default': connectionType !== $options.ConnectionTypes.WQ_WALLET}"
       @click="handleSelect($options.ConnectionTypes.WQ_WALLET)"
     >
-      WQWallet
+      {{ $t('walletSwitcher.wqWallet') }}
     </div>
     <div
       class="switcher__item"
@@ -14,7 +14,7 @@
                'switcher_default': connectionType !== $options.ConnectionTypes.WEB3}"
       @click="handleSelect($options.ConnectionTypes.WEB3)"
     >
-      Other wallet
+      {{ $t('walletSwitcher.otherWallet') }}
     </div>
   </div>
 </template>
