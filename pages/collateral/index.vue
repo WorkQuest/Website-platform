@@ -101,14 +101,18 @@
                   {{ item.size }}
                 </div>
               </div>
-              <button class="btn__doc">
+              <a
+                :href="item.url"
+                target="_blank"
+                class="btn__doc"
+              >
                 {{ $t('meta.btns.download') }}
                 <img
                   class="download"
                   src="~/assets/img/ui/download.svg"
                   alt=""
                 >
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -168,9 +172,6 @@ export default {
   name: 'Collateral',
   mixins: [walletOperations],
   layout({ store }) {
-    // TODO plug for release
-    if (IS_PLUG) return Layout.DEFAULT;
-
     return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
   },
   data() {
@@ -183,6 +184,10 @@ export default {
       isAuth: 'user/isAuth',
       userData: 'user/getUserData',
 
+      totalSupply: 'collateral/getTotalSupply',
+      availableAssets: 'collateral/getAvailableAssets',
+      maxRatio: 'collateral/getMaxRatio',
+
       oraclePrices: 'oracle/getPrices',
       oracleSymbols: 'oracle/getSymbols',
       oracleCurrentPrices: 'oracle/getCurrentPrices',
@@ -192,35 +197,35 @@ export default {
     documents() {
       return [
         {
-          name: 'Some_document.pdf',
-          size: this.$tc('meta.units.mb', 1.2),
-          url: '',
+          name: 'WUSD Formed.pdf',
+          size: this.$tc('meta.units.mb', 2.9),
+          url: 'docs/collateral/WUSD_Formed.pdf',
         },
         {
-          name: 'Some_document.pdf',
-          size: this.$tc('meta.units.mb', 1.2),
-          url: '',
+          name: 'WUSD Liquidation Parameters.pdf',
+          size: this.$tc('meta.units.mb', 1.7),
+          url: 'docs/collateral/WUSD Liquidation Parameters.pdf',
         },
         {
-          name: 'Some_document.pdf',
-          size: this.$tc('meta.units.mb', 1.2),
-          url: '',
+          name: 'WUSD Price Stabilization Mechanism.pdf',
+          size: this.$tc('meta.units.mb', 1.4),
+          url: 'docs/collateral/WUSD Price Stabilization Mechanism.pdf',
         },
       ];
     },
     cards() {
       return [
         {
-          title: this.$tc('meta.coins.count.dollarsCount', '417.1M'),
+          title: this.$t('meta.coins.count.dollarsCount', { count: this.totalSupply }),
           subtitle: this.$t('collateral.marketSize'),
         },
         {
-          title: this.$tc('meta.units.percentsCount', 4.31),
+          title: this.availableAssets.join(', '),
           subtitle: this.$t('collateral.availableAsset'),
         },
         {
-          title: this.$tc('meta.units.percentsCount', 5),
-          subtitle: this.$t('collateral.minPercent'),
+          title: this.$t('meta.units.percentsCount', { count: `102-${this.maxRatio}` }),
+          subtitle: this.$t('collateral.percent'),
         },
       ];
     },
@@ -264,6 +269,9 @@ export default {
         },
       ];
     },
+  },
+  async mounted() {
+    await this.$store.dispatch('collateral/fetchCollateralsCommonInfo');
   },
   methods: {
     async openModalGetWUSD() {
@@ -415,8 +423,13 @@ export default {
 
       &__doc {
         @extend .btn;
+        display: flex;
         width: 220px;
         height: 46px;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        text-decoration: none;
 
         .download {
           display: unset;

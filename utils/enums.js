@@ -208,6 +208,7 @@ export const TokenSymbols = Object.freeze({
   WBNB: 'WBNB',
   WETH: 'WETH',
   USDT: 'USDT',
+  USDC: 'USDC',
   MATIC: 'MATIC',
 });
 

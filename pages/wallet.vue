@@ -180,9 +180,7 @@
             >
               {{ $t('meta.allTransactions') }}
             </base-btn>
-            <!-- TODO del v-show, this plug for release -->
             <base-btn
-              v-show="!$options.IS_PLUG"
               data-selector="SWITCH-COLLATERAL"
               :mode="getSwitchButtonMode(walletTables.COLLATERAL)"
               @click="selectedWalletTable = walletTables.COLLATERAL"
@@ -213,9 +211,8 @@
               :total-pages="totalPages"
             />
           </div>
-          <!-- TODO del v-if, remove this plug for release -->
           <div
-            v-if="selectedWalletTable === walletTables.COLLATERAL && !$options.IS_PLUG"
+            v-else
             class="wallet__txs"
           >
             <CollateralTable />
