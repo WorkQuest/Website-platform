@@ -181,6 +181,7 @@
     "raiseViews": "व्यू बढ़ाएं",
     "educations": "शिक्षा",
     "login": "लॉगिन करें",
+    "wrongToken": "Wrong confirmation token. Please check the last letter on your email",
     "signUp": "साइन अप करें",
     "securityCheckBig": "सुरक्षा जांच",
     "securityCheckSmall": "सुरक्षा जांच",

@@ -181,6 +181,7 @@
     "raiseViews": "Увеличить просмотры",
     "educations": "Образования",
     "login": "Авторизоваться",
+    "wrongToken": "Wrong confirmation token. Please check the last letter on your email",
     "signUp": "Зарегистрироваться",
     "securityCheckBig": "Проверка безопасности",
     "securityCheckSmall": "проверка безопасности",

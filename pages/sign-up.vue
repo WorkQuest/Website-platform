@@ -125,7 +125,7 @@
         </base-field>
         <div class="auth__action">
           <base-btn
-            :disabled="!valid || isLoading"
+            :disabled="!valid || inProgress"
             data-selector="CREATE"
           >
             {{ $t('signUp.create') }}
@@ -137,9 +137,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import { Layout, Path } from '~/utils/enums';
+import { resendEmailLifetime } from '~/utils/сonstants/cookiesLifetime';
 
 export default {
   name: 'SignUp',
@@ -156,16 +156,12 @@ export default {
       },
       isPasswordVisible: false,
       isPasswordConfirmVisible: false,
+      inProgress: false,
     };
-  },
-  computed: {
-    ...mapGetters({
-      isLoading: 'main/getIsLoading',
-    }),
   },
   methods: {
     async signUp() {
-      this.SetLoader(true);
+      this.inProgress = true;
       this.model.email = this.model.email.trim();
       this.model.firstName = this.model.firstName.trim();
       this.model.lastName = this.model.lastName.trim();
@@ -179,16 +175,20 @@ export default {
       };
       const response = await this.$store.dispatch('user/signUp', payload);
       if (response.ok) {
-        this.$cookies.set('userStatus', response.result.userStatus);
-        this.showConfirmEmailModal();
+        sessionStorage.setItem('resend-timer', JSON.stringify({
+          timerValue: resendEmailLifetime,
+          createdAt: Date.now(),
+        }));
         await this.$router.push(Path.SIGN_IN);
+        this.ShowModal({
+          key: modals.status,
+          path: Path.SIGN_IN,
+          img: require('~/assets/img/ui/email.svg'),
+          title: this.$t('modals.titles.emailConfirmTitle'),
+          subtitle: this.$t('registration.emailConfirm'),
+        });
       }
-      this.SetLoader(false);
-    },
-    showConfirmEmailModal() {
-      this.ShowModal({
-        key: modals.emailConfirm,
-      });
+      this.inProgress = true;
     },
   },
 };
