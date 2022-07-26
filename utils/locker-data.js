@@ -8,7 +8,7 @@ export const LockedPages = [
   'staking',
   'staking-id',
   'auction',
-  'collateral',
+  // 'collateral',
   'insuring',
   'insuring-id',
   'lending',
