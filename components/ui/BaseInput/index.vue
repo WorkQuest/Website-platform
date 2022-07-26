@@ -180,6 +180,9 @@ export default {
       return this.type === 'number' ? 'customNumber' : this.type;
     },
   },
+  mounted() {
+    this.focus();
+  },
   methods: {
     focus() {
       if (this.autoFocus) this.$refs.input.focus();
