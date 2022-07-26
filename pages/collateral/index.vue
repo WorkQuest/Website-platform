@@ -172,9 +172,6 @@ export default {
   name: 'Collateral',
   mixins: [walletOperations],
   layout({ store }) {
-    // TODO plug for release
-    if (IS_PLUG) return Layout.DEFAULT;
-
     return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
   },
   data() {
@@ -186,6 +183,10 @@ export default {
     ...mapGetters({
       isAuth: 'user/isAuth',
       userData: 'user/getUserData',
+
+      totalSupply: 'collateral/getTotalSupply',
+      availableAssets: 'collateral/getAvailableAssets',
+      maxRatio: 'collateral/getMaxRatio',
 
       oraclePrices: 'oracle/getPrices',
       oracleSymbols: 'oracle/getSymbols',
@@ -215,16 +216,16 @@ export default {
     cards() {
       return [
         {
-          title: this.$tc('meta.coins.count.dollarsCount', '417.1M'),
+          title: this.$t('meta.coins.count.dollarsCount', { count: this.totalSupply }),
           subtitle: this.$t('collateral.marketSize'),
         },
         {
-          title: this.$tc('meta.units.percentsCount', 4.31),
+          title: this.availableAssets.join(', '),
           subtitle: this.$t('collateral.availableAsset'),
         },
         {
-          title: this.$tc('meta.units.percentsCount', 5),
-          subtitle: this.$t('collateral.minPercent'),
+          title: this.$t('meta.units.percentsCount', { count: `102-${this.maxRatio}` }),
+          subtitle: this.$t('collateral.percent'),
         },
       ];
     },
@@ -268,6 +269,9 @@ export default {
         },
       ];
     },
+  },
+  async mounted() {
+    await this.$store.dispatch('collateral/fetchCollateralsCommonInfo');
   },
   methods: {
     async openModalGetWUSD() {

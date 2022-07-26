@@ -1858,7 +1858,7 @@
     "marketSize": "Total circulation supply",
     "sub": "Provide different types of collateral for issuing $WUSD stablecoin and use it in various Defi platform functionality: paying for Quests, receiving a salary, participating in retirement, insurance, lending&borrowing, staking, and savings programs.",
     "availableAsset": "Available collateral asset",
-    "minPercent": "Minimum collateral percentage",
+    "percent": "Collateral percentage",
     "wantToGetWUSDTitle": "Want to get $WUSD quickly?",
     "howToGetWUSD": "You must select the collateral currency you want to deposit to purchase the stablecoin and the amount of collateral asset you are willing to keep. Follow a few simple steps to enjoy the WorkQuest platform's benefits.",
     "getWUSD": "Get WUSD",

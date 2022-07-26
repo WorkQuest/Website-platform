@@ -4,4 +4,8 @@ export default () => ({
 
   historyCollateral: [],
   historyCollateralCount: null,
+
+  totalSupply: null,
+  availableAssets: [],
+  maxRatio: null,
 });

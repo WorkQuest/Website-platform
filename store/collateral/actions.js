@@ -10,6 +10,19 @@ import { ERC20, WQRouter } from '~/abi';
 import ENV from '~/utils/addresses';
 
 export default {
+  async fetchCollateralsCommonInfo({ commit }) {
+    try {
+      const { result: { pullAmount, ratio, symbols } } = await this.$axiosLiquidator.$get('collateral/information');
+      commit('setTotalSupply', pullAmount);
+      commit('setMaxRatio', Math.max(...ratio));
+      commit('setAvailableAssets', symbols);
+      return success();
+    } catch (e) {
+      console.error('collateral/fetchCollateralsCommonInfo', e);
+      return error();
+    }
+  },
+
   async sendProduceWUSD(_, {
     collateral, ratio, currency, fee: { gas, gasPrice },
   }) {

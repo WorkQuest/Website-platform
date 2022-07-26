@@ -12,4 +12,14 @@ export default {
     state.historyCollateral = rows;
     state.historyCollateralCount = count;
   },
+
+  setTotalSupply(state, data) {
+    state.totalSupply = data;
+  },
+  setAvailableAssets(state, data) {
+    state.availableAssets = data;
+  },
+  setMaxRatio(state, data) {
+    state.maxRatio = data;
+  },
 };
