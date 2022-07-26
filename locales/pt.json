@@ -181,6 +181,7 @@
     "raiseViews": "Aumentar visualizações",
     "educations": "Educação",
     "login": "Iniciar sessão",
+    "wrongToken": "Wrong confirmation token. Please check the last letter on your email",
     "signUp": "Inscreva-se",
     "securityCheckBig": "Verificação de segurança",
     "securityCheckSmall": "verificação de segurança",
