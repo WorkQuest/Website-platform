@@ -181,6 +181,7 @@
     "raiseViews": "提高浏览量",
     "educations": "教育背景",
     "login": "登录",
+    "wrongToken": "Wrong confirmation token. Please check the last letter on your email",
     "signUp": "注册",
     "securityCheckBig": "安全检查",
     "securityCheckSmall": "安全检查",

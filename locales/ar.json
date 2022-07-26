@@ -181,6 +181,7 @@
     "raiseViews": "زيادة المشاهدات",
     "educations": "التعليم",
     "login": "تسجيل الدخول",
+    "wrongToken": "Wrong confirmation token. Please check the last letter on your email",
     "signUp": "الاشتراك",
     "securityCheckBig": "الفحص الأمني",
     "securityCheckSmall": "الفحص الأمني",

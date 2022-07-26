@@ -195,12 +195,19 @@ export default {
       commit('setTokens', {
         access: this.$cookies.get('access'),
         refresh: this.$cookies.get('refresh'),
-        userStatus: UserStatuses.Confirmed,
       });
-      this.$cookies.set('role', payload.role, { path: Path.ROOT, maxAge: accessLifetime });
-      return await this.$axios.$post('/v1/auth/confirm-email', payload);
+      await this.$axios.$post('/v1/auth/confirm-email', payload);
+      this.$cookies.set('role', payload.role, {
+        path: Path.ROOT,
+        maxAge: accessLifetime,
+      });
+      this.$cookies.set('userStatus', UserStatuses.NeedSetRole, {
+        path: Path.ROOT,
+        maxAge: accessLifetime,
+      });
+      return success();
     } catch (e) {
-      return false;
+      return error();
     }
   },
   async getUserData({ commit }) {

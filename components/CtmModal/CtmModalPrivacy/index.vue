@@ -94,23 +94,12 @@ export default {
   methods: {
     async onSubmit() {
       // Role page
-      let response;
-      if (this.options.isSocialNetwork) {
-        response = await this.$store.dispatch('user/setUserRole', {
-          role: this.options.role,
-        });
-      } else {
-        response = await this.$store.dispatch('user/confirm', {
-          confirmCode: sessionStorage.getItem('confirmToken'),
-          role: this.options.role,
-        });
-      }
-
+      const response = await this.$store.dispatch('user/setUserRole', { role: this.options.role });
       if (response?.ok) {
         this.$cookies.set('userLogin', true, { path: Path.ROOT, maxAge: accessLifetime });
         this.$cookies.set('userStatus', UserStatuses.Confirmed, { path: Path.ROOT, maxAge: accessLifetime });
         sessionStorage.removeItem('confirmToken');
-        this.ShowToast(this.$t('modals.yourAccountVerified'), this.$t('meta.success'));
+        this.ShowToast(this.$t('modals.yourAccountVerified'), this.$t('modals.success'));
         await this.options.callback();
       } else {
         // Wrong confirm token or errors with social network login

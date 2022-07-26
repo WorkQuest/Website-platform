@@ -1,7 +1,6 @@
 export default {
   default: 'default',
   status: 'status',
-  emailConfirm: 'emailConfirm',
   restore: 'restore',
   privacy: 'privacy',
   skills: 'skills',

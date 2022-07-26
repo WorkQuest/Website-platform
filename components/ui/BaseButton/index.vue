@@ -24,7 +24,7 @@
     :class="btnClass"
     :type="isSubmit ? 'submit' : 'button'"
     :data-selector="`ACTION-BTN-CLICK-${dataSelector.toUpperCase()}`"
-    @click="$emit('click')"
+    @click="$emit('click', $event)"
   >
     {{ text }}
     <span

@@ -181,6 +181,7 @@
     "raiseViews": "Tingkatkan tampilan",
     "educations": "Pendidikan",
     "login": "Masuk",
+    "wrongToken": "Wrong confirmation token. Please check the last letter on your email",
     "signUp": "Sign Up",
     "securityCheckBig": "Pemeriksaan keamanan",
     "securityCheckSmall": "pemeriksaan keamanan",

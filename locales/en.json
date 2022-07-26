@@ -181,6 +181,7 @@
     "raiseViews": "Raise views",
     "educations": "Educations",
     "login": "Login",
+    "wrongToken": "Wrong confirmation token. Please check the last letter on your email",
     "signUp": "Sign Up",
     "securityCheckBig": "Security check",
     "securityCheckSmall": "security check",

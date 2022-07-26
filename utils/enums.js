@@ -171,6 +171,13 @@ export const Path = {
   QRCODE: '/qrcode',
 };
 
+export const RouterNames = {
+  ROOT: 'index',
+  SIGN_IN: 'sign-in',
+  SIGN_UP: 'sign-up',
+  ROLE: 'role',
+};
+
 export const PreventLogoutPathNames = [
   'mining',
   'mining-id',
