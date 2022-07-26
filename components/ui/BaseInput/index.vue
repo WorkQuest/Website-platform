@@ -191,15 +191,27 @@ export default {
       this.$emit('enter', e.target.value);
     },
     input(e) {
-      const selStart = this.$refs.input.selectionStart;
       if (this.customType === 'customNumber') {
-        let val = e.target.value.toString().replace(/,/g, '.').replace(/[^0-9.]/g, '');
+        let selStart = this.$refs.input.selectionStart;
 
+        const { data } = e;
+        if (data) {
+          const isDot = /[.,]/.test(data);
+          const index = e?.target?.value?.lastIndexOf('.');
+          console.log(isDot, index, selStart, e.target.value.length);
+          if (/[^1-9.,]/.test(data) || (isDot && index !== -1 && selStart !== e.target.value.length && index < selStart)) {
+            selStart -= 1;
+          }
+        }
+
+        let val = e.target.value.toString().replace(/,/g, '.').replace(/[^0-9.]/g, '');
         const dotIndex = val.indexOf('.');
-        const dotIndexLast = val.lastIndexOf('.');
-        if (dotIndex !== dotIndexLast) {
-          const len = val.length;
-          val = val.substr(0, dotIndex + 1) + val.substr(dotIndex + 1, len).replace(/[.]/g, '');
+        if (dotIndex !== -1) {
+          const dotIndexLast = val.lastIndexOf('.');
+          if (dotIndex !== dotIndexLast) {
+            const len = val.length;
+            val = val.substr(0, dotIndex + 1) + val.substr(dotIndex + 1, len).replace(/[.]/g, '');
+          }
         }
 
         if (val[0] === '.') val = `${0}${val}`;
@@ -207,10 +219,12 @@ export default {
           val = val.substr(1, val.length);
         }
         e.target.value = val;
+
+        if (val === '0.') selStart += 1;
+        this.$refs.input.selectionStart = selStart;
+        this.$refs.input.selectionEnd = selStart;
       }
       this.$emit('input', e.target.value);
-      this.$refs.input.selectionStart = selStart;
-      this.$refs.input.selectionEnd = selStart;
 
       if (this.selector) {
         this.$emit('selector', e.target.value);
