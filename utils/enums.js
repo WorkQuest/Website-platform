@@ -167,7 +167,7 @@ export const Path = {
 };
 
 export const RouterNames = {
-  ROOT: '/',
+  ROOT: 'index',
   SIGN_IN: 'sign-in',
   SIGN_UP: 'sign-up',
   ROLE: 'role',
