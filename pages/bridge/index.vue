@@ -18,7 +18,8 @@
             :data-selector="!isConnected ? 'CONNECT-WALLET' : 'DISCONNECT-FROM-WALLET'"
             @click="toggleConnection"
           >
-            {{ !isConnected ? $t('mining.connectWallet') : $t('meta.disconnect') }}
+            {{ connectionType === $options.ConnectionTypes.WQ_WALLET ? $t('meta.connected')
+              : (!isConnected ? $t('mining.connectWallet') : $t('meta.disconnect')) }}
           </base-btn>
           <p
             v-if="!isWeb3Connection || isConnected"
@@ -421,7 +422,9 @@ export default {
         this.SetLoader(false);
       };
 
-      if (this.isWeb3Connection && await this.checkNetwork(chain)) {
+      const chainRes = await this.checkNetwork(chain);
+      console.log(chainRes);
+      if (this.isWeb3Connection && chainRes) {
         await makeRedeem();
         return;
       }
