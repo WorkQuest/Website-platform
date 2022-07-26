@@ -175,14 +175,10 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      customType: '',
-    };
-  },
-  mounted() {
-    this.customType = this.type === 'number' ? 'customNumber' : this.type;
-    this.focus();
+  computed: {
+    customType() {
+      return this.type === 'number' ? 'customNumber' : this.type;
+    },
   },
   methods: {
     focus() {
