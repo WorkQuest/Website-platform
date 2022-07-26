@@ -423,9 +423,7 @@ export default {
       };
 
       if (this.isWeb3Connection) {
-        const chainRes = await this.checkNetwork(chain);
-        console.log(chainRes);
-        if (chainRes) await makeRedeem();
+        if (await this.checkNetwork(chain)) await makeRedeem();
         return;
       }
 
