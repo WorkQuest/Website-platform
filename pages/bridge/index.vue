@@ -422,10 +422,10 @@ export default {
         this.SetLoader(false);
       };
 
-      const chainRes = await this.checkNetwork(chain);
-      console.log(chainRes);
-      if (this.isWeb3Connection && chainRes) {
-        await makeRedeem();
+      if (this.isWeb3Connection) {
+        const chainRes = await this.checkNetwork(chain);
+        console.log(chainRes);
+        if (chainRes) await makeRedeem();
         return;
       }
 
@@ -460,8 +460,9 @@ export default {
         isWeb3Connection, addresses, sourceAddressInd, targetAddressInd,
       } = this;
       const { chain } = addresses[sourceAddressInd];
-      if (isWeb3Connection) await this.checkNetwork(chain);
-      else {
+      if (isWeb3Connection) {
+        if (!await this.checkNetwork(chain)) return;
+      } else {
         await this.$store.dispatch('wallet/connectToProvider', chain);
       }
 
