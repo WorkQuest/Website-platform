@@ -63,19 +63,24 @@
         </div>
       </div>
       <div
+        v-if="lotsCount"
         class="auction__list"
         :class="`auction__list_${currentTab}`"
       >
         <auction-card
-          v-for="auction in auctionMock"
+          v-for="auction in lots"
           :key="auction.id"
           :auction="auction"
           :is-completed="currentTab === 'completed'"
         />
       </div>
+      <empty-data
+        v-else
+        :description="$tc('errors.emptyData.emptyCollaterals')"
+      />
       <div class="auction__pager-block">
         <base-pager
-          v-if="pagination.totalPages > 1"
+          v-if="lotsCount"
           v-model="pagination.currentPage"
           class="auction__pager"
           :total-pages="pagination.totalPages"
@@ -87,7 +92,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import AuctionCard from '~/components/app/pages/auction/AuctionCard';
 import { Layout } from '~/utils/enums';
 import { IS_PLUG } from '~/utils/locker-data';
@@ -109,6 +114,13 @@ export default {
       searchTimeout: null,
       currentTab: 'current',
       selectedSort: 'desc',
+
+      params: {
+        limit: 10,
+        offset: 0,
+        q: '',
+      },
+
       auctionMock: [
         {
           recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
@@ -180,6 +192,9 @@ export default {
   computed: {
     ...mapGetters({
       userData: 'user/getUserData',
+      walletAddress: 'user/getUserWalletAddress',
+      lots: 'auction/getLots',
+      lotsCount: 'auction/getLotsCount',
     }),
     searchPlaceholder() {
       return this.$t('auction.search.placeholder');
@@ -282,7 +297,17 @@ export default {
       },
     },
   },
+  mounted() {
+    this.fetchLots({
+      address: this.walletAddress,
+      params: this.params,
+    });
+  },
   methods: {
+    ...mapActions({
+      fetchLots: 'auction/fetchLots',
+    }),
+
     goSearch() {
       clearTimeout(this.searchTimeout);
       console.log('search');// TODO search

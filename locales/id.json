@@ -103,7 +103,9 @@
       "add": "Tambahkan",
       "addNow": "Add now",
       "take": "Take",
-      "swap": "Swap"
+      "swap": "Swap",
+      "generate": "Generate",
+      "remove": "Remove"
     },
     "placeholders": {
       "default": "",
@@ -210,8 +212,10 @@
     "settings": "Pengaturan",
     "costPerHour": "Biaya per jam",
     "disputes": "Sengketa",
+    "type": "Type",
     "success": "Berhasil",
-    "fail": "Fail"
+    "fail": "Fail",
+    "attention": "Attention!"
   },
   "info": {
     "yourMessage": " Your message:",
@@ -1472,12 +1476,18 @@
     },
     "collateral": {
       "balance": "Collateral balance",
-      "coin": "coin",
-      "sum": "sum",
-      "amountInDollars": "amount in dollars",
-      "attentionQuotient": "attention quotient",
-      "addTitle": "Add collateral",
-      "takeTitle": "Take collateral"
+      "collateralToken": "Collateral token",
+      "ratio": "Ratio (%)",
+      "generatedAmount": "WUSD generated",
+      "lockedAmount": "Locked",
+      "removeCollateral": "Remove collateral",
+      "needToRevert": "You need to revert WUSD (unchangeable amount):",
+      "generationTime": "Generation time",
+      "generationSubTitle": "Your collateral is over-secured. You can get generate extra WUSD.",
+      "tokenQuantity": "Collateral Token Quantity (unchangeable amount)",
+      "availableAmount": "MAX amount available to generate (unchangeable amount):",
+      "attentionInfoRise": "Collateral asset price rise, and now you can generate additional WUSD. Please note that if the price of collateral assets decreases, the risk of collateral being liquidated increases.",
+      "attentionInfoFalling": "Collateral asset price is falling, and now is a high risk of liquidation. Please note that you can deposit more collateral assets and decrease the risk of collateral liquidation."
     },
     "table": {
       "trx": "Transaksi",
@@ -1488,6 +1498,7 @@
       "transferred": "Token Ditransfer",
       "value": "Jumlah",
       "trxFee": "Biaya transaksi",
+      "index": "Index",
       "empty": "Transactions list is empty"
     }
   },
@@ -1851,7 +1862,7 @@
     "marketSize": "Total circulation supply",
     "sub": "Provide different types of collateral for issuing $WUSD stablecoin and use it in various Defi platform functionality: paying for Quests, receiving a salary, participating in retirement, insurance, lending&borrowing, staking, and savings programs.",
     "availableAsset": "Available collateral asset",
-    "minPercent": "Minimum collateral percentage",
+    "percent": "Collateral percentage",
     "wantToGetWUSDTitle": "Want to get $WUSD quickly?",
     "howToGetWUSD": "You must select the collateral currency you want to deposit to purchase the stablecoin and the amount of collateral asset you are willing to keep. Follow a few simple steps to enjoy the WorkQuest platform's benefits.",
     "getWUSD": "Get WUSD",
@@ -2035,6 +2046,7 @@
       "emptyDisputes": "Oops, there are no disputes here yet",
       "emptyPortfolios": "Oops, there's no portfolio here yet",
       "emptyReviews": "Oops, there are no reviews here yet",
+      "emptyCollaterals": "Oops, there are no collateral lots here yet",
       "employer": {
         "myQuests": {
           "desc": "Anda belum menyelesaikan quest",

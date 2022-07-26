@@ -23,6 +23,7 @@ export default {
     try {
       const { result } = await this.$axiosOracle.$get('/oracle/sign-price/tokens');
       commit('setCurrentPrices', result);
+      commit('setMaxRatio', result.maxRatio);
       return success(result);
     } catch (e) {
       return error();
@@ -44,15 +45,15 @@ export default {
       await dispatch('getCurrentTokensPrices');
 
       const {
-        nonce: timestamp, v, r, s,
+        nonce, v, r, s,
       } = getters.getCurrentPrices;
-      const [prices, symbols] = [getters.getPrices, getters.getSymbols];
+      const [prices, symbols, maxRatio] = [getters.getPrices, getters.getSymbols, getters.getMaxRatio];
 
       const fee = await getGasPrice(
         WQOracle,
         ENV.WORKNET_ORACLE,
         'setTokenPricesUSD',
-        [timestamp, v, r, s, prices, symbols],
+        [nonce, v, r, s, prices, maxRatio, symbols],
       );
       return success(fee);
     } catch (e) {
@@ -64,22 +65,22 @@ export default {
   async setCurrentPriceTokens({ getters, dispatch }) {
     try {
       const { result: { gas, gasPrice } } = await dispatch('feeSetTokensPrices');
-      await dispatch('getCurrentTokensPrices');
 
       const {
-        nonce: timestamp, v, r, s,
+        nonce, v, r, s,
       } = getters.getCurrentPrices;
-      const [prices, symbols] = [getters.getPrices, getters.getSymbols];
+      const [prices, symbols, maxRatio] = [getters.getPrices, getters.getSymbols, getters.getMaxRatio];
 
       if (gas && gasPrice) {
         /**
          * @property setTokenPricesUSD - method of oracle
          */
         const inst = createInstance(WQOracle, ENV.WORKNET_ORACLE);
-        await inst.methods.setTokenPricesUSD(timestamp, v, r, s, prices, symbols).send({
+        await inst.methods.setTokenPricesUSD(nonce, v, r, s, prices, maxRatio, symbols).send({
           from: getWalletAddress(),
+          // because sometimes the wrong amount of gas is calculated
+          gas: 300000,
           gasPrice,
-          gas,
         });
         return success();
       }
