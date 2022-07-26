@@ -196,31 +196,32 @@ export default {
 
         const { data } = e;
         if (data) {
-          const isDot = /[.,]/.test(data);
           const index = e?.target?.value?.lastIndexOf('.');
-          console.log(isDot, index, selStart, e.target.value.length);
-          if (/[^1-9.,]/.test(data) || (isDot && index !== -1 && selStart !== e.target.value.length && index < selStart)) {
+          const isDot = /[.,]/.test(data);
+          if (/[^0-9.,]/.test(data) || (isDot && index !== -1 && selStart !== e.target.value.length && index < selStart)) {
             selStart -= 1;
           }
         }
 
-        let val = e.target.value.toString().replace(/,/g, '.').replace(/[^0-9.]/g, '');
-        const dotIndex = val.indexOf('.');
-        if (dotIndex !== -1) {
-          const dotIndexLast = val.lastIndexOf('.');
-          if (dotIndex !== dotIndexLast) {
-            const len = val.length;
-            val = val.substr(0, dotIndex + 1) + val.substr(dotIndex + 1, len).replace(/[.]/g, '');
+        if (e.target.value) {
+          let val = e.target.value.toString().replace(/,/g, '.').replace(/[^0-9.]/g, '');
+          const dotIndex = val.indexOf('.');
+          if (dotIndex !== -1) {
+            const dotIndexLast = val.lastIndexOf('.');
+            if (dotIndex !== dotIndexLast) {
+              const len = val.length;
+              val = val.substr(0, dotIndex + 1) + val.substr(dotIndex + 1, len).replace(/[.]/g, '');
+            }
           }
+
+          if (val[0] === '.') val = `${0}${val}`;
+          while (val.startsWith('0') && val.length > 1 && !(val.startsWith('0,') || val.startsWith('0.'))) {
+            val = val.substr(1, val.length);
+          }
+          e.target.value = val;
+          if (val === '0.') selStart += 1;
         }
 
-        if (val[0] === '.') val = `${0}${val}`;
-        while (val.startsWith('0') && val.length > 1 && !(val.startsWith('0,') || val.startsWith('0.'))) {
-          val = val.substr(1, val.length);
-        }
-        e.target.value = val;
-
-        if (val === '0.') selStart += 1;
         this.$refs.input.selectionStart = selStart;
         this.$refs.input.selectionEnd = selStart;
       }
