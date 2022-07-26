@@ -427,6 +427,7 @@ export default {
         return;
       }
 
+      this.SetLoader(true);
       await this.$store.dispatch('wallet/connectToProvider', chain);
       const [feeRes] = await Promise.all([
         this.$store.dispatch('wallet/getContractFeeData', {
@@ -442,11 +443,17 @@ export default {
         return;
       }
       const nativeTokenSymbol = SwapAddresses.get(chain).nativeSymbol;
+      this.SetLoader(false);
+
+      const tokenSymbol = signData[7];
+      const toRedeem = new BigNumber(signData[2]).shiftedBy(tokenSymbol === TokenSymbols.USDT ? -6 : -18).toString();
+
       this.ShowModal({
         key: modals.transactionReceipt,
         title: 'Redeem',
         fields: {
-          chain: { name: 'Chain', value: chain },
+          chain: { name: this.$t('modals.bridge'), value: chain },
+          toRedeem: { name: this.$t('modals.amount'), value: toRedeem, symbol: tokenSymbol },
           fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: nativeTokenSymbol },
         },
         submitMethod: async () => await makeRedeem(),
@@ -461,7 +468,9 @@ export default {
       if (isWeb3Connection) {
         if (!await this.checkNetwork(chain)) return;
       } else {
+        this.SetLoader(true);
         await this.$store.dispatch('wallet/connectToProvider', chain);
+        this.SetLoader(false);
       }
 
       const from = addresses[sourceAddressInd];
@@ -486,10 +495,10 @@ export default {
       this.ShowModal({
         key: modals.transactionReceipt,
         fields: {
-          bridge: { name: 'WorkQuest Bridge', value: `${from.chain} > ${to.chain}` },
-          amount: { name: 'Amount', value: amount, symbol },
-          sender: { name: 'Sender Address', value: this.account.address },
-          recipient: { name: 'Recipient Address', value: this.account.address },
+          bridge: { name: this.$t('modals.bridge'), value: `${from.chain} > ${to.chain}` },
+          swapValue: { name: this.$t('modals.amount'), value: amount, symbol },
+          sender: { name: this.$t('modals.senderAddress'), value: this.account.address },
+          recipient: { name: this.$t('modals.recipientAddress'), value: this.account.address },
         },
         submitMethod: async () => {
           const swap = async () => {
@@ -513,6 +522,9 @@ export default {
               key: modals.transactionReceipt,
               title: 'Swap',
               fields: {
+                sender: { name: this.$t('modals.senderAddress'), value: this.account.address },
+                recipient: { name: this.$t('modals.recipientAddress'), value: this.account.address },
+                swapValue: { name: this.$t('modals.amount'), value: amount, symbol },
                 fee: {
                   name: this.$t('wallet.table.trxFee'),
                   value: new BigNumber(gasPrice).multipliedBy(estimateGas).shiftedBy(-18).toString(),
