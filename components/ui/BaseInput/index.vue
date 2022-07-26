@@ -195,22 +195,30 @@ export default {
         let selStart = this.$refs.input.selectionStart;
 
         const { data } = e;
-        if (data) {
-          const index = e?.target?.value?.lastIndexOf('.');
-          const isDot = /[.,]/.test(data);
-          if (/[^0-9.,]/.test(data) || (isDot && index !== -1 && selStart !== e.target.value.length && index < selStart)) {
-            selStart -= 1;
-          }
+        let val = e.target.value;
+
+        const indexFirst = val.indexOf('.');
+        const indexLast = val.lastIndexOf('.');
+        const equals = indexFirst === indexLast;
+        const isDot = /[.,]/.test(data);
+        const isNewDot = isDot && !equals && selStart - 1 === indexFirst;
+
+        if (/[^0-9.,]/.test(data) || (isDot && !equals && indexLast !== -1 && selStart !== val.length)) {
+          selStart -= 1;
         }
 
         if (e.target.value) {
-          let val = e.target.value.toString().replace(/,/g, '.').replace(/[^0-9.]/g, '');
+          val = e.target.value.toString().replace(/,/g, '.').replace(/[^0-9.]/g, '');
           const dotIndex = val.indexOf('.');
           if (dotIndex !== -1) {
             const dotIndexLast = val.lastIndexOf('.');
             if (dotIndex !== dotIndexLast) {
               const len = val.length;
-              val = val.substr(0, dotIndex + 1) + val.substr(dotIndex + 1, len).replace(/[.]/g, '');
+              if (!isNewDot) {
+                val = val.substr(0, dotIndex + 1) + val.substr(dotIndex + 1, len).replace(/[.]/g, '');
+              } else {
+                val = val.substr(0, dotIndex + 1).replace(/[.]/g, '') + val.substr(dotIndex + 1, len);
+              }
             }
           }
 
