@@ -2,16 +2,14 @@
   <div class="switcher">
     <div
       class="switcher__item"
-      :class="{'switcher_selected': connectionType === $options.ConnectionTypes.WQ_WALLET,
-               'switcher_default': connectionType !== $options.ConnectionTypes.WQ_WALLET}"
+      :class="{'switcher_selected': connectionType === $options.ConnectionTypes.WQ_WALLET}"
       @click="handleSelect($options.ConnectionTypes.WQ_WALLET)"
     >
       {{ $t('walletSwitcher.wqWallet') }}
     </div>
     <div
       class="switcher__item"
-      :class="{'switcher_selected': connectionType === $options.ConnectionTypes.WEB3,
-               'switcher_default': connectionType !== $options.ConnectionTypes.WEB3}"
+      :class="{'switcher_selected': connectionType === $options.ConnectionTypes.WEB3}"
       @click="handleSelect($options.ConnectionTypes.WEB3)"
     >
       {{ $t('walletSwitcher.otherWallet') }}
@@ -82,9 +80,7 @@ export default {
     padding: 5px 20px;
     user-select: none;
     color: $black600;
-  }
 
-  &_default {
     cursor: pointer;
     &:hover {
       background: $black200;
@@ -94,6 +90,7 @@ export default {
   &_selected {
     font-weight: 600;
     background: $black0 !important;
+    cursor: default;
   }
 }
 
