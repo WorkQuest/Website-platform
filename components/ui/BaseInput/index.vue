@@ -199,13 +199,13 @@ export default {
 
         const indexFirst = val.indexOf('.');
         const indexLast = val.lastIndexOf('.');
-        const equals = indexFirst === indexLast;
+        const isEquals = indexFirst === indexLast;
         const isDot = /[.,]/.test(data);
-        const isNewDot = isDot && !equals && selStart - 1 === indexFirst;
+        const isNewDot = isDot && !isEquals && selStart - 1 === indexFirst;
 
         if (data && data === '.' && val[0] === '.') {
           selStart += 1;
-        } else if (data && (/[^0-9.,]/.test(data) || (isDot && !equals && indexLast !== -1 && selStart !== val.length))) {
+        } else if (data && (/[^0-9.,]/.test(data) || (isDot && !isEquals && indexLast !== -1 && selStart !== val.length))) {
           selStart -= 1;
         } else if (!data && indexFirst === -1 && indexLast === -1 && selStart === 1 && val[0] === '0') selStart -= 1;
 
