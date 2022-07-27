@@ -350,7 +350,7 @@ export default {
     icons() {
       return [
         Pool.get(this.chain).icon,
-        images.WQT,
+        images.WQ_LOGO,
       ];
     },
     poolButtons() {
