@@ -19,7 +19,19 @@
             :key="i"
             class="info-block__third"
           >
-            <div class="info-block__title_big info-block__title_blue">
+            <div
+              v-if="item.isLoading"
+              class="info-block__loader-wrapper"
+            >
+              <loader
+                class="info-block__loader"
+                is-mini-loader
+              />
+            </div>
+            <div
+              v-else
+              class="info-block__title_big info-block__title_blue"
+            >
               {{ item.title }}
             </div>
             <div class="info-block__title_small">
@@ -199,7 +211,7 @@ export default {
         {
           name: 'WUSD Formed.pdf',
           size: this.$tc('meta.units.mb', 2.9),
-          url: 'docs/collateral/WUSD_Formed.pdf',
+          url: 'docs/collateral/WUSD Formed.pdf',
         },
         {
           name: 'WUSD Liquidation Parameters.pdf',
@@ -218,14 +230,17 @@ export default {
         {
           title: this.$t('meta.coins.count.dollarsCount', { count: this.totalSupply }),
           subtitle: this.$t('collateral.marketSize'),
+          isLoading: this.totalSupply === null,
         },
         {
           title: this.availableAssets.join(', '),
           subtitle: this.$t('collateral.availableAsset'),
+          isLoading: this.availableAssets.length === 0,
         },
         {
           title: this.$t('meta.units.percentsCount', { count: `102-${this.maxRatio}` }),
           subtitle: this.$t('collateral.percent'),
+          isLoading: this.maxRatio === null,
         },
       ];
     },
@@ -546,6 +561,18 @@ export default {
         flex-direction: column;
         align-items: center;
         gap: 10px;
+      }
+
+      &__loader-wrapper {
+        width: 37.5px;
+        height: 37.5px;
+        position: relative;
+      }
+
+      &__loader {
+        position: absolute;
+        top: -10px;
+        background: none;
       }
 
       &__square {
