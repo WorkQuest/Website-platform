@@ -12,23 +12,22 @@
           </template>
           {{ $t('meta.btns.back') }}
         </base-btn>
-        <base-btn
-          class="mining-page__connect"
-          mode="light"
-          :data-selector="!isConnected ? 'CONNECT-WALLET' : 'DISCONNECT-FROM-WALLET'"
-          @click="toggleConnection"
-        >
-          {{ !isConnected ? $t('mining.connectWallet') : $t('meta.disconnect') }}
-        </base-btn>
+        <div class="mining-page__wallet">
+          <wallet-switcher />
+          <base-btn
+            class="mining-page__connect"
+            mode="light"
+            :data-selector="!isConnected ? 'CONNECT-WALLET' : 'DISCONNECT-FROM-WALLET'"
+            @click="toggleConnection"
+          >
+            {{ !isConnected ? $t('mining.connectWallet') : $t('meta.disconnect') }}
+          </base-btn>
+        </div>
       </div>
-      <p
-        v-if="isConnected"
-        class="mining-page__address"
-      >
-        {{ $t('info.yourWallet') }}
-        <span>
-          {{ CutTxn(account.address, 5, 5) }}
-        </span>
+      <p class="mining-page__address">
+        <template v-if="styledWalletAddress">
+          {{ $t('info.yourWallet') }} {{ styledWalletAddress }}
+        </template>
       </p>
       <div class="mining-page__content">
         <div
@@ -245,12 +244,13 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import WalletSwitcher from '~/components/app/WalletSwitcher';
 import modals from '~/store/modals/modals';
 import {
   Path,
   Chains,
   Layout,
-  TokenSymbols,
+  TokenSymbols, ConnectionTypes,
 } from '~/utils/enums';
 import { getChainIdByChain } from '~/utils/web3';
 import { Pool, PoolURL } from '~/utils/сonstants/mining';
@@ -266,6 +266,7 @@ export default {
   Path,
   Chains,
   components: {
+    WalletSwitcher,
     chart: () => import('./graphics_data'),
   },
   data() {
@@ -291,8 +292,20 @@ export default {
       isConnected: 'web3/isConnected',
       isShowModal: 'modals/getIsShow',
 
+      connectionType: 'web3/getConnectionType',
+      userWalletAddress: 'user/getUserWalletAddress',
+
       isAuth: 'user/isAuth',
     }),
+    styledWalletAddress() {
+      if (this.connectionType === ConnectionTypes.WQ_WALLET) {
+        return this.CutTxn(this.userWalletAddress, 5, 5);
+      }
+      if (this.isConnected && this.connectionType === ConnectionTypes.WEB3) {
+        return this.CutTxn(this.account.address, 5, 5);
+      }
+      return '';
+    },
     isWrongChain() {
       return this.account?.netId !== +getChainIdByChain(this.chain);
     },
@@ -674,6 +687,13 @@ export default {
     box-sizing: border-box;
   }
 
+  &__wallet {
+    display: flex;
+    & > div {
+      margin-right: 20px;
+    }
+  }
+
   &__header {
     align-self: flex-end;
     display: flex;
@@ -873,6 +893,7 @@ export default {
   }
 
   &__address {
+    height: 20px;
     color: $black200;
     font-weight: 400;
     font-size: 16px;
