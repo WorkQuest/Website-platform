@@ -48,7 +48,7 @@
         :placeholder="placeholder"
         :data-selector="`BASE-INPUT-FIELD-${dataSelector.toUpperCase()}`"
         :value="mode === 'convertDate' ? convertDate(value) : value"
-        :type="type"
+        :type="customType"
         :autocomplete="autocomplete"
         :disabled="disabled"
         @input="input"
@@ -175,6 +175,11 @@ export default {
       required: true,
     },
   },
+  computed: {
+    customType() {
+      return this.type === 'number' ? 'customNumber' : this.type;
+    },
+  },
   mounted() {
     this.focus();
   },
@@ -182,17 +187,57 @@ export default {
     focus() {
       if (this.autoFocus) this.$refs.input.focus();
     },
-    enter($event) {
-      this.$emit('enter', $event.target.value);
+    enter(e) {
+      this.$emit('enter', e.target.value);
     },
-    input($event) {
-      const exceptionSymbols = ['.', ','];
-      if (this.type === 'number' && exceptionSymbols.includes($event.target.value[0])) {
-        $event.target.value = `${0}${$event.target.value}`;
+    input(e) {
+      if (this.customType === 'customNumber') {
+        let selStart = this.$refs.input.selectionStart;
+
+        const { data } = e;
+        let val = e.target.value.toString().replace(/,/g, '.').replace(/[^0-9.]/g, '');
+
+        const indexFirst = val.indexOf('.');
+        const indexLast = val.lastIndexOf('.');
+        const isEquals = indexFirst === indexLast;
+        const isDot = /[.,]/.test(data);
+        const isNewDot = isDot && !isEquals && selStart - 1 === indexFirst;
+
+        if (data && data === '.' && val[0] === '.') {
+          selStart += 1;
+        } else if (data && (/[^0-9.,]/.test(data) || (isDot && !isEquals && indexLast !== -1 && selStart !== val.length))) {
+          selStart -= 1;
+        } else if (!data && indexFirst === -1 && indexLast === -1 && selStart === 1 && val[0] === '0') selStart -= 1;
+
+        if (e.target.value) {
+          const dotIndex = val.indexOf('.');
+          if (dotIndex !== -1) {
+            const dotIndexLast = val.lastIndexOf('.');
+            if (dotIndex !== dotIndexLast) {
+              const len = val.length;
+              if (!isNewDot) {
+                val = val.substr(0, dotIndex + 1) + val.substr(dotIndex + 1, len).replace(/[.]/g, '');
+              } else {
+                val = val.substr(0, dotIndex + 1).replace(/[.]/g, '') + val.substr(dotIndex + 1, len);
+              }
+            }
+          }
+
+          if (val[0] === '.') val = `${0}${val}`;
+          while (val.startsWith('0') && val.length > 1 && !(val.startsWith('0,') || val.startsWith('0.'))) {
+            val = val.substr(1, val.length);
+          }
+          e.target.value = val;
+          if (val === '0.') selStart += 1;
+        }
+
+        this.$refs.input.selectionStart = selStart;
+        this.$refs.input.selectionEnd = selStart;
       }
-      this.$emit('input', $event.target.value);
+      this.$emit('input', e.target.value);
+
       if (this.selector) {
-        this.$emit('selector', $event.target.value);
+        this.$emit('selector', e.target.value);
       }
     },
     clear() {
