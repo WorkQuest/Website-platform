@@ -132,8 +132,8 @@
               <base-btn
                 data-selector="STAKE"
                 class="btn_bl"
-                :disabled="!isConnected"
-                @click="openModalStaking()"
+                :disabled="isDisableButtons"
+                @click="openModalStaking"
               >
                 {{ $t('meta.btns.stake') }}
               </base-btn>
@@ -141,8 +141,8 @@
                 data-selector="UNSTAKE"
                 class="btn_bl"
                 mode="outline"
-                :disabled="!isConnected"
-                @click="openModalUnstaking()"
+                :disabled="isDisableButtons"
+                @click="openModalUnstaking"
               >
                 {{ $t('meta.btns.unstake') }}
               </base-btn>
@@ -150,8 +150,8 @@
                 data-selector="CLAIM-REWARDS"
                 mode="outline"
                 class="bnt__claim"
-                :disabled="!isConnected"
-                @click="claimRewards()"
+                :disabled="isDisableButtons"
+                @click="claimRewards"
               >
                 {{ $t('meta.claimRewards') }}
               </base-btn>
@@ -302,6 +302,10 @@ export default {
 
       isAuth: 'user/isAuth',
     }),
+    isDisableButtons() {
+      if (this.connectionType === ConnectionTypes.WEB3) return !this.isConnected;
+      return this.selectedNetwork !== this.chain;
+    },
     connectionButtonText() {
       if (this.connectionType === ConnectionTypes.WQ_WALLET) return this.$t('meta.connected');
       return !this.isConnected ? this.$t('mining.connectWallet') : this.$t('meta.disconnect');
@@ -619,6 +623,8 @@ export default {
     },
 
     async openModalStaking() {
+      if (this.isDisableButtons) return;
+
       const needToFetch = this.isWrongChain;
       if (await this.checkNetwork(this.chain)) {
         if (needToFetch) {
@@ -651,6 +657,8 @@ export default {
     },
 
     async openModalUnstaking() {
+      if (this.isDisableButtons) return;
+
       if (await this.checkNetwork(this.chain)) {
         this.ShowModal({
           key: modals.valueSend,
@@ -677,6 +685,8 @@ export default {
     },
 
     async claimRewards() {
+      if (this.isDisableButtons) return;
+
       const { chain } = this;
       if (await this.checkNetwork(chain) === false) {
         return;
