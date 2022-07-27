@@ -140,51 +140,52 @@ export const fetchContractData = async (_method, _abi, _address, _params, _provi
   }
 };
 
-export const sendTransaction = async (_method, payload, _provider = web3) => {
-  if (!_provider) {
-    console.error('sendTx _provider is undefined');
-    return false;
-  }
-  let transactionData;
-  const inst = new _provider.eth.Contract(payload.abi, payload.address);
-  const gasPrice = await _provider.eth.getGasPrice();
-  const accountAddress = await web3.eth.getCoinbase();
-  if (_method === 'claim') { // TODO: вынести в стор места вызова
-    const data = inst.methods[_method].apply(null).encodeABI();
-    const gasEstimate = await inst.methods[_method].apply(null).estimateGas({ from: accountAddress });
-    transactionData = {
-      to: payload.address,
-      from: accountAddress,
-      data,
-      gasPrice,
-      gas: gasEstimate,
-    };
-  } else if (_method === 'swap') {
-    const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({
-      from: accountAddress,
-      value: payload.value,
-    });
-    await inst.methods.swap(...payload.data).send({
-      from: accountAddress,
-      value: payload.value,
-      gasPrice,
-      gas: gasEstimate,
-    });
-    return '';
-  } else {
-    const data = inst.methods[_method].apply(null, payload.data).encodeABI();
-    const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress });
-    transactionData = {
-      to: payload.address,
-      from: accountAddress,
-      data,
-      gasPrice,
-      gas: gasEstimate,
-    };
-  }
-  // noinspection ES6RedundantAwait
-  return await _provider.eth.sendTransaction(transactionData);
-};
+// TODO: удалить если не используется ни где
+// export const sendTransaction = async (_method, payload, _provider = web3) => {
+//   if (!_provider) {
+//     console.error('sendTx _provider is undefined');
+//     return false;
+//   }
+//   let transactionData;
+//   const inst = new _provider.eth.Contract(payload.abi, payload.address);
+//   const gasPrice = await _provider.eth.getGasPrice();
+//   const accountAddress = await web3.eth.getCoinbase();
+//   if (_method === 'claim') {
+//     const data = inst.methods[_method].apply(null).encodeABI();
+//     const gasEstimate = await inst.methods[_method].apply(null).estimateGas({ from: accountAddress });
+//     transactionData = {
+//       to: payload.address,
+//       from: accountAddress,
+//       data,
+//       gasPrice,
+//       gas: gasEstimate,
+//     };
+//   } else if (_method === 'swap') {
+//     const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({
+//       from: accountAddress,
+//       value: payload.value,
+//     });
+//     await inst.methods.swap(...payload.data).send({
+//       from: accountAddress,
+//       value: payload.value,
+//       gasPrice,
+//       gas: gasEstimate,
+//     });
+//     return '';
+//   } else {
+//     const data = inst.methods[_method].apply(null, payload.data).encodeABI();
+//     const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress });
+//     transactionData = {
+//       to: payload.address,
+//       from: accountAddress,
+//       data,
+//       gasPrice,
+//       gas: gasEstimate,
+//     };
+//   }
+//   // noinspection ES6RedundantAwait
+//   return await _provider.eth.sendTransaction(transactionData);
+// };
 
 export const handleMetamaskStatus = (callback) => {
   const { ethereum } = window;
@@ -368,7 +369,7 @@ export const getEstimateGas = async (contractAbi = null, contractAddress = null,
 };
 
 // Calculate transaction fee for method
-export const getTransactionFee = async (_abi, _contractAddress, method, data = null, value = null, provider = web3) => {
+export const getTransactionFee = async (accountAddress, _abi, _contractAddress, method, data = null, value = null, provider = web3) => {
   try {
     if (!method) {
       console.error('getTransactionFee undefined method');
@@ -380,8 +381,7 @@ export const getTransactionFee = async (_abi, _contractAddress, method, data = n
     }
     const inst = new provider.eth.Contract(_abi, _contractAddress);
     const gasPrice = await provider.eth.getGasPrice();
-    const address = await provider.eth.getCoinbase();
-    const gasEstimate = await inst.methods[method].apply(null, data).estimateGas({ from: address, value });
+    const gasEstimate = await inst.methods[method].apply(null, data).estimateGas({ from: accountAddress, value });
     return new BigNumber(gasPrice * gasEstimate).shiftedBy(-18).toString();
   } catch (e) {
     return error(500, 'Get transaction fee error', e);

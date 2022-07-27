@@ -158,8 +158,9 @@ export default {
       fetchBalance: 'bridge/fetchBalance',
     }),
     async handlerFetchBalance(symbol) {
+      this.SetLoader(true);
       const { to, from } = this.options;
-
+      const provider = this.getProviderByConnection();
       await this.fetchBalance({
         accountAddress: this.account.address,
         symbol,
@@ -167,8 +168,9 @@ export default {
         tokenAddress: from.tokenAddress[symbol],
         bridgeAddress: BridgeAddresses[from.chain],
         isNative: from.nativeSymbol === symbol,
-        provider: this.getProviderByConnection(),
+        provider,
       });
+      this.SetLoader(false);
     },
     setMaxValue() {
       this.amount = this.currentToken.amount;

@@ -10,7 +10,6 @@ import {
   success,
   showToast,
   getEstimateGas,
-  sendTransaction,
   getNativeBalance,
   getTransactionFee,
   fetchContractData,
@@ -84,6 +83,20 @@ export default {
     }
   },
 
+  /**
+   * For SWAP logic
+   * @param commit
+   * @param dispatch
+   * @param getters
+   * @param accountAddress
+   * @param symbol
+   * @param toChainIndex
+   * @param isNative
+   * @param tokenAddress
+   * @param bridgeAddress
+   * @param provider
+   * @returns {Promise<{msg: string, code: number, data: null, ok: boolean}|{result: *, ok: boolean}>}
+   */
   async fetchBalance({
     commit, dispatch, getters,
   }, {
@@ -99,12 +112,14 @@ export default {
           getNativeBalance(accountAddress, provider),
           getTransactionCount(accountAddress, provider),
         ]);
+
         if (new BigNumber(balance).isEqualTo(0)) {
           commit('setToken', { amount: 0 });
           return success();
         }
 
         const txFee = await getTransactionFee(
+          accountAddress,
           WQBridge,
           bridgeAddress,
           'swap',

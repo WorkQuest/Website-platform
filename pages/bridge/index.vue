@@ -413,13 +413,13 @@ export default {
         const res = await this.redeem({
           signData, chainTo, provider: this.getProviderByConnection(), accountAddress: this.account.address,
         });
+        this.SetLoader(false);
         if (res.ok) {
           const link = `${SwapAddresses.get(chain).explorer}/tx/${res.result.transactionHash}`;
           this.ShowModalSuccess({ title: this.$t('modals.redeem.success'), link });
         } else {
           this.ShowModalFail({ title: this.$t('modals.redeem.fail'), subtitle: res.msg });
         }
-        this.SetLoader(false);
       };
 
       if (this.isWeb3Connection) {
@@ -438,12 +438,12 @@ export default {
         }),
         this.$store.dispatch('wallet/getBalance'),
       ]);
+      this.SetLoader(false);
       if (!feeRes.ok) {
         this.ShowToast(feeRes.msg);
         return;
       }
       const nativeTokenSymbol = SwapAddresses.get(chain).nativeSymbol;
-      this.SetLoader(false);
 
       const tokenSymbol = signData[7];
       const toRedeem = new BigNumber(signData[2]).shiftedBy(tokenSymbol === TokenSymbols.USDT ? -6 : -18).toString();
@@ -503,7 +503,7 @@ export default {
         submitMethod: async () => {
           const swap = async () => {
             const provider = this.getProviderByConnection();
-            const nonce = await getTransactionCount(this.account.address, provider);
+            const nonce = await getTransactionCount(this.account.address.toString(), provider);
             const value = new BigNumber(amount).shiftedBy(symbol === TokenSymbols.USDT ? 6 : 18).toString();
             const data = [nonce, to.index, value, this.account.address, symbol];
             const inst = new provider.eth.Contract(WQBridge, BridgeAddresses[from.chain]);
