@@ -203,10 +203,11 @@ export default {
         const isDot = /[.,]/.test(data);
         const isNewDot = isDot && !equals && selStart - 1 === indexFirst;
 
-        if (data && (/[^0-9.,]/.test(data) || (isDot && !equals && indexLast !== -1 && selStart !== val.length))) {
+        if (data && data === '.' && val[0] === '.') {
+          selStart += 1;
+        } else if (data && (/[^0-9.,]/.test(data) || (isDot && !equals && indexLast !== -1 && selStart !== val.length))) {
           selStart -= 1;
-        }
-        if (!data && indexFirst === -1 && indexLast === -1 && selStart === 1 && val[0] === '0') selStart -= 1;
+        } else if (!data && indexFirst === -1 && indexLast === -1 && selStart === 1 && val[0] === '0') selStart -= 1;
 
         if (e.target.value) {
           const dotIndex = val.indexOf('.');
