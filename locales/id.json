@@ -1363,7 +1363,7 @@
       },
       "collateral": {
         "title": "Collateral",
-        "desc": "Some amazing text here. Look at that!"
+        "desc": "Provide different types of collateral for issuing $WUSD stablecoin and use it in various Defi platform functionality."
       },
       "staking": {
         "title": "WorkQuest Staking",

@@ -48,8 +48,8 @@
           :placeholder="$t('modals.amount')"
           :name="$t('modals.amount')"
           :rules="amountRules"
+          type="number"
           data-selector="AMOUNT"
-          @input="handleInput"
         >
           <template
             v-slot:right-absolute
@@ -226,12 +226,6 @@ export default {
       this.SetLoader(true);
       await this.$store.dispatch('wallet/connectToProvider', this.networkList[index].chain);
       this.SetLoader(false);
-    },
-    handleInput(val) {
-      if (!val || isNaN(val)) this.amount = val;
-      else if (!this.tokenData) this.amount = 0;
-      else this.amount = this.ClearZero(val);
-      this.amount = this.amount.toString().replace(/,/g, '.');
     },
     clearData() {
       this.amount = null;
