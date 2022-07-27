@@ -203,7 +203,7 @@ export default {
         const isDot = /[.,]/.test(data);
         const isNewDot = isDot && !equals && selStart - 1 === indexFirst;
 
-        if (/[^0-9.,]/.test(data) || (isDot && !equals && indexLast !== -1 && selStart !== val.length)) {
+        if (data && (/[^0-9.,]/.test(data) || (isDot && !equals && indexLast !== -1 && selStart !== val.length))) {
           selStart -= 1;
         }
 
