@@ -324,7 +324,6 @@ export default {
     amount, chain, accountAddress, web3Provider,
   }) {
     try {
-      console.log('here', amount);
       const { stakingAbi, stakingAddress } = Pool.get(chain);
       const inst = new web3Provider.eth.Contract(stakingAbi, stakingAddress);
 
