@@ -95,7 +95,7 @@
               <div>{{ row._price }}</div>
               <a
                 class="item__hash"
-                :href="`${$options.ExplorerUrl}/tx/${item.transactionHash}`"
+                :href="`${$options.ExplorerUrl}/tx/${row.transactionHash}`"
                 target="_blank"
               >
                 {{ CutTxn( row.transactionHash) }}
