@@ -18,8 +18,7 @@
             :data-selector="!isConnected ? 'CONNECT-WALLET' : 'DISCONNECT-FROM-WALLET'"
             @click="toggleConnection"
           >
-            {{ connectionType === $options.ConnectionTypes.WQ_WALLET ? $t('meta.connected')
-              : (!isConnected ? $t('mining.connectWallet') : $t('meta.disconnect')) }}
+            {{ connectionButtonText }}
           </base-btn>
           <p
             v-if="!isWeb3Connection || isConnected"
@@ -238,6 +237,10 @@ export default {
     }),
     isWeb3Connection() {
       return this.connectionType === ConnectionTypes.WEB3;
+    },
+    connectionButtonText() {
+      if (this.connectionType === ConnectionTypes.WQ_WALLET) return this.$t('meta.connected');
+      return !this.isConnected ? this.$t('mining.connectWallet') : this.$t('meta.disconnect');
     },
     getProviderByConnection() {
       if (this.isWeb3Connection) return GetWeb3Provider;
