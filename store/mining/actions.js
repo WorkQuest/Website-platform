@@ -129,6 +129,7 @@ export default {
    * @param dispatch
    * @param chain
    * @param web3Provider
+   * @param accountAddress
    * @return {Promise<{msg: string, code: number, data: null, ok: boolean}|{result: *, ok: boolean}>}
    */
   async fetchPoolData({ commit, dispatch }, { chain, web3Provider, accountAddress }) {

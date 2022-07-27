@@ -523,7 +523,6 @@ export default {
         this.disconnectWallet();
         if (this.connectionType === ConnectionTypes.WQ_WALLET) {
           await this.$store.dispatch('wallet/connectToProvider', this.chain);
-          console.log('connected to', this.chain);
           await this.tokensDataUpdate();
         }
       }
@@ -590,8 +589,6 @@ export default {
     async tokensDataUpdate() {
       if (this.connectionType === ConnectionTypes.WEB3 && !this.isConnected) return;
       this.isUpdatingData = true;
-      // if (this.connectionType === ConnectionTypes.WQ_WALLET) await this.connectWallet();
-      console.log('fetch pools data', this.getProviderByConnection());
       await this.fetchPoolData({
         chain: this.chain,
         web3Provider: this.getProviderByConnection(),
