@@ -277,14 +277,16 @@ export default {
     }
   },
 
-  async stake({ _ }, { amount, chain }) {
+  async stake({ _ }, {
+    amount, chain, accountAddress, web3Provider,
+  }) {
     try {
       const { stakingAbi, stakingAddress, stakingToken } = Pool.get(chain);
-      const instanceStake = createInstance(stakingAbi, stakingAddress);
-      const instanceToken = createInstance(ERC20, stakingToken);
+      const instanceStake = new web3Provider.eth.Contract(stakingAbi, stakingAddress);
+      const instanceToken = new web3Provider.eth.Contract(ERC20, stakingToken);
 
       const value = new BigNumber(amount).shiftedBy(18).toString();
-      const allowance = await getAllowance(getAccountAddress(), stakingAddress, instanceToken);
+      const allowance = await getAllowance(accountAddress, stakingAddress, instanceToken);
       if (new BigNumber(allowance).isLessThan(value)) {
         showToast('Swapping', 'Approving...', 'success');
         await makeApprove(stakingAddress, value, instanceToken);
@@ -293,11 +295,11 @@ export default {
 
       showToast('Staking', 'Staking...', 'success');
       const [gasPrice, gas] = await Promise.all([
-        getGasPrice(),
-        getEstimateGas(null, null, instanceStake, 'stake', [value]),
+        web3Provider.eth.getGasPrice(),
+        instanceStake.methods.stake(value).estimateGas({ from: getAccountAddress(), value }),
       ]);
       const result = await instanceStake.methods.stake(value).send({
-        from: getAccountAddress(),
+        from: accountAddress,
         gasPrice,
         gas,
       });

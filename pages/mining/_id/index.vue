@@ -262,20 +262,22 @@ import { images } from '~/utils/images';
 import { LoaderStatusLocales } from '~/utils/loader';
 import { GetWalletProvider } from '~/utils/wallet';
 import { SwapAddresses } from '~/utils/сonstants/bridge';
+import walletOperations from '~/plugins/mixins/walletOperations';
 
 export default {
   name: 'Pool',
   layout({ store }) {
     return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
   },
-  middleware: 'mining',
-  Path,
-  Chains,
-  ConnectionTypes,
   components: {
     WalletSwitcher,
     chart: () => import('./graphics_data'),
   },
+  mixins: [walletOperations],
+  middleware: 'mining',
+  Path,
+  Chains,
+  ConnectionTypes,
   data() {
     return {
       page: 1,
@@ -634,26 +636,22 @@ export default {
 
     async openModalStaking() {
       if (this.isDisableButtons) return;
+      if (this.connectionType === ConnectionTypes.WEB3) {
+        if (!await this.checkNetwork(this.chain)) return;
+      }
 
-      const needToFetch = this.isWrongChain;
-      if (await this.checkNetwork(this.chain)) {
-        if (needToFetch) {
-          this.SetLoader(true);
-          await this.tokensDataUpdate();
-          this.SetLoader(false);
-        }
-        this.ShowModal({
-          key: modals.valueSend,
-          title: this.$t('modals.titles.stake'),
-          maxValue: this.balance,
-          submit: async (amount) => {
-            if (!this.checkChain()) return;
-            this.CloseModal();
-
+      this.ShowModal({
+        key: modals.valueSend,
+        title: this.$t('modals.titles.stake'),
+        maxValue: this.balance,
+        submit: async (amount) => {
+          const stake = async () => {
             this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
             const { ok, msg } = await this.stakeTokens({
               amount,
               chain: this.chain,
+              accountAddress: this.account.address,
+              web3Provider: this.getProviderByConnection(),
             });
             this.SetLoader(false);
 
@@ -661,9 +659,53 @@ export default {
               this.ShowModalSuccess({});
               await this.tokensDataUpdate();
             } else this.ShowModalFail({ subtitle: msg });
-          },
-        });
-      }
+          };
+
+          this.CloseModal();
+
+          // Web3 staking
+          if (this.connectionType === ConnectionTypes.WEB3) {
+            if (!this.checkChain()) return;
+            await stake();
+            return;
+          }
+
+          // WQWallet staking
+          this.SetLoader(true);
+          const { stakingAbi, stakingAddress, stakingToken } = Pool.get(this.chain);
+
+          this.MakeApprove({
+            tokenAddress: stakingToken,
+            contractAddress: stakingAddress,
+            amount,
+            symbol: 'LP',
+            nativeTokenSymbol: this.nativeTokenSymbol,
+          }).then(async () => {
+            const [feeRes] = await Promise.all([
+              this.$store.dispatch('wallet/getContractFeeData', {
+                method: 'stake',
+                abi: stakingAbi,
+                contractAddress: stakingAddress,
+                data: [new BigNumber(amount).shiftedBy(18).toString()],
+              }),
+              this.$store.dispatch('wallet/getBalance'),
+            ]);
+            this.SetLoader(false);
+            if (!feeRes.ok) {
+              return;
+            }
+            this.ShowModal({
+              key: modals.transactionReceipt,
+              title: 'Stake',
+              fields: {
+                stake: { name: this.$t('modals.amount'), value: amount, symbol: 'LP' },
+                fee: { name: this.$t('wallet.table.trx'), value: feeRes.result.fee, symbol: this.nativeTokenSymbol },
+              },
+              submitMethod: stake,
+            });
+          });
+        },
+      });
     },
 
     async openModalUnstaking() {
