@@ -1,7 +1,7 @@
 import Web3 from 'web3';
 
 import BigNumber from 'bignumber.js';
-import { Path, Chains } from '~/utils/enums';
+import { Path, Chains, ProviderTypesByChain } from '~/utils/enums';
 import { Pool } from '~/utils/сonstants/mining';
 
 import {
@@ -128,24 +128,25 @@ export default {
    * @param commit
    * @param dispatch
    * @param chain
+   * @param web3Provider
    * @return {Promise<{msg: string, code: number, data: null, ok: boolean}|{result: *, ok: boolean}>}
    */
-  async fetchPoolData({ commit, dispatch }, { chain }) {
+  async fetchPoolData({ commit, dispatch }, { chain, web3Provider, accountAddress }) {
     try {
       const {
         lpToken,
-        provider,
+        guestProvider,
         stakingAbi,
         miningAddress,
         stakingAddress,
       } = Pool.get(chain);
 
       // because we use data from mainnet
-      const rpcProvider = new Web3.providers.HttpProvider(provider);
+      const rpcProvider = new Web3.providers.HttpProvider(guestProvider);
       const web3 = new Web3(rpcProvider);
 
-      if (!LP_INSTANCE) LP_INSTANCE = await new web3.eth.Contract(ERC20, lpToken);
-      if (!MINING_INSTANCE) MINING_INSTANCE = await new web3.eth.Contract(stakingAbi, miningAddress);
+      if (!LP_INSTANCE) LP_INSTANCE = new web3.eth.Contract(ERC20, lpToken);
+      if (!MINING_INSTANCE) MINING_INSTANCE = new web3.eth.Contract(stakingAbi, miningAddress);
 
       const [
         totalSupply,
@@ -154,7 +155,13 @@ export default {
       ] = await Promise.all([
         LP_INSTANCE.methods.totalSupply().call(),
         MINING_INSTANCE.methods.getStakingInfo().call(),
-        fetchContractData('getInfoByAddress', stakingAbi, stakingAddress, [getAccountAddress()]),
+        fetchContractData(
+          'getInfoByAddress',
+          stakingAbi,
+          stakingAddress,
+          [accountAddress],
+          web3Provider,
+        ),
       ]);
 
       commit('setPoolData', {

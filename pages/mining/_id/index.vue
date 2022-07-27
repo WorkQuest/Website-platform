@@ -12,15 +12,17 @@
           </template>
           {{ $t('meta.btns.back') }}
         </base-btn>
+        {{ selectedNetwork }}
         <div class="mining-page__wallet">
           <wallet-switcher />
           <base-btn
             class="mining-page__connect"
             mode="light"
             :data-selector="!isConnected ? 'CONNECT-WALLET' : 'DISCONNECT-FROM-WALLET'"
+            :disabled="connectionType !== $options.ConnectionTypes.WEB3"
             @click="toggleConnection"
           >
-            {{ !isConnected ? $t('mining.connectWallet') : $t('meta.disconnect') }}
+            {{ connectionButtonText }}
           </base-btn>
         </div>
       </div>
@@ -252,10 +254,11 @@ import {
   Layout,
   TokenSymbols, ConnectionTypes,
 } from '~/utils/enums';
-import { getChainIdByChain } from '~/utils/web3';
+import { getChainIdByChain, GetWeb3Provider } from '~/utils/web3';
 import { Pool, PoolURL } from '~/utils/сonstants/mining';
 import { images } from '~/utils/images';
 import { LoaderStatusLocales } from '~/utils/loader';
+import { GetWalletProvider } from '~/utils/wallet';
 
 export default {
   name: 'Pool',
@@ -265,6 +268,7 @@ export default {
   middleware: 'mining',
   Path,
   Chains,
+  ConnectionTypes,
   components: {
     WalletSwitcher,
     chart: () => import('./graphics_data'),
@@ -288,25 +292,39 @@ export default {
       miningChartData: 'mining/getChartData',
       totalLiquidityUSD: 'mining/getTotalLiquidityUSD',
 
-      account: 'web3/getAccount',
+      web3Account: 'web3/getAccount',
       isConnected: 'web3/isConnected',
       isShowModal: 'modals/getIsShow',
 
       connectionType: 'web3/getConnectionType',
+      selectedNetwork: 'wallet/getSelectedNetwork',
       userWalletAddress: 'user/getUserWalletAddress',
 
       isAuth: 'user/isAuth',
     }),
+    connectionButtonText() {
+      if (this.connectionType === ConnectionTypes.WQ_WALLET) return this.$t('meta.connected');
+      return !this.isConnected ? this.$t('mining.connectWallet') : this.$t('meta.disconnect');
+    },
+    getProviderByConnection() {
+      if (this.isWeb3Connection) return GetWeb3Provider;
+      return GetWalletProvider;
+    },
+    account() {
+      if (this.isWeb3Connection) return this.web3Account;
+      return { address: this.userWalletAddress };
+    },
     styledWalletAddress() {
+      let buff = '';
       if (this.connectionType === ConnectionTypes.WQ_WALLET) {
-        return this.CutTxn(this.userWalletAddress, 5, 5);
+        buff = this.userWalletAddress;
+      } else if (this.isConnected && this.connectionType === ConnectionTypes.WEB3) {
+        buff = this.account.address;
       }
-      if (this.isConnected && this.connectionType === ConnectionTypes.WEB3) {
-        return this.CutTxn(this.account.address, 5, 5);
-      }
-      return '';
+      return this.CutTxn(buff, 5, 5);
     },
     isWrongChain() {
+      if (this.connectionType === ConnectionTypes.WQ_WALLET) return false;
       return this.account?.netId !== +getChainIdByChain(this.chain);
     },
     tableHeaders() {
@@ -400,6 +418,14 @@ export default {
     },
   },
   watch: {
+    async connectionType() {
+      this.SetLoader(true);
+      await this.resetPoolData();
+      // await this.connectWallet();
+      // if (this.isShowModal) this.CloseModal(); // TODO: чекнуть нужно ли
+      await this.tokensDataUpdate();
+      this.SetLoader(false);
+    },
     async isConnected(status) {
       if (!status) {
         await this.resetPoolData();
@@ -453,15 +479,16 @@ export default {
     await this.fetchSwaps({ pool, params: { limit, offset: 0 } });
     this.SetLoader(false);
 
-    await this.connectWallet({ chain: this.chain, isReconnection: this.isConnected });
+    await this.connectWallet();
   },
   async beforeDestroy() {
     const preventDisconnect = sessionStorage.getItem('preventDisconnectWeb3');
     sessionStorage.removeItem('preventDisconnectWeb3');
     if (preventDisconnect) return;
 
-    await this.disconnectWallet();
+    this.disconnectWallet();
     await Promise.all([
+      this.$store.dispatch('wallet/connectToProvider', Chains.WORKNET),
       this.resetPoolData(),
       this.unsubscribeWS(),
       this.$store.commit('mining/setSwaps', []),
@@ -472,7 +499,7 @@ export default {
   methods: {
     ...mapActions({
       goToChain: 'web3/goToChain',
-      connectWallet: 'web3/connect',
+      connectWeb3Wallet: 'web3/connect',
       disconnectWallet: 'web3/disconnect',
 
       subscribeWS: 'mining/subscribeWS',
@@ -489,11 +516,23 @@ export default {
       unStakeTokens: 'mining/unStake',
       swapOldTokens: 'mining/swapOldTokens',
     }),
+    async connectWallet() {
+      if (this.connectionType === ConnectionTypes.WEB3 && !this.isConnected) {
+        await this.connectWeb3Wallet({ chain: this.chain, isReconnection: this.isConnected });
+      } else {
+        this.disconnectWallet();
+        if (this.connectionType === ConnectionTypes.WQ_WALLET) {
+          await this.$store.dispatch('wallet/connectToProvider', this.chain);
+          console.log('connected to', this.chain);
+          await this.tokensDataUpdate();
+        }
+      }
+    },
 
     async toggleConnection() {
-      const { isConnected, chain } = this;
-      if (isConnected) await this.disconnectWallet();
-      else await this.connectWallet({ chain });
+      const { isConnected } = this;
+      if (isConnected) this.disconnectWallet();
+      else await this.connectWallet();
     },
 
     checkChain() {
@@ -506,7 +545,7 @@ export default {
     },
     async checkNetwork(chain) {
       if (!this.isConnected) {
-        await this.connectWallet({ chain });
+        await this.connectWallet();
         if (!this.isConnected) return false;
       }
 
@@ -549,8 +588,15 @@ export default {
     },
 
     async tokensDataUpdate() {
+      if (this.connectionType === ConnectionTypes.WEB3 && !this.isConnected) return;
       this.isUpdatingData = true;
-      await this.fetchPoolData({ chain: this.chain });
+      // if (this.connectionType === ConnectionTypes.WQ_WALLET) await this.connectWallet();
+      console.log('fetch pools data', this.getProviderByConnection());
+      await this.fetchPoolData({
+        chain: this.chain,
+        web3Provider: this.getProviderByConnection(),
+        accountAddress: this.account.address,
+      });
       if (+this.staked > 0) await this.calcProfit();
       this.isUpdatingData = false;
     },
