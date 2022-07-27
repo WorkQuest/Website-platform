@@ -195,7 +195,7 @@ export default {
         let selStart = this.$refs.input.selectionStart;
 
         const { data } = e;
-        let val = e.target.value;
+        let val = e.target.value.toString().replace(/,/g, '.').replace(/[^0-9.]/g, '');
 
         const indexFirst = val.indexOf('.');
         const indexLast = val.lastIndexOf('.');
@@ -206,9 +206,9 @@ export default {
         if (data && (/[^0-9.,]/.test(data) || (isDot && !equals && indexLast !== -1 && selStart !== val.length))) {
           selStart -= 1;
         }
+        if (!data && indexFirst === -1 && indexLast === -1 && selStart === 1) selStart -= 1;
 
         if (e.target.value) {
-          val = e.target.value.toString().replace(/,/g, '.').replace(/[^0-9.]/g, '');
           const dotIndex = val.indexOf('.');
           if (dotIndex !== -1) {
             const dotIndexLast = val.lastIndexOf('.');
