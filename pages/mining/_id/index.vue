@@ -12,7 +12,6 @@
           </template>
           {{ $t('meta.btns.back') }}
         </base-btn>
-        {{ selectedNetwork }}
         <div class="mining-page__wallet">
           <wallet-switcher />
           <base-btn
@@ -246,6 +245,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import WalletSwitcher from '~/components/app/WalletSwitcher';
 import modals from '~/store/modals/modals';
 import {
@@ -254,11 +254,14 @@ import {
   Layout,
   TokenSymbols, ConnectionTypes,
 } from '~/utils/enums';
-import { getChainIdByChain, GetWeb3Provider } from '~/utils/web3';
+import {
+  getChainIdByChain, getEstimateGas, getGasPrice, GetWeb3Provider,
+} from '~/utils/web3';
 import { Pool, PoolURL } from '~/utils/сonstants/mining';
 import { images } from '~/utils/images';
 import { LoaderStatusLocales } from '~/utils/loader';
 import { GetWalletProvider } from '~/utils/wallet';
+import { SwapAddresses } from '~/utils/сonstants/bridge';
 
 export default {
   name: 'Pool',
@@ -302,6 +305,12 @@ export default {
 
       isAuth: 'user/isAuth',
     }),
+    explorerUrl() {
+      return SwapAddresses.get(this.selectedNetwork).explorer;
+    },
+    nativeTokenSymbol() {
+      return SwapAddresses.get(this.selectedNetwork).nativeSymbol;
+    },
     isDisableButtons() {
       if (this.connectionType === ConnectionTypes.WEB3) return !this.isConnected;
       return this.selectedNetwork !== this.chain;
@@ -311,11 +320,11 @@ export default {
       return !this.isConnected ? this.$t('mining.connectWallet') : this.$t('meta.disconnect');
     },
     getProviderByConnection() {
-      if (this.isWeb3Connection) return GetWeb3Provider;
+      if (this.connectionType === ConnectionTypes.WEB3) return GetWeb3Provider;
       return GetWalletProvider;
     },
     account() {
-      if (this.isWeb3Connection) return this.web3Account;
+      if (this.connectionType === ConnectionTypes.WEB3) return this.web3Account;
       return { address: this.userWalletAddress };
     },
     styledWalletAddress() {
@@ -526,6 +535,7 @@ export default {
       } else {
         this.disconnectWallet();
         if (this.connectionType === ConnectionTypes.WQ_WALLET) {
+          await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
           await this.$store.dispatch('wallet/connectToProvider', this.chain);
           await this.tokensDataUpdate();
         }
@@ -658,30 +668,72 @@ export default {
 
     async openModalUnstaking() {
       if (this.isDisableButtons) return;
+      if (this.connectionType === ConnectionTypes.WEB3) {
+        if (!await this.checkNetwork(this.chain)) return;
+      }
 
-      if (await this.checkNetwork(this.chain)) {
-        this.ShowModal({
-          key: modals.valueSend,
-          title: this.$t('modals.titles.unstake'),
-          maxValue: this.staked,
-          submit: async (amount) => {
-            if (!this.checkChain()) return;
-            this.CloseModal();
-
-            this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
-            const { ok, msg } = await this.unStakeTokens({
+      this.ShowModal({
+        key: modals.valueSend,
+        title: this.$t('modals.titles.unstake'),
+        maxValue: this.staked,
+        submit: async (amount) => {
+          const unstake = async () => {
+            this.SetLoader({
+              isLoading: true,
+              statusText: this.connectionType === ConnectionTypes.WEB3
+                ? LoaderStatusLocales.waitingForTxExternalApp
+                : LoaderStatusLocales.pleaseWaitTx,
+            });
+            const { ok, msg, result } = await this.unStakeTokens({
               amount,
               chain: this.chain,
+              accountAddress: this.account.address,
+              web3Provider: this.getProviderByConnection(),
             });
             this.SetLoader(false);
 
             if (ok) {
-              this.ShowModalSuccess({});
+              this.ShowModalSuccess({ link: `${this.explorerUrl}/tx/${result.transactionHash}` });
               await this.tokensDataUpdate();
             } else this.ShowModalFail({ subtitle: msg });
-          },
-        });
-      }
+          };
+
+          this.CloseModal();
+
+          // Web3 unstake
+          if (this.connectionType === ConnectionTypes.WEB3) {
+            if (!this.checkChain()) return;
+            await unstake();
+            return;
+          }
+
+          // WQWallet unstake
+          this.SetLoader(true);
+          const { stakingAbi, stakingAddress } = Pool.get(this.chain);
+          const [feeRes] = await Promise.all([
+            this.$store.dispatch('wallet/getContractFeeData', {
+              method: 'unstake',
+              abi: stakingAbi,
+              contractAddress: stakingAddress,
+              data: [new BigNumber(amount).shiftedBy(18).toString()],
+            }),
+            this.$store.dispatch('wallet/getBalance'),
+          ]);
+          this.SetLoader(false);
+          if (!feeRes.ok) {
+            return;
+          }
+          this.ShowModal({
+            key: modals.transactionReceipt,
+            title: 'Unstake',
+            fields: {
+              amount: { name: this.$t('modals.amount'), value: amount, symbol: 'LP' },
+              fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: this.nativeTokenSymbol },
+            },
+            submitMethod: unstake,
+          });
+        },
+      });
     },
 
     async claimRewards() {
@@ -1046,28 +1098,33 @@ export default {
 .third {
   width: 100%;
   align-self: center;
-  @include _575 {
-    &__container {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-  }
 
   &__triple {
     display: grid;
     grid-gap: 20px;
     grid-template-columns: repeat(3, 1fr);
-    @include _575 {
-      grid-template-columns: auto;
-    }
   }
 
   &__wrapper {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    @include _575 {
+  }
+}
+
+@include _767 {
+  .third {
+    &__container {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    &__wrapper {
       grid-template-columns: auto;
     }
+  }
+}
+@include _575 {
+  .third__triple {
+    grid-template-columns: auto;
   }
 }
 </style>

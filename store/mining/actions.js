@@ -316,21 +316,26 @@ export default {
    * @param _
    * @param amount
    * @param chain
+   * @param accountAddress
+   * @param web3Provider
    * @return {Promise<{msg: string, code: number, data: null, ok: boolean}|{result: *, ok: boolean}>}
    */
-  async unStake({ _ }, { amount, chain }) {
+  async unStake({ _ }, {
+    amount, chain, accountAddress, web3Provider,
+  }) {
     try {
+      console.log('here', amount);
       const { stakingAbi, stakingAddress } = Pool.get(chain);
-      const inst = createInstance(stakingAbi, stakingAddress);
+      const inst = new web3Provider.eth.Contract(stakingAbi, stakingAddress);
 
       const value = new BigNumber(amount).shiftedBy(18).toString();
       showToast('Unstaking', 'Unstaking...', 'success');
       const [gasPrice, gas] = await Promise.all([
-        getGasPrice(),
-        getEstimateGas(null, null, inst, 'unstake', [value]),
+        web3Provider.eth.getGasPrice(),
+        inst.methods.unstake(value).estimateGas({ from: accountAddress }),
       ]);
       const result = await inst.methods.unstake(value).send({
-        from: getAccountAddress(),
+        from: accountAddress,
         gasPrice,
         gas,
       });
