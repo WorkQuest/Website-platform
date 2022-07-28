@@ -63,6 +63,10 @@ export const IS_PROD = ['master', 'stage'].includes(process.env.BRANCH);
  * @property WBNB_TOKEN
  * @property WETH_TOKEN
 
+ * @property WORKNET_ETH_AUCTION
+ * @property WORKNET_BNB_AUCTION
+ * @property WORKNET_USDT_AUCTION
+ * @property WORKNET_USDC_AUCTION
  * @property WORKNET_BORROWING
  * @property WORKNET_BRIDGE
  * @property WORKNET_LENDING
