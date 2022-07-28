@@ -355,18 +355,19 @@ export default {
     }
   },
 
-  async claim({ _ }, { chain }) {
+  async claim({ _ }, {
+    stakingAbi, stakingAddress, web3Provider, accountAddress,
+  }) {
     try {
-      const { stakingAbi, stakingAddress } = Pool.get(chain);
-      const inst = createInstance(stakingAbi, stakingAddress);
+      const inst = new web3Provider.eth.Contract(stakingAbi, stakingAddress);
 
       showToast('Claiming', 'Claiming...', 'success');
       const [gasPrice, gas] = await Promise.all([
-        getGasPrice(),
-        getEstimateGas(null, null, inst, 'claim', []),
+        web3Provider.eth.getGasPrice(),
+        inst.methods.claim().estimateGas({ from: accountAddress }),
       ]);
       const result = await inst.methods.claim().send({
-        from: getAccountAddress(),
+        from: accountAddress,
         gasPrice,
         gas,
       });

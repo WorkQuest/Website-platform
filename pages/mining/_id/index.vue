@@ -552,9 +552,9 @@ export default {
       }
     },
     async toggleConnection() {
-      // const { isConnected } = this;
-      // if (isConnected) this.disconnectWallet();
-      // else await this.connectWallet();
+      const { isConnected } = this;
+      if (isConnected) this.disconnectWallet();
+      else await this.connectWallet();
     },
     checkChain() {
       if (!this.account?.netId) {
@@ -797,10 +797,11 @@ export default {
 
     async claimRewards() {
       if (this.isDisableButtons) return;
-
-      const { chain } = this;
-      if (await this.checkNetwork(chain) === false) {
-        return;
+      if (this.connectionType === ConnectionTypes.WEB3) {
+        if (this.isWrongChain) {
+          await this.checkNetwork(this.chain);
+          return;
+        }
       }
 
       if (+this.claim === 0) {
@@ -811,16 +812,56 @@ export default {
         return;
       }
 
-      this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
-      const { ok, msg } = await this.claimTokens({ chain });
+      const { stakingAbi, stakingAddress } = Pool.get(this.chain);
+      const claim = async () => {
+        this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
+        const { ok, msg, result } = await this.claimTokens({
+          stakingAbi,
+          stakingAddress,
+          web3Provider: this.getProviderByConnection(),
+          accountAddress: this.account.address,
+        });
+        this.SetLoader(false);
+
+        if (ok) {
+          this.ShowModalSuccess({
+            link: `${this.explorerUrl}/tx/${result.transactionHash}`,
+          });
+          await this.tokensDataUpdate();
+        } else this.ShowModalFail({ subtitle: msg });
+      };
+
+      // Web3 claiming
+      if (this.connectionType === ConnectionTypes.WEB3) {
+        await claim();
+        return;
+      }
+
+      // WQWallet claiming
+      this.SetLoader(true);
+      const [feeRes] = await Promise.all([
+        this.$store.dispatch('wallet/getContractFeeData', {
+          method: 'claim',
+          abi: stakingAbi,
+          contractAddress: stakingAddress,
+        }),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
       this.SetLoader(false);
-
-      if (ok) {
-        this.ShowModalSuccess({});
-        await this.tokensDataUpdate();
-      } else this.ShowModalFail({ subtitle: msg });
+      if (!feeRes.ok) {
+        this.ShowToast(feeRes.msg, 'Claim error');
+        return;
+      }
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        title: this.$t('meta.claimRewards'),
+        fields: {
+          rewards: { name: this.$t('modals.amount'), value: this.claim, symbol: TokenSymbols.WQT },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: this.nativeTokenSymbol },
+        },
+        submitMethod: claim,
+      });
     },
-
   },
 };
 </script>
