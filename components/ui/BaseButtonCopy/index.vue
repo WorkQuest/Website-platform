@@ -27,7 +27,7 @@ export default {
     },
     isShowToastSuccess: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   computed: {
