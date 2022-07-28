@@ -433,22 +433,24 @@ export default {
     },
   },
   watch: {
-    async connectionType() {
-      this.SetLoader(true);
+    async connectionType(type) {
       await this.resetPoolData();
-      // await this.connectWallet();
-      // if (this.isShowModal) this.CloseModal(); // TODO: чекнуть нужно ли
-      await this.tokensDataUpdate();
-      this.SetLoader(false);
+      await this.connectWallet();
     },
+
+    // Web3 wallet connection & chain handler
     async isConnected(status) {
+      if (this.connectionType === ConnectionTypes.WQ_WALLET) return;
       if (!status) {
         await this.resetPoolData();
+        this.disconnectWallet();
         if (this.isShowModal) this.CloseModal();
         return;
       }
       if (this.isWrongChain) {
-        if (await this.checkNetwork(this.chain) === false) return;
+        if (await this.checkNetwork(this.chain) === false) {
+          return;
+        }
       }
       await this.tokensDataUpdate();
     },
@@ -533,7 +535,13 @@ export default {
     }),
     async connectWallet() {
       if (this.connectionType === ConnectionTypes.WEB3 && !this.isConnected) {
-        await this.connectWeb3Wallet({ chain: this.chain, isReconnection: this.isConnected });
+        await this.connectWeb3Wallet({ isReconnection: this.isConnected });
+        // if (this.isWrongChain) {
+        //   await this.checkNetwork(this.chain);
+        // }
+      //   if (this.isWrongChain) {
+      //     this.disconnectWallet();
+      //   }
       } else {
         this.disconnectWallet();
         if (this.connectionType === ConnectionTypes.WQ_WALLET) {
@@ -543,13 +551,11 @@ export default {
         }
       }
     },
-
     async toggleConnection() {
-      const { isConnected } = this;
-      if (isConnected) this.disconnectWallet();
-      else await this.connectWallet();
+      // const { isConnected } = this;
+      // if (isConnected) this.disconnectWallet();
+      // else await this.connectWallet();
     },
-
     checkChain() {
       if (!this.account?.netId) {
         this.CloseModal();
@@ -567,6 +573,7 @@ export default {
       const isMetaMask = localStorage.getItem('isMetaMask') === 'true';
       const isCorrectNetwork = +getChainIdByChain(chain) === +this.account.netId;
       if (!isCorrectNetwork && isMetaMask) {
+        this.ShowToast(this.$t('modals.errors.errorNetwork', { network: this.chain }), ' ');
         const { ok } = await this.goToChain({ chain });
         return ok;
       }
@@ -604,6 +611,8 @@ export default {
 
     async tokensDataUpdate() {
       if (this.connectionType === ConnectionTypes.WEB3 && !this.isConnected) return;
+      if (this.connectionType === ConnectionTypes.WQ_WALLET && this.selectedNetwork !== this.chain) return;
+
       this.isUpdatingData = true;
       await this.fetchPoolData({
         chain: this.chain,
@@ -637,7 +646,10 @@ export default {
     async openModalStaking() {
       if (this.isDisableButtons) return;
       if (this.connectionType === ConnectionTypes.WEB3) {
-        if (!await this.checkNetwork(this.chain)) return;
+        if (this.isWrongChain) {
+          await this.checkNetwork(this.chain);
+          return;
+        }
       }
 
       this.ShowModal({
@@ -647,7 +659,7 @@ export default {
         submit: async (amount) => {
           const stake = async () => {
             this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
-            const { ok, msg } = await this.stakeTokens({
+            const { ok, msg, result } = await this.stakeTokens({
               amount,
               chain: this.chain,
               accountAddress: this.account.address,
@@ -656,7 +668,9 @@ export default {
             this.SetLoader(false);
 
             if (ok) {
-              this.ShowModalSuccess({});
+              this.ShowModalSuccess({
+                link: `${this.explorerUrl}/tx/${result.transactionHash}`,
+              });
               await this.tokensDataUpdate();
             } else this.ShowModalFail({ subtitle: msg });
           };
@@ -699,7 +713,7 @@ export default {
               title: 'Stake',
               fields: {
                 stake: { name: this.$t('modals.amount'), value: amount, symbol: 'LP' },
-                fee: { name: this.$t('wallet.table.trx'), value: feeRes.result.fee, symbol: this.nativeTokenSymbol },
+                fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: this.nativeTokenSymbol },
               },
               submitMethod: stake,
             });
@@ -711,7 +725,10 @@ export default {
     async openModalUnstaking() {
       if (this.isDisableButtons) return;
       if (this.connectionType === ConnectionTypes.WEB3) {
-        if (!await this.checkNetwork(this.chain)) return;
+        if (this.isWrongChain) {
+          await this.checkNetwork(this.chain);
+          return;
+        }
       }
 
       this.ShowModal({

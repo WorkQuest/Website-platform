@@ -134,6 +134,11 @@ export default {
    */
   async fetchPoolData({ commit, dispatch }, { chain, web3Provider, accountAddress }) {
     try {
+      if (!web3Provider) {
+        console.error('web3Provider is null');
+        return error();
+      }
+
       const {
         lpToken,
         guestProvider,
@@ -296,7 +301,7 @@ export default {
       showToast('Staking', 'Staking...', 'success');
       const [gasPrice, gas] = await Promise.all([
         web3Provider.eth.getGasPrice(),
-        instanceStake.methods.stake(value).estimateGas({ from: getAccountAddress(), value }),
+        instanceStake.methods.stake(value).estimateGas({ from: getAccountAddress() }),
       ]);
       const result = await instanceStake.methods.stake(value).send({
         from: accountAddress,
