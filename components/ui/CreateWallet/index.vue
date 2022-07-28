@@ -25,7 +25,7 @@
           <div class="wallet__mnemonic_btns">
             <button-copy
               :copy-value="mnemonic"
-              :is-show-toast-success="false"
+              :is-show-toast-success="true"
               mode="mnemonic"
             />
             <btn-password-visibility
