@@ -536,12 +536,6 @@ export default {
     async connectWallet() {
       if (this.connectionType === ConnectionTypes.WEB3 && !this.isConnected) {
         await this.connectWeb3Wallet({ isReconnection: this.isConnected });
-        // if (this.isWrongChain) {
-        //   await this.checkNetwork(this.chain);
-        // }
-      //   if (this.isWrongChain) {
-      //     this.disconnectWallet();
-      //   }
       } else {
         this.disconnectWallet();
         if (this.connectionType === ConnectionTypes.WQ_WALLET) {
@@ -1152,7 +1146,6 @@ export default {
             grid-column-start: 1;
             grid-column-end: 3;
             grid-template-columns: repeat(2, 1fr);
-            //grid-template-rows: unset;
           }
         }
 
