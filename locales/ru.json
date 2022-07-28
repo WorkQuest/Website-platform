@@ -1897,16 +1897,17 @@
       "completed": "Completed"
     },
     "card": {
-      "feeIncluded": "{feePercent}% commission already in the price",
-      "feeNotIncluded": "{feePercent}% commission not included",
-      "auctionDuration": "Auction duration",
+      "lotAmount": "Lot amount: {amount} {symbol}",
+      "lotPrice": "Lot price: {price} WUSD",
+      "feeIncluded": "including liquidation fees ({feePercent}%)",
+      "timeLeft": "Auction time left:",
       "completed": {
-        "type": "EVEN TYPE",
-        "sender": "SENDER",
-        "lotSize": "LOT SIZE",
-        "price": "MKR PRICE",
-        "timestamp": "TIMESTAMP",
-        "txHash": "TX"
+        "lotAmount": "Lot amount:",
+        "lotPrice": "Lot price:",
+        "lotBuyer": "Lot buyer:",
+        "lotProvider": "Lot provider",
+        "endPeriod": "Auction ending period:",
+        "txHash": "TxHash:"
       }
     }
   },

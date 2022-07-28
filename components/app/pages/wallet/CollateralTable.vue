@@ -395,7 +395,7 @@ export default {
   }
 
   &:hover {
-    box-shadow: -1px 1px 8px 0px $black100;
+    @include shadow;
   }
 
   &:not(:last-child) {

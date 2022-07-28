@@ -33,17 +33,17 @@
         <div class="auction__topbar-switcher">
           <base-btn
             data-selector="ACTION-AUCTION-SELECT-CURRENT"
-            :mode="currentTab === 'current' ? 'activeTab' : 'light'"
+            :mode="currentTab === $options.LotsStatuses.STARTED ? 'activeTab' : 'light'"
             :padding="true"
-            @click="currentTab = 'current'"
+            @click="currentTab = $options.LotsStatuses.STARTED"
           >
             {{ $t('auction.tabs.current') }}
           </base-btn>
           <base-btn
             data-selector="ACTION-AUCTION-SELECT-COMPLETED"
-            :mode="currentTab === 'completed' ? 'activeTab' : 'light'"
+            :mode="currentTab === $options.LotsStatuses.BOUGHT ? 'activeTab' : 'light'"
             :padding="true"
-            @click="currentTab = 'completed'"
+            @click="currentTab = $options.LotsStatuses.BOUGHT"
           >
             {{ $t('auction.tabs.completed') }}
           </base-btn>
@@ -58,20 +58,23 @@
             <span class="item-btn__text">
               {{ $t('auction.time') }}
             </span>
-            <span :class="`item-btn__icon icon icon-Sorting_${selectedSort === 'desc' ? 'descending' : 'ascending'}`" />
+            <span :class="`item-btn__icon icon icon-Sorting_${params['sort[createdAt]'] === 'desc' ? 'descending' : 'ascending'}`" />
           </base-btn>
         </div>
       </div>
       <div
         v-if="lotsCount"
         class="auction__list"
-        :class="`auction__list_${currentTab}`"
+        :class="[
+          {'auction__list_completed': $options.LotsStatuses.BOUGHT === currentTab},
+          {'auction__list_current': $options.LotsStatuses.STARTED === currentTab},
+        ]"
       >
         <auction-card
-          v-for="auction in lots"
-          :key="auction.id"
-          :auction="auction"
-          :is-completed="currentTab === 'completed'"
+          v-for="lot in lots"
+          :key="lot.id"
+          :lot="lot"
+          :is-completed="currentTab === $options.LotsStatuses.BOUGHT"
         />
       </div>
       <empty-data
@@ -80,10 +83,10 @@
       />
       <div class="auction__pager-block">
         <base-pager
-          v-if="lotsCount"
-          v-model="pagination.currentPage"
+          v-if="totalPages > 1"
+          v-model="currentPage"
           class="auction__pager"
-          :total-pages="pagination.totalPages"
+          :total-pages="totalPages"
           @input="setPage"
         />
       </div>
@@ -95,14 +98,20 @@
 import { mapActions, mapGetters } from 'vuex';
 import AuctionCard from '~/components/app/pages/auction/AuctionCard';
 import { Layout } from '~/utils/enums';
-import { IS_PLUG } from '~/utils/locker-data';
+
+const LotsStatuses = {
+  INACTIVE: 0,
+  STARTED: 1,
+  BOUGHT: 2,
+  CANCELED: 3,
+};
+
+const LIMIT = 10;
 
 export default {
   name: 'Auction',
+  LotsStatuses,
   layout({ store }) {
-    // TODO plug for release
-    if (IS_PLUG) return Layout.DEFAULT;
-
     return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
   },
   components: {
@@ -112,81 +121,16 @@ export default {
     return {
       searchValue: '',
       searchTimeout: null,
-      currentTab: 'current',
-      selectedSort: 'desc',
+      currentTab: LotsStatuses.STARTED,
 
       params: {
-        limit: 10,
+        'sort[createdAt]': 'desc',
+        status: LotsStatuses.STARTED,
+        limit: LIMIT,
         offset: 0,
         q: '',
       },
-
-      auctionMock: [
-        {
-          recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
-          price: 11,
-          currency: 'ETH',
-          feePercent: 13,
-          isFeeIncluded: true,
-          startTime: 1645454143,
-          endsIn: 1645464143,
-          id: '25f1df1a3f971e4f56c9e559e2204fad',
-        },
-        {
-          recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
-          price: 12,
-          currency: 'WUSD',
-          feePercent: 13,
-          isFeeIncluded: true,
-          startTime: 1645454143,
-          endsIn: 1645464143,
-          id: 'af974453e64ec88c33b0275d8bb6ac6c',
-        },
-        {
-          recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
-          price: 15,
-          currency: 'ETH',
-          feePercent: 13,
-          isFeeIncluded: true,
-          startTime: 1645454143,
-          endsIn: 1645464143,
-          id: 'a1c47b0f29b31f59c2f15755f84c71ee',
-        },
-        {
-          recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
-          price: 5,
-          currency: 'WUSD',
-          feePercent: 13,
-          isFeeIncluded: true,
-          startTime: 1645454143,
-          endsIn: 1645464143,
-          id: '99742ce9ab0fcc33df69babb39cfac52',
-        },
-        {
-          recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
-          price: 20,
-          currency: 'ETH',
-          feePercent: 13,
-          isFeeIncluded: true,
-          startTime: 1645454143,
-          endsIn: 1645464143,
-          id: '31a40c78b0b98154ec9128be269bc593',
-        },
-        {
-          recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
-          price: 100,
-          currency: 'WUSD',
-          feePercent: 20,
-          isFeeIncluded: false,
-          startTime: 1645454143,
-          endsIn: 1645464143,
-          id: '1faffc89f8e46865fb7b29307be6d68a',
-        },
-      ],
-      pagination: {
-        totalPages: 10,
-        currentPage: 1,
-      },
+      currentPage: 1,
     };
   },
   computed: {
@@ -199,107 +143,22 @@ export default {
     searchPlaceholder() {
       return this.$t('auction.search.placeholder');
     },
+    totalPages() {
+      return Math.ceil(this.lotsCount / LIMIT) || 0;
+    },
   },
   watch: {
     currentTab: {
-      handler(value) {
-        if (value === 'current') {
-          this.auctionMock = [
-            {
-              recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
-              price: 11,
-              currency: 'ETH',
-              feePercent: 13,
-              isFeeIncluded: true,
-              startTime: 1645454143,
-              endsIn: 1645464143,
-              id: '25f1df1a3f971e4f56c9e559e2204fad',
-            },
-            {
-              price: 12,
-              currency: 'WUSD',
-              feePercent: 13,
-              isFeeIncluded: true,
-              startTime: 1645454143,
-              endsIn: 1645464143,
-              id: 'af974453e64ec88c33b0275d8bb6ac6c',
-              recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
-            },
-            {
-              price: 15,
-              currency: 'ETH',
-              feePercent: 13,
-              isFeeIncluded: true,
-              startTime: 1645454143,
-              endsIn: 1645464143,
-              id: 'a1c47b0f29b31f59c2f15755f84c71ee',
-              recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
-            },
-            {
-              price: 5,
-              currency: 'WUSD',
-              feePercent: 13,
-              isFeeIncluded: true,
-              startTime: 1645454143,
-              endsIn: 1645464143,
-              id: '99742ce9ab0fcc33df69babb39cfac52',
-              recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
-            },
-            {
-              price: 20,
-              currency: 'ETH',
-              feePercent: 13,
-              isFeeIncluded: true,
-              startTime: 1645454143,
-              endsIn: 1645464143,
-              id: '31a40c78b0b98154ec9128be269bc593',
-              recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
-            },
-            {
-              price: 100,
-              currency: 'WUSD',
-              feePercent: 20,
-              isFeeIncluded: false,
-              startTime: 1645454143,
-              endsIn: 1645464143,
-              id: '1faffc89f8e46865fb7b29307be6d68a',
-              recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
-            },
-          ];
-        } else {
-          this.auctionMock = [
-            {
-              type: 'Deal',
-              sender: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
-              recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
-              lotSize: 30000,
-              lotSizeCurrency: 'ETH',
-              price: 30000,
-              priceCurrency: 'WUSD',
-              timestamp: 1645464243,
-              txHash: '0xf147e37ba5120bb7ef511441dfb0fc7d0e8b85af7e5632cf2a6eb63e0220e9c9',
-              id: '25f1df1a3f971e4f56c9e559e2204fan',
-            },
-            {
-              type: 'Deal',
-              sender: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
-              recipient: '0x7dCE9A5FFbfc87F9DEbA00d37B9C3d252F3d954C',
-              lotSize: 10000,
-              lotSizeCurrency: 'ETH',
-              price: 10000,
-              priceCurrency: 'WUSD',
-              timestamp: 1645463243,
-              txHash: '0x45e1a65f361e55c7b65c98ebb7d3f84e8bde230d50ad68023c69d4902930ad00',
-              id: '1faffc89f8e46865fb7b29307be6d68n',
-            },
-          ];
-        }
+      async handler(value) {
+        this.currentPage = 1;
+        this.params.status = value;
+        this.params['sort[createdAt]'] = 'desc';
+        await this.fetchLots({ params: this.params });
       },
     },
   },
   mounted() {
     this.fetchLots({
-      address: this.walletAddress,
       params: this.params,
     });
   },
@@ -318,11 +177,12 @@ export default {
         console.log('search'); // TODO search
       }, 600);
     },
-    changeTimeSorting() {
-      this.selectedSort = this.selectedSort === 'asc' ? 'desc' : 'asc';
+    async changeTimeSorting() {
+      this.params['sort[createdAt]'] = this.params['sort[createdAt]'] === 'asc' ? 'desc' : 'asc';
+      await this.fetchLots({ params: this.params });
     },
     setPage(value) {
-      this.pagination.currentPage = value;
+      this.currentPage = value;
     },
   },
 };

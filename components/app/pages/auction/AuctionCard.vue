@@ -5,22 +5,19 @@
   >
     <template v-if="!isCompleted">
       <h3 class="auction-card__price">
-        {{ auction.price }}
-        {{ auction.currency }}
+        {{ $t('auction.card.lotAmount', {amount: lot._collateral, symbol: lot.symbol}) }}
       </h3>
-      <p class="auction-card__fee-info">
-        <template v-if="auction.isFeeIncluded">
-          {{ $t('auction.card.feeIncluded', { feePercent: auction.feePercent }) }}
-        </template>
-        <template v-else>
-          {{ $t('auction.card.feeNotIncluded', { feePercent: auction.feePercent }) }}
-        </template>
+      <p class="auction-card__text">
+        {{ $t('auction.card.lotPrice', {price: lot._price}) }}
+      </p>
+      <p class="auction-card__text">
+        {{ $t('auction.card.feeIncluded', { feePercent: 13 }) }}
       </p>
       <p class="auction-card__duration">
-        {{ $t('auction.card.auctionDuration') }}
-        {{ auctionDuration.days ? $tc('meta.units.days',DeclOfNum(auctionDuration.days),{ count: auctionDuration.days }) : '' }}
-        {{ auctionDuration.hours ? $tc('meta.units.hours',DeclOfNum(auctionDuration.hours ),{ count: auctionDuration.hours }) : '' }}
-        {{ auctionDuration.minutes ? $tc('meta.units.minutes',DeclOfNum(auctionDuration.minutes),{ count: auctionDuration.minutes }) : '' }}
+        {{ $t('auction.card.timeLeft') }}
+        {{ auctionDuration.days ? $tc('meta.units.days', DeclOfNum(auctionDuration.days), { count: auctionDuration.days }) : '' }}
+        {{ auctionDuration.hours ? $tc('meta.units.hours', DeclOfNum(auctionDuration.hours ), { count: auctionDuration.hours }) : '' }}
+        {{ auctionDuration.minutes ? $tc('meta.units.minutes', DeclOfNum(auctionDuration.minutes), { count: auctionDuration.minutes }) : '' }}
       </p>
       <base-btn
         data-selector="BUY-AUCTION"
@@ -31,45 +28,27 @@
     </template>
     <template v-else>
       <div
-        v-for="field in completedAuctionFields"
-        :key="`${auction.txHash}-${field.fieldName}`"
+        v-for="field in lotFields"
+        :key="`${field.title}-${lot.id}`"
         class="auction-card__field"
       >
         <h3 class="auction-card__field-title">
           {{ field.title }}
         </h3>
+        <p
+          v-if="!field.link"
+          class="auction-card__field-value"
+        >
+          {{ field.value }}
+        </p>
         <a
-          v-if="field.fieldName === 'sender' || field.fieldName === 'txHash'"
+          v-else
           class="auction-card__field-value auction-card__field-link"
-          :href="`https://etherscan.io/${field.fieldName === 'sender' ? 'address' : 'tx'}/${auction[field.fieldName]}`"
+          :href="field.link"
           target="_blank"
         >
-          {{ CutTxn(auction[field.fieldName], 7, 4) }}
+          {{ CutTxn(field.value) }}
         </a>
-        <p
-          v-if="field.fieldName === 'lotSize'"
-          class="auction-card__field-value"
-        >
-          {{ auction[field.fieldName] }} {{ auction.lotSizeCurrency }}
-        </p>
-        <p
-          v-if="field.fieldName === 'price'"
-          class="auction-card__field-value"
-        >
-          {{ auction[field.fieldName] }} {{ auction.priceCurrency }}
-        </p>
-        <p
-          v-if="field.fieldName === 'timestamp'"
-          class="auction-card__field-value"
-        >
-          {{ new Date(auction[field.fieldName] * 1000).toLocaleDateString($i18n.locale) }}
-        </p>
-        <p
-          v-if="field.fieldName === 'type'"
-          class="auction-card__field-value"
-        >
-          {{ auction[field.fieldName] }}
-        </p>
       </div>
     </template>
   </div>
@@ -79,13 +58,14 @@
 import BigNumber from 'bignumber.js';
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { ExplorerUrl } from '~/utils/enums';
 
 export default {
   name: 'AuctionCard',
   props: {
-    auction: {
-      type: [Object, undefined],
-      default: undefined,
+    lot: {
+      type: Object,
+      default: () => {},
     },
     isCompleted: {
       type: Boolean,
@@ -96,8 +76,54 @@ export default {
     ...mapGetters({
       isAuth: 'user/isAuth',
     }),
+    /**
+     * @property lotBuyed
+     * @property buyer
+     * @property userWallet
+     * @returns {[{link: string, title: VueI18n.TranslateResult, value: *},{link: string, title: VueI18n.TranslateResult, value: *},{link: boolean, title: VueI18n.TranslateResult, value: string},{link: boolean, title: VueI18n.TranslateResult, value: string},{link: boolean, title: VueI18n.TranslateResult, value: string},null]|*[]}
+     */
+    lotFields() {
+      if (!this.lot.lotBuyed) return [];
+      const buyerInfo = this.lot.lotBuyed[0];
+      return [
+        {
+          title: this.$t('auction.card.completed.lotBuyer'),
+          value: buyerInfo.buyer,
+          link: `${ExplorerUrl}/address/${buyerInfo.buyer}`,
+        },
+        {
+          title: this.$t('auction.card.completed.lotProvider'),
+          value: this.lot.userWallet,
+          link: `${ExplorerUrl}/address/${this.lot.userWallet}`,
+        },
+        {
+          title: this.$t('auction.card.completed.lotAmount'),
+          value: `${this.lot._collateral} ${this.lot.symbol}`,
+          link: false,
+        },
+        {
+          title: this.$t('auction.card.completed.lotPrice'),
+          value: `${this.lot._price} WUSD`,
+          link: false,
+        },
+        {
+          title: this.$t('auction.card.completed.endPeriod'),
+          value: this.$moment(buyerInfo.timestamp * 1000).format('MMMM Do YYYY, hh:mm a'),
+          link: false,
+        },
+        {
+          title: this.$t('auction.card.completed.txHash'),
+          value: buyerInfo.transactionHash,
+          link: `${ExplorerUrl}/tx/${buyerInfo.transactionHash}`,
+        },
+      ];
+    },
+    url() {
+      return `${ExplorerUrl}/address/${this.lot.userWallet}`;
+    },
     auctionDuration() {
-      let durationInSec = this.auction.endsIn - this.auction.startTime;
+      const started = this.$moment(this.lot.createdAt);
+      let durationInSec = this.$moment().diff(started) / 1000;
       const returnedValue = {};
       if (new BigNumber(durationInSec).isGreaterThanOrEqualTo(86400)) {
         returnedValue.days = new BigNumber(durationInSec).dividedToIntegerBy(86400).toFixed();
@@ -111,34 +137,6 @@ export default {
         returnedValue.minutes = new BigNumber(durationInSec).dividedToIntegerBy(60).toFixed();
       }
       return returnedValue;
-    },
-    completedAuctionFields() {
-      return [
-        {
-          title: this.$t('auction.card.completed.type'),
-          fieldName: 'type',
-        },
-        {
-          title: this.$t('auction.card.completed.sender'),
-          fieldName: 'sender',
-        },
-        {
-          title: this.$t('auction.card.completed.lotSize'),
-          fieldName: 'lotSize',
-        },
-        {
-          title: this.$t('auction.card.completed.price'),
-          fieldName: 'price',
-        },
-        {
-          title: this.$t('auction.card.completed.timestamp'),
-          fieldName: 'timestamp',
-        },
-        {
-          title: this.$t('auction.card.completed.txHash'),
-          fieldName: 'txHash',
-        },
-      ];
     },
   },
   methods: {
@@ -161,9 +159,12 @@ export default {
   background: #FFFFFF;
   border-radius: 6px;
   padding: 15px;
+  &:hover {
+    @include shadow;
+  }
   &_completed {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     grid-gap: 30px;
   }
   &__price {
@@ -173,7 +174,7 @@ export default {
     line-height: 130%;
     margin-bottom: 10px;
   }
-  &__fee-info {
+  &__text {
     color: $black800;
     font-size: 16px;
     line-height: 130%;
