@@ -13,7 +13,6 @@
           {{ $t('meta.btns.back') }}
         </base-btn>
         <div class="mining-page__wallet">
-          <wallet-switcher />
           <base-btn
             class="mining-page__connect"
             mode="light"
@@ -30,6 +29,7 @@
           {{ $t('info.yourWallet') }} {{ styledWalletAddress }}
         </template>
       </p>
+      <wallet-switcher class="mining-page__switcher" />
       <div class="mining-page__content">
         <div
           class="info-block__grid"
@@ -1149,10 +1149,10 @@ export default {
 
           .info-block__btns {
             display: grid;
-            grid-column-start: 2;
+            grid-column-start: 1;
             grid-column-end: 3;
             grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: unset;
+            //grid-template-rows: unset;
           }
         }
 
@@ -1168,16 +1168,9 @@ export default {
   @include _575 {
     &__content {
       .info-block {
-        &__grid {
-          .info-block__btns {
-            grid-column-start: 1;
-          }
-        }
-
         &__double {
-          grid-template-columns: repeat(2, 1fr);
+          grid-template-columns: auto;
         }
-
         &__title {
           &_pad {
             width: 100%;
