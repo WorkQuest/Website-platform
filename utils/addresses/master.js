@@ -15,7 +15,9 @@ export default {
 
   WQ_EXPLORER: 'https://mainnet-explorer-api.workquest.co/api/v1',
   WQ_ORACLE_URL: 'https://mainnet-oracle.workquest.co/api/v1',
+  WQ_LIQUIDATOR_URL: 'https://mainnet-liquidator.workquest.co/api/v1',
   NOTIFS_URL: 'https://mainnet-notification.workquest.co/api/',
+
   WS_NOTIFS_URL: 'wss://mainnet-notification.workquest.co/api/v1/notifications',
   WS_CHAT_ACTIONS_URL: 'wss://app.workquest.co/api/v1/notifications/chat',
 

@@ -362,7 +362,10 @@ export const getGasPrice = async (contractAbi, address, method, attr, value = nu
         ? inst.methods[method](...attr).estimateGas({ from: wallet.address, value })
         : inst.methods[method](...attr).estimateGas({ from: wallet.address }),
     ]);
-    return { gas: Number(gasEstimate), gasPrice: Number(gasPrice) };
+    return {
+      gas: Number(new BigNumber(gasEstimate).multipliedBy(1.05).toFixed(0)),
+      gasPrice: Number(gasPrice),
+    };
   } catch (e) {
     console.error('wallet/getGasPrice', e);
     return { gas: false, gasPrice: false };

@@ -22,7 +22,6 @@ export default {
     [modals.cardAdded]: () => import('./CtmModalCardAdded'),
     [modals.thanks]: () => import('./CtmModalThanksSend'),
     [modals.transactionSend]: () => import('./CtmModalTransactionSend'),
-    [modals.emailConfirm]: () => import('./CtmModalConfirmEmail'),
     [modals.neededToEnable2FA]: () => import('./CtmModalNeededToEnable2FA'),
     [modals.messageSend]: () => import('./CtmModalMessageSend'),
     [modals.status]: () => import('./CtmModalStatus'),

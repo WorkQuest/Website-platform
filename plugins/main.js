@@ -315,13 +315,5 @@ Vue.mixin({
         });
       });
     },
-    ClearZero(value) {
-      if (!value) return '';
-      value = value.toString();
-      while (value.startsWith('0') && value.length > 1 && !(value.startsWith('0,') || value.startsWith('0.'))) {
-        value = value.substr(1, value.length);
-      }
-      return value;
-    },
   },
 });
