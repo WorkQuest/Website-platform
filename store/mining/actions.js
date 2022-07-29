@@ -249,26 +249,27 @@ export default {
     return ok ? result : { balance: 0, decimals: 0, symbol: '' };
   },
 
-  async swapOldTokens({ _ }, { amount, decimals }) {
+  async swapOldTokens({ _ }, { weiAmount, accountAddress, web3Provider }) {
     try {
-      const tokenInstance = createInstance(ERC20, ENV.BSC_OLD_WQT_TOKEN);
-      const exchangeInstance = createInstance(WQTExchange, ENV.BSC_WQT_EXCHANGE);
+      const tokenInstance = new web3Provider.eth.Contract(ERC20, ENV.BSC_OLD_WQT_TOKEN);
+      const exchangeInstance = new web3Provider.eth.Contract(WQTExchange, ENV.BSC_WQT_EXCHANGE);
 
-      const value = new BigNumber(amount).shiftedBy(+decimals).toString();
-      const allowance = await getAllowance(getAccountAddress(), ENV.BSC_WQT_EXCHANGE, tokenInstance);
-      if (new BigNumber(allowance).isLessThan(value)) {
+      const allowance = await getAllowance(accountAddress, ENV.BSC_WQT_EXCHANGE, tokenInstance);
+      if (new BigNumber(allowance).isLessThan(weiAmount)) {
         showToast('Swapping', 'Approving...', 'success');
-        await makeApprove(ENV.BSC_WQT_EXCHANGE, value, tokenInstance);
+        await makeApprove(ENV.BSC_WQT_EXCHANGE, weiAmount, tokenInstance);
         showToast('Swapping', 'Approving done', 'success');
       }
 
       showToast('Swapping', 'Swapping...', 'success');
       const [gasPrice, gas] = await Promise.all([
-        getGasPrice(),
-        getEstimateGas(null, null, exchangeInstance, 'swap', [value]),
+        web3Provider.eth.getGasPrice(),
+        exchangeInstance.methods.swap.apply(null, [weiAmount]).estimateGas({
+          from: accountAddress,
+        }),
       ]);
-      const result = await exchangeInstance.methods.swap(value).send({
-        from: getAccountAddress(),
+      const result = await exchangeInstance.methods.swap(weiAmount).send({
+        from: accountAddress,
         gasPrice,
         gas,
       });

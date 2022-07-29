@@ -17,7 +17,7 @@
             class="mining-page__connect"
             mode="light"
             :data-selector="!isConnected ? 'CONNECT-WALLET' : 'DISCONNECT-FROM-WALLET'"
-            :disabled="connectionType !== $options.ConnectionTypes.WEB3"
+            :disabled="connectionType !== $options.ConnectionTypes.WEB3 || isConnectingWeb3"
             @click="toggleConnection"
           >
             {{ connectionButtonText }}
@@ -255,7 +255,8 @@ import {
   TokenSymbols, ConnectionTypes,
 } from '~/utils/enums';
 import {
-  getChainIdByChain, getEstimateGas, getGasPrice, GetWeb3Provider,
+  fetchContractData,
+  getChainIdByChain, GetWeb3Provider, success,
 } from '~/utils/web3';
 import { Pool, PoolURL } from '~/utils/сonstants/mining';
 import { images } from '~/utils/images';
@@ -263,6 +264,8 @@ import { LoaderStatusLocales } from '~/utils/loader';
 import { GetWalletProvider } from '~/utils/wallet';
 import { SwapAddresses } from '~/utils/сonstants/bridge';
 import walletOperations from '~/plugins/mixins/walletOperations';
+import { ERC20, WQTExchange } from '~/abi';
+import ENV from '~/utils/addresses';
 
 export default {
   name: 'Pool',
@@ -285,6 +288,8 @@ export default {
       isUpdatingData: false,
       chain: null,
       metamaskStatus: localStorage.getItem('metamaskStatus'),
+
+      isConnectingWeb3: false,
     };
   },
   computed: {
@@ -417,7 +422,7 @@ export default {
           dataSelector: 'OPEN-SWAP-TOKENS-WQT',
           title: 'mining.swapTokens.title',
           link: '',
-          disabled: this.metamaskStatus === 'notInstalled' || !this.isConnected,
+          disabled: this.isDisableButtons || (this.connectionType === ConnectionTypes.WEB3 && this.metamaskStatus === 'notInstalled'),
           action: this.openSwapTokens,
           mode: 'outline',
         },
@@ -431,9 +436,14 @@ export default {
         },
       ];
     },
+    loaderStatusText() {
+      return this.connectionType === ConnectionTypes.WEB3
+        ? LoaderStatusLocales.waitingForTxExternalApp
+        : LoaderStatusLocales.pleaseWaitTx;
+    },
   },
   watch: {
-    async connectionType(type) {
+    async connectionType() {
       await this.resetPoolData();
       await this.connectWallet();
     },
@@ -546,9 +556,12 @@ export default {
       }
     },
     async toggleConnection() {
+      if (this.isConnectingWeb3) return;
+      this.isConnectingWeb3 = true;
       const { isConnected } = this;
       if (isConnected) this.disconnectWallet();
       else await this.connectWallet();
+      this.isConnectingWeb3 = false;
     },
     checkChain() {
       if (!this.account?.netId) {
@@ -558,6 +571,12 @@ export default {
       }
       return true;
     },
+
+    /**
+     * Check web3 connection and chain
+     * @param chain
+     * @returns {Promise<boolean>}
+     */
     async checkNetwork(chain) {
       if (!this.isConnected) {
         await this.connectWallet();
@@ -603,6 +622,18 @@ export default {
       };
     },
 
+    // Checking connection & chain by connectionType
+    async checkConnection() {
+      if (this.isDisableButtons) return false;
+      if (this.connectionType === ConnectionTypes.WEB3) {
+        if (this.isWrongChain) {
+          await this.checkNetwork(this.chain);
+          return false;
+        }
+      }
+      return true;
+    },
+
     async tokensDataUpdate() {
       if (this.connectionType === ConnectionTypes.WEB3 && !this.isConnected) return;
       if (this.connectionType === ConnectionTypes.WQ_WALLET && this.selectedNetwork !== this.chain) return;
@@ -618,33 +649,100 @@ export default {
     },
 
     async openSwapTokens() {
-      if (await this.checkNetwork(this.chain)) {
-        this.ShowModal({
-          key: modals.swapTokens,
-          submit: async (amount, decimals) => {
+      if (await this.checkConnection() === false) return;
+
+      const web3Provider = this.getProviderByConnection();
+      const accountAddress = this.account.address;
+
+      const swap = async (weiAmount) => {
+        this.SetLoader({ isLoading: true, statusText: this.loaderStatusText });
+        this.CloseModal();
+
+        const { ok, msg, result } = await this.swapOldTokens({
+          weiAmount,
+          accountAddress,
+          web3Provider,
+        });
+        if (ok) {
+          this.ShowModalSuccess({
+            link: `${this.explorerUrl}/tx/${result.transactionHash}`,
+          });
+        } else this.ShowModalFail({ subtitle: msg });
+
+        this.SetLoader(false);
+      };
+
+      this.SetLoader(true);
+      const token = ENV.BSC_OLD_WQT_TOKEN;
+      const [oldBalance, oldDecimals, oldSymbol] = await Promise.all([
+        fetchContractData('balanceOf', ERC20, token, [accountAddress], web3Provider),
+        fetchContractData('decimals', ERC20, token, [], web3Provider),
+        fetchContractData('symbol', ERC20, token, [], web3Provider),
+      ]);
+      const oldTokenData = {
+        balance: oldBalance,
+        decimals: oldDecimals,
+        symbol: oldSymbol,
+      };
+      this.SetLoader(false);
+
+      this.ShowModal({
+        key: modals.swapTokens,
+        oldTokenData,
+        submit: async (amount, decimals) => {
+          const weiAmount = new BigNumber(amount).shiftedBy(+decimals).toString();
+          // Web3 swap old tokens
+          if (this.connectionType === ConnectionTypes.WEB3) {
             if (!this.checkChain()) return;
-            this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
-            this.CloseModal();
+            await swap(weiAmount);
+            return;
+          }
 
-            const { ok, msg } = await this.swapOldTokens({ amount, decimals });
+          // WQWallet swap old tokens
+          await this.MakeApprove({
+            tokenAddress: ENV.BSC_OLD_WQT_TOKEN,
+            contractAddress: ENV.BSC_WQT_EXCHANGE,
+            amount,
+            decimals,
+            symbol: TokenSymbols.WQT,
+            nativeTokenSymbol: this.nativeTokenSymbol,
+            isHexUserWalletAddress: true,
+          }).then(async () => {
+            this.SetLoader(true);
 
-            if (ok) this.ShowModalSuccess({});
-            else this.ShowModalFail({ subtitle: msg });
+            const [feeRes] = await Promise.all([
+              this.$store.dispatch('wallet/getContractFeeData', {
+                method: 'swap',
+                abi: WQTExchange,
+                contractAddress: ENV.BSC_WQT_EXCHANGE,
+                data: [weiAmount],
+              }),
+              this.$store.dispatch('wallet/getBalance'),
+            ]);
 
             this.SetLoader(false);
-          },
-        });
-      }
+            if (!feeRes.ok) {
+              return;
+            }
+
+            this.ShowModal({
+              key: modals.transactionReceipt,
+              title: this.$t('modals.titles.swap'),
+              fields: {
+                from: { name: this.$t('meta.fromBig'), value: accountAddress },
+                to: { name: this.$t('meta.toBig'), value: ENV.BSC_WQT_EXCHANGE },
+                amountOfTokens: { name: this.$t('modals.amount'), value: amount, symbol: TokenSymbols.WQT },
+                fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: this.nativeTokenSymbol },
+              },
+              submitMethod: async () => await swap(weiAmount),
+            });
+          });
+        },
+      });
     },
 
     async openModalStaking() {
-      if (this.isDisableButtons) return;
-      if (this.connectionType === ConnectionTypes.WEB3) {
-        if (this.isWrongChain) {
-          await this.checkNetwork(this.chain);
-          return;
-        }
-      }
+      if (await this.checkConnection() === false) return;
 
       this.ShowModal({
         key: modals.valueSend,
@@ -652,7 +750,7 @@ export default {
         maxValue: this.balance,
         submit: async (amount) => {
           const stake = async () => {
-            this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
+            this.SetLoader({ isLoading: true, statusText: this.loaderStatusText });
             const { ok, msg, result } = await this.stakeTokens({
               amount,
               chain: this.chain,
@@ -717,13 +815,7 @@ export default {
     },
 
     async openModalUnstaking() {
-      if (this.isDisableButtons) return;
-      if (this.connectionType === ConnectionTypes.WEB3) {
-        if (this.isWrongChain) {
-          await this.checkNetwork(this.chain);
-          return;
-        }
-      }
+      if (await this.checkConnection() === false) return;
 
       this.ShowModal({
         key: modals.valueSend,
@@ -731,12 +823,7 @@ export default {
         maxValue: this.staked,
         submit: async (amount) => {
           const unstake = async () => {
-            this.SetLoader({
-              isLoading: true,
-              statusText: this.connectionType === ConnectionTypes.WEB3
-                ? LoaderStatusLocales.waitingForTxExternalApp
-                : LoaderStatusLocales.pleaseWaitTx,
-            });
+            this.SetLoader({ isLoading: true, statusText: this.loaderStatusText });
             const { ok, msg, result } = await this.unStakeTokens({
               amount,
               chain: this.chain,
@@ -790,13 +877,7 @@ export default {
     },
 
     async claimRewards() {
-      if (this.isDisableButtons) return;
-      if (this.connectionType === ConnectionTypes.WEB3) {
-        if (this.isWrongChain) {
-          await this.checkNetwork(this.chain);
-          return;
-        }
-      }
+      if (await this.checkConnection() === false) return;
 
       if (+this.claim === 0) {
         this.ShowModalFail({
@@ -808,7 +889,7 @@ export default {
 
       const { stakingAbi, stakingAddress } = Pool.get(this.chain);
       const claim = async () => {
-        this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
+        this.SetLoader({ isLoading: true, statusText: this.loaderStatusText });
         const { ok, msg, result } = await this.claimTokens({
           stakingAbi,
           stakingAddress,
