@@ -88,11 +88,7 @@
                   @click="goToEvent(notification.params ? notification.params.path : '')"
                 >
                   <div class="notify__text notify__text_btn">
-                    {{
-                      notification.params && notification.params.isLocal
-                        ? notification.data.message
-                        : $t(notification.actionNameKey)
-                    }}
+                    {{ getNotificationRefTitle(notification) }}
                   </div>
                   <span class="icon icon-chevron_right" />
                 </base-btn>
@@ -103,11 +99,7 @@
                   class="notify__btn"
                 >
                   <div class="notify__text notify__text_btn">
-                    {{
-                      notification.params && notification.params.isLocal
-                        ? notification.data.message
-                        : $t(notification.actionNameKey)
-                    }}
+                    {{ getNotificationRefTitle(notification) }}
                   </div>
                   <span class="icon icon-chevron_right" />
                 </a>
@@ -159,6 +151,11 @@ export default {
     }),
   },
   methods: {
+    getNotificationRefTitle(notification) {
+      if (notification.params && notification.params.isLocal) return notification.data.message;
+      if (notification?.params?.title) return notification.params.title;
+      return this.$t(notification.actionNameKey);
+    },
     checkLocalOrSystemNotif(notification) {
       return notification?.params?.isLocal || !notification?.sender?.id;
     },
