@@ -24,6 +24,7 @@ export const NotificationAction = {
   NEW_DISCUSSION_LIKE: 'newDiscussionLike',
   QUEST_EDITED_ON_CONTRACT: 'QuestEditedOnContract',
   UPDATE_RATING_STATISTIC: 'updateRatingStatistic',
+  NEW_QUEST_FOR_SPECIALIZATION: 'newQuestForSpecialization',
 };
 
 export const LocalNotificationAction = {

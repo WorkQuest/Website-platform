@@ -1425,6 +1425,7 @@
     }
   },
   "notifications": {
+    "newQuestForSpecialization": "New quest for selected specializations",
     "QuestEditedOnContract": "Quest edited on contract",
     "title": "Notifications",
     "OpenDispute": "Opened dispute",

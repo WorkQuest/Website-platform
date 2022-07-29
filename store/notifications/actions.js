@@ -152,6 +152,15 @@ export default {
     const wqInfoSender = { avatar: { url: images.WQ_LOGO_ROUNDED }, firstName: $nuxt.$t('ui.notifications.workquestInfo') };
 
     switch (action) {
+      case NotificationAction.NEW_QUEST_FOR_SPECIALIZATION:
+        notification.sender = wqInfoSender;
+        notification.params = {
+          ...notification.params,
+          title: data.title,
+          path: `${Path.QUESTS}/${data.id}`,
+        };
+        break;
+
       case NotificationAction.UPDATE_RATING_STATISTIC:
         notification.sender = wqInfoSender;
         notification.params = {

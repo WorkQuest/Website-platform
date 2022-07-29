@@ -1425,6 +1425,7 @@
     }
   },
   "notifications": {
+    "newQuestForSpecialization": "Новый квест по выбранным специализациям",
     "QuestEditedOnContract": "Квест отредактирован на контракте",
     "title": "Уведомления",
     "invite": "Приглашаем вас завершить квест",
