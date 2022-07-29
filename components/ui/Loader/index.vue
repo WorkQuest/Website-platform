@@ -61,6 +61,7 @@ export default {
   },
   data: () => ({
     LoaderModes,
+    isMounted: false,
   }),
   computed: {
     ...mapGetters({
@@ -73,11 +74,18 @@ export default {
   },
   watch: {
     isLoading(newVal) {
-      if (!newVal) {
-        this.$refs.firstLine.classList.add('custom__line_stopped-anim');
-        this.$refs.secondLine.classList.add('custom__line_stopped-anim');
+      const stopAnimStyle = 'custom__line_stopped-anim';
+      if (!newVal && this.isMounted) {
+        this.$refs.firstLine.classList.add(stopAnimStyle);
+        this.$refs.secondLine.classList.add(stopAnimStyle);
+      } else {
+        this.$refs.firstLine.classList.remove(stopAnimStyle);
+        this.$refs.secondLine.classList.remove(stopAnimStyle);
       }
     },
+  },
+  mounted() {
+    this.isMounted = true;
   },
   beforeDestroy() {
     this.$refs.firstLine.classList.add('custom__line_stopped-anim');
