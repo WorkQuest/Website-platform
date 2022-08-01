@@ -298,7 +298,7 @@ Vue.mixin({
           fields: {
             from: { name: this.$t('meta.fromBig'), value: from },
             to: { name: this.$t('meta.toBig'), value: to },
-            amount: {
+            amount: amount && {
               name: this.$t('modals.amount'),
               value: amount,
               symbol: currency,

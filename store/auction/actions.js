@@ -16,7 +16,8 @@ export default {
         count,
         lots: auction.map((item) => ({
           ...item,
-          _collateral: Number(new BigNumber(item.collateral).shiftedBy(-18).toFixed(4, 1)),
+          _collateral: Number(new BigNumber(item.collateral).shiftedBy(-12)),
+          _liquidityValue: Number(new BigNumber(item.liquidityValue).shiftedBy(-18).toFixed(4, 1)),
           _price: Number(new BigNumber(item.price).shiftedBy(-18).toFixed(4, 1)),
         })),
       });

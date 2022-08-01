@@ -32,6 +32,14 @@
       <div class="auction__topbar">
         <div class="auction__topbar-switcher">
           <base-btn
+            data-selector="ACTION-AUCTION-SELECT-INACTIVE"
+            :mode="currentTab === $options.LotsStatuses.INACTIVE ? 'activeTab' : 'light'"
+            :padding="true"
+            @click="currentTab = $options.LotsStatuses.INACTIVE"
+          >
+            {{ $t('auction.tabs.inactive') }}
+          </base-btn>
+          <base-btn
             data-selector="ACTION-AUCTION-SELECT-CURRENT"
             :mode="currentTab === $options.LotsStatuses.STARTED ? 'activeTab' : 'light'"
             :padding="true"
@@ -67,14 +75,14 @@
         class="auction__list"
         :class="[
           {'auction__list_completed': $options.LotsStatuses.BOUGHT === currentTab},
-          {'auction__list_current': $options.LotsStatuses.STARTED === currentTab},
+          {'auction__list_current': [$options.LotsStatuses.STARTED, $options.LotsStatuses.INACTIVE].includes(currentTab)},
         ]"
       >
         <auction-card
           v-for="lot in lots"
           :key="lot.id"
           :lot="lot"
-          :is-completed="currentTab === $options.LotsStatuses.BOUGHT"
+          :type-of-lot="currentTab"
         />
       </div>
       <empty-data
@@ -121,11 +129,11 @@ export default {
     return {
       searchValue: '',
       searchTimeout: null,
-      currentTab: LotsStatuses.STARTED,
+      currentTab: LotsStatuses.INACTIVE,
 
       params: {
         'sort[createdAt]': 'desc',
-        status: LotsStatuses.STARTED,
+        status: LotsStatuses.INACTIVE,
         limit: LIMIT,
         offset: 0,
         q: '',
@@ -153,6 +161,7 @@ export default {
         this.currentPage = 1;
         this.params.status = value;
         this.params['sort[createdAt]'] = 'desc';
+        this.$store.commit('auction/setLost', { lots: [], count: 0 });
         await this.fetchLots({ params: this.params });
       },
     },
@@ -232,7 +241,7 @@ export default {
     margin-bottom: 37px;
     &-switcher {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       grid-gap: 10px;
     }
     &-sort {

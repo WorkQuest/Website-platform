@@ -1,11 +1,18 @@
 <template>
   <div
     class="auction-card"
-    :class="{'auction-card_completed':isCompleted}"
+    :class="{'auction-card_completed': isCompleted}"
   >
     <template v-if="!isCompleted">
       <h3 class="auction-card__price">
-        {{ $t('auction.card.lotAmount', {amount: lot._collateral, symbol: lot.symbol}) }}
+        {{
+          $t('auction.card.lotAmount', {
+            amount: $options.LotsStatuses.STARTED === typeOfLot
+              ? lot._collateral
+              : lot._liquidityValue,
+            symbol: lot.symbol
+          })
+        }}
       </h3>
       <p class="auction-card__text">
         {{ $t('auction.card.lotPrice', {price: lot._price}) }}
@@ -13,22 +20,31 @@
       <p class="auction-card__text">
         {{ $t('auction.card.feeIncluded', { feePercent: 13 }) }}
       </p>
-      <p class="auction-card__duration">
+      <p
+        v-if="typeOfLot === $options.LotsStatuses.INACTIVE"
+        class="auction-card__duration"
+      >
+        {{ $moment(lot.createdAt).format('MMMM Do YYYY, hh:mm a') }}
+      </p>
+      <p
+        v-else
+        class="auction-card__duration"
+      >
         {{ $t('auction.card.timeLeft') }}
         {{ auctionDuration.days ? $tc('meta.units.days', DeclOfNum(auctionDuration.days), { count: auctionDuration.days }) : '' }}
         {{ auctionDuration.hours ? $tc('meta.units.hours', DeclOfNum(auctionDuration.hours ), { count: auctionDuration.hours }) : '' }}
         {{ auctionDuration.minutes ? $tc('meta.units.minutes', DeclOfNum(auctionDuration.minutes), { count: auctionDuration.minutes }) : '' }}
       </p>
       <base-btn
-        data-selector="BUY-AUCTION"
-        @click="openModalBuyAuction"
+        data-selector="ACTION-AUCTION"
+        @click="handleLotAction"
       >
-        {{ $t('meta.btns.buy') }}
+        {{ $options.LotsStatuses.INACTIVE === typeOfLot ? $t('meta.btns.init') : $t('meta.btns.buy') }}
       </base-btn>
     </template>
     <template v-else>
       <div
-        v-for="field in lotFields"
+        v-for="field in completedLotFields"
         :key="`${field.title}-${lot.id}`"
         class="auction-card__field"
       >
@@ -56,45 +72,60 @@
 
 <script>
 import BigNumber from 'bignumber.js';
-import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
-import { ExplorerUrl } from '~/utils/enums';
+import { mapActions, mapGetters } from 'vuex';
+import { ExplorerUrl, TokenSymbols } from '~/utils/enums';
+import { getContractFeeData, sendWalletTransaction } from '~/utils/wallet';
+import { WQAuction } from '~/abi';
+
+const LotsStatuses = {
+  INACTIVE: 0,
+  STARTED: 1,
+  BOUGHT: 2,
+  CANCELED: 3,
+};
 
 export default {
   name: 'AuctionCard',
+  LotsStatuses,
   props: {
     lot: {
       type: Object,
       default: () => {},
     },
-    isCompleted: {
-      type: Boolean,
-      default: false,
+    typeOfLot: {
+      type: Number,
+      default: LotsStatuses.STARTED,
     },
   },
   computed: {
     ...mapGetters({
       isAuth: 'user/isAuth',
+      walletAddress: 'user/getUserWalletAddress',
     }),
+    isCompleted() {
+      return this.typeOfLot === LotsStatuses.BOUGHT;
+    },
     /**
      * @property lotBuyed
      * @property buyer
      * @property userWallet
      * @returns {[{link: string, title: VueI18n.TranslateResult, value: *},{link: string, title: VueI18n.TranslateResult, value: *},{link: boolean, title: VueI18n.TranslateResult, value: string},{link: boolean, title: VueI18n.TranslateResult, value: string},{link: boolean, title: VueI18n.TranslateResult, value: string},null]|*[]}
      */
-    lotFields() {
+    completedLotFields() {
       if (!this.lot.lotBuyed) return [];
       const buyerInfo = this.lot.lotBuyed[0];
+      const buyer = this.convertToBech32('wq', buyerInfo.buyer);
+      const userWallet = this.convertToBech32('wq', this.lot.userWallet);
       return [
         {
           title: this.$t('auction.card.completed.lotBuyer'),
-          value: buyerInfo.buyer,
-          link: `${ExplorerUrl}/address/${buyerInfo.buyer}`,
+          value: buyer,
+          link: `${ExplorerUrl}/address/${buyer}`,
         },
         {
           title: this.$t('auction.card.completed.lotProvider'),
-          value: this.lot.userWallet,
-          link: `${ExplorerUrl}/address/${this.lot.userWallet}`,
+          value: userWallet,
+          link: `${ExplorerUrl}/address/${userWallet}`,
         },
         {
           title: this.$t('auction.card.completed.lotAmount'),
@@ -138,16 +169,106 @@ export default {
       }
       return returnedValue;
     },
+    contractAddress() {
+      return {
+        [TokenSymbols.BNB]: this.ENV.WORKNET_BNB_AUCTION,
+        [TokenSymbols.ETH]: this.ENV.WORKNET_ETH_AUCTION,
+        [TokenSymbols.USDT]: this.ENV.WORKNET_USDT_AUCTION,
+        [TokenSymbols.USDC]: this.ENV.WORKNET_USDC_AUCTION,
+      }[this.lot.symbol];
+    },
   },
   methods: {
-    openModalBuyAuction() {
+    ...mapActions({
+      calcFeeSetTokenPrices: 'oracle/feeSetTokensPrices',
+      setTokenPrices: 'oracle/setCurrentPriceTokens',
+    }),
+
+    async handleLotAction() {
       if (!this.isAuth) {
         this.ShowToast(this.$t('messages.loginToContinue'));
         return;
       }
-      this.ShowModal({
-        key: modals.buyAuction,
-        auction: this.auction,
+      this.SetLoader(true);
+
+      let method = 'buyLot';
+      let isContinue = true;
+      const data = [this.lot.index];
+
+      const needToStart = this.typeOfLot === LotsStatuses.INACTIVE;
+
+      if (needToStart) {
+        const [setTokensFeeRes] = await Promise.all([
+          this.calcFeeSetTokenPrices(),
+          this.$store.dispatch('wallet/getBalance'),
+        ]);
+
+        this.SetLoader(false);
+        if (!setTokensFeeRes.ok) {
+          this.ShowToast(setTokensFeeRes.msg, this.$t('toasts.error'));
+          return;
+        }
+
+        method = 'startAuction';
+        data.push(new BigNumber(this.lot.liquidityValue).shiftedBy(-12).toFixed(0));
+
+        await this.ShowTxReceipt({
+          title: this.$t('modals.updatePrices'),
+          from: this.convertToBech32('wq', this.walletAddress),
+          to: this.ENV.WORKNET_ORACLE,
+          fee: setTokensFeeRes.result,
+        }).then(async () => {
+          this.SetLoader({ isLoading: true });
+          await Promise.all([
+            this.setTokenPrices(),
+            this.$store.dispatch('wallet/getBalance'),
+          ]);
+        }).catch(() => {
+          isContinue = false;
+        }).finally(() => {
+          this.SetLoader(false);
+        });
+      }
+
+      if (!isContinue) {
+        this.SetLoader(false);
+        return;
+      }
+
+      const { ok, result: feeForMethod, msg } = await getContractFeeData(
+        method,
+        WQAuction,
+        this.contractAddress,
+        data,
+      );
+
+      this.SetLoader(false);
+      if (!ok) {
+        this.ShowToast(msg, this.$t('toasts.error'));
+        return;
+      }
+
+      await this.ShowTxReceipt({
+        title: needToStart ? this.$t('modals.titles.initializeLot') : this.$t('modals.titles.buyLot'),
+        from: this.convertToBech32('wq', this.walletAddress),
+        to: this.contractAddress,
+        fee: { gas: feeForMethod.gasEstimate, gasPrice: feeForMethod.gasPrice },
+      }).then(async () => {
+        this.SetLoader({ isLoading: true });
+
+        const { ok: isSuccess, msg: errorMsg } = await sendWalletTransaction(method, {
+          abi: WQAuction,
+          address: this.contractAddress,
+          value: null,
+          data,
+        });
+        // TODO need to fix response for sendWalletTransaction
+        if (isSuccess === false) this.ShowModalFail({ subtitle: errorMsg });
+        else this.ShowModalSuccess({});
+      }).catch((e) => {
+        this.ShowToast(e.msg);
+      }).finally(() => {
+        this.SetLoader(false);
       });
     },
   },

@@ -59,7 +59,7 @@ export default {
       return success(fee);
     } catch (e) {
       console.error('oracle/feeSetTokenPrices', e);
-      return error();
+      return error(e.code, e.message, e);
     }
   },
 
