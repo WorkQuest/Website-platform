@@ -5,7 +5,7 @@ import {
 } from '~/utils/wallet';
 import {
   error,
-  fetchContractData,
+  fetchContractData, success,
 } from '~/utils/web3';
 import { WQReferral } from '~/abi/index';
 import { REFERRAL_EVENTS } from '~/utils/сonstants/referral';
@@ -21,6 +21,7 @@ export default {
         [userWalletAddress],
         GetWalletProvider(),
       );
+      console.log('get rewards', res, userWalletAddress);
       commit('setReferralReward', res ? getStyledAmount(res) : 0);
       return true;
     } catch (e) {
@@ -28,14 +29,13 @@ export default {
       return error();
     }
   },
-  async claimReferralReward(_, userAddress) {
+  async claimReferralReward({ _ }) {
     try {
-      const payload = {
+      const res = await sendWalletTransaction('claim', {
         abi: WQReferral,
         address: ENV.WORKNET_REFERRAL,
-        userAddress,
-      };
-      return await sendWalletTransaction('claim', payload);
+      });
+      return success(res);
     } catch (e) {
       console.error(`claimReferralReward: ${e}`);
       return error();
@@ -89,17 +89,16 @@ export default {
       return false;
     }
   },
-  async addReferrals({ getters }, userAddress) {
+  async addReferrals({ getters }) {
     const signature = getters.getReferralSignature;
     const addresses = getters.getCreatedReferralList;
     try {
-      const payload = {
+      const res = await sendWalletTransaction('addReferrals', {
         abi: WQReferral,
         address: ENV.WORKNET_REFERRAL,
         data: [signature.v, signature.r, signature.s, addresses],
-        userAddress,
-      };
-      return await sendWalletTransaction('addReferrals', payload);
+      });
+      return success(res);
     } catch (e) {
       console.error(`addReferrals: ${e}`);
       return error();

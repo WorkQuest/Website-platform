@@ -27,7 +27,7 @@
                 <base-btn
                   :disabled="Number(referralReward) === 0"
                   data-selector="CLAIM"
-                  @click="clickClaimBtnHandler"
+                  @click="handleClaimRewards"
                 >
                   {{ $t('modals.claim') }}
                 </base-btn>
@@ -54,9 +54,7 @@
                 </div>
               </div>
               <div class="user__value_green">
-                {{
-                  $tc('meta.units.plusCount', $tc(`meta.coins.count.${currencyReward(paidEventsList[0]['referralUser.id'])}`, getStyledAmount(paidEventsList[0].amount)))
-                }}
+                {{ $tc('meta.units.plusCount', $tc(`meta.coins.count.${currencyReward(paidEventsList[0]['referralUser.id'])}`, getStyledAmount(paidEventsList[0].amount))) }}
               </div>
             </div>
           </div>
@@ -71,15 +69,13 @@
                 <base-btn
                   :disabled="!isNeedRegistration"
                   data-selector="REGISTRATION"
-                  @click="clickRegistrationBtnHandler"
+                  @click="handleRegistration"
                 >
                   {{ $t('meta.btns.registration') }}
                 </base-btn>
               </div>
             </div>
-            <div
-              class="info-block__refers"
-            >
+            <div class="info-block__refers">
               <div
                 v-for="(item) in referralItems()"
                 :key="`${item.id}`"
@@ -244,12 +240,14 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { getStyledAmount } from '~/utils/wallet';
 import { images } from '~/utils/images';
 import { REFERRAL_EVENTS } from '~/utils/сonstants/referral';
-import { IS_PROD } from '~/utils/addresses';
-import { ExplorerUrl } from '~/utils/enums';
+import { ExplorerUrl, TokenSymbols } from '~/utils/enums';
+import { WQReferral } from '~/abi';
+import ENV from '~/utils/addresses';
 
 export default {
   name: 'Referral',
@@ -285,9 +283,12 @@ export default {
       isNeedRegistration: 'referral/getIsNeedRegistration',
       createdReferralsList: 'referral/getCreatedReferralList',
     }),
+    convertedAddress() {
+      return this.convertToBech32('wq', this.userAddress);
+    },
     referLink() {
       const url = window.location.origin;
-      return `${url}/?ref=`;
+      return `${url}/sign-up?ref=`;
     },
     totalPages() {
       return Math.ceil(this.paidEventsList.length / this.perPage);
@@ -404,24 +405,131 @@ export default {
     this.$store.dispatch('referral/unsubscribeToReferralEvents', this.userAddress);
   },
   methods: {
-    async clickClaimBtnHandler() {
-      this.ShowModal({
-        key: modals.referralClaim,
-        fields: {
-          to: { name: this.$t('meta.toBig'), value: this.convertToBech32('wq', this.userAddress) },
-          amount: { name: this.$t('modals.amount'), value: this.referralReward },
-        },
+    async handleClaimRewards() {
+      const fetchFee = async () => await this.$store.dispatch('wallet/getContractFeeData', {
+        method: 'claim',
+        abi: WQReferral,
+        contractAddress: ENV.WORKNET_REFERRAL,
+      });
 
-        desc: this.$t('modals.claimConfirm'),
-        claim: async () => {
-          this.SetLoader(true);
-          this.CloseModal();
-          await this.$store.dispatch('oracle/setCurrentPriceTokens');
-          await this.$store.dispatch('referral/claimReferralReward', this.userAddress);
+      // Claiming
+      const claim = async (feeRes) => {
+        if (!feeRes.ok) {
+          this.SetLoader(false);
+          this.ShowToast(feeRes.msg);
+          return;
+        }
+        this.SetLoader(true);
+        await this.$store.dispatch('wallet/getBalance');
+        this.SetLoader(false);
+
+        this.ShowModal({
+          key: modals.transactionReceipt,
+          title: this.$t('modals.claim'),
+          description: this.$t('modals.claimConfirm'),
+          fields: {
+            from: { name: this.$t('meta.fromBig'), value: this.convertedAddress },
+            to: { name: this.$t('meta.toBig'), value: ENV.WORKNET_REFERRAL },
+            reward: { name: this.$t('referral.referralReward'), value: this.referralReward, symbol: 'USD' },
+            fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
+          },
+          submitMethod: async () => {
+            const res = await this.$store.dispatch('referral/claimReferralReward', this.userAddress);
+            if (res.ok) {
+              await this.$store.dispatch('referral/fetchPaidEventsList');
+              this.ShowModal({
+                key: modals.transactionSend,
+                txUrl: `${ExplorerUrl}/tx/${res.result.transactionHash}`,
+              });
+            }
+          },
+        });
+      };
+
+      this.SetLoader(true);
+      const feeRes = await fetchFee();
+      // Check if dont need to update oracle prices
+      if (!feeRes?.msg?.includes('Price is outdated')) {
+        await claim(feeRes);
+        return;
+      }
+
+      // Updating token price THEN claim
+      const [pricesFeeRes] = await Promise.all([
+        this.$store.dispatch('oracle/feeSetTokensPrices'),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
+      this.SetLoader(false);
+
+      if (!pricesFeeRes.ok) {
+        this.ShowToast(pricesFeeRes.msg);
+        return;
+      }
+
+      const { result: { gas, gasPrice } } = pricesFeeRes;
+      const pricesFee = new BigNumber(gas).multipliedBy(gasPrice).shiftedBy(-18).toString();
+
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        title: this.$t('modals.setTokenPrice', { token: 'USD' }),
+        fields: {
+          from: { name: this.$t('meta.fromBig'), value: this.convertedAddress },
+          to: { name: this.$t('meta.toBig'), value: ENV.WORKNET_ORACLE },
+          fee: { name: this.$t('wallet.table.trxFee'), value: pricesFee, symbol: TokenSymbols.WQT },
+        },
+        submitMethod: async () => {
+          const res = await this.$store.dispatch('oracle/setCurrentPriceTokens');
+          if (res.ok) {
+            const claimFee = await fetchFee();
+            await claim(claimFee);
+          }
         },
       });
     },
-    async clickRegistrationBtnHandler() {
+
+    async handleRegistration() {
+      const registration = async () => {
+        this.SetLoader(true);
+        const signature = this.$store.getters['referral/getReferralSignature'];
+        const addresses = this.$store.getters['referral/getCreatedReferralList'];
+        const [feeRes] = await Promise.all([
+          this.$store.dispatch('wallet/getContractFeeData', {
+            method: 'addReferrals',
+            abi: WQReferral,
+            contractAddress: ENV.WORKNET_REFERRAL,
+            data: [signature.v, signature.r, signature.s, addresses],
+          }),
+          this.$store.dispatch('wallet/getBalance'),
+        ]);
+        this.SetLoader(false);
+        if (!feeRes.ok) {
+          this.ShowToast(feeRes.msg);
+          return;
+        }
+        this.ShowModal({
+          key: modals.transactionReceipt,
+          title: this.$t('meta.btns.registration'),
+          fields: {
+            from: { name: this.$t('meta.fromBig'), value: this.convertedAddress },
+            to: { name: this.$t('meta.toBig'), value: ENV.WORKNET_REFERRAL },
+            fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
+          },
+          submitMethod: async () => {
+            const res = await this.$store.dispatch('referral/addReferrals');
+            if (res.ok) {
+              this.ShowModal({
+                key: modals.transactionSend,
+                txUrl: `${ExplorerUrl}/tx/${res.result.transactionHash}`,
+              });
+              await Promise.all([
+                this.$store.dispatch('referral/setIsNeedRegistration', false),
+                this.$store.dispatch('referral/fetchReferralsList'),
+              ]);
+            }
+          },
+        });
+      };
+
       this.SetLoader(true);
       const res = await this.$store.dispatch('referral/fetchCreatedReferralList');
       this.SetLoader(false);
@@ -432,13 +540,8 @@ export default {
           subtitle: this.$t('modals.registration'),
           cancel: this.$t('meta.btns.cancel'),
           button: this.$t('meta.btns.submit'),
-          submit: async () => {
-            this.SetLoader(true);
-            await this.$store.dispatch('referral/addReferrals', this.userAddress);
-            await this.$store.dispatch('referral/setIsNeedRegistration', false);
-            this.SetLoader(false);
-          },
           itemList: this.filterCreatedReferralsList,
+          submit: registration,
         });
       } else {
         this.ShowModal({
@@ -583,7 +686,7 @@ export default {
           @extend .ava;
           position: absolute;
           &--empty{
-            border: 1px solid $black200;
+            border: 1px solid $black100;
           }
         }
       }
