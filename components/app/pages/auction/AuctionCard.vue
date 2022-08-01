@@ -108,47 +108,64 @@ export default {
     },
     /**
      * @property lotBuyed
-     * @property buyer
+     * @property buyerInfo - information about the completed purchase
      * @property userWallet
      * @returns {[{link: string, title: VueI18n.TranslateResult, value: *},{link: string, title: VueI18n.TranslateResult, value: *},{link: boolean, title: VueI18n.TranslateResult, value: string},{link: boolean, title: VueI18n.TranslateResult, value: string},{link: boolean, title: VueI18n.TranslateResult, value: string},null]|*[]}
      */
     completedLotFields() {
-      if (!this.lot.lotBuyed) return [];
-      const buyerInfo = this.lot.lotBuyed[0];
-      const buyer = this.convertToBech32('wq', buyerInfo.buyer);
-      const userWallet = this.convertToBech32('wq', this.lot.userWallet);
-      const lotAmount = new BigNumber(buyerInfo.amount).shiftedBy(-this.balanceData[this.lot.symbol].decimals).toFixed(4, 1);
-      const lotPrice = new BigNumber(buyerInfo.cost).shiftedBy(-18).toFixed(4, 1);
+      const {
+        lotBuyed,
+        symbol,
+        userWallet,
+      } = this.lot;
+
+      if (!lotBuyed && !lotBuyed.length) return [];
+
+      const {
+        cost,
+        buyer,
+        amount,
+        timestamp,
+        transactionHash,
+      } = lotBuyed[0];
+
+      const buyerConverted = this.convertToBech32('wq', buyer);
+      const userWalletConverted = this.convertToBech32('wq', userWallet);
+
+      const lotDecimals = this.balanceData[symbol].decimals;
+      const lotAmount = new BigNumber(amount).shiftedBy(-lotDecimals).toFixed(4, 1);
+      const lotPrice = new BigNumber(cost).shiftedBy(-18).toFixed(4, 1);
+
       return [
         {
           title: this.$t('auction.card.completed.lotBuyer'),
-          value: buyer,
-          link: `${ExplorerUrl}/address/${buyer}`,
+          value: buyerConverted,
+          link: `${ExplorerUrl}/address/${buyerConverted}`,
         },
         {
           title: this.$t('auction.card.completed.lotProvider'),
-          value: userWallet,
-          link: `${ExplorerUrl}/address/${userWallet}`,
+          value: userWalletConverted,
+          link: `${ExplorerUrl}/address/${userWalletConverted}`,
         },
         {
           title: this.$t('auction.card.completed.lotAmount'),
-          value: `${lotAmount} ${this.lot.symbol}`,
+          value: `${lotAmount} ${symbol}`,
           link: false,
         },
         {
           title: this.$t('auction.card.completed.lotPrice'),
-          value: `${lotPrice} WUSD`,
+          value: `${lotPrice} ${TokenSymbols.WUSD}`,
           link: false,
         },
         {
           title: this.$t('auction.card.completed.endPeriod'),
-          value: this.$moment(buyerInfo.timestamp * 1000).format('MMMM Do YYYY, hh:mm a'),
+          value: this.$moment(timestamp * 1000).format('MMMM Do YYYY, hh:mm a'),
           link: false,
         },
         {
           title: this.$t('auction.card.completed.txHash'),
-          value: buyerInfo.transactionHash,
-          link: `${ExplorerUrl}/tx/${buyerInfo.transactionHash}`,
+          value: transactionHash,
+          link: `${ExplorerUrl}/tx/${transactionHash}`,
         },
       ];
     },
@@ -317,18 +334,18 @@ export default {
       font-weight: 500;
       font-size: 16px;
       line-height: 130%;
-      color: #000;
+      color: $black800;
     }
     &-value {
       font-size: 16px;
       line-height: 130%;
-      color: #000;
+      color: $black800;
       opacity: 0.5;
     }
     &-link {
       color: $blue;
       opacity: 1;
-      display: block;
+      width: fit-content;
     }
   }
 }
