@@ -349,12 +349,12 @@ export default {
     }
   }
 }
-@include _767 {
+
+@include _991 {
   .auction-card {
     padding: 10px;
 
     &_completed {
-      grid-template-columns: repeat(3, 1fr);
       grid-gap: 10px;
     }
 
@@ -376,6 +376,12 @@ export default {
         font-size: 13px;
       }
     }
+  }
+}
+
+@include _380 {
+  .auction-card_completed {
+    grid-template-columns: repeat(1, 1fr);
   }
 }
 </style>

@@ -243,6 +243,9 @@ export default {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-gap: 10px;
+      & > button {
+        min-width: 175px;
+      }
     }
     &-sort {
       &-button {
@@ -282,15 +285,6 @@ export default {
     }
   }
 }
-@include _991 {
-  .auction {
-    &__list {
-      &_completed {
-        grid-template-columns: repeat(1, 1fr);
-      }
-    }
-  }
-}
 @include _767 {
   .auction {
     &__title {
@@ -301,14 +295,24 @@ export default {
       &_current {
         grid-template-columns: repeat(1, 1fr);
       }
+      &_completed {
+        grid-template-columns: repeat(1, 1fr);
+      }
     }
     &__topbar {
+      display: grid;
+      grid-template-rows: repeat(2, auto);
+      grid-gap: 10px;
+      justify-content: normal;
+
       &-sort {
         &-button {
+          width: 180px;
           min-width: 130px;
           display: grid;
           grid-gap: 0;
           grid-template-columns: 93px 20px;
+          margin: 0 auto;
         }
       }
     }
@@ -325,6 +329,22 @@ export default {
       &-item {
         padding: 5px;
       }
+    }
+  }
+}
+
+@include _575 {
+  .auction{
+    &__topbar-switcher {
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(2, 1fr);
+      grid-gap: 10px;
+      justify-content: normal;
+    }
+
+    &__topbar-sort > button {
+      width: 100%;
+      margin: 0;
     }
   }
 }
