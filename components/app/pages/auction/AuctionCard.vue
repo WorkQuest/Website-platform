@@ -101,6 +101,7 @@ export default {
     ...mapGetters({
       isAuth: 'user/isAuth',
       walletAddress: 'user/getUserWalletAddress',
+      balanceData: 'wallet/getBalanceData',
     }),
     isCompleted() {
       return this.typeOfLot === LotsStatuses.BOUGHT;
@@ -116,6 +117,8 @@ export default {
       const buyerInfo = this.lot.lotBuyed[0];
       const buyer = this.convertToBech32('wq', buyerInfo.buyer);
       const userWallet = this.convertToBech32('wq', this.lot.userWallet);
+      const lotAmount = new BigNumber(buyerInfo.amount).shiftedBy(-this.balanceData[this.lot.symbol].decimals).toFixed(4, 1);
+      const lotPrice = new BigNumber(buyerInfo.cost).shiftedBy(-18).toFixed(4, 1);
       return [
         {
           title: this.$t('auction.card.completed.lotBuyer'),
@@ -129,12 +132,12 @@ export default {
         },
         {
           title: this.$t('auction.card.completed.lotAmount'),
-          value: `${this.lot._collateral} ${this.lot.symbol}`,
+          value: `${lotAmount} ${this.lot.symbol}`,
           link: false,
         },
         {
           title: this.$t('auction.card.completed.lotPrice'),
-          value: `${this.lot._price} WUSD`,
+          value: `${lotPrice} WUSD`,
           link: false,
         },
         {
