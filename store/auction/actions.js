@@ -8,18 +8,34 @@ import {
  * @property $axiosLiquidator
  */
 export default {
-  async fetchLots({ commit }, { params }) {
+  /**
+   *
+   * @param commit
+   * @param getters
+   * @param params
+   * @property liquidityValue - amount for liquidation
+   * @property priceValue - lot price
+   * @returns {Promise<{msg: string, code: number, data: null, ok: boolean}|{result: *, ok: boolean}>}
+   */
+  async fetchLots({ commit, rootGetters }, { params }) {
     try {
       if (!params.q) delete params.q;
       const { result: { count, auction } } = await this.$axiosLiquidator.$get('/auction/getLots', { params });
+
+      const balanceData = rootGetters['wallet/getBalanceData'];
+
       commit('setLost', {
         count,
-        lots: auction.map((item) => ({
-          ...item,
-          _collateral: Number(new BigNumber(item.collateral).shiftedBy(-12)),
-          _liquidityValue: Number(new BigNumber(item.liquidityValue).shiftedBy(-18).toFixed(4, 1)),
-          _price: Number(new BigNumber(item.price).shiftedBy(-18).toFixed(4, 1)),
-        })),
+        lots: auction.map((item) => {
+          let symbolDecimals = balanceData[item.symbol].decimals;
+          if (symbolDecimals === 6) symbolDecimals += symbolDecimals;
+          return {
+            ...item,
+            _collateral: Number(new BigNumber(item.collateral).shiftedBy(-symbolDecimals)),
+            _liquidityValue: Number(new BigNumber(item.liquidityValue).shiftedBy(-18).toFixed(4, 1)),
+            _price: Number(new BigNumber(item.priceValue).shiftedBy(-18).toFixed(4, 1)),
+          };
+        }),
       });
       return success();
     } catch (e) {
