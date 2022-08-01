@@ -21,7 +21,6 @@ export default {
         [userWalletAddress],
         GetWalletProvider(),
       );
-      console.log('get rewards', res, userWalletAddress);
       commit('setReferralReward', res ? getStyledAmount(res) : 0);
       return true;
     } catch (e) {
