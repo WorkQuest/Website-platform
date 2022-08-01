@@ -197,7 +197,7 @@ export default {
           subtitle: this.$t('registration.emailConfirm'),
         });
       }
-      this.inProgress = true;
+      this.inProgress = false;
     },
   },
 };
