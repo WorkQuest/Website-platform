@@ -7,6 +7,7 @@ export const images = Object.freeze({
   BNB: require('~/assets/img/ui/bnb_yellow.svg'),
   POLYGON: require('~/assets/img/ui/Polygon.svg'),
   USDT: require('~/assets/img/ui/tether-usdt.svg'),
+  USDC: require('~/assets/img/ui/USD-Coin-icon.svg'),
   WUSD: require('~/assets/img/ui/wusd.svg'),
   EMPTY_LOGO: require('~/assets/img/ui/logo_gray.svg'),
 

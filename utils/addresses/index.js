@@ -82,6 +82,7 @@ export const IS_PROD = ['master', 'stage'].includes(process.env.BRANCH);
  * @property WORKNET_WETH_TOKEN
  * @property WORKNET_WUSD_TOKEN
  * @property WORKNET_USDT_TOKEN
+ * @property WORKNET_USDC_TOKEN
  * @property WORKNET_WQ_FACTORY
  * @property WORKNET_VOTING
  */

@@ -177,7 +177,6 @@ import {
 } from '~/utils/enums';
 import { getGasPrice, getWalletAddress } from '~/utils/wallet';
 import { WQRouter } from '~/abi';
-import { IS_PLUG } from '~/utils/locker-data';
 import walletOperations from '~/plugins/mixins/walletOperations';
 
 export default {
