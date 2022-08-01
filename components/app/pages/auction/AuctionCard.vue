@@ -3,7 +3,32 @@
     class="auction-card"
     :class="{'auction-card_completed': isCompleted}"
   >
-    <template v-if="!isCompleted">
+    <template v-if="isCompleted">
+      <div
+        v-for="field in completedLotFields"
+        :key="`${field.title}-${lot.id}`"
+        class="auction-card__field"
+      >
+        <h3 class="auction-card__field-title">
+          {{ field.title }}
+        </h3>
+        <a
+          v-if="field.link"
+          class="auction-card__field-value auction-card__field-link"
+          :href="field.link"
+          target="_blank"
+        >
+          {{ CutTxn(field.value) }}
+        </a>
+        <p
+          v-else
+          class="auction-card__field-value"
+        >
+          {{ field.value }}
+        </p>
+      </div>
+    </template>
+    <template v-else>
       <h3 class="auction-card__price">
         {{
           $t('auction.card.lotAmount', {
@@ -18,7 +43,7 @@
         {{ $t('auction.card.lotPrice', {price: lot._price}) }}
       </p>
       <p class="auction-card__text">
-        {{ $t('auction.card.feeIncluded', { feePercent: 13 }) }}
+        {{ $t('auction.card.feeIncluded', {feePercent: 13}) }}
       </p>
       <p
         v-if="typeOfLot === $options.LotsStatuses.INACTIVE"
@@ -31,9 +56,15 @@
         class="auction-card__duration"
       >
         {{ $t('auction.card.timeLeft') }}
-        {{ auctionDuration.days ? $tc('meta.units.days', DeclOfNum(auctionDuration.days), { count: auctionDuration.days }) : '' }}
-        {{ auctionDuration.hours ? $tc('meta.units.hours', DeclOfNum(auctionDuration.hours ), { count: auctionDuration.hours }) : '' }}
-        {{ auctionDuration.minutes ? $tc('meta.units.minutes', DeclOfNum(auctionDuration.minutes), { count: auctionDuration.minutes }) : '' }}
+        {{
+          auctionDuration.days ? $tc('meta.units.days', DeclOfNum(auctionDuration.days), {count: auctionDuration.days}) : ''
+        }}
+        {{
+          auctionDuration.hours ? $tc('meta.units.hours', DeclOfNum(auctionDuration.hours), {count: auctionDuration.hours}) : ''
+        }}
+        {{
+          auctionDuration.minutes ? $tc('meta.units.minutes', DeclOfNum(auctionDuration.minutes), {count: auctionDuration.minutes}) : ''
+        }}
       </p>
       <base-btn
         data-selector="ACTION-AUCTION"
@@ -41,31 +72,6 @@
       >
         {{ $options.LotsStatuses.INACTIVE === typeOfLot ? $t('meta.btns.init') : $t('meta.btns.buy') }}
       </base-btn>
-    </template>
-    <template v-else>
-      <div
-        v-for="field in completedLotFields"
-        :key="`${field.title}-${lot.id}`"
-        class="auction-card__field"
-      >
-        <h3 class="auction-card__field-title">
-          {{ field.title }}
-        </h3>
-        <p
-          v-if="!field.link"
-          class="auction-card__field-value"
-        >
-          {{ field.value }}
-        </p>
-        <a
-          v-else
-          class="auction-card__field-value auction-card__field-link"
-          :href="field.link"
-          target="_blank"
-        >
-          {{ CutTxn(field.value) }}
-        </a>
-      </div>
     </template>
   </div>
 </template>
@@ -90,7 +96,8 @@ export default {
   props: {
     lot: {
       type: Object,
-      default: () => {},
+      default: () => {
+      },
     },
     typeOfLot: {
       type: Number,
@@ -300,14 +307,17 @@ export default {
   background: #FFFFFF;
   border-radius: 6px;
   padding: 15px;
+
   &:hover {
     @include shadow;
   }
+
   &_completed {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 30px;
   }
+
   &__price {
     color: $blue;
     font-weight: 600;
@@ -315,12 +325,14 @@ export default {
     line-height: 130%;
     margin-bottom: 10px;
   }
+
   &__text {
     color: $black800;
     font-size: 16px;
     line-height: 130%;
     margin-bottom: 10px;
   }
+
   &__duration {
     color: $black600;
     font-weight: 500;
@@ -329,6 +341,7 @@ export default {
     opacity: 0.4;
     margin-bottom: 30px;
   }
+
   &__field {
     &-title {
       font-weight: 500;
@@ -336,12 +349,14 @@ export default {
       line-height: 130%;
       color: $black800;
     }
+
     &-value {
       font-size: 16px;
       line-height: 130%;
       color: $black800;
       opacity: 0.5;
     }
+
     &-link {
       color: $blue;
       opacity: 1;
@@ -361,9 +376,11 @@ export default {
     &__price {
       font-size: 20px;
     }
+
     &__fee-info {
       font-size: 13px;
     }
+
     &__duration {
       font-size: 12px;
     }
@@ -372,6 +389,7 @@ export default {
       &-title {
         font-size: 13px;
       }
+
       &-value {
         font-size: 13px;
       }

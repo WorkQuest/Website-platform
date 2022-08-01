@@ -178,12 +178,12 @@ export default {
 
     goSearch() {
       clearTimeout(this.searchTimeout);
-      console.log('search');// TODO search
+      // TODO search
     },
     goSearchDebounce() {
       clearTimeout(this.searchTimeout);
       this.searchTimeout = setTimeout(() => {
-        console.log('search'); // TODO search
+        // TODO search
       }, 600);
     },
     async changeTimeSorting() {
