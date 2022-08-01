@@ -157,7 +157,15 @@ export default {
       isPasswordVisible: false,
       isPasswordConfirmVisible: false,
       inProgress: false,
+
+      referralId: null,
     };
+  },
+  mounted() {
+    const { ref } = this.$route.query;
+    if (ref) {
+      sessionStorage.setItem('referralId', ref.toString());
+    }
   },
   methods: {
     async signUp() {
@@ -175,6 +183,7 @@ export default {
       };
       const response = await this.$store.dispatch('user/signUp', payload);
       if (response.ok) {
+        sessionStorage.removeItem('referralId');
         sessionStorage.setItem('resend-timer', JSON.stringify({
           timerValue: resendEmailLifetime,
           createdAt: Date.now(),
