@@ -182,11 +182,16 @@ export default {
         return { lotAmount: '', lotPrice: '' };
       }
 
+      // amount - its amount of collateral token on liquidation
+      // endCost - final price of collateral lot
       const { amount, endCost } = auctionStarted[0];
+
       const lotDecimals = this.balanceData[symbol].decimals;
+      const shiftedAmount = new BigNumber(amount).shiftedBy(+(lotDecimals === 6 ? lotDecimals * 2 : 0)).toString();
+      const lotPrice = new BigNumber(shiftedAmount).multipliedBy(endCost).shiftedBy(-18).toFixed(0);
       return {
         lotAmount: new BigNumber(amount).shiftedBy(-lotDecimals).toFixed(4, 1),
-        lotPrice: new BigNumber(endCost).shiftedBy(-18).toFixed(4, 1),
+        lotPrice: new BigNumber(lotPrice).shiftedBy(-lotDecimals).toFixed(4, 1),
       };
     },
     url() {
@@ -250,7 +255,8 @@ export default {
         }
 
         method = 'startAuction';
-        data.push(new BigNumber(this.lot.liquidityValue).shiftedBy(-12).toFixed(0));
+        const lotDecimals = this.balanceData[this.lot.symbol].decimals;
+        data.push(new BigNumber(this.lot.liquidityValue).shiftedBy(lotDecimals === 6 ? -12 : 0).toFixed(0));
 
         await this.ShowTxReceipt({
           title: this.$t('modals.updatePrices'),

@@ -209,6 +209,7 @@ export default {
     selCurrencyID: {
       async handler() {
         this.clearForm();
+        await this.fetchMinRatio({ currency: this.currentCurrency });
         await this.getCollateralData();
         this.setActualCollateralPercent();
       },

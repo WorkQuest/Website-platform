@@ -49,22 +49,27 @@ export default {
    * @param commit
    * @param address
    * @param params
+   * @param rootGetters
    * @property $axiosLiquidator - axios instance for liquidator
    * @returns {Promise<{msg: string, code: number, data: null, ok: boolean}|{result: *, ok: boolean}>}
    */
 
-  async fetchCollaterals({ commit }, { address, params }) {
+  async fetchCollaterals({ commit, rootGetters }, { address, params }) {
     try {
-      const { ok, result: { collateral, count } } = await this.$axiosLiquidator.$get(`/user/collateral/${address}`, { params });
+      const { result: { collateral, count } } = await this.$axiosLiquidator.$get(`/user/collateral/${address}`, { params });
+      const balanceData = rootGetters['wallet/getBalanceData'];
       // TODO get decimals by symbol
       commit('setCollaterals', {
-        collaterals: collateral.map((item) => ({
-          ...item,
-          _price: Number(new BigNumber(item.price).shiftedBy(-18).toFixed(4, 1)),
-          lockedAmount: Number(new BigNumber(item.collateral).shiftedBy(-6).toFixed(4, 1)),
-          colRatio: new BigNumber(item.deposit).shiftedBy(-18).multipliedBy(100).toString(),
-          wusdGenerated: Number(new BigNumber(item.debt).shiftedBy(-18).toFixed(4, 1)),
-        })),
+        collaterals: collateral.map((item) => {
+          const symbolDecimals = balanceData[item.symbol].decimals;
+          return {
+            ...item,
+            _price: Number(new BigNumber(item.price).shiftedBy(-18).toFixed(4, 1)),
+            lockedAmount: Number(new BigNumber(item.collateral).shiftedBy(-symbolDecimals).toFixed(4, 1)),
+            colRatio: Number(new BigNumber(item.deposit).shiftedBy(-18).multipliedBy(100).toFixed(4, 1)),
+            wusdGenerated: Number(new BigNumber(item.debt).shiftedBy(-18).toFixed(4, 1)),
+          };
+        }),
         count,
       });
       return success();
@@ -85,7 +90,7 @@ export default {
    * @param params
    * @returns {Promise<{msg: string, code: number, data: null, ok: boolean}|{result: *, ok: boolean}>}
    */
-  async fetchCollateralInfo({ commit, getters }, { address, collateralId, params }) {
+  async fetchCollateralInfo({ commit, getters, rootGetters }, { address, collateralId, params }) {
     try {
       const {
         ok, result: {
@@ -113,14 +118,16 @@ export default {
         count: rows.length,
       });
 
+      const balanceData = rootGetters['wallet/getBalanceData'];
       const collaterals = JSON.parse(JSON.stringify(getters.getCollaterals));
       collaterals.some((col) => {
         if (col.id === id) {
           col.price = price;
           col._price = Number(new BigNumber(price).shiftedBy(-18).toFixed(4, 1));
 
+          const symbolDecimals = balanceData[col.symbol].decimals;
           col.collateral = collateral;
-          col.lockedAmount = Number(new BigNumber(collateral).shiftedBy(-6).toFixed(4, 1));
+          col.lockedAmount = Number(new BigNumber(collateral).shiftedBy(-symbolDecimals).toFixed(4, 1));
 
           col.deposit = deposit;
           col.colRatio = new BigNumber(deposit).shiftedBy(-18).multipliedBy(100).toString();
