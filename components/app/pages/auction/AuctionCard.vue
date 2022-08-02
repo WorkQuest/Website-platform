@@ -33,14 +33,20 @@
         {{
           $t('auction.card.lotAmount', {
             amount: $options.LotsStatuses.STARTED === typeOfLot
-              ? lot._collateral
+              ? startedLotFields.lotAmount
               : lot._liquidityValue,
             symbol: lot.symbol
           })
         }}
       </h3>
       <p class="auction-card__text">
-        {{ $t('auction.card.lotPrice', {price: lot._price}) }}
+        {{
+          $t('auction.card.lotPrice', {
+            price: $options.LotsStatuses.STARTED === typeOfLot
+              ? startedLotFields.lotPrice
+              : lot._price
+          })
+        }}
       </p>
       <p class="auction-card__text">
         {{ $t('auction.card.feeIncluded', {feePercent: 13}) }}
@@ -169,6 +175,19 @@ export default {
           link: `${ExplorerUrl}/tx/${transactionHash}`,
         },
       ];
+    },
+    startedLotFields() {
+      const { auctionStarted, symbol } = this.lot;
+      if (this.typeOfLot !== LotsStatuses.STARTED || !(auctionStarted && auctionStarted.length)) {
+        return { lotAmount: '', lotPrice: '' };
+      }
+
+      const { amount, endCost } = auctionStarted[0];
+      const lotDecimals = this.balanceData[symbol].decimals;
+      return {
+        lotAmount: new BigNumber(amount).shiftedBy(-lotDecimals).toFixed(4, 1),
+        lotPrice: new BigNumber(endCost).shiftedBy(-18).toFixed(4, 1),
+      };
     },
     url() {
       return `${ExplorerUrl}/address/${this.lot.userWallet}`;

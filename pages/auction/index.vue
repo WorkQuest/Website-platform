@@ -114,7 +114,7 @@ const LotsStatuses = {
   CANCELED: 3,
 };
 
-const LIMIT = 10;
+const LIMIT = 12;
 
 export default {
   name: 'Auction',
@@ -190,8 +190,10 @@ export default {
       this.params['sort[createdAt]'] = this.params['sort[createdAt]'] === 'asc' ? 'desc' : 'asc';
       await this.fetchLots({ params: this.params });
     },
-    setPage(value) {
+    async setPage(value) {
       this.currentPage = value;
+      this.params.offset = LIMIT * (value - 1);
+      await this.fetchLots({ params: this.params });
     },
   },
 };
@@ -273,7 +275,7 @@ export default {
   }
 }
 .icon {
-  color:$black800;
+  color: $black800;
   font-size: 24px;
 }
 @include _1099 {
@@ -291,13 +293,8 @@ export default {
       margin-top: 30px;
       margin-bottom: 20px;
     }
-    &__list {
-      &_current {
-        grid-template-columns: repeat(1, 1fr);
-      }
-      &_completed {
-        grid-template-columns: repeat(1, 1fr);
-      }
+    &__list_completed {
+      grid-template-columns: repeat(1, 1fr);
     }
     &__topbar {
       display: grid;
@@ -345,6 +342,10 @@ export default {
     &__topbar-sort > button {
       width: 100%;
       margin: 0;
+    }
+
+    &__list_current {
+      grid-template-columns: repeat(1, 1fr);
     }
   }
 }
