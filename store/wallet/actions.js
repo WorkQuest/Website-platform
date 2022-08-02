@@ -477,7 +477,6 @@ export default {
 
       const userId = rootGetters['user/getUserData'].id;
       const accountAddress = getWalletAddress();
-      console.log(provider, accountAddress);
       const nonce = await provider.eth.getTransactionCount(accountAddress);
       const bridgeInstance = new provider.eth.Contract(BuyWQT, bridgeAddress);
       const value = new BigNumber(amount).shiftedBy(Number(decimals)).toString();
