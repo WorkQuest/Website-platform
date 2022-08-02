@@ -364,19 +364,20 @@ export default {
         [...Object.keys(this.currentPrices).map((key) => this.currentPrices[key]), prices, symbols],
       );
 
-      if (gas && gasPrice) {
-        const { ok } = await this.$store.dispatch('crediting/setTokenPrices', {
-          ...this.currentPrices,
-          timestamp: nonce,
-          gasPrice,
-          symbols,
-          prices,
-          gas,
-        });
-        return ok;
+      if (!gas || !gasPrice) {
+        this.ShowToast(this.$t('toasts.errorGetFee'), this.$t('toasts.error'));
+        return false;
       }
 
-      return false;
+      const { ok } = await this.$store.dispatch('crediting/setTokenPrices', {
+        ...this.currentPrices,
+        timestamp: nonce,
+        gasPrice,
+        symbols,
+        prices,
+        gas,
+      });
+      return ok;
     },
     handleClickFAQ(index) {
       if (this.indexFAQ.includes(index)) {

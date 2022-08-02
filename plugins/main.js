@@ -291,27 +291,26 @@ Vue.mixin({
     async ShowTxReceipt({
       from, to, amount, currency, fee, title,
     }) {
+      const fields = {};
+      if (from) fields.from = { name: this.$t('meta.fromBig'), value: from };
+      if (to) fields.to = { name: this.$t('meta.toBig'), value: to };
+      if (amount !== undefined) fields.amount = { name: this.$t('modals.amount'), value: amount, symbol: currency };
+      if (fee?.gasPrice && fee?.gas) {
+        fields.fee = {
+          name: this.$t('wallet.table.trxFee'),
+          value: new BigNumber(fee.gasPrice).multipliedBy(fee.gas).shiftedBy(-18).toFixed(),
+          symbol: TokenSymbols.WQT,
+        };
+      }
+
       return new Promise(async (resolve, reject) => {
         this.ShowModal({
           key: modals.transactionReceipt,
           title: title || this.$t('modals.takeWUSD'),
-          fields: {
-            from: { name: this.$t('meta.fromBig'), value: from },
-            to: { name: this.$t('meta.toBig'), value: to },
-            amount: {
-              name: this.$t('modals.amount'),
-              value: amount,
-              symbol: currency,
-            },
-            fee: {
-              name: this.$t('wallet.table.trxFee'),
-              value: new BigNumber(fee.gasPrice).multipliedBy(fee.gas).shiftedBy(-18).toFixed(),
-              symbol: TokenSymbols.WQT,
-            },
-          },
+          fields,
           isDontOffLoader: true,
           submitMethod: async () => await resolve(),
-          cancelMethod: async () => await reject(new Error('Cancel')),
+          cancelMethod: async () => await reject(),
         });
       });
     },
