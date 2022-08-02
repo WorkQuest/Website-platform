@@ -1430,7 +1430,7 @@
   },
   "notifications": {
     "newQuestForSpecialization": "New quest for selected specializations",
-    "QuestEditedOnContract": "Quest edited on contract",
+    "QuestEditedOnContract": "Quest price is edited",
     "title": "Notifications",
     "OpenDispute": "বিতর্ক শুরু করুন",
     "openDispute": "বিতর্ক শুরু করুন",
@@ -1463,7 +1463,8 @@
     "questInvitationSentToWorker": "Quest invitation sent",
     "questWorkInProgress": "Quest is started",
     "questWorkSentForReview": "Work sent for review",
-    "questCompleted": "Quest completed"
+    "questCompleted": "Quest completed",
+    "PaidReferral": "New referral reward"
   },
   "wallet": {
     "frozen": "Frozen balance",

@@ -1430,7 +1430,7 @@
   },
   "notifications": {
     "newQuestForSpecialization": "New quest for selected specializations",
-    "QuestEditedOnContract": "Quest edited on contract",
+    "QuestEditedOnContract": "Quest price is edited",
     "title": "Notifications",
     "OpenDispute": "Opened dispute",
     "openDispute": "Opened dispute",

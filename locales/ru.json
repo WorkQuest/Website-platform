@@ -1431,6 +1431,7 @@
   "notifications": {
     "newQuestForSpecialization": "Новый квест по выбранным специализациям",
     "QuestEditedOnContract": "Квест отредактирован на контракте",
+    "QuestEditedOnContract": "Цена квеста была изменена",
     "title": "Уведомления",
     "invite": "Приглашаем вас завершить квест",
     "OpenDispute": "Открыт спор",
@@ -1463,7 +1464,8 @@
     "questInvitationSentToWorker": "Отправлено приглашение на квест",
     "questWorkInProgress": "Квест стартовал",
     "questWorkSentForReview": "Работа отправлена на проверку",
-    "questCompleted": "Квест завершен"
+    "questCompleted": "Квест завершен",
+    "PaidReferral": "Новое реферальное вознаграждение"
   },
   "wallet": {
     "addressType": "Тип адреса",
