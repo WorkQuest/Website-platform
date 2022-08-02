@@ -996,7 +996,7 @@ export default {
 
     &__content {
       border-radius: 6px 0 0 6px;
-      box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
+      @include shadow;
 
       &_per {
         height: 244px;

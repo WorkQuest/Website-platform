@@ -105,7 +105,8 @@
       "take": "Take",
       "swap": "Swap",
       "generate": "Generate",
-      "remove": "Remove"
+      "remove": "Remove",
+      "init": "Init"
     },
     "placeholders": {
       "default": "",
@@ -1034,7 +1035,9 @@
       "withdrawInfo": "Withdrawal info",
       "downloadApp": "Скачайте приложение",
       "downloadWallet": "Download Wallet App",
-      "sendPrivateMessage": "Отправить личное сообщение"
+      "sendPrivateMessage": "Отправить личное сообщение",
+      "initializeLot": "Initialize lot",
+      "buyLot": "Buy lot"
     },
     "errors": {
       "errorQuests": "Error with quests",
@@ -1098,6 +1101,7 @@
     "smallDescriptionForLoan": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     "successBuyWUSD": "Successfully purchased WUSD",
     "setTokenPrice": "Setting up {token} price",
+    "updatePrices": "Update prices",
     "approveRouter": "Approve {token} to Router",
     "takeWUSD": "Buy your WUSD",
     "waitRoleCooldown": "You cannot change roles more than once a month. You can change role after {date} {time}",
@@ -1897,20 +1901,22 @@
       "button": "Search auction"
     },
     "tabs": {
+      "inactive": "Inactive",
       "current": "Current",
       "completed": "Completed"
     },
     "card": {
-      "feeIncluded": "{feePercent}% commission already in the price",
-      "feeNotIncluded": "{feePercent}% commission not included",
-      "auctionDuration": "Auction duration",
+      "lotAmount": "Lot amount: {amount} {symbol}",
+      "lotPrice": "Lot price: {price} WUSD",
+      "feeIncluded": "including liquidation fees ({feePercent}%)",
+      "timeLeft": "Auction time left:",
       "completed": {
-        "type": "EVEN TYPE",
-        "sender": "SENDER",
-        "lotSize": "LOT SIZE",
-        "price": "MKR PRICE",
-        "timestamp": "TIMESTAMP",
-        "txHash": "TX"
+        "lotAmount": "Lot amount:",
+        "lotPrice": "Lot price:",
+        "lotBuyer": "Lot buyer:",
+        "lotProvider": "Lot provider",
+        "endPeriod": "Auction ending period:",
+        "txHash": "TxHash:"
       }
     }
   },
