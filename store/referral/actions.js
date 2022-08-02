@@ -115,7 +115,6 @@ export default {
   }, userAddress) {
     try {
       await this.$wsNotifs.subscribe(`/notifications/referral/${userAddress}`, async (msg) => {
-        console.log('subscribeToReferralEvents massage', msg);
         const { data: dataMessage } = msg;
         const paidEventsList = JSON.parse(JSON.stringify(getters.getPaidEventsList));
         const referralsList = JSON.parse(JSON.stringify(getters.getReferralsList));
