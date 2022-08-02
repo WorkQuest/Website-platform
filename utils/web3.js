@@ -90,7 +90,7 @@ export const addedNetwork = async (chain) => {
       method: 'wallet_addEthereumChain',
       params: [networkParams],
     });
-    return { ok: true };
+    return success();
   } catch (addError) {
     showToast('Added chain error:', `${addError.message}`, 'danger');
     return error(500, 'added chain error', addError);
@@ -129,7 +129,7 @@ export const goToChain = async (chain) => {
 export const fetchContractData = async (_method, _abi, _address, _params, _provider = web3) => {
   try {
     if (!_provider) {
-      console.error('_provider is undefined');
+      console.error('fetch contract data: _provider is undefined');
       return false;
     }
     const inst = new _provider.eth.Contract(_abi, _address);

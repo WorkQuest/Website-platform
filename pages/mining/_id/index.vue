@@ -12,24 +12,24 @@
           </template>
           {{ $t('meta.btns.back') }}
         </base-btn>
-        <base-btn
-          class="mining-page__connect"
-          mode="light"
-          :data-selector="!isConnected ? 'CONNECT-WALLET' : 'DISCONNECT-FROM-WALLET'"
-          @click="toggleConnection"
-        >
-          {{ !isConnected ? $t('mining.connectWallet') : $t('meta.disconnect') }}
-        </base-btn>
+        <div class="mining-page__wallet">
+          <base-btn
+            class="mining-page__connect"
+            mode="light"
+            :data-selector="!isConnected ? 'CONNECT-WALLET' : 'DISCONNECT-FROM-WALLET'"
+            :disabled="connectionType !== $options.ConnectionTypes.WEB3 || isConnectingWeb3"
+            @click="toggleConnection"
+          >
+            {{ connectionButtonText }}
+          </base-btn>
+        </div>
       </div>
-      <p
-        v-if="isConnected"
-        class="mining-page__address"
-      >
-        {{ $t('info.yourWallet') }}
-        <span>
-          {{ CutTxn(account.address, 5, 5) }}
-        </span>
+      <p class="mining-page__address">
+        <template v-if="styledWalletAddress">
+          {{ $t('info.yourWallet') }} {{ styledWalletAddress }}
+        </template>
       </p>
+      <wallet-switcher class="mining-page__switcher" />
       <div class="mining-page__content">
         <div
           class="info-block__grid"
@@ -131,8 +131,8 @@
               <base-btn
                 data-selector="STAKE"
                 class="btn_bl"
-                :disabled="!isConnected"
-                @click="openModalStaking()"
+                :disabled="isDisableButtons"
+                @click="openModalStaking"
               >
                 {{ $t('meta.btns.stake') }}
               </base-btn>
@@ -140,8 +140,8 @@
                 data-selector="UNSTAKE"
                 class="btn_bl"
                 mode="outline"
-                :disabled="!isConnected"
-                @click="openModalUnstaking()"
+                :disabled="isDisableButtons"
+                @click="openModalUnstaking"
               >
                 {{ $t('meta.btns.unstake') }}
               </base-btn>
@@ -149,8 +149,8 @@
                 data-selector="CLAIM-REWARDS"
                 mode="outline"
                 class="bnt__claim"
-                :disabled="!isConnected"
-                @click="claimRewards()"
+                :disabled="isDisableButtons"
+                @click="claimRewards"
               >
                 {{ $t('meta.claimRewards') }}
               </base-btn>
@@ -245,29 +245,42 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
+import WalletSwitcher from '~/components/app/WalletSwitcher';
 import modals from '~/store/modals/modals';
 import {
   Path,
   Chains,
   Layout,
-  TokenSymbols,
+  TokenSymbols, ConnectionTypes,
 } from '~/utils/enums';
-import { getChainIdByChain } from '~/utils/web3';
+import {
+  fetchContractData,
+  getChainIdByChain, GetWeb3Provider, success,
+} from '~/utils/web3';
 import { Pool, PoolURL } from '~/utils/сonstants/mining';
 import { images } from '~/utils/images';
 import { LoaderStatusLocales } from '~/utils/loader';
+import { GetWalletProvider } from '~/utils/wallet';
+import { SwapAddresses } from '~/utils/сonstants/bridge';
+import walletOperations from '~/plugins/mixins/walletOperations';
+import { ERC20, WQTExchange } from '~/abi';
+import ENV from '~/utils/addresses';
 
 export default {
   name: 'Pool',
   layout({ store }) {
     return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
   },
+  components: {
+    WalletSwitcher,
+    chart: () => import('./graphics_data'),
+  },
+  mixins: [walletOperations],
   middleware: 'mining',
   Path,
   Chains,
-  components: {
-    chart: () => import('./graphics_data'),
-  },
+  ConnectionTypes,
   data() {
     return {
       page: 1,
@@ -275,6 +288,8 @@ export default {
       isUpdatingData: false,
       chain: null,
       metamaskStatus: localStorage.getItem('metamaskStatus'),
+
+      isConnectingWeb3: false,
     };
   },
   computed: {
@@ -287,13 +302,49 @@ export default {
       miningChartData: 'mining/getChartData',
       totalLiquidityUSD: 'mining/getTotalLiquidityUSD',
 
-      account: 'web3/getAccount',
+      web3Account: 'web3/getAccount',
       isConnected: 'web3/isConnected',
       isShowModal: 'modals/getIsShow',
 
+      connectionType: 'web3/getConnectionType',
+      selectedNetwork: 'wallet/getSelectedNetwork',
+      userWalletAddress: 'user/getUserWalletAddress',
+
       isAuth: 'user/isAuth',
     }),
+    explorerUrl() {
+      return SwapAddresses.get(this.selectedNetwork).explorer;
+    },
+    nativeTokenSymbol() {
+      return SwapAddresses.get(this.selectedNetwork).nativeSymbol;
+    },
+    isDisableButtons() {
+      if (this.connectionType === ConnectionTypes.WEB3) return !this.isConnected;
+      return this.selectedNetwork !== this.chain;
+    },
+    connectionButtonText() {
+      if (this.connectionType === ConnectionTypes.WQ_WALLET) return this.$t('meta.connected');
+      return !this.isConnected ? this.$t('mining.connectWallet') : this.$t('meta.disconnect');
+    },
+    getProviderByConnection() {
+      if (this.connectionType === ConnectionTypes.WEB3) return GetWeb3Provider;
+      return GetWalletProvider;
+    },
+    account() {
+      if (this.connectionType === ConnectionTypes.WEB3) return this.web3Account;
+      return { address: this.userWalletAddress };
+    },
+    styledWalletAddress() {
+      let buff = '';
+      if (this.connectionType === ConnectionTypes.WQ_WALLET) {
+        buff = this.userWalletAddress;
+      } else if (this.isConnected && this.connectionType === ConnectionTypes.WEB3) {
+        buff = this.account.address;
+      }
+      return this.CutTxn(buff, 5, 5);
+    },
     isWrongChain() {
+      if (this.connectionType === ConnectionTypes.WQ_WALLET) return false;
       return this.account?.netId !== +getChainIdByChain(this.chain);
     },
     tableHeaders() {
@@ -371,7 +422,7 @@ export default {
           dataSelector: 'OPEN-SWAP-TOKENS-WQT',
           title: 'mining.swapTokens.title',
           link: '',
-          disabled: this.metamaskStatus === 'notInstalled' || !this.isConnected,
+          disabled: this.isDisableButtons || (this.connectionType === ConnectionTypes.WEB3 && this.metamaskStatus === 'notInstalled'),
           action: this.openSwapTokens,
           mode: 'outline',
         },
@@ -385,16 +436,31 @@ export default {
         },
       ];
     },
+    loaderStatusText() {
+      return this.connectionType === ConnectionTypes.WEB3
+        ? LoaderStatusLocales.waitingForTxExternalApp
+        : LoaderStatusLocales.pleaseWaitTx;
+    },
   },
   watch: {
+    async connectionType() {
+      await this.resetPoolData();
+      await this.connectWallet();
+    },
+
+    // Web3 wallet connection & chain handler
     async isConnected(status) {
+      if (this.connectionType === ConnectionTypes.WQ_WALLET) return;
       if (!status) {
         await this.resetPoolData();
+        this.disconnectWallet();
         if (this.isShowModal) this.CloseModal();
         return;
       }
       if (this.isWrongChain) {
-        if (await this.checkNetwork(this.chain) === false) return;
+        if (await this.checkNetwork(this.chain) === false) {
+          return;
+        }
       }
       await this.tokensDataUpdate();
     },
@@ -440,15 +506,16 @@ export default {
     await this.fetchSwaps({ pool, params: { limit, offset: 0 } });
     this.SetLoader(false);
 
-    await this.connectWallet({ chain: this.chain, isReconnection: this.isConnected });
+    await this.connectWallet();
   },
   async beforeDestroy() {
     const preventDisconnect = sessionStorage.getItem('preventDisconnectWeb3');
     sessionStorage.removeItem('preventDisconnectWeb3');
     if (preventDisconnect) return;
 
-    await this.disconnectWallet();
+    this.disconnectWallet();
     await Promise.all([
+      this.$store.dispatch('wallet/connectToProvider', Chains.WORKNET),
       this.resetPoolData(),
       this.unsubscribeWS(),
       this.$store.commit('mining/setSwaps', []),
@@ -459,7 +526,7 @@ export default {
   methods: {
     ...mapActions({
       goToChain: 'web3/goToChain',
-      connectWallet: 'web3/connect',
+      connectWeb3Wallet: 'web3/connect',
       disconnectWallet: 'web3/disconnect',
 
       subscribeWS: 'mining/subscribeWS',
@@ -476,13 +543,26 @@ export default {
       unStakeTokens: 'mining/unStake',
       swapOldTokens: 'mining/swapOldTokens',
     }),
-
-    async toggleConnection() {
-      const { isConnected, chain } = this;
-      if (isConnected) await this.disconnectWallet();
-      else await this.connectWallet({ chain });
+    async connectWallet() {
+      if (this.connectionType === ConnectionTypes.WEB3 && !this.isConnected) {
+        await this.connectWeb3Wallet({ isReconnection: this.isConnected });
+      } else {
+        this.disconnectWallet();
+        if (this.connectionType === ConnectionTypes.WQ_WALLET) {
+          await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+          await this.$store.dispatch('wallet/connectToProvider', this.chain);
+          await this.tokensDataUpdate();
+        }
+      }
     },
-
+    async toggleConnection() {
+      if (this.isConnectingWeb3) return;
+      this.isConnectingWeb3 = true;
+      const { isConnected } = this;
+      if (isConnected) this.disconnectWallet();
+      else await this.connectWallet();
+      this.isConnectingWeb3 = false;
+    },
     checkChain() {
       if (!this.account?.netId) {
         this.CloseModal();
@@ -491,15 +571,22 @@ export default {
       }
       return true;
     },
+
+    /**
+     * Check web3 connection and chain
+     * @param chain
+     * @returns {Promise<boolean>}
+     */
     async checkNetwork(chain) {
       if (!this.isConnected) {
-        await this.connectWallet({ chain });
+        await this.connectWallet();
         if (!this.isConnected) return false;
       }
 
       const isMetaMask = localStorage.getItem('isMetaMask') === 'true';
       const isCorrectNetwork = +getChainIdByChain(chain) === +this.account.netId;
       if (!isCorrectNetwork && isMetaMask) {
+        this.ShowToast(this.$t('modals.errors.errorNetwork', { network: this.chain }), ' ');
         const { ok } = await this.goToChain({ chain });
         return ok;
       }
@@ -535,96 +622,262 @@ export default {
       };
     },
 
+    // Checking connection & chain by connectionType
+    async checkConnection() {
+      if (this.isDisableButtons) return false;
+      if (this.connectionType === ConnectionTypes.WEB3) {
+        if (this.isWrongChain) {
+          await this.checkNetwork(this.chain);
+          return false;
+        }
+      }
+      return true;
+    },
+
     async tokensDataUpdate() {
+      if (this.connectionType === ConnectionTypes.WEB3 && !this.isConnected) return;
+      if (this.connectionType === ConnectionTypes.WQ_WALLET && this.selectedNetwork !== this.chain) return;
+
       this.isUpdatingData = true;
-      await this.fetchPoolData({ chain: this.chain });
+      await this.fetchPoolData({
+        chain: this.chain,
+        web3Provider: this.getProviderByConnection(),
+        accountAddress: this.account.address,
+      });
       if (+this.staked > 0) await this.calcProfit();
       this.isUpdatingData = false;
     },
 
     async openSwapTokens() {
-      if (await this.checkNetwork(this.chain)) {
-        this.ShowModal({
-          key: modals.swapTokens,
-          submit: async (amount, decimals) => {
+      if (await this.checkConnection() === false) return;
+
+      const web3Provider = this.getProviderByConnection();
+      const accountAddress = this.account.address;
+
+      const swap = async (weiAmount) => {
+        this.SetLoader({ isLoading: true, statusText: this.loaderStatusText });
+        this.CloseModal();
+
+        const { ok, msg, result } = await this.swapOldTokens({
+          weiAmount,
+          accountAddress,
+          web3Provider,
+        });
+        if (ok) {
+          this.ShowModalSuccess({
+            link: `${this.explorerUrl}/tx/${result.transactionHash}`,
+          });
+        } else this.ShowModalFail({ subtitle: msg });
+
+        this.SetLoader(false);
+      };
+
+      this.SetLoader(true);
+      const token = ENV.BSC_OLD_WQT_TOKEN;
+      const [oldBalance, oldDecimals, oldSymbol] = await Promise.all([
+        fetchContractData('balanceOf', ERC20, token, [accountAddress], web3Provider),
+        fetchContractData('decimals', ERC20, token, [], web3Provider),
+        fetchContractData('symbol', ERC20, token, [], web3Provider),
+      ]);
+      const oldTokenData = {
+        balance: oldBalance,
+        decimals: oldDecimals,
+        symbol: oldSymbol,
+      };
+      this.SetLoader(false);
+
+      this.ShowModal({
+        key: modals.swapTokens,
+        oldTokenData,
+        submit: async (amount, decimals) => {
+          const weiAmount = new BigNumber(amount).shiftedBy(+decimals).toString();
+          // Web3 swap old tokens
+          if (this.connectionType === ConnectionTypes.WEB3) {
             if (!this.checkChain()) return;
-            this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
-            this.CloseModal();
+            await swap(weiAmount);
+            return;
+          }
 
-            const { ok, msg } = await this.swapOldTokens({ amount, decimals });
+          // WQWallet swap old tokens
+          await this.MakeApprove({
+            tokenAddress: ENV.BSC_OLD_WQT_TOKEN,
+            contractAddress: ENV.BSC_WQT_EXCHANGE,
+            amount,
+            decimals,
+            symbol: TokenSymbols.WQT,
+            nativeTokenSymbol: this.nativeTokenSymbol,
+            isHexUserWalletAddress: true,
+          }).then(async () => {
+            this.SetLoader(true);
 
-            if (ok) this.ShowModalSuccess({});
-            else this.ShowModalFail({ subtitle: msg });
+            const [feeRes] = await Promise.all([
+              this.$store.dispatch('wallet/getContractFeeData', {
+                method: 'swap',
+                abi: WQTExchange,
+                contractAddress: ENV.BSC_WQT_EXCHANGE,
+                data: [weiAmount],
+              }),
+              this.$store.dispatch('wallet/getBalance'),
+            ]);
 
             this.SetLoader(false);
-          },
-        });
-      }
+            if (!feeRes.ok) {
+              return;
+            }
+
+            this.ShowModal({
+              key: modals.transactionReceipt,
+              title: this.$t('modals.titles.swap'),
+              fields: {
+                from: { name: this.$t('meta.fromBig'), value: accountAddress },
+                to: { name: this.$t('meta.toBig'), value: ENV.BSC_WQT_EXCHANGE },
+                amountOfTokens: { name: this.$t('modals.amount'), value: amount, symbol: TokenSymbols.WQT },
+                fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: this.nativeTokenSymbol },
+              },
+              submitMethod: async () => await swap(weiAmount),
+            });
+          });
+        },
+      });
     },
 
     async openModalStaking() {
-      const needToFetch = this.isWrongChain;
-      if (await this.checkNetwork(this.chain)) {
-        if (needToFetch) {
-          this.SetLoader(true);
-          await this.tokensDataUpdate();
-          this.SetLoader(false);
-        }
-        this.ShowModal({
-          key: modals.valueSend,
-          title: this.$t('modals.titles.stake'),
-          maxValue: this.balance,
-          submit: async (amount) => {
-            if (!this.checkChain()) return;
-            this.CloseModal();
+      if (await this.checkConnection() === false) return;
 
-            this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
-            const { ok, msg } = await this.stakeTokens({
+      this.ShowModal({
+        key: modals.valueSend,
+        title: this.$t('modals.titles.stake'),
+        maxValue: this.balance,
+        submit: async (amount) => {
+          const stake = async () => {
+            this.SetLoader({ isLoading: true, statusText: this.loaderStatusText });
+            const { ok, msg, result } = await this.stakeTokens({
               amount,
               chain: this.chain,
+              accountAddress: this.account.address,
+              web3Provider: this.getProviderByConnection(),
             });
             this.SetLoader(false);
 
             if (ok) {
-              this.ShowModalSuccess({});
+              this.ShowModalSuccess({
+                link: `${this.explorerUrl}/tx/${result.transactionHash}`,
+              });
               await this.tokensDataUpdate();
             } else this.ShowModalFail({ subtitle: msg });
-          },
-        });
-      }
+          };
+
+          this.CloseModal();
+
+          // Web3 staking
+          if (this.connectionType === ConnectionTypes.WEB3) {
+            if (!this.checkChain()) return;
+            await stake();
+            return;
+          }
+
+          // WQWallet staking
+          this.SetLoader(true);
+          const { stakingAbi, stakingAddress, stakingToken } = Pool.get(this.chain);
+
+          this.MakeApprove({
+            tokenAddress: stakingToken,
+            contractAddress: stakingAddress,
+            amount,
+            symbol: 'LP',
+            nativeTokenSymbol: this.nativeTokenSymbol,
+          }).then(async () => {
+            const [feeRes] = await Promise.all([
+              this.$store.dispatch('wallet/getContractFeeData', {
+                method: 'stake',
+                abi: stakingAbi,
+                contractAddress: stakingAddress,
+                data: [new BigNumber(amount).shiftedBy(18).toString()],
+              }),
+              this.$store.dispatch('wallet/getBalance'),
+            ]);
+            this.SetLoader(false);
+            if (!feeRes.ok) {
+              return;
+            }
+            this.ShowModal({
+              key: modals.transactionReceipt,
+              title: 'Stake',
+              fields: {
+                stake: { name: this.$t('modals.amount'), value: amount, symbol: 'LP' },
+                fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: this.nativeTokenSymbol },
+              },
+              submitMethod: stake,
+            });
+          });
+        },
+      });
     },
 
     async openModalUnstaking() {
-      if (await this.checkNetwork(this.chain)) {
-        this.ShowModal({
-          key: modals.valueSend,
-          title: this.$t('modals.titles.unstake'),
-          maxValue: this.staked,
-          submit: async (amount) => {
-            if (!this.checkChain()) return;
-            this.CloseModal();
+      if (await this.checkConnection() === false) return;
 
-            this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
-            const { ok, msg } = await this.unStakeTokens({
+      this.ShowModal({
+        key: modals.valueSend,
+        title: this.$t('modals.titles.unstake'),
+        maxValue: this.staked,
+        submit: async (amount) => {
+          const unstake = async () => {
+            this.SetLoader({ isLoading: true, statusText: this.loaderStatusText });
+            const { ok, msg, result } = await this.unStakeTokens({
               amount,
               chain: this.chain,
+              accountAddress: this.account.address,
+              web3Provider: this.getProviderByConnection(),
             });
             this.SetLoader(false);
 
             if (ok) {
-              this.ShowModalSuccess({});
+              this.ShowModalSuccess({ link: `${this.explorerUrl}/tx/${result.transactionHash}` });
               await this.tokensDataUpdate();
             } else this.ShowModalFail({ subtitle: msg });
-          },
-        });
-      }
+          };
+
+          this.CloseModal();
+
+          // Web3 unstake
+          if (this.connectionType === ConnectionTypes.WEB3) {
+            if (!this.checkChain()) return;
+            await unstake();
+            return;
+          }
+
+          // WQWallet unstake
+          this.SetLoader(true);
+          const { stakingAbi, stakingAddress } = Pool.get(this.chain);
+          const [feeRes] = await Promise.all([
+            this.$store.dispatch('wallet/getContractFeeData', {
+              method: 'unstake',
+              abi: stakingAbi,
+              contractAddress: stakingAddress,
+              data: [new BigNumber(amount).shiftedBy(18).toString()],
+            }),
+            this.$store.dispatch('wallet/getBalance'),
+          ]);
+          this.SetLoader(false);
+          if (!feeRes.ok) {
+            return;
+          }
+          this.ShowModal({
+            key: modals.transactionReceipt,
+            title: 'Unstake',
+            fields: {
+              amount: { name: this.$t('modals.amount'), value: amount, symbol: 'LP' },
+              fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: this.nativeTokenSymbol },
+            },
+            submitMethod: unstake,
+          });
+        },
+      });
     },
 
     async claimRewards() {
-      const { chain } = this;
-      if (await this.checkNetwork(chain) === false) {
-        return;
-      }
+      if (await this.checkConnection() === false) return;
 
       if (+this.claim === 0) {
         this.ShowModalFail({
@@ -634,16 +887,56 @@ export default {
         return;
       }
 
-      this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
-      const { ok, msg } = await this.claimTokens({ chain });
+      const { stakingAbi, stakingAddress } = Pool.get(this.chain);
+      const claim = async () => {
+        this.SetLoader({ isLoading: true, statusText: this.loaderStatusText });
+        const { ok, msg, result } = await this.claimTokens({
+          stakingAbi,
+          stakingAddress,
+          web3Provider: this.getProviderByConnection(),
+          accountAddress: this.account.address,
+        });
+        this.SetLoader(false);
+
+        if (ok) {
+          this.ShowModalSuccess({
+            link: `${this.explorerUrl}/tx/${result.transactionHash}`,
+          });
+          await this.tokensDataUpdate();
+        } else this.ShowModalFail({ subtitle: msg });
+      };
+
+      // Web3 claiming
+      if (this.connectionType === ConnectionTypes.WEB3) {
+        await claim();
+        return;
+      }
+
+      // WQWallet claiming
+      this.SetLoader(true);
+      const [feeRes] = await Promise.all([
+        this.$store.dispatch('wallet/getContractFeeData', {
+          method: 'claim',
+          abi: stakingAbi,
+          contractAddress: stakingAddress,
+        }),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
       this.SetLoader(false);
-
-      if (ok) {
-        this.ShowModalSuccess({});
-        await this.tokensDataUpdate();
-      } else this.ShowModalFail({ subtitle: msg });
+      if (!feeRes.ok) {
+        this.ShowToast(feeRes.msg, 'Claim error');
+        return;
+      }
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        title: this.$t('meta.claimRewards'),
+        fields: {
+          rewards: { name: this.$t('modals.amount'), value: this.claim, symbol: TokenSymbols.WQT },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: this.nativeTokenSymbol },
+        },
+        submitMethod: claim,
+      });
     },
-
   },
 };
 </script>
@@ -672,6 +965,13 @@ export default {
     gap: 15px;
     padding: 10px;
     box-sizing: border-box;
+  }
+
+  &__wallet {
+    display: flex;
+    & > div {
+      margin-right: 20px;
+    }
   }
 
   &__header {
@@ -873,6 +1173,7 @@ export default {
   }
 
   &__address {
+    height: 20px;
     color: $black200;
     font-weight: 400;
     font-size: 16px;
@@ -923,10 +1224,9 @@ export default {
 
           .info-block__btns {
             display: grid;
-            grid-column-start: 2;
+            grid-column-start: 1;
             grid-column-end: 3;
             grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: unset;
           }
         }
 
@@ -942,16 +1242,9 @@ export default {
   @include _575 {
     &__content {
       .info-block {
-        &__grid {
-          .info-block__btns {
-            grid-column-start: 1;
-          }
-        }
-
         &__double {
-          grid-template-columns: repeat(2, 1fr);
+          grid-template-columns: auto;
         }
-
         &__title {
           &_pad {
             width: 100%;
@@ -972,28 +1265,33 @@ export default {
 .third {
   width: 100%;
   align-self: center;
-  @include _575 {
-    &__container {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-  }
 
   &__triple {
     display: grid;
     grid-gap: 20px;
     grid-template-columns: repeat(3, 1fr);
-    @include _575 {
-      grid-template-columns: auto;
-    }
   }
 
   &__wrapper {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    @include _575 {
+  }
+}
+
+@include _767 {
+  .third {
+    &__container {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    &__wrapper {
       grid-template-columns: auto;
     }
+  }
+}
+@include _575 {
+  .third__triple {
+    grid-template-columns: auto;
   }
 }
 </style>
