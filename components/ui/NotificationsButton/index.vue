@@ -77,7 +77,7 @@
               </div>
               <div class="notify__reason">
                 <div class="notify__text notify__text_blue">
-                  {{ notification.params && notification.params.isLocal
+                  {{ (notification.params && notification.params.isLocal) || (notification.data && notification.data.message)
                     ? notification.data.message : $t(notification.actionNameKey) }}
                 </div>
               </div>

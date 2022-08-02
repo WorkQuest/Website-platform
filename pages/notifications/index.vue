@@ -51,7 +51,7 @@
             <div class="notification__quest quest">
               <div class="quest__invitation">
                 {{
-                  notification.params.isLocal
+                  notification.params.isLocal || (notification.data && notification.data.message)
                     ? notification.data.message
                     : notificationActionKey(notification)
                 }}

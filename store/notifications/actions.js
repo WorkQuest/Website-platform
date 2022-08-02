@@ -13,7 +13,7 @@ import {
   notificationsQuestsActions,
   notificationCommonFilterActions,
   notificationCommonFilterAction2,
-  notificationEmployerFilterActions,
+  notificationEmployerFilterActions, QuestNotificationByStatus,
 } from '~/utils/notifications';
 
 import { error, success } from '~/utils/web3';
@@ -170,8 +170,16 @@ export default {
         };
         break;
       case NotificationAction.QUEST_STATUS_UPDATED:
-        notification.sender = userRole === UserRole.EMPLOYER ? assignedWorker
-          || wqInfoSender : user;
+        if (![3, 5].includes(data.status)) {
+          notification.sender = userRole === UserRole.EMPLOYER ? assignedWorker
+            || wqInfoSender : user;
+        } else {
+          notification.sender = wqInfoSender;
+        }
+        notification.data = {
+          ...notification.data,
+          message: $nuxt.$t(`notifications.${QuestNotificationByStatus[data.status]}`),
+        };
         notification.params = {
           ...notification.params,
           title,

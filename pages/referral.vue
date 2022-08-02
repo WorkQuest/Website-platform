@@ -522,8 +522,8 @@ export default {
                 txUrl: `${ExplorerUrl}/tx/${res.result.transactionHash}`,
               });
               await Promise.all([
-                this.$store.dispatch('referral/setIsNeedRegistration', false),
                 this.$store.dispatch('referral/fetchReferralsList'),
+                this.$store.dispatch('referral/setIsNeedRegistration', false),
               ]);
             }
           },

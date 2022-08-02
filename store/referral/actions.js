@@ -54,6 +54,13 @@ export default {
       return false;
     }
   },
+  /**
+   * @property referrals
+   * @property referralUser
+   * @property referralStatus
+   * @param commit
+   * @returns {Promise<boolean|*>}
+   */
   async fetchReferralsList({ commit }) {
     try {
       const { result, ok } = await this.$axios.$get('v1/user/me/referral-program/referrals');
@@ -178,7 +185,7 @@ export default {
   updateCurrentPage({ commit }, page) {
     commit('setCurrentPage', page);
   },
-  setIsNeedRegistration({ commit }, payload) {
-    commit('setIsNeedRegistration', payload);
+  setIsNeedRegistration({ commit }, boolean) {
+    commit('setIsNeedRegistration', boolean);
   },
 };

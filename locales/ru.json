@@ -1452,7 +1452,14 @@
     "questEdited": "Квест отредактирован",
     "questEndSoon": "Квест скоро закончится",
     "newDiscussionLike": "Новый лайк на дискуссии",
-    "updateRatingStatistic": "Новый рейтинг статистики"
+    "updateRatingStatistic": "Новый рейтинг статистики",
+    "questClosed": "Квест закрыт",
+    "questDisputeStarted": "Открыт диспут для квеста",
+    "questBlockedByAdmin": "Квест заблокирован администратором",
+    "questInvitationSentToWorker": "Отправлено приглашение на квест",
+    "questWorkInProgress": "Квест стартовал",
+    "questWorkSentForReview": "Работа отправлена на проверку",
+    "questCompleted": "Квест завершен"
   },
   "wallet": {
     "addressType": "Тип адреса",

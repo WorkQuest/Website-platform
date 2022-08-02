@@ -82,3 +82,14 @@ export const notificationCommonFilterAction2 = Object.freeze([
   NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST,
   NotificationAction.WAIT_WORKER,
 ]);
+
+export const QuestNotificationByStatus = Object.freeze({
+  [-3]: 'questClosed',
+  [-2]: 'questDisputeStarted',
+  [-1]: 'questBlockedByAdmin',
+  1: 'QuestStatusUpdated',
+  2: 'questInvitationSentToWorker',
+  3: 'questWorkInProgress',
+  4: 'questWorkSentForReview',
+  5: 'questCompleted',
+});
