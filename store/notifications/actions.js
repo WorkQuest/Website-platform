@@ -22,6 +22,7 @@ import { images } from '~/utils/images';
 
 import ENV from '~/utils/addresses/index';
 import { notificationLifetime } from '~/utils/сonstants/cookiesLifetime';
+import { QuestStatuses } from '~/utils/сonstants/quests';
 
 export default {
 
@@ -170,7 +171,7 @@ export default {
         };
         break;
       case NotificationAction.QUEST_STATUS_UPDATED:
-        if (![3, 5].includes(data.status)) {
+        if (![QuestStatuses.WaitWorker, QuestStatuses.Done].includes(data.status)) {
           notification.sender = userRole === UserRole.EMPLOYER ? assignedWorker
             || wqInfoSender : user;
         } else {
