@@ -13,6 +13,7 @@ export const images = Object.freeze({
 
   WQ_LOGO: require('~/assets/img/app/logo.svg'),
   WQ_LOGO_ROUNDED: require('~/assets/img/app/wq_logo_rounded.svg'),
+  WQ_PLATFORM_LOGO: require('~/assets/img/ui/wqt.svg'),
 
   EMPTY_AVATAR: require('~/assets/img/app/avatar_empty.png'),
   ERROR: require('~/assets/img/ui/error.svg'),
