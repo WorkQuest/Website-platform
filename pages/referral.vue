@@ -77,7 +77,7 @@
             </div>
             <div class="info-block__refers">
               <div
-                v-for="(item) in referralItems()"
+                v-for="(item) in referralItems"
                 :key="`${item.id}`"
                 class="info-block__avatar"
                 @click="showReferralsList"
@@ -373,6 +373,22 @@ export default {
         },
       ];
     },
+    referralItems() {
+      const referralsList = [];
+      const indexList = [];
+      if (this.referralsList.length > this.referralCount) {
+        while (referralsList.length < this.referralCount) {
+          const index = Math.floor(Math.random() * this.referralsList.length);
+          if (!indexList.includes(index)) {
+            indexList.push(index);
+            referralsList.push(this.referralsList[index]);
+          }
+        }
+        return referralsList;
+      }
+
+      return this.referralsList;
+    },
   },
   watch: {
     page: {
@@ -393,11 +409,6 @@ export default {
     paidEventsList: {
       handler() {
         this.$store.dispatch('referral/fetchRewardBalance', this.userAddress);
-      },
-    },
-    referralsList: {
-      handler() {
-        this.referralItems();
       },
     },
   },
@@ -562,22 +573,6 @@ export default {
         itemList: this.referralsList,
         status: true,
       });
-    },
-    referralItems() {
-      const referralsList = [];
-      const indexList = [];
-      if (this.referralsList.length > this.referralCount) {
-        while (referralsList.length < this.referralCount) {
-          const index = Math.floor(Math.random() * this.referralsList.length);
-          if (!indexList.includes(index)) {
-            indexList.push(index);
-            referralsList.push(this.referralsList[index]);
-          }
-        }
-        return referralsList;
-      }
-
-      return this.referralsList;
     },
     getStyledAmount(value) {
       return getStyledAmount(value);
