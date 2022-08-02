@@ -56,6 +56,7 @@ export const notificationsQuestsActions = Object.freeze([
   NotificationAction.QUEST_END_SOON,
 ]);
 
+// Setup sender as assigned quest employer
 export const notificationCommonFilterActions = Object.freeze([
   NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST,
   NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST,
@@ -65,6 +66,7 @@ export const notificationCommonFilterActions = Object.freeze([
   NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE,
 ]);
 
+// Setup sender as assigned quest worker
 export const notificationEmployerFilterActions = Object.freeze([
   NotificationAction.WORKER_RESPONDED_TO_QUEST,
   NotificationAction.WORKER_ACCEPTED_QUEST,
@@ -72,6 +74,7 @@ export const notificationEmployerFilterActions = Object.freeze([
   NotificationAction.WORKER_REJECTED_QUEST,
 ]);
 
+// Setup sender as notification.user
 export const notificationCommonFilterAction2 = Object.freeze([
   NotificationAction.QUEST_EDITED,
   NotificationAction.NEW_DISCUSSION_LIKE,
