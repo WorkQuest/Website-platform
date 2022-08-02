@@ -54,6 +54,7 @@ export const notificationsQuestsActions = Object.freeze([
   NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE,
   NotificationAction.WAIT_WORKER,
   NotificationAction.QUEST_EDITED,
+  NotificationAction.QUEST_EDITED_ON_CONTRACT,
   NotificationAction.QUEST_END_SOON,
 ]);
 
