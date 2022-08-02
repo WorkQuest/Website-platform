@@ -46,4 +46,8 @@ export default {
   setSelectedNetwork(state, networkIndex) {
     state.selectedNetwork = networkIndex;
   },
+
+  setPendingHashLink(state, hash) {
+    state.pendingHashLink = hash;
+  },
 };

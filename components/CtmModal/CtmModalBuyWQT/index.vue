@@ -48,8 +48,8 @@
           :placeholder="$t('modals.amount')"
           :name="$t('modals.amount')"
           :rules="amountRules"
+          type="number"
           data-selector="AMOUNT"
-          @input="handleInput"
         >
           <template
             v-slot:right-absolute
@@ -93,7 +93,9 @@ import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import Web3 from 'web3';
 import { BlockchainIndex, BuyWQTTokensData } from '~/utils/сonstants/bridge';
-import { Chains, TokenSymbols, WalletTokensData } from '~/utils/enums';
+import {
+  Chains, Path, TokenSymbols, WalletTokensData,
+} from '~/utils/enums';
 import { WQTBuyCommission } from '~/utils/сonstants/commission';
 import { getStyledAmount, GetWalletProvider, getWalletTransactionCount } from '~/utils/wallet';
 import { fetchContractData } from '~/utils/web3';
@@ -196,8 +198,8 @@ export default {
           const [gasPrice, gasEstimate] = await Promise.all([
             provider.eth.getGasPrice(),
             provider.eth.estimateGas({
-              from: address,
-              to: address,
+              from: this.userWalletAddress,
+              to: this.userWalletAddress,
               value,
             }),
           ]);
@@ -225,12 +227,6 @@ export default {
       this.SetLoader(true);
       await this.$store.dispatch('wallet/connectToProvider', this.networkList[index].chain);
       this.SetLoader(false);
-    },
-    handleInput(val) {
-      if (!val || isNaN(val)) this.amount = val;
-      else if (!this.tokenData) this.amount = 0;
-      else this.amount = this.ClearZero(val);
-      this.amount = this.amount.toString().replace(/,/g, '.');
     },
     clearData() {
       this.amount = null;
@@ -289,7 +285,6 @@ export default {
         isHexUserWalletAddress: true,
       }).then(async () => {
         this.SetLoader(true);
-
         const nonce = await getWalletTransactionCount();
         const BNValue = new BigNumber(amount).shiftedBy(Number(decimals)).toString();
         const [feeRes] = await Promise.all([
@@ -330,10 +325,8 @@ export default {
             if (res.ok) {
               const { transactionHash } = res.result;
               this.ShowModal({
-                key: modals.status,
-                img: images.TRANSACTION_SEND,
-                title: this.$t('modals.transactionSent'),
-                link: `${WalletTokensData[selectedNetwork].explorer}/tx/${transactionHash}`,
+                key: modals.pendingHash,
+                firstTxLink: `${WalletTokensData[selectedNetwork].explorer}/tx/${transactionHash}`,
               });
               await this.$store.dispatch('wallet/connectToProvider', Chains.WORKNET);
             }

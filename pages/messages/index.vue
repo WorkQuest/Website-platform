@@ -90,7 +90,6 @@
                         class="chat__avatar"
                         :src="getUserAvatar(user)"
                         alt=""
-                        @click="isGroupChat(chat.type) ? '' : toUserProfile($event, user.userId)"
                       >
                     </div>
                   </div>

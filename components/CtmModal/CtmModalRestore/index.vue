@@ -33,6 +33,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { Path } from '~/utils/enums';
 
 export default {
   name: 'ModalRestore',
@@ -55,7 +56,11 @@ export default {
         const response = await this.$store.dispatch('user/passwordSendCode', payload);
         if (response?.ok) {
           this.ShowModal({
-            key: modals.emailConfirm,
+            key: modals.status,
+            path: Path.SIGN_IN,
+            img: require('~/assets/img/ui/email.svg'),
+            title: this.$t('modals.titles.emailConfirmTitle'),
+            subtitle: this.$t('registration.emailConfirm'),
           });
         }
       } catch (e) {

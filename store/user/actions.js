@@ -61,14 +61,18 @@ export default {
     }
   },
   async setCaseImage({ commit }, { url, formData, type }) {
-    const response = await this.$axios.$put(url, formData, {
-      headers: {
-        'Content-Type': type,
-        'x-amz-acl': 'public-read',
-      },
-    });
-    commit('setCaseImage', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$put(url, formData, {
+        headers: {
+          'Content-Type': type,
+          'x-amz-acl': 'public-read',
+        },
+      });
+      commit('setCaseImage', response.result);
+      return response;
+    } catch (e) {
+      return error();
+    }
   },
   async setCaseData({ commit }, payload) {
     try {
@@ -76,7 +80,7 @@ export default {
       commit('setCaseData', response.result);
       return response;
     } catch (e) {
-      return console.log(e);
+      return error();
     }
   },
   async editCaseData({ commit }, { payload, id }) {
@@ -85,14 +89,14 @@ export default {
       commit('setCaseData', response.result);
       return response;
     } catch (e) {
-      return console.log(e);
+      return error();
     }
   },
   async deletePortfolio({ commit }, id) {
     try {
       return await this.$axios.$delete(`/v1/portfolio/${id}`);
     } catch (e) {
-      return console.log(e);
+      return error();
     }
   },
 
@@ -185,12 +189,19 @@ export default {
       commit('setTokens', {
         access: this.$cookies.get('access'),
         refresh: this.$cookies.get('refresh'),
-        userStatus: UserStatuses.Confirmed,
       });
-      this.$cookies.set('role', payload.role, { path: Path.ROOT, maxAge: accessLifetime });
-      return await this.$axios.$post('/v1/auth/confirm-email', payload);
+      await this.$axios.$post('/v1/auth/confirm-email', payload);
+      this.$cookies.set('role', payload.role, {
+        path: Path.ROOT,
+        maxAge: accessLifetime,
+      });
+      this.$cookies.set('userStatus', UserStatuses.NeedSetRole, {
+        path: Path.ROOT,
+        maxAge: accessLifetime,
+      });
+      return success();
     } catch (e) {
-      return false;
+      return error();
     }
   },
   async getUserData({ commit }) {

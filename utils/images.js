@@ -8,6 +8,7 @@ export const images = Object.freeze({
   POLYGON: require('~/assets/img/ui/Polygon.svg'),
   USDT: require('~/assets/img/ui/tether-usdt.svg'),
   WUSD: require('~/assets/img/ui/wusd.svg'),
+  EMPTY_LOGO: require('~/assets/img/ui/logo_gray.svg'),
 
   WQ_LOGO: require('~/assets/img/app/logo.svg'),
   WQ_LOGO_ROUNDED: require('~/assets/img/app/wq_logo_rounded.svg'),

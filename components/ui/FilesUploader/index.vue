@@ -2,7 +2,7 @@
   <div
     ref="uploader"
     class="uploader"
-    :class="uploaderStyles()"
+    :class="uploaderStyles"
     data-selector="COMPONENT-FILE-UPLOADER"
     @dragover="dragover"
     @dragleave="dragleave"
@@ -23,9 +23,7 @@
     >
       {{ errorInfo.text }}
     </div>
-    <div
-      class="uploader__files files-container"
-    >
+    <div class="uploader__files files-container">
       <div
         v-for="(item, i) of files"
         :key="i"
@@ -111,6 +109,11 @@ export default {
       acceptedTypes: [],
     };
   },
+  computed: {
+    uploaderStyles() {
+      return [{ uploader__preview: !this.files?.length }];
+    },
+  },
   async created() {
     this.acceptedTypes = this.accept.replace(/\s/g, '').split(',');
     // eslint-disable-next-line no-restricted-syntax
@@ -126,9 +129,6 @@ export default {
     this.$emit('change', this.files);
   },
   methods: {
-    uploaderStyles() {
-      return [{ uploader__preview: !this.files.length }];
-    },
     openExplorer() {
       this.$refs.input.click();
     },
@@ -152,12 +152,19 @@ export default {
       this.onChange();
       event.currentTarget.classList.remove('uploader__message_hover');
     },
-    onChange() {
+    async onChange() {
       this.errorInfo.isShow = false;
       const inputs = this.$refs.input.files;
       if (!inputs.length) return;
       // eslint-disable-next-line no-restricted-syntax
-      for (const file of inputs) {
+      for (let file of inputs) {
+        if (file.type === 'image/heic') {
+          // eslint-disable-next-line no-await-in-loop
+          file = await this.HEICConvertTo(file);
+          // eslint-disable-next-line no-continue
+          if (!file) continue;
+        }
+
         if (!this.checkContentType(file)) {
           // eslint-disable-next-line no-continue
           continue;
@@ -311,7 +318,8 @@ export default {
   }
   &:hover .file__remover {
     border-radius: 50%;
-    opacity: 100%;
+    opacity: 50%;
+    background: $black800;
   }
 }
 .error {
