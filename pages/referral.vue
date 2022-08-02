@@ -532,10 +532,7 @@ export default {
                 key: modals.transactionSend,
                 txUrl: `${ExplorerUrl}/tx/${res.result.transactionHash}`,
               });
-              await Promise.all([
-                this.$store.dispatch('referral/fetchReferralsList'),
-                this.$store.dispatch('referral/setIsNeedRegistration', false),
-              ]);
+              await this.$store.dispatch('referral/setIsNeedRegistration', false);
             }
           },
         });
@@ -544,9 +541,6 @@ export default {
       this.SetLoader(true);
       const res = await this.$store.dispatch('referral/fetchCreatedReferralList');
       this.SetLoader(false);
-      console.log(this.createdReferralsList, res);
-
-      // TOOD: тут нужна обработка чтобы не приходили юзеры которые не зарегали кошелек
 
       if (res.ok && this.createdReferralsList.length) {
         this.ShowModal({
