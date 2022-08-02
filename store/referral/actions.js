@@ -63,7 +63,7 @@ export default {
    */
   async fetchReferralsList({ commit }) {
     try {
-      const { result, ok } = await this.$axios.$get('v1/user/me/referral-program/referrals');
+      const { result } = await this.$axios.$get('v1/user/me/referral-program/referrals');
 
       if (result.referrals.length) {
         const isNeedRegistration = result.referrals.some((item) => item.referralUser.referralStatus === 'created' && item.ratingStatistic);
@@ -73,14 +73,14 @@ export default {
         commit('setIsNeedRegistration', isNeedRegistration);
       }
 
-      return ok;
+      return success();
     } catch (e) {
-      return false;
+      return error();
     }
   },
   async fetchCreatedReferralList({ commit }) {
     try {
-      const { result, ok } = await this.$axios.$get('v1/user/me/referral-program/referral/signature/created-referrals');
+      const { result } = await this.$axios.$get('v1/user/me/referral-program/referral/signature/created-referrals');
 
       if (result) {
         const signature = {};
@@ -90,9 +90,9 @@ export default {
         commit('setCreatedReferralList', result.addresses);
         commit('setReferralSignature', signature);
       }
-      return ok;
+      return success();
     } catch (e) {
-      return false;
+      return error();
     }
   },
   async addReferrals({ getters }) {

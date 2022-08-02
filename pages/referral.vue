@@ -533,7 +533,11 @@ export default {
       this.SetLoader(true);
       const res = await this.$store.dispatch('referral/fetchCreatedReferralList');
       this.SetLoader(false);
-      if (res && this.createdReferralsList.length) {
+      console.log(this.createdReferralsList, res);
+
+      // TOOD: тут нужна обработка чтобы не приходили юзеры которые не зарегали кошелек
+
+      if (res.ok && this.createdReferralsList.length) {
         this.ShowModal({
           key: modals.referralRegistration,
           title: this.$t('meta.btns.registration'),
