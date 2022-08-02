@@ -83,7 +83,7 @@ export default {
       /**
        * @property setTokenPricesUSD - method of oracle
        */
-      const inst = await createInstance(WQOracle, ENV.WORKNET_ORACLE);
+      const inst = createInstance(WQOracle, ENV.WORKNET_ORACLE);
       const res = await inst.methods.setTokenPricesUSD(nonce, v, r, s, prices, maxRatio, symbols).send({
         from: getWalletAddress(),
         // because sometimes the wrong amount of gas is calculated
