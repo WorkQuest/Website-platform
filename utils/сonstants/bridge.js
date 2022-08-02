@@ -60,7 +60,7 @@ export const SwapAddresses = new Map([
   [
     Chains.WORKNET,
     {
-      icon: images.WQ_LOGO,
+      icon: images.WQ_PLATFORM_LOGO,
       title: Chains.WORKNET,
       chain: Chains.WORKNET,
       index: BlockchainIndex.WORKNET,
