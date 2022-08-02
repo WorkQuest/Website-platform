@@ -132,60 +132,13 @@ export const fetchContractData = async (_method, _abi, _address, _params, _provi
       console.error('_provider is undefined');
       return false;
     }
-    const inst = await new _provider.eth.Contract(_abi, _address);
+    const inst = new _provider.eth.Contract(_abi, _address);
     return await inst.methods[_method].apply(this, _params).call();
   } catch (e) {
     console.error(`Fetch contract data [${_method}]: ${e.message}`);
     return false;
   }
 };
-
-// TODO: удалить если не используется ни где
-// export const sendTransaction = async (_method, payload, _provider = web3) => {
-//   if (!_provider) {
-//     console.error('sendTx _provider is undefined');
-//     return false;
-//   }
-//   let transactionData;
-//   const inst = new _provider.eth.Contract(payload.abi, payload.address);
-//   const gasPrice = await _provider.eth.getGasPrice();
-//   const accountAddress = await web3.eth.getCoinbase();
-//   if (_method === 'claim') {
-//     const data = inst.methods[_method].apply(null).encodeABI();
-//     const gasEstimate = await inst.methods[_method].apply(null).estimateGas({ from: accountAddress });
-//     transactionData = {
-//       to: payload.address,
-//       from: accountAddress,
-//       data,
-//       gasPrice,
-//       gas: gasEstimate,
-//     };
-//   } else if (_method === 'swap') {
-//     const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({
-//       from: accountAddress,
-//       value: payload.value,
-//     });
-//     await inst.methods.swap(...payload.data).send({
-//       from: accountAddress,
-//       value: payload.value,
-//       gasPrice,
-//       gas: gasEstimate,
-//     });
-//     return '';
-//   } else {
-//     const data = inst.methods[_method].apply(null, payload.data).encodeABI();
-//     const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress });
-//     transactionData = {
-//       to: payload.address,
-//       from: accountAddress,
-//       data,
-//       gasPrice,
-//       gas: gasEstimate,
-//     };
-//   }
-//   // noinspection ES6RedundantAwait
-//   return await _provider.eth.sendTransaction(transactionData);
-// };
 
 export const handleMetamaskStatus = (callback) => {
   const { ethereum } = window;
