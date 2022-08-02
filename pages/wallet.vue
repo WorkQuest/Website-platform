@@ -622,11 +622,11 @@ export default {
   }
 
   &__card {
-    box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
+    @include shadow;
   }
 
   &__balance {
-    box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
+    @include shadow;
   }
 
   &__body {
@@ -706,7 +706,7 @@ export default {
 
   &__table {
     position: relative;
-    box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
+    @include shadow;
     max-width: 100%;
     overflow-x: auto;
   }

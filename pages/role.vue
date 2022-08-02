@@ -288,7 +288,7 @@ export default {
   margin: 0 auto;
   border-radius: 16px;
   padding: 20px;
-  box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.1);
+  @include shadow;
 
   &__back {
     padding-bottom: 10px;

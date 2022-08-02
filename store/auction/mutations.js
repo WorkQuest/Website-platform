@@ -1,6 +1,6 @@
 export default {
-  setLost(state, { collateral, count }) {
-    state.lots = collateral;
+  setLost(state, { lots, count }) {
+    state.lots = lots;
     state.lotsCount = count;
   },
 };

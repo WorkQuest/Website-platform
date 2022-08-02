@@ -153,6 +153,7 @@ export default {
       optimalCollateralRatio: 0,
       checkpoints: [
         { name: TokenSymbols.USDT, id: TokenMap.USDT },
+        { name: TokenSymbols.USDC, id: TokenMap.USDC },
         // { name: this.$t('meta.coins.bnb'), id: TokenMap.BNB },
         // { name: this.$t('meta.coins.eth'), id: TokenMap.ETH },
         // { name: this.$t('meta.coins.wqt'), id: TokenMap.WQT }, // TODO: wqt native now, fix it
