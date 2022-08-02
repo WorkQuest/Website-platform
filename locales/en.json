@@ -1459,7 +1459,8 @@
     "questInvitationSentToWorker": "Quest invitation sent",
     "questWorkInProgress": "Quest is started",
     "questWorkSentForReview": "Work sent for review",
-    "questCompleted": "Quest completed"
+    "questCompleted": "Quest completed",
+    "PaidReferral": "New referral reward"
   },
   "wallet": {
     "frozen": "Frozen balance",

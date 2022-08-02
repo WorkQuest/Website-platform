@@ -153,6 +153,18 @@ export default {
     const wqInfoSender = { avatar: { url: images.WQ_LOGO_ROUNDED }, firstName: $nuxt.$t('ui.notifications.workquestInfo') };
 
     switch (action) {
+      case NotificationAction.PAID_REFERRAL:
+        notification.sender = wqInfoSender;
+        notification.params = {
+          ...notification.params,
+          title: data.title,
+          path: Path.REFERRAL,
+        };
+        notification.data = {
+          message: $nuxt.$t(`notifications.${NotificationAction.PAID_REFERRAL}`),
+        };
+        break;
+
       case NotificationAction.NEW_QUEST_FOR_SPECIALIZATION:
         notification.sender = wqInfoSender;
         notification.params = {
@@ -170,6 +182,7 @@ export default {
           path: `${Path.PROFILE}/${user.id}`,
         };
         break;
+
       case NotificationAction.QUEST_STATUS_UPDATED:
         if (![QuestStatuses.WaitWorker, QuestStatuses.Done].includes(data.status)) {
           notification.sender = userRole === UserRole.EMPLOYER ? assignedWorker

@@ -607,302 +607,12 @@ export default {
     font-weight: 500;
     color: $white;
     align-self: center;
-
-    .title {
-      @extend .referral-page__header;
-      font-size: 45px;
-      line-height: 110%;
-      margin: 0 0 16px;
-
-      &_sub {
-        @extend .referral-page__header;
-        font-size: 16px;
-        line-height: 100%;
-        opacity: 0.5;
-      }
-    }
   }
 
   &__content {
     display: grid;
     grid-row-gap: 30px;
     grid-template-rows: 225px max-content max-content;
-
-    .info-block {
-      background-color: $white;
-      border-radius: 6px;
-      position: relative;
-
-      &__wrap {
-        display: grid;
-        grid-auto-flow: column;
-        justify-content: space-between;
-      }
-
-      &__btn-wrap {
-        padding: 34px 20px 0 0;
-        width: 156px;
-      }
-
-      &__btn-wrap_absolute {
-        position: absolute;
-        right: 0;
-        z-index: 3;
-      }
-
-      &__tokens {
-        font-weight: 700;
-        font-size: 25px;
-        color: $blue;
-        padding: 0 20px;
-      }
-
-      &__name {
-        font-size: 16px;
-        color: $black800;
-        padding: 20px 20px 10px 20px;
-        font-weight: 400;
-
-        &_bold {
-          font-weight: 500;
-          font-size: 25px;
-          color: $darkblue;
-          line-height: 1;
-          padding: 20px;
-        }
-      }
-
-      .ava {
-        height: 33px;
-        width: 33px;
-        border-radius: 50%;
-        background-color: $white;
-        flex: none;
-        display: inline;
-        margin-right: 10px;
-
-        &_list {
-          @extend .ava;
-          position: absolute;
-          &--empty{
-            border: 1px solid $black100;
-          }
-        }
-      }
-
-      .user {
-        display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        gap: 10px;
-        width: calc(100% - 40px);
-        margin: 0 0 0 20px;
-        line-height: 33px;
-
-        &__info {
-          display: grid;
-          grid-template-columns: 33px 1fr;
-          align-items: center;
-          gap: 10px;
-        }
-
-        &__name {
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          font-size: 16px;
-          text-transform: capitalize;
-        }
-        &__name-table {
-          max-width: 90px;
-        }
-
-        &__value {
-          font-size: 16px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          font-weight: 500;
-          text-transform: capitalize;
-
-          &_green {
-            @extend .user__value;
-            color: $green;
-          }
-
-          &_gray {
-            @extend .user__value;
-            color: $black500;
-            font-weight: 400;
-          }
-        }
-
-        &__icon-copy {
-          &:before {
-            color: $lightblue;
-          }
-        }
-
-        &_last-reward {
-          display: grid;
-          background-color: $black0;
-          border-radius: 5px;
-          height: 50px;
-          line-height: 50px;
-          width: calc(100% - 40px);
-          margin-left: 20px;
-          padding: 0 10px;
-          flex-wrap: wrap;
-          gap: 10px;
-          grid-template-columns: 5fr auto;
-        }
-
-        &__link {
-          display: flex;
-          align-items: center;
-          position: relative;
-          text-decoration: none;
-          color: $black500;
-
-          &:hover,
-          &:focus {
-            text-decoration: underline;
-          }
-        }
-      }
-
-      &__refers {
-        display: flex;
-        flex-wrap: wrap;
-        margin-bottom: 4px;
-        width: calc(100% - 40px);
-        margin-left: 20px;
-        height: 33px;
-        position: relative;
-      }
-
-      &__avatar {
-        cursor: pointer;
-        width: 25px;
-      }
-
-      &__more {
-        height: 33px;
-        padding: 0 10px;
-        min-width: 53px;
-        border-radius: 39px;
-        background-color: $black0;
-        text-align: center;
-        line-height: 33px;
-        margin-left: -5px;
-        z-index: 2;
-        cursor: pointer;
-      }
-
-      &__link {
-        border: 1px solid $black0;
-        border-radius: 6px;
-        width: calc(100% - 40px);
-        margin-left: 20px;
-        padding: 0 20px;
-        display: grid;
-        grid-template-columns: 1fr 23px;
-        gap: 10px;
-        height: 46px;
-        align-items: center;
-
-        button {
-          margin-top: 3px;
-        }
-
-        .address {
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          font-size: 16px;
-          color: $black800;
-
-          &__icon {
-            font-size: 24px;
-
-            &::before {
-              color: $blue;
-            }
-          }
-        }
-      }
-
-      &__steps {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-gap: 60px;
-        position: relative;
-        width: calc(100% - 40px);
-        margin: 0 0 20px 20px;
-
-        .step {
-          position: relative;
-          background-color: $black0;
-          border-radius: 6px;
-          z-index: 2;
-
-          &__name {
-            font-weight: 500;
-            font-size: 18px;
-            color: $blue;
-            padding: 10px;
-          }
-
-          &__about {
-            font-size: 16px;
-            color: $black500;
-            padding: 0 10px 10px;
-          }
-
-          &:not(:last-child) {
-            &:after {
-              content: "";
-              height: 12px;
-              width: 12px;
-              border-radius: 50%;
-              z-index: 3;
-              background-color: $grey100;
-              position: absolute;
-              right: -5px;
-              top: calc(50% - 5px);
-            }
-          }
-
-          &:not(:first-child) {
-            &:before {
-              content: "";
-              height: 12px;
-              width: 12px;
-              border-radius: 50%;
-              z-index: 3;
-              background-color: $grey100;
-              position: absolute;
-              left: -5px;
-              top: calc(50% - 5px);
-            }
-          }
-        }
-
-        &:after {
-          content: "";
-          position: absolute;
-          height: 2px;
-          width: 100%;
-          top: 50%;
-          background-color: $grey100;
-        }
-      }
-
-      &_couple {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-      }
-    }
   }
 
   &__table {
@@ -913,14 +623,307 @@ export default {
       border-radius: 0 !important;
     }
   }
+}
 
-  @include _991 {
+.title {
+  @extend .referral-page__header;
+  font-size: 45px;
+  line-height: 110%;
+  margin: 0 0 16px;
+
+  &_sub {
+    @extend .referral-page__header;
+    font-size: 16px;
+    line-height: 100%;
+    opacity: 0.5;
+  }
+}
+
+.info-block {
+  background-color: $white;
+  border-radius: 6px;
+  position: relative;
+
+  &__wrap {
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: space-between;
+  }
+
+  &__btn-wrap {
+    padding: 34px 20px 0 0;
+    width: 156px;
+  }
+
+  &__btn-wrap_absolute {
+    position: absolute;
+    right: 0;
+    z-index: 3;
+  }
+
+  &__tokens {
+    font-weight: 700;
+    font-size: 25px;
+    color: $blue;
+    padding: 0 20px;
+  }
+
+  &__name {
+    font-size: 16px;
+    color: $black800;
+    padding: 20px 20px 10px 20px;
+    font-weight: 400;
+
+    &_bold {
+      font-weight: 500;
+      font-size: 25px;
+      color: $darkblue;
+      line-height: 1;
+      padding: 20px;
+    }
+  }
+
+  &__refers {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+    width: calc(100% - 40px);
+    margin-left: 20px;
+    height: 33px;
+    position: relative;
+  }
+
+  &__avatar {
+    cursor: pointer;
+    width: 25px;
+  }
+
+  &__more {
+    height: 33px;
+    padding: 0 10px;
+    min-width: 53px;
+    border-radius: 39px;
+    background-color: $black0;
+    text-align: center;
+    line-height: 33px;
+    margin-left: -5px;
+    z-index: 2;
+    cursor: pointer;
+  }
+
+  &__link {
+    border: 1px solid $black0;
+    border-radius: 6px;
+    width: calc(100% - 40px);
+    margin-left: 20px;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1fr 23px;
+    gap: 10px;
+    height: 46px;
+    align-items: center;
+
+    button {
+      margin-top: 3px;
+    }
+
+    .address {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 16px;
+      color: $black800;
+
+      &__icon {
+        font-size: 24px;
+
+        &::before {
+          color: $blue;
+        }
+      }
+    }
+  }
+
+  &__steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 60px;
+    position: relative;
+    width: calc(100% - 40px);
+    margin: 0 0 20px 20px;
+
+    &:after {
+      content: "";
+      position: absolute;
+      height: 2px;
+      width: 100%;
+      top: 50%;
+      background-color: $grey100;
+    }
+  }
+
+  &_couple {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+.ava {
+  height: 33px;
+  width: 33px;
+  border-radius: 50%;
+  background-color: $white;
+  flex: none;
+  display: inline;
+  margin-right: 10px;
+
+  &_list {
+    @extend .ava;
+    position: absolute;
+    &--empty{
+      border: 1px solid $black100;
+    }
+  }
+}
+
+.user {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  width: calc(100% - 40px);
+  margin: 0 0 0 20px;
+  line-height: 33px;
+
+  &__info {
+    display: grid;
+    grid-template-columns: 33px 1fr;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 16px;
+    text-transform: capitalize;
+  }
+  &__name-table {
+    max-width: 90px;
+  }
+
+  &__value {
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 500;
+    text-transform: capitalize;
+
+    &_green {
+      @extend .user__value;
+      color: $green;
+    }
+
+    &_gray {
+      @extend .user__value;
+      color: $black500;
+      font-weight: 400;
+    }
+  }
+
+  &__icon-copy {
+    &:before {
+      color: $lightblue;
+    }
+  }
+
+  &_last-reward {
+    display: grid;
+    background-color: $black0;
+    border-radius: 5px;
+    height: 50px;
+    line-height: 50px;
+    width: calc(100% - 40px);
+    margin-left: 20px;
+    padding: 0 10px;
+    flex-wrap: wrap;
+    gap: 10px;
+    grid-template-columns: 5fr auto;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    position: relative;
+    text-decoration: none;
+    color: $black500;
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+    }
+  }
+}
+
+.step {
+  position: relative;
+  background-color: $black0;
+  border-radius: 6px;
+  z-index: 2;
+
+  &__name {
+    font-weight: 500;
+    font-size: 18px;
+    color: $blue;
+    padding: 10px;
+  }
+
+  &__about {
+    font-size: 16px;
+    color: $black500;
+    padding: 0 10px 10px;
+  }
+
+  &:not(:last-child) {
+    &:after {
+      content: "";
+      height: 12px;
+      width: 12px;
+      border-radius: 50%;
+      z-index: 3;
+      background-color: $grey100;
+      position: absolute;
+      right: -5px;
+      top: calc(50% - 5px);
+    }
+  }
+
+  &:not(:first-child) {
+    &:before {
+      content: "";
+      height: 12px;
+      width: 12px;
+      border-radius: 50%;
+      z-index: 3;
+      background-color: $grey100;
+      position: absolute;
+      left: -5px;
+      top: calc(50% - 5px);
+    }
+  }
+}
+
+@include _991 {
+  .referral-page {
     background: linear-gradient(to bottom, $darkblue 245px, $white100 245px);
 
     &__container {
       gap: 15px;
       grid-template-rows: 150px auto;
     }
+
     &__table {
       overflow: auto;
       width: calc(100vw - 20px);
@@ -930,68 +933,71 @@ export default {
       }
     }
   }
+}
 
-  @include _767 {
+@include _767 {
+  .referral-page {
     background: linear-gradient(to bottom, $darkblue 220px, $white100 220px);
+
     &__container {
       grid-template-rows: repeat(2, auto);
       gap: 24px;
     }
-    &__header {
-      .title {
-        font-size: 36px;
-        margin-bottom: 15px;
-        width: 100%;
 
-        &_sub {
-          font-size: 16px;
-          max-width: 400px;
-          width: 100%;
-        }
-      }
-    }
     &__content {
       grid-template-rows: 450px max-content max-content;
+    }
+  }
 
-      .info-block {
-        &_couple {
-          grid-template-rows: repeat(2, 1fr);
-          grid-template-columns: unset;
-          gap: 20px;
+  .title {
+    font-size: 36px;
+    margin-bottom: 15px;
+    width: 100%;
+
+    &_sub {
+      font-size: 16px;
+      max-width: 400px;
+      width: 100%;
+    }
+  }
+
+  .info-block {
+      &_couple {
+        grid-template-rows: repeat(2, 1fr);
+        grid-template-columns: unset;
+        gap: 20px;
+      }
+
+      &__steps {
+        grid-template-rows: repeat(3, 1fr);
+        grid-template-columns: unset;
+        gap: 60px;
+
+        .step {
+          &:not(:last-child) {
+            &:after {
+              right: calc(50% - 7px);
+              bottom: -5px;
+              top: unset;
+            }
+          }
+
+          &:not(:first-child) {
+            &:before {
+              right: calc(50% - 7px);
+              left: unset;
+              top: - 5px;
+            }
+          }
         }
 
-        &__steps {
-          grid-template-rows: repeat(3, 1fr);
-          grid-template-columns: unset;
-          gap: 60px;
-
-          .step {
-            &:not(:last-child) {
-              &:after {
-                right: calc(50% - 7px);
-                bottom: -5px;
-                top: unset;
-              }
-            }
-
-            &:not(:first-child) {
-              &:before {
-                right: calc(50% - 7px);
-                left: unset;
-                top: - 5px;
-              }
-            }
-          }
-
-          &:after {
-            height: 100%;
-            width: 2px;
-            left: 50%;
-            top: 0;
-          }
+        &:after {
+          height: 100%;
+          width: 2px;
+          left: 50%;
+          top: 0;
         }
       }
-    }
   }
 }
 </style>

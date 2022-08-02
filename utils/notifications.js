@@ -25,6 +25,7 @@ export const NotificationAction = {
   QUEST_EDITED_ON_CONTRACT: 'QuestEditedOnContract',
   UPDATE_RATING_STATISTIC: 'updateRatingStatistic',
   NEW_QUEST_FOR_SPECIALIZATION: 'newQuestForSpecialization',
+  PAID_REFERRAL: 'PaidReferral',
 };
 
 export const LocalNotificationAction = {

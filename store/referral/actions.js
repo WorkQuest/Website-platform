@@ -112,9 +112,9 @@ export default {
   },
   async subscribeToReferralEvents({
     getters, rootGetters, commit, dispatch,
-  }, userAddress) {
+  }) {
     try {
-      await this.$wsNotifs.subscribe(`/notifications/referral/${userAddress}`, async (msg) => {
+      await this.$wsNotifs.subscribe('/notifications/referral', async (msg) => {
         const { data: dataMessage } = msg;
         const paidEventsList = JSON.parse(JSON.stringify(getters.getPaidEventsList));
         const referralsList = JSON.parse(JSON.stringify(getters.getReferralsList));
@@ -174,9 +174,9 @@ export default {
       console.log('subscribeToReferralEvents err', err);
     }
   },
-  async unsubscribeToReferralEvents(_, userAddress) {
+  async unsubscribeToReferralEvents({ _ }) {
     try {
-      await this.$wsNotifs.unsubscribe(`/notifications/referral/${userAddress}`);
+      await this.$wsNotifs.unsubscribe('/notifications/referral');
     } catch (err) {
       console.log('unsubscribeToReferralEvents err', err);
     }
