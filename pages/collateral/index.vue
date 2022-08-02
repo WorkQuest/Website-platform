@@ -301,7 +301,7 @@ export default {
           const { result: { gas, gasPrice }, msg } = await this.$store.dispatch('oracle/feeSetTokensPrices');
           this.SetLoader(false);
 
-          if (!gas && !gasPrice) {
+          if (!gas || !gasPrice) {
             this.ShowToast(msg);
             return;
           }

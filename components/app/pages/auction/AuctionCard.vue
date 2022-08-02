@@ -126,7 +126,7 @@ export default {
         userWallet,
       } = this.lot;
 
-      if (!lotBuyed && !lotBuyed.length) return [];
+      if (!lotBuyed?.length) return [];
 
       const {
         cost,
@@ -178,7 +178,7 @@ export default {
     },
     startedLotFields() {
       const { auctionStarted, symbol } = this.lot;
-      if (this.typeOfLot !== LotsStatuses.STARTED || !(auctionStarted && auctionStarted.length)) {
+      if (this.typeOfLot !== LotsStatuses.STARTED || !auctionStarted?.length) {
         return { lotAmount: '', lotPrice: '' };
       }
 
