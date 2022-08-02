@@ -1,8 +1,4 @@
 export default () => ({
-  swaps: [],
-  swapsCount: null,
-  token: {
-    amount: null,
-    decimals: null,
-  },
+  lots: [],
+  lotsCount: null,
 });

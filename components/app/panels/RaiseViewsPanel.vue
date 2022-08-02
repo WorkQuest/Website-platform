@@ -205,7 +205,7 @@ export default {
   }
 
   &:hover {
-    box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.15);
+    @include shadow;
   }
 
   &_active {

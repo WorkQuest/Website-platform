@@ -384,6 +384,7 @@ export default {
   height: 72px;
   background: white;
   border-radius: 6px;
+  min-width: 1180px;
 
   &__wrapper {
     height: 72px;
@@ -395,7 +396,7 @@ export default {
   }
 
   &:hover {
-    box-shadow: -1px 1px 8px 0px $black100;
+    @include shadow;
   }
 
   &:not(:last-child) {

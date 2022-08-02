@@ -229,6 +229,7 @@ export const TokenMap = {
   [TokenSymbols.ETH]: ENV.WORKNET_WETH_TOKEN,
   [TokenSymbols.WUSD]: ENV.WORKNET_WUSD_TOKEN,
   [TokenSymbols.USDT]: ENV.WORKNET_USDT_TOKEN,
+  [TokenSymbols.USDC]: ENV.WORKNET_USDC_TOKEN,
 };
 
 export const WalletTables = Object.freeze({
@@ -401,6 +402,7 @@ export const WalletTokensData = Object.freeze({
       { title: TokenSymbols.BNB, icon: images.BNB, tokenAddress: ENV.WORKNET_WBNB_TOKEN },
       { title: TokenSymbols.ETH, icon: images.ETH_BLACK, tokenAddress: ENV.WORKNET_WETH_TOKEN },
       { title: TokenSymbols.USDT, icon: images.USDT, tokenAddress: ENV.WORKNET_USDT_TOKEN },
+      { title: TokenSymbols.USDC, icon: images.USDC, tokenAddress: ENV.WORKNET_USDC_TOKEN },
     ],
   },
   [Chains.ETHEREUM]: {

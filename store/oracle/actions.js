@@ -8,7 +8,8 @@ import {
 import {
   getGasPrice,
   createInstance,
-  getWalletAddress, GetWalletProvider,
+  getWalletAddress,
+  GetWalletProvider,
 } from '~/utils/wallet';
 
 import { WQOracle, WQRouter } from '~/abi';
@@ -58,7 +59,7 @@ export default {
       return success(fee);
     } catch (e) {
       console.error('oracle/feeSetTokenPrices', e);
-      return error();
+      return error(e.code, e.message, e);
     }
   },
 
@@ -71,25 +72,25 @@ export default {
       } = getters.getCurrentPrices;
       const [prices, symbols, maxRatio] = [getters.getPrices, getters.getSymbols, getters.getMaxRatio];
 
-      if (gas && gasPrice) {
-        /**
-         * @property setTokenPricesUSD - method of oracle
-         */
-        const inst = createInstance(WQOracle, ENV.WORKNET_ORACLE);
-        await inst.methods.setTokenPricesUSD(nonce, v, r, s, prices, maxRatio, symbols).send({
-          from: getWalletAddress(),
-          // because sometimes the wrong amount of gas is calculated
-          gas: 300000,
-          gasPrice,
-        });
-        return success();
+      if (!gas || !gasPrice) {
+        dispatch('main/showToast', {
+          title: $nuxt.$t('toasts.error'),
+          text: $nuxt.$t('toasts.errorGetFee'),
+        }, { root: true });
+        return error();
       }
 
-      dispatch('main/showToast', {
-        title: $nuxt.$t('toasts.error'),
-        text: $nuxt.$t('toasts.errorGetFee'),
-      }, { root: true });
-      return error();
+      /**
+       * @property setTokenPricesUSD - method of oracle
+       */
+      const inst = createInstance(WQOracle, ENV.WORKNET_ORACLE);
+      const res = await inst.methods.setTokenPricesUSD(nonce, v, r, s, prices, maxRatio, symbols).send({
+        from: getWalletAddress(),
+        // because sometimes the wrong amount of gas is calculated
+        gas: 300000,
+        gasPrice,
+      });
+      return success(res);
     } catch (e) {
       console.error('oracle/setCurrentPriceTokens', e);
       return error();
