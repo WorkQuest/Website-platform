@@ -238,8 +238,8 @@ export default {
 
   async swapOldTokens({ _ }, { amount, decimals }) {
     try {
-      const tokenInstance = await createInstance(ERC20, ENV.BSC_OLD_WQT_TOKEN);
-      const exchangeInstance = await createInstance(WQTExchange, ENV.BSC_WQT_EXCHANGE);
+      const tokenInstance = createInstance(ERC20, ENV.BSC_OLD_WQT_TOKEN);
+      const exchangeInstance = createInstance(WQTExchange, ENV.BSC_WQT_EXCHANGE);
 
       const value = new BigNumber(amount).shiftedBy(+decimals).toString();
       const allowance = await getAllowance(getAccountAddress(), ENV.BSC_WQT_EXCHANGE, tokenInstance);
@@ -272,8 +272,8 @@ export default {
   async stake({ _ }, { amount, chain }) {
     try {
       const { stakingAbi, stakingAddress, stakingToken } = Pool.get(chain);
-      const instanceStake = await createInstance(stakingAbi, stakingAddress);
-      const instanceToken = await createInstance(ERC20, stakingToken);
+      const instanceStake = createInstance(stakingAbi, stakingAddress);
+      const instanceToken = createInstance(ERC20, stakingToken);
 
       const value = new BigNumber(amount).shiftedBy(18).toString();
       const allowance = await getAllowance(getAccountAddress(), stakingAddress, instanceToken);
@@ -313,7 +313,7 @@ export default {
   async unStake({ _ }, { amount, chain }) {
     try {
       const { stakingAbi, stakingAddress } = Pool.get(chain);
-      const inst = await createInstance(stakingAbi, stakingAddress);
+      const inst = createInstance(stakingAbi, stakingAddress);
 
       const value = new BigNumber(amount).shiftedBy(18).toString();
       showToast('Unstaking', 'Unstaking...', 'success');
@@ -339,7 +339,7 @@ export default {
   async claim({ _ }, { chain }) {
     try {
       const { stakingAbi, stakingAddress } = Pool.get(chain);
-      const inst = await createInstance(stakingAbi, stakingAddress);
+      const inst = createInstance(stakingAbi, stakingAddress);
 
       showToast('Claiming', 'Claiming...', 'success');
       const [gasPrice, gas] = await Promise.all([

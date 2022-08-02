@@ -14,13 +14,14 @@
           <base-btn
             mode="light"
             class="header__btn"
+            :disabled="connectionType !== $options.ConnectionTypes.WEB3"
             :data-selector="!isConnected ? 'CONNECT-WALLET' : 'DISCONNECT-FROM-WALLET'"
             @click="toggleConnection"
           >
-            {{ !isConnected ? $t('mining.connectWallet') : $t('meta.disconnect') }}
+            {{ connectionButtonText }}
           </base-btn>
           <p
-            v-if="isConnected"
+            v-if="!isWeb3Connection || isConnected"
             class="header__address"
           >
             {{ $t('info.yourWallet') }}
@@ -30,6 +31,8 @@
           </p>
         </div>
       </div>
+
+      <wallet-switcher />
 
       <div class="bridge-page__content">
         <div class="info-block">
@@ -80,7 +83,7 @@
           <div class="info-block__btns-cont">
             <base-btn
               data-selector="SHOW-SWAP-MODAL"
-              :disabled="metamaskStatus === 'notInstalled' || !isConnected"
+              :disabled="isWeb3Connection && (metamaskStatus === 'notInstalled' || !isConnected)"
               @click="showSwapModal"
             >
               {{ $t('bridge.createSwap') }}
@@ -148,7 +151,7 @@
                     class="btn__redeem"
                     :class="!el.item.status ? 'btn__redeem_disabled' : ''"
                     mode="outline"
-                    :disabled="!el.item.status || !isConnected"
+                    :disabled="!el.item.status || (!isConnected && isWeb3Connection)"
                     @click="redeemAction(el.item)"
                   >
                     {{ el.item.status ? $t('meta.redeem') : $t('meta.redeemed') }}
@@ -179,15 +182,27 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { Chains, Layout } from '~/utils/enums';
-import { BridgeAddresses, SwapAddresses } from '~/utils/сonstants/bridge';
-import { getChainIdByChain } from '~/utils/web3';
+import {
+  Chains, ConnectionTypes, Layout, TokenSymbols,
+} from '~/utils/enums';
+import { BlockchainByIndex, BridgeAddresses, SwapAddresses } from '~/utils/сonstants/bridge';
+import {
+  getChainIdByChain, getEstimateGas, getTransactionCount, GetWeb3Provider,
+} from '~/utils/web3';
 import { images } from '~/utils/images';
 import { LoaderStatusLocales } from '~/utils/loader';
+import WalletSwitcher from '~/components/app/WalletSwitcher';
+import { GetWalletProvider } from '~/utils/wallet';
+import walletOperations from '~/plugins/mixins/walletOperations';
+import { WQBridge } from '~/abi';
 
 export default {
   name: 'Bridge',
+  components: { WalletSwitcher },
+  mixins: [walletOperations],
+  ConnectionTypes,
   layout({ store }) {
     return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
   },
@@ -209,14 +224,32 @@ export default {
       isAuth: 'user/isAuth',
       token: 'user/accessToken',
 
-      account: 'web3/getAccount',
       isConnected: 'web3/isConnected',
 
       swaps: 'bridge/getSwaps',
       swapsCount: 'bridge/getSwapsCount',
 
       connections: 'main/notificationsConnectionStatus',
+
+      web3Account: 'web3/getAccount',
+      userWalletAddress: 'user/getUserWalletAddress',
+      connectionType: 'web3/getConnectionType',
     }),
+    isWeb3Connection() {
+      return this.connectionType === ConnectionTypes.WEB3;
+    },
+    connectionButtonText() {
+      if (this.connectionType === ConnectionTypes.WQ_WALLET) return this.$t('meta.connected');
+      return !this.isConnected ? this.$t('mining.connectWallet') : this.$t('meta.disconnect');
+    },
+    getProviderByConnection() {
+      if (this.isWeb3Connection) return GetWeb3Provider;
+      return GetWalletProvider;
+    },
+    account() {
+      if (this.isWeb3Connection) return this.web3Account;
+      return { address: this.userWalletAddress };
+    },
     tableFields() {
       const cellStyle = {
         thStyle: { padding: '0', height: '27px', lineHeight: '27px' },
@@ -269,16 +302,15 @@ export default {
     },
   },
   watch: {
+    connectionType() {
+      this.handlerDisconnect();
+      this.toggleConnection();
+    },
     sourceAddressInd(newIdx, oldIdx) {
       if (this.targetAddressInd === newIdx) this.targetAddressInd = oldIdx;
     },
     targetAddressInd(newIdx, oldIdx) {
       if (this.sourceAddressInd === newIdx) this.sourceAddressInd = oldIdx;
-    },
-    async isConnected() {
-      if (typeof this.account.address === 'string') {
-        await this.swapsTableData(this.account.address, this.isConnected);
-      }
     },
     async page() {
       this.query.offset = (this.page - 1) * this.query.limit;
@@ -286,9 +318,12 @@ export default {
     },
   },
   async mounted() {
-    if (!this.isConnected) await this.toggleConnection();
+    if ((this.connectionType === ConnectionTypes.WEB3 && !this.isConnected) || !this.swapsCount) {
+      await this.toggleConnection();
+    }
   },
   async beforeDestroy() {
+    await this.$store.dispatch('wallet/connectToProvider', Chains.WORKNET);
     const preventDisconnect = sessionStorage.getItem('preventDisconnectWeb3');
     sessionStorage.removeItem('preventDisconnectWeb3');
     if (preventDisconnect) return;
@@ -317,23 +352,31 @@ export default {
       return CutTxn(recipient);
     },
     async toggleConnection() {
-      const { isConnected, addresses, sourceAddressInd } = this;
-      if (isConnected) await this.handlerDisconnect();
+      const {
+        isWeb3Connection, isConnected, addresses, sourceAddressInd,
+      } = this;
+      if (isWeb3Connection && isConnected) await this.handlerDisconnect();
       else {
         const { chain } = addresses[sourceAddressInd];
-        await this.connectWallet({ chain });
-        await this.subscribe(this.account.address);
+        if (isWeb3Connection) await this.connectWallet({ chain });
+        else if (this.token) await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+        await Promise.all([
+          this.subscribe(this.account.address),
+          this.swapsTableData(),
+        ]);
       }
     },
     async handlerDisconnect() {
       clearInterval(this.updateInterval);
       this.updateInterval = null;
-      await this.unsubscribe(this.account.address);
-      await this.disconnectWallet();
-      await this.resetSwaps();
+      await Promise.all([
+        this.unsubscribe(this.account.address),
+        this.resetSwaps(),
+        this.disconnectWallet(), // web3
+      ]);
     },
     async swapsTableData() {
-      if (!this.isConnected) return;
+      if (this.isWeb3Connection && !this.isConnected) return;
       const { account, query } = this;
       await this.fetchSwaps({
         recipientAddress: account.address,
@@ -365,66 +408,207 @@ export default {
       return true;
     },
     async redeemAction({ chain, signData, chainTo }) {
-      this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
-      if (await this.checkNetwork(chain)) {
-        const { ok } = await this.redeem({ signData, chainTo });
+      const makeRedeem = async () => {
+        this.SetLoader({
+          isLoading: true,
+          statusText: this.isWeb3Connection ? LoaderStatusLocales.waitingForTxExternalApp : LoaderStatusLocales.pleaseWaitTx,
+        });
+        const res = await this.redeem({
+          signData, chainTo, provider: this.getProviderByConnection(), accountAddress: this.account.address,
+        });
+        this.SetLoader(false);
+        if (res.ok) {
+          const link = `${SwapAddresses.get(chain).explorer}/tx/${res.result.transactionHash}`;
+          this.ShowModalSuccess({ title: this.$t('modals.redeem.success'), link });
+        } else {
+          this.ShowModalFail({ title: this.$t('modals.redeem.fail'), subtitle: res.msg });
+        }
+      };
 
-        if (ok) this.ShowModalSuccess({ title: this.$t('modals.redeem.success') });
-        else this.ShowModalFail({ title: this.$t('modals.redeem.fail') });
+      if (this.isWeb3Connection) {
+        if (await this.checkNetwork(chain)) await makeRedeem();
+        return;
       }
+
+      this.SetLoader(true);
+      await this.$store.dispatch('wallet/connectToProvider', chain);
+      const [feeRes] = await Promise.all([
+        this.$store.dispatch('wallet/getContractFeeData', {
+          method: 'redeem',
+          abi: WQBridge,
+          contractAddress: BridgeAddresses[BlockchainByIndex[chainTo]],
+          data: signData,
+        }),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
       this.SetLoader(false);
+      if (!feeRes.ok) {
+        this.ShowToast(feeRes.msg);
+        return;
+      }
+      const nativeTokenSymbol = SwapAddresses.get(chain).nativeSymbol;
+
+      const tokenSymbol = signData[7];
+      const toRedeem = new BigNumber(signData[2]).shiftedBy(tokenSymbol === TokenSymbols.USDT ? -6 : -18).toString();
+
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        title: 'Redeem',
+        fields: {
+          chain: { name: this.$t('modals.bridge'), value: chain },
+          toRedeem: { name: this.$t('modals.amount'), value: toRedeem, symbol: tokenSymbol },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: nativeTokenSymbol },
+        },
+        submitMethod: async () => await makeRedeem(),
+      });
     },
 
     async showSwapModal() {
-      const { addresses, sourceAddressInd, targetAddressInd } = this;
+      const {
+        isWeb3Connection, addresses, sourceAddressInd, targetAddressInd,
+      } = this;
       const { chain } = addresses[sourceAddressInd];
-      if (await this.checkNetwork(chain)) {
-        const from = addresses[sourceAddressInd];
-        const to = addresses[targetAddressInd];
-        this.ShowModal({
-          key: modals.swap,
-          from,
-          to,
-          submit: async ({ amount, symbol, isNative }) => {
-            this.ShowModal({
-              key: modals.swapInfo,
-              amount,
-              symbol,
-              from,
-              chain: from.chain,
-              recipient: this.account.address,
-              networks: `${from.chain} > ${to.chain}`,
-              fromNetwork: from.chain,
-              toNetwork: to.chain,
-              submit: async () => {
-                this.CloseModal();
-                if (!this.account?.netId) {
-                  this.ShowToast(this.$t('meta.disconnect'));
-                  return;
-                }
-                this.SetLoader({ isLoading: true, statusText: LoaderStatusLocales.waitingForTxExternalApp });
-                this.page = 1;
-                const { ok, result } = await this.swap({
-                  amount,
-                  symbol,
-                  isNative,
-                  toChainIndex: to.index,
-                  tokenAddress: from.tokenAddress[symbol],
-                  bridgeAddress: BridgeAddresses[from.chain],
-                });
-                this.SetLoader(false);
-
-                this.ShowModal({
-                  key: modals.status,
-                  img: !ok ? images.WARNING : images.SUCCESS,
-                  title: !ok ? this.$t('modals.transactionFail') : this.$t('modals.transactionSent'),
-                  link: !ok ? '' : `${from.explorer}/tx/${result?.transactionHash}`,
-                });
-              },
-            });
-          },
-        });
+      if (isWeb3Connection) {
+        if (!await this.checkNetwork(chain)) return;
+      } else {
+        this.SetLoader(true);
+        await this.$store.dispatch('wallet/connectToProvider', chain);
+        this.SetLoader(false);
       }
+
+      const from = addresses[sourceAddressInd];
+      const to = addresses[targetAddressInd];
+
+      this.ShowModal({
+        key: modals.swap,
+        from,
+        to,
+        submit: async ({
+          amount, symbol, isNative, decimals,
+        }) => {
+          if (this.isWeb3Connection) await this.swapWeb3(from, to, amount, symbol, isNative);
+          else await this.swapWQWallet(from, to, amount, symbol, isNative, decimals);
+        },
+      });
+    },
+
+    // Swap for work quest wallet
+    async swapWQWallet(from, to, amount, symbol, isNative, decimals) {
+      const nativeTokenSymbol = SwapAddresses.get(from.chain).nativeSymbol;
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields: {
+          bridge: { name: this.$t('modals.bridge'), value: `${from.chain} > ${to.chain}` },
+          swapValue: { name: this.$t('modals.amount'), value: amount, symbol },
+          sender: { name: this.$t('modals.senderAddress'), value: this.account.address },
+          recipient: { name: this.$t('modals.recipientAddress'), value: this.account.address },
+        },
+        submitMethod: async () => {
+          const swap = async () => {
+            const provider = this.getProviderByConnection();
+            const nonce = await getTransactionCount(this.account.address.toString(), provider);
+            const value = new BigNumber(amount).shiftedBy(symbol === TokenSymbols.USDT ? 6 : 18).toString();
+            const data = [nonce, to.index, value, this.account.address, symbol];
+            const inst = new provider.eth.Contract(WQBridge, BridgeAddresses[from.chain]);
+            const [gasPrice, estimateGas] = await Promise.all([
+              provider.eth.getGasPrice(),
+              getEstimateGas(null, null, inst, 'swap', data, isNative ? value : null),
+              this.$store.dispatch('wallet/getBalance'),
+            ]);
+
+            if (!gasPrice || !estimateGas) {
+              this.ShowToast('', 'Swap error');
+              return;
+            }
+
+            this.ShowModal({
+              key: modals.transactionReceipt,
+              title: 'Swap',
+              fields: {
+                sender: { name: this.$t('modals.senderAddress'), value: this.account.address },
+                recipient: { name: this.$t('modals.recipientAddress'), value: this.account.address },
+                swapValue: { name: this.$t('modals.amount'), value: amount, symbol },
+                fee: {
+                  name: this.$t('wallet.table.trxFee'),
+                  value: new BigNumber(gasPrice).multipliedBy(estimateGas).shiftedBy(-18).toString(),
+                  symbol: nativeTokenSymbol,
+                },
+              },
+              submitMethod: async () => await this.handleSwap(from, to, amount, symbol, isNative),
+            });
+          };
+
+          if (isNative) {
+            await swap();
+            return;
+          }
+
+          await this.MakeApprove({
+            contractAddress: BridgeAddresses[from.chain],
+            tokenAddress: from.tokenAddress[symbol],
+            amount,
+            decimals,
+            symbol,
+            nativeTokenSymbol,
+          }).then(async () => {
+            await swap();
+          }).catch((err) => {
+            console.error(err);
+          }).finally(() => {
+            this.SetLoader(false);
+          });
+        },
+      });
+    },
+    // Swap for metamask
+    async swapWeb3(from, to, amount, symbol, isNative) {
+      this.ShowModal({
+        key: modals.swapInfo,
+        amount,
+        symbol,
+        from,
+        chain: from.chain,
+        recipient: this.account.address,
+        networks: `${from.chain} > ${to.chain}`,
+        fromNetwork: from.chain,
+        toNetwork: to.chain,
+        submit: async () => {
+          this.CloseModal();
+          if (!this.account?.netId) {
+            this.ShowToast(this.$t('meta.disconnect'));
+            return;
+          }
+          await this.handleSwap(from, to, amount, symbol, isNative);
+        },
+      });
+    },
+
+    // sending swap transaction
+    async handleSwap(from, to, amount, symbol, isNative) {
+      this.SetLoader({
+        isLoading: true,
+        statusText: this.isWeb3Connection ? LoaderStatusLocales.waitingForTxExternalApp : LoaderStatusLocales.pleaseWaitTx,
+      });
+      const { ok, result } = await this.swap({
+        amount,
+        symbol,
+        isNative,
+        toChainIndex: to.index,
+        tokenAddress: from.tokenAddress[symbol],
+        bridgeAddress: BridgeAddresses[from.chain],
+        provider: this.getProviderByConnection(),
+        accountAddress: this.account.address,
+      });
+      if (ok) {
+        this.page = 1;
+      }
+      this.SetLoader(false);
+      this.ShowModal({
+        key: modals.status,
+        img: !ok ? images.WARNING : images.SUCCESS,
+        title: !ok ? this.$t('modals.transactionFail') : this.$t('modals.transactionSent'),
+        link: !ok ? '' : `${from.explorer}/tx/${result?.transactionHash}`,
+      });
     },
   },
 };
