@@ -412,6 +412,11 @@ export default {
     this.updateWQAddress();
     window.addEventListener('resize', this.updateWQAddress);
 
+    if (this.tokens[this.ddValue].title !== this.selectedToken) {
+      const i = this.tokens.findIndex((item) => item.title === this.selectedToken);
+      if (i !== -1) this.ddValue = i;
+    }
+
     await this.$store.dispatch('wallet/setCallbackWS', this.loadData);
     await this.loadData(true);
     if (this.selectedToken === TokenSymbols.WQT && this.selectedTokenData.balance <= 0) {
@@ -622,11 +627,11 @@ export default {
   }
 
   &__card {
-    box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
+    @include shadow;
   }
 
   &__balance {
-    box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
+    @include shadow;
   }
 
   &__body {
@@ -706,7 +711,7 @@ export default {
 
   &__table {
     position: relative;
-    box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
+    @include shadow;
     max-width: 100%;
     overflow-x: auto;
   }

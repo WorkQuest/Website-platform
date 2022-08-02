@@ -665,9 +665,9 @@ export default {
       const preventRedirect = PreventLogoutPathNames.includes(this.$route.name);
       await this.$store.dispatch('user/logout');
       if (preventRedirect) {
+        this.$nuxt.setLayout(Layout.GUEST);
         sessionStorage.setItem('preventDisconnectWeb3', 'yep');
         sessionStorage.setItem('redirectTo', this.$route.path);
-        this.$nuxt.setLayout(Layout.GUEST);
       } else await this.$router.push(Path.ROOT);
     },
     closeAll() {

@@ -8,4 +8,8 @@ export default {
   setAccount(state, payload) {
     state.account = payload;
   },
+
+  setConnectionType(state, connectionType) {
+    state.connectionType = connectionType;
+  },
 };
