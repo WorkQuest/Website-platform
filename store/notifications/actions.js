@@ -4,7 +4,7 @@ import {
   Path,
   DaoUrl,
   PathDAO,
-  UserRole,
+  UserRole, ResponsesType,
 } from '~/utils/enums';
 
 import {
@@ -202,22 +202,24 @@ export default {
         break;
 
       case NotificationAction.QUEST_EDITED:
-        // TODO: fix it
-        // на бэке не хватает поля
-        // ui.notifications.respondedQuestEdited - u responded
-        // ui.notifications.invitedQuestEdited - that u invited
-        console.log(action, notification);
         if (userRole === UserRole.WORKER) {
-          notification.params.isLocal = false;
           notification.data = {
             ...notification.data,
-            message: $nuxt.$t('ui.notifications.respondedQuestEdited'),
+            message: $nuxt.$t(
+              data?.responseType === ResponsesType.Invited
+                ? 'ui.notifications.invitedQuestEdited'
+                : 'ui.notifications.respondedQuestEdited',
+            ),
+          };
+        } else {
+          notification.data = {
+            ...notification.data,
+            message: $nuxt.$t('notifications.questEdited'),
           };
         }
         break;
       // Can be changed on contract only quest price
       case NotificationAction.QUEST_EDITED_ON_CONTRACT:
-        console.log(action, notification);
         notification.sender = {
           avatar: user.avatar,
           firstName: user.firstName,
