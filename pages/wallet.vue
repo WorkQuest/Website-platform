@@ -412,6 +412,11 @@ export default {
     this.updateWQAddress();
     window.addEventListener('resize', this.updateWQAddress);
 
+    if (this.tokens[this.ddValue].title !== this.selectedToken) {
+      const i = this.tokens.findIndex((item) => item.title === this.selectedToken);
+      if (i !== -1) this.ddValue = i;
+    }
+
     await this.$store.dispatch('wallet/setCallbackWS', this.loadData);
     await this.loadData(true);
     if (this.selectedToken === TokenSymbols.WQT && this.selectedTokenData.balance <= 0) {
