@@ -21,14 +21,9 @@
     <div class="content__wallet">
       <div class="wallet">
         <span class="wallet__address">{{ CutTxn(convertedAddress) }}</span>
-        <button
-          v-clipboard:copy="convertedAddress"
-          v-clipboard:success="ClipboardSuccessHandler"
-          v-clipboard:error="ClipboardErrorHandler"
-          type="button"
-        >
-          <span class="icon-copy wallet__icon" />
-        </button>
+        <button-copy
+          :copy-value="convertedAddress"
+        />
       </div>
       <sharing-btn
         class="wallet__sharing"
@@ -134,12 +129,6 @@ export default {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-}
-.icon {
-  &-copy:before {
-    color: $blue;
-    font-size: 20px;
   }
 }
 </style>

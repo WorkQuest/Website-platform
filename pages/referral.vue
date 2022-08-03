@@ -114,13 +114,9 @@
               <div class="address">
                 {{ referLink }}{{ userReferralId }}
               </div>
-              <button
-                v-clipboard:copy="referLink + userReferralId"
-                v-clipboard:success="ClipboardSuccessHandler"
-                v-clipboard:error="ClipboardErrorHandler"
-              >
-                <span class="icon-copy address__icon" />
-              </button>
+              <button-copy
+                :copy-value="referLink + userReferralId"
+              />
             </div>
           </div>
         </div>
@@ -191,13 +187,10 @@
               <template #cell(userID)="el">
                 <div class="user__value_gray">
                   {{ CutTxn(el.item.referral ? el.item.referral : el.item.affiliate, 6, 6) }}
-                  <button
-                    v-clipboard:copy="el.item.referral ? el.item.referral : el.item.affiliate"
-                    v-clipboard:success="ClipboardSuccessHandler"
-                    v-clipboard:error="ClipboardErrorHandler"
-                  >
-                    <span class="icon-copy user__icon-copy" />
-                  </button>
+                  <button-copy
+                    :copy-value="el.item.referral ? el.item.referral : el.item.affiliate"
+                    mode="reward"
+                  />
                 </div>
               </template>
               <template #cell(txHash)="el">
@@ -631,12 +624,6 @@ export default {
             @extend .user__value;
             color: $black500;
             font-weight: 400;
-          }
-        }
-
-        &__icon-copy {
-          &:before {
-            color: $lightblue;
           }
         }
 
