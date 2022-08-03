@@ -804,7 +804,7 @@ export default {
             }
             this.ShowModal({
               key: modals.transactionReceipt,
-              title: 'Stake',
+              title: this.$t('meta.btns.stake'),
               fields: {
                 stake: { name: this.$t('modals.amount'), value: amount, symbol: 'LP' },
                 fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: this.nativeTokenSymbol },
