@@ -1471,8 +1471,8 @@
     "PaidReferral": "Новое реферальное вознаграждение"
   },
   "wallet": {
-    "addressType": "Тип адреса",
     "frozen": "Замороженный баланс",
+    "addressType": "Тип адреса",
     "walletAddress": "Wallet address",
     "cryptoWallet": "Crypto wallet",
     "send": "Отправить",
