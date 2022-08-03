@@ -538,7 +538,10 @@ export default {
       };
 
       this.SetLoader(true);
-      const res = await this.$store.dispatch('referral/fetchCreatedReferralList');
+      const res = await Promise.all([
+        this.$store.dispatch('referral/fetchCreatedReferralList'),
+        this.$store.dispatch('referral/fetchReferralsList'),
+      ]);
       this.SetLoader(false);
 
       if (res.ok && this.createdReferralsList.length) {
