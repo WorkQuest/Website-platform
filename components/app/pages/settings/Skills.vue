@@ -24,16 +24,16 @@
             :placeholder="$t(dd.placeholder)"
             :items="dd.items"
             mode="small"
-            :label="$t(dd.label)"
+            :label="$tc(dd.label)"
           />
           <base-field
             v-model="skills.perHour"
-            rules="max:7|decimal"
+            rules="greaterThanZero|max:7|decimal"
             class="skills__cost"
             data-selector="COST-PER-HOUR"
             :placeholder="skills.perHour || $t('meta.costPerHour')"
-            :label="$t('meta.costPerHour')"
-            :name="$t('meta.costPerHour')"
+            :label="$tc('meta.costPerHour')"
+            :name="$tc('meta.costPerHour')"
             type="number"
           />
         </div>
