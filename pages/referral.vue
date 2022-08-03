@@ -110,13 +110,9 @@
               <div class="address">
                 {{ referLink }}{{ userReferralId }}
               </div>
-              <button
-                v-clipboard:copy="referLink + userReferralId"
-                v-clipboard:success="ClipboardSuccessHandler"
-                v-clipboard:error="ClipboardErrorHandler"
-              >
-                <span class="icon-copy address__icon" />
-              </button>
+              <button-copy
+                :copy-value="referLink + userReferralId"
+              />
             </div>
           </div>
         </div>
@@ -187,13 +183,10 @@
               <template #cell(userID)="el">
                 <div class="user__value_gray">
                   {{ CutTxn(el.item.referral ? el.item.referral : el.item.affiliate, 6, 6) }}
-                  <button
-                    v-clipboard:copy="el.item.referral ? el.item.referral : el.item.affiliate"
-                    v-clipboard:success="ClipboardSuccessHandler"
-                    v-clipboard:error="ClipboardErrorHandler"
-                  >
-                    <span class="icon-copy user__icon-copy" />
-                  </button>
+                  <button-copy
+                    :copy-value="el.item.referral ? el.item.referral : el.item.affiliate"
+                    mode="reward"
+                  />
                 </div>
               </template>
               <template #cell(txHash)="el">
@@ -834,25 +827,19 @@ export default {
     }
   }
 
-  &__icon-copy {
-    &:before {
-      color: $lightblue;
-    }
-  }
-
-  &_last-reward {
-    display: grid;
-    background-color: $black0;
-    border-radius: 5px;
-    height: 50px;
-    line-height: 50px;
-    width: calc(100% - 40px);
-    margin-left: 20px;
-    padding: 0 10px;
-    flex-wrap: wrap;
-    gap: 10px;
-    grid-template-columns: 5fr auto;
-  }
+        &_last-reward {
+          display: grid;
+          background-color: $black0;
+          border-radius: 5px;
+          height: 50px;
+          line-height: 50px;
+          width: calc(100% - 40px);
+          margin-left: 20px;
+          padding: 0 10px;
+          flex-wrap: wrap;
+          gap: 10px;
+          grid-template-columns: 5fr auto;
+        }
 
   &__link {
     display: flex;
