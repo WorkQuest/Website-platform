@@ -722,6 +722,7 @@ export default {
 
             this.SetLoader(false);
             if (!feeRes.ok) {
+              this.ShowToast(feeRes.msg);
               return;
             }
 
@@ -798,11 +799,12 @@ export default {
             ]);
             this.SetLoader(false);
             if (!feeRes.ok) {
+              this.ShowToast(feeRes.msg);
               return;
             }
             this.ShowModal({
               key: modals.transactionReceipt,
-              title: 'Stake',
+              title: this.$t('meta.btns.stake'),
               fields: {
                 stake: { name: this.$t('modals.amount'), value: amount, symbol: 'LP' },
                 fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: this.nativeTokenSymbol },
@@ -865,7 +867,7 @@ export default {
           }
           this.ShowModal({
             key: modals.transactionReceipt,
-            title: 'Unstake',
+            title: this.$t('meta.btns.unstake'),
             fields: {
               amount: { name: this.$t('modals.amount'), value: amount, symbol: 'LP' },
               fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: this.nativeTokenSymbol },

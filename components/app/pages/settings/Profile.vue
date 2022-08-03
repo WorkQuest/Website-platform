@@ -633,10 +633,8 @@ export default {
     grid-column-end: 3;
     height: 114px;
   }
-  &__description-textarea::v-deep {
-    .ctm-field__textarea {
-      height: 114px;
-    }
+  &__description-textarea:deep(.ctm-field__textarea) {
+    height: 114px;
   }
   &__error {
     color: $errorText;

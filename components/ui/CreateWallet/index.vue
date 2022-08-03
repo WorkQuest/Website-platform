@@ -23,15 +23,11 @@
             :class="{'wallet__phrase-input--icon': isShowMnemonic}"
           >
           <div class="wallet__mnemonic_btns">
-            <button
-              v-clipboard:copy="mnemonic"
-              v-clipboard:error="ClipboardErrorHandler"
-              class="wallet__mnemonic_copy-btn"
-              type="button"
-              @click="showCopySuccess"
-            >
-              <span class="icon-copy wallet__mnemonic_copy" />
-            </button>
+            <button-copy
+              :copy-value="mnemonic"
+              :is-show-toast-success="true"
+              mode="mnemonic"
+            />
             <btn-password-visibility
               :is-password-visible="isShowMnemonic"
               @toggleVisibility="isShowMnemonic = $event"
@@ -333,14 +329,6 @@ export default {
     margin-bottom: 20px;
     ::before {
       color: $black600;
-    }
-    &_copy {
-      height: 100%;
-      font-size: 25px;
-      cursor: pointer;
-      &:hover::before {
-        color: $blue;
-      }
     }
     &_btns {
       right: 10px;
