@@ -161,6 +161,9 @@ export default {
       referralId: null,
     };
   },
+  beforeCreate() {
+    this.$store.dispatch('user/logout', false);
+  },
   mounted() {
     const { ref } = this.$route.query;
     if (ref) {
