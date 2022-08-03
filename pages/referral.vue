@@ -67,7 +67,7 @@
               </div>
               <div class="info-block__btn-wrap info-block__btn-wrap_absolute">
                 <base-btn
-                  :disabled="!isNeedRegistration"
+                  :disabled="!unregisteredCount"
                   data-selector="REGISTRATION"
                   @click="handleRegistration"
                 >
@@ -252,6 +252,7 @@ export default {
       store.dispatch('referral/fetchRewardBalance', userAddress),
       store.dispatch('referral/fetchPaidEventsList'),
       store.dispatch('referral/fetchReferralsList'),
+      store.dispatch('referral/fetchReferralsToRegister'),
       store.dispatch('referral/subscribeToReferralEvents', userAddress),
     ]);
   },
@@ -273,7 +274,7 @@ export default {
       userAddress: 'user/getUserWalletAddress',
       userReferralId: 'user/getUserReferralId',
       userData: 'user/getUserData',
-      isNeedRegistration: 'referral/getIsNeedRegistration',
+      unregisteredCount: 'referral/getUnregisteredReferralsCount',
       createdReferralsList: 'referral/getCreatedReferralList',
     }),
     convertedAddress() {
@@ -285,9 +286,6 @@ export default {
     },
     totalPages() {
       return Math.ceil(this.paidEventsList.length / this.perPage);
-    },
-    filterCreatedReferralsList() {
-      return this.referralsList.filter((item) => item.referralUser.referralStatus === 'created' && item.ratingStatistic);
     },
     tableFields() {
       return [
@@ -525,10 +523,7 @@ export default {
             fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
           },
           submitMethod: async () => {
-            const { ok } = await this.$store.dispatch('referral/addReferrals');
-            if (ok) {
-              await this.$store.dispatch('referral/setIsNeedRegistration', false);
-            }
+            await this.$store.dispatch('referral/addReferrals');
           },
         });
       };
@@ -536,7 +531,7 @@ export default {
       this.SetLoader(true);
       const [res] = await Promise.all([
         this.$store.dispatch('referral/fetchCreatedReferralList'),
-        this.$store.dispatch('referral/fetchReferralsList'),
+        this.$store.dispatch('referral/fetchReferralsToRegister'),
       ]);
       this.SetLoader(false);
 
@@ -547,7 +542,6 @@ export default {
           subtitle: this.$t('modals.registration'),
           cancel: this.$t('meta.btns.cancel'),
           button: this.$t('meta.btns.submit'),
-          itemList: this.filterCreatedReferralsList,
           submit: registration,
         });
       } else {
@@ -563,7 +557,6 @@ export default {
       this.ShowModal({
         key: modals.referralRegistration,
         title: this.$t('referral.yourRefers'),
-        itemList: this.referralsList,
         status: true,
       });
     },

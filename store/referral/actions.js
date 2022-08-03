@@ -8,7 +8,7 @@ import {
   fetchContractData, success,
 } from '~/utils/web3';
 import { WQReferral } from '~/abi/index';
-import { REFERRAL_EVENTS } from '~/utils/сonstants/referral';
+import { REFERRAL_EVENTS, REFERRAL_FETCH_LIMIT, REFERRAL_STATUS } from '~/utils/сonstants/referral';
 import ENV from '~/utils/addresses/index';
 import modals from '~/store/modals/modals';
 import { ExplorerUrl } from '~/utils/enums';
@@ -57,23 +57,58 @@ export default {
     }
   },
   /**
+   * @property isLoadingMore
    * @property referrals
    * @property referralUser
    * @property referralStatus
    * @param commit
+   * @param payload params: object, isLoadingMore: boolean
+   * @param params
    * @returns {Promise<boolean|*>}
    */
-  async fetchReferralsList({ commit }) {
+  async fetchReferralsList({ commit, getters }, payload) {
     try {
-      const { result } = await this.$axios.$get('v1/user/me/referral-program/referrals');
+      const config = {};
+      if (payload?.params) {
+        config.params = payload.params;
+      } else {
+        config.params = {
+          limit: REFERRAL_FETCH_LIMIT,
+          offset: 0,
+        };
+      }
+      const { result } = await this.$axios.$get('v1/user/me/referral-program/referrals', config);
 
       if (result.referrals.length) {
-        const isNeedRegistration = result.referrals.some((item) => item.referralUser.referralStatus === 'created' && item.ratingStatistic);
-
         commit('setReferralsListCount', result.count);
-        commit('setReferralsList', result.referrals);
-        commit('setIsNeedRegistration', isNeedRegistration);
+
+        if (payload?.isLoadingMore) commit('addReferralsList', result.referrals);
+        else commit('setReferralsList', result.referrals);
       }
+
+      return success(result);
+    } catch (e) {
+      return error();
+    }
+  },
+  async fetchReferralsToRegister({ commit }, payload) {
+    try {
+      const config = {};
+      if (payload?.params) {
+        config.params = payload.params;
+      } else {
+        config.params = {
+          limit: REFERRAL_FETCH_LIMIT,
+          offset: 0,
+          referralStatus: REFERRAL_STATUS.Created,
+        };
+      }
+      const { result } = await this.$axios.$get('v1/user/me/referral-program/referrals', config);
+
+      commit('setUnregisteredReferralsCount', result.count);
+
+      if (payload?.isLoadingMore) commit('addUnregisteredReferralsList', result.referrals);
+      else commit('setUnregisteredReferralsList', result.referrals);
 
       return success();
     } catch (e) {
@@ -119,30 +154,19 @@ export default {
       await this.$wsNotifs.subscribe('/notifications/referral', async (msg) => {
         const { data: dataMessage } = msg;
         const paidEventsList = JSON.parse(JSON.stringify(getters.getPaidEventsList));
-        const referralsList = JSON.parse(JSON.stringify(getters.getReferralsList));
-        let referralsListCount = JSON.parse(JSON.stringify(getters.getReferralsListCount));
         const currentPage = getters.getCurrentPage;
 
-        if (msg.action === 'RegisteredAffiliat') {
-          console.log('affiliat', msg);
-          await dispatch('fetchReferralsList');
-          dispatch('main/setLoading', false, { root: true });
+        if (msg.action === REFERRAL_EVENTS.RegisteredAffiliat) {
+          await Promise.all([
+            dispatch('fetchReferralsList'),
+            dispatch('fetchReferralsToRegister'),
+            dispatch('main/setLoading', false, { root: true }),
+          ]);
           dispatch('modals/show', {
             key: modals.transactionSend,
             txUrl: `${ExplorerUrl}/tx/${dataMessage.transactionHash}`,
           },
           { root: true });
-        }
-
-        if (msg.action === 'RegisteredAffiliat') {
-          console.log('??? affiliar', msg);
-          referralsList.unshift(dataMessage);
-          referralsListCount = dataMessage.count;
-
-          const isNeedRegistration = referralsList.some((item) => item.referralUser.referralStatus === 'created' && item.ratingStatistic);
-          commit('setReferralsListCount', referralsListCount);
-          commit('setReferralsList', referralsList);
-          commit('setIsNeedRegistration', isNeedRegistration);
         } else if (msg.action === REFERRAL_EVENTS.RewardClaimed && currentPage === 1) {
           const userData = rootGetters['user/getUserData'];
           dispatch('main/setLoading', false, { root: true });
@@ -197,8 +221,5 @@ export default {
   },
   updateCurrentPage({ commit }, page) {
     commit('setCurrentPage', page);
-  },
-  setIsNeedRegistration({ commit }, boolean) {
-    commit('setIsNeedRegistration', boolean);
   },
 };
