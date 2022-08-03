@@ -1713,6 +1713,7 @@
     "earnCrypto": "Gagnez des cryptomonnaies",
     "everyTimeYourFriends": "Chaque fois que vos amis réalisent une première quête, vous recevez jusqu'à 20 USD de commission en WQT en temps réel !",
     "historyOfRewards": "Historique des récompenses",
+    "alreadyRegistered": "Address is already registered",
     "tableHead": {
       "name": "Nom",
       "userID": "Identifiant d'utilisateur",

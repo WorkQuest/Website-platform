@@ -1715,6 +1715,7 @@
     "earnCrypto": "Earn Crypto",
     "everyTimeYourFriends": "Каждый раз, когда ваши друзья выполняют первый квест, вы получаете комиссию WQT до $20 в режиме реального времени!",
     "historyOfRewards": "History of rewards",
+    "alreadyRegistered": "Адрес уже зарегистрирован",
     "tableHead": {
       "name": "Имя",
       "userID": "User ID",

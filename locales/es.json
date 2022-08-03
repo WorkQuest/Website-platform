@@ -1713,6 +1713,7 @@
     "earnCrypto": "Gane criptomonedas",
     "everyTimeYourFriends": "Cada vez que sus amigos creen una oferta por primera vez, ¡recibirá una comisión de hasta 20 $ en WQT en tiempo real!",
     "historyOfRewards": "Historial de recompensas",
+    "alreadyRegistered": "Address is already registered",
     "tableHead": {
       "name": "Nombre",
       "userID": "Id. de usuario",

@@ -1713,6 +1713,7 @@
     "earnCrypto": "ربح العملات المشفرة",
     "everyTimeYourFriends": "ستحصل على ما يصل إلى 20 دولارًا من عمولة WQT في الوقت الفعلي في كل مرة يكمل فيها أصدقاؤك أول طلب عمل!",
     "historyOfRewards": "سجل المكافآت",
+    "alreadyRegistered": "Address is already registered",
     "tableHead": {
       "name": "الاسم",
       "userID": "معرِّف المستخدم",

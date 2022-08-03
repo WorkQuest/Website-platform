@@ -115,6 +115,7 @@ export default {
   }) {
     try {
       await this.$wsNotifs.subscribe('/notifications/referral', async (msg) => {
+        console.log(msg);
         const { data: dataMessage } = msg;
         const paidEventsList = JSON.parse(JSON.stringify(getters.getPaidEventsList));
         const referralsList = JSON.parse(JSON.stringify(getters.getReferralsList));
@@ -122,6 +123,7 @@ export default {
         const currentPage = getters.getCurrentPage;
 
         if (msg.action === 'RegisteredAffiliar') {
+          dispatch('main/setLoading', false, { root: true });
           referralsList.unshift(dataMessage);
           referralsListCount = dataMessage.count;
 

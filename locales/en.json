@@ -1713,6 +1713,7 @@
     "earnCrypto": "Earn Crypto",
     "everyTimeYourFriends": "Every time your friends make a first Quest, you'll get up to $20 in WQT commission in real time!",
     "historyOfRewards": "History of rewards",
+    "alreadyRegistered": "Address is already registered",
     "tableHead": {
       "name": "Name",
       "userID": "User ID",
@@ -1839,6 +1840,7 @@
     "pools": "Pools",
     "choose": "Choose",
     "agreement": "WorkQuest Liquidity Mining User Agreement.pdf",
+    "alreadyRegistered": "Address is already registered",
     "tableHead": {
       "poolAddress": "Pool address",
       "swaps": "Swaps",

@@ -1713,6 +1713,7 @@
     "earnCrypto": "赚取加密货币",
     "everyTimeYourFriends": "每当您有朋友完成第一个 Quest，您都会实时获得最高可达 20 美元的 WQT 佣金！",
     "historyOfRewards": "奖励历史",
+    "alreadyRegistered": "Address is already registered",
     "tableHead": {
       "name": "名称",
       "userID": "用户 ID",

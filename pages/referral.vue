@@ -412,6 +412,9 @@ export default {
       },
     },
   },
+  beforeMount() {
+    this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+  },
   beforeDestroy() {
     this.$store.dispatch('referral/unsubscribeToReferralEvents', this.userAddress);
   },
@@ -514,12 +517,15 @@ export default {
         ]);
         this.SetLoader(false);
         if (!feeRes.ok) {
-          this.ShowToast(feeRes.msg);
+          if (feeRes.msg.includes('Address is already registered')) {
+            this.ShowToast(this.$t('referral.alreadyRegistered'));
+          } else this.ShowToast(feeRes.msg);
           return;
         }
         this.ShowModal({
           key: modals.transactionReceipt,
           title: this.$t('meta.btns.registration'),
+          isDontOffLoader: true,
           fields: {
             from: { name: this.$t('meta.fromBig'), value: this.convertedAddress },
             to: { name: this.$t('meta.toBig'), value: ENV.WORKNET_REFERRAL },
@@ -528,6 +534,7 @@ export default {
           submitMethod: async () => {
             const res = await this.$store.dispatch('referral/addReferrals');
             if (res.ok) {
+              // TODO: подписаться на евенты по обновлению с бэка
               this.ShowModal({
                 key: modals.transactionSend,
                 txUrl: `${ExplorerUrl}/tx/${res.result.transactionHash}`,
@@ -560,6 +567,7 @@ export default {
         });
       }
     },
+
     showReferralsList() {
       this.ShowModal({
         key: modals.referralRegistration,
