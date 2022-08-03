@@ -10,11 +10,10 @@ import { WQFactory, WorkQuest, WQPromotion } from '~/abi/index';
 
 import {
   hashText,
-  getProvider,
   createInstance,
   getWalletAddress,
   getContractFeeData,
-  sendWalletTransaction,
+  sendWalletTransaction, GetWalletProvider,
 } from '~/utils/wallet';
 
 import { error, success } from '~/utils/web3';
@@ -251,6 +250,7 @@ export default {
     cost, description, nonce,
   }) {
     try {
+      const provider = GetWalletProvider();
       const address = ENV.WORKNET_WQ_FACTORY;
       const walletAddress = getWalletAddress();
       const hash = hashText(description);
@@ -259,10 +259,10 @@ export default {
       const inst = createInstance(WQFactory, address);
       const sendData = inst.methods.newWorkQuest.apply(null, data).encodeABI();
       const [gasPrice, gasEstimate] = await Promise.all([
-        getProvider().eth.getGasPrice(),
+        provider.eth.getGasPrice(),
         inst.methods.newWorkQuest.apply(null, data).estimateGas({ from: walletAddress }),
       ]);
-      const res = await getProvider().eth.sendTransaction({
+      const res = await provider.eth.sendTransaction({
         to: address,
         from: walletAddress,
         data: sendData,

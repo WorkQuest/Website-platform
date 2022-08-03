@@ -1,7 +1,7 @@
 import Web3 from 'web3';
 
 import BigNumber from 'bignumber.js';
-import { Path, Chains } from '~/utils/enums';
+import { Path, Chains, ProviderTypesByChain } from '~/utils/enums';
 import { Pool } from '~/utils/сonstants/mining';
 
 import {
@@ -128,24 +128,31 @@ export default {
    * @param commit
    * @param dispatch
    * @param chain
+   * @param web3Provider
+   * @param accountAddress
    * @return {Promise<{msg: string, code: number, data: null, ok: boolean}|{result: *, ok: boolean}>}
    */
-  async fetchPoolData({ commit, dispatch }, { chain }) {
+  async fetchPoolData({ commit, dispatch }, { chain, web3Provider, accountAddress }) {
     try {
+      if (!web3Provider) {
+        console.error('web3Provider is null');
+        return error();
+      }
+
       const {
         lpToken,
-        provider,
+        guestProvider,
         stakingAbi,
         miningAddress,
         stakingAddress,
       } = Pool.get(chain);
 
       // because we use data from mainnet
-      const rpcProvider = new Web3.providers.HttpProvider(provider);
+      const rpcProvider = new Web3.providers.HttpProvider(guestProvider);
       const web3 = new Web3(rpcProvider);
 
-      if (!LP_INSTANCE) LP_INSTANCE = await new web3.eth.Contract(ERC20, lpToken);
-      if (!MINING_INSTANCE) MINING_INSTANCE = await new web3.eth.Contract(stakingAbi, miningAddress);
+      if (!LP_INSTANCE) LP_INSTANCE = new web3.eth.Contract(ERC20, lpToken);
+      if (!MINING_INSTANCE) MINING_INSTANCE = new web3.eth.Contract(stakingAbi, miningAddress);
 
       const [
         totalSupply,
@@ -154,7 +161,13 @@ export default {
       ] = await Promise.all([
         LP_INSTANCE.methods.totalSupply().call(),
         MINING_INSTANCE.methods.getStakingInfo().call(),
-        fetchContractData('getInfoByAddress', stakingAbi, stakingAddress, [getAccountAddress()]),
+        fetchContractData(
+          'getInfoByAddress',
+          stakingAbi,
+          stakingAddress,
+          [accountAddress],
+          web3Provider,
+        ),
       ]);
 
       commit('setPoolData', {
@@ -236,26 +249,27 @@ export default {
     return ok ? result : { balance: 0, decimals: 0, symbol: '' };
   },
 
-  async swapOldTokens({ _ }, { amount, decimals }) {
+  async swapOldTokens({ _ }, { weiAmount, accountAddress, web3Provider }) {
     try {
-      const tokenInstance = await createInstance(ERC20, ENV.BSC_OLD_WQT_TOKEN);
-      const exchangeInstance = await createInstance(WQTExchange, ENV.BSC_WQT_EXCHANGE);
+      const tokenInstance = new web3Provider.eth.Contract(ERC20, ENV.BSC_OLD_WQT_TOKEN);
+      const exchangeInstance = new web3Provider.eth.Contract(WQTExchange, ENV.BSC_WQT_EXCHANGE);
 
-      const value = new BigNumber(amount).shiftedBy(+decimals).toString();
-      const allowance = await getAllowance(getAccountAddress(), ENV.BSC_WQT_EXCHANGE, tokenInstance);
-      if (new BigNumber(allowance).isLessThan(value)) {
+      const allowance = await getAllowance(accountAddress, ENV.BSC_WQT_EXCHANGE, tokenInstance);
+      if (new BigNumber(allowance).isLessThan(weiAmount)) {
         showToast('Swapping', 'Approving...', 'success');
-        await makeApprove(ENV.BSC_WQT_EXCHANGE, value, tokenInstance);
+        await makeApprove(ENV.BSC_WQT_EXCHANGE, weiAmount, tokenInstance);
         showToast('Swapping', 'Approving done', 'success');
       }
 
       showToast('Swapping', 'Swapping...', 'success');
       const [gasPrice, gas] = await Promise.all([
-        getGasPrice(),
-        getEstimateGas(null, null, exchangeInstance, 'swap', [value]),
+        web3Provider.eth.getGasPrice(),
+        exchangeInstance.methods.swap.apply(null, [weiAmount]).estimateGas({
+          from: accountAddress,
+        }),
       ]);
-      const result = await exchangeInstance.methods.swap(value).send({
-        from: getAccountAddress(),
+      const result = await exchangeInstance.methods.swap(weiAmount).send({
+        from: accountAddress,
         gasPrice,
         gas,
       });
@@ -269,14 +283,16 @@ export default {
     }
   },
 
-  async stake({ _ }, { amount, chain }) {
+  async stake({ _ }, {
+    amount, chain, accountAddress, web3Provider,
+  }) {
     try {
       const { stakingAbi, stakingAddress, stakingToken } = Pool.get(chain);
-      const instanceStake = await createInstance(stakingAbi, stakingAddress);
-      const instanceToken = await createInstance(ERC20, stakingToken);
+      const instanceStake = new web3Provider.eth.Contract(stakingAbi, stakingAddress);
+      const instanceToken = new web3Provider.eth.Contract(ERC20, stakingToken);
 
       const value = new BigNumber(amount).shiftedBy(18).toString();
-      const allowance = await getAllowance(getAccountAddress(), stakingAddress, instanceToken);
+      const allowance = await getAllowance(accountAddress, stakingAddress, instanceToken);
       if (new BigNumber(allowance).isLessThan(value)) {
         showToast('Swapping', 'Approving...', 'success');
         await makeApprove(stakingAddress, value, instanceToken);
@@ -285,11 +301,11 @@ export default {
 
       showToast('Staking', 'Staking...', 'success');
       const [gasPrice, gas] = await Promise.all([
-        getGasPrice(),
-        getEstimateGas(null, null, instanceStake, 'stake', [value]),
+        web3Provider.eth.getGasPrice(),
+        instanceStake.methods.stake(value).estimateGas({ from: getAccountAddress() }),
       ]);
       const result = await instanceStake.methods.stake(value).send({
-        from: getAccountAddress(),
+        from: accountAddress,
         gasPrice,
         gas,
       });
@@ -308,21 +324,25 @@ export default {
    * @param _
    * @param amount
    * @param chain
+   * @param accountAddress
+   * @param web3Provider
    * @return {Promise<{msg: string, code: number, data: null, ok: boolean}|{result: *, ok: boolean}>}
    */
-  async unStake({ _ }, { amount, chain }) {
+  async unStake({ _ }, {
+    amount, chain, accountAddress, web3Provider,
+  }) {
     try {
       const { stakingAbi, stakingAddress } = Pool.get(chain);
-      const inst = await createInstance(stakingAbi, stakingAddress);
+      const inst = new web3Provider.eth.Contract(stakingAbi, stakingAddress);
 
       const value = new BigNumber(amount).shiftedBy(18).toString();
       showToast('Unstaking', 'Unstaking...', 'success');
       const [gasPrice, gas] = await Promise.all([
-        getGasPrice(),
-        getEstimateGas(null, null, inst, 'unstake', [value]),
+        web3Provider.eth.getGasPrice(),
+        inst.methods.unstake(value).estimateGas({ from: accountAddress }),
       ]);
       const result = await inst.methods.unstake(value).send({
-        from: getAccountAddress(),
+        from: accountAddress,
         gasPrice,
         gas,
       });
@@ -336,18 +356,19 @@ export default {
     }
   },
 
-  async claim({ _ }, { chain }) {
+  async claim({ _ }, {
+    stakingAbi, stakingAddress, web3Provider, accountAddress,
+  }) {
     try {
-      const { stakingAbi, stakingAddress } = Pool.get(chain);
-      const inst = await createInstance(stakingAbi, stakingAddress);
+      const inst = new web3Provider.eth.Contract(stakingAbi, stakingAddress);
 
       showToast('Claiming', 'Claiming...', 'success');
       const [gasPrice, gas] = await Promise.all([
-        getGasPrice(),
-        getEstimateGas(null, null, inst, 'claim', []),
+        web3Provider.eth.getGasPrice(),
+        inst.methods.claim().estimateGas({ from: accountAddress }),
       ]);
       const result = await inst.methods.claim().send({
-        from: getAccountAddress(),
+        from: accountAddress,
         gasPrice,
         gas,
       });

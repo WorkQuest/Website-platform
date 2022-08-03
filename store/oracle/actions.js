@@ -7,9 +7,9 @@ import {
 
 import {
   getGasPrice,
-  getProvider,
   createInstance,
   getWalletAddress,
+  GetWalletProvider,
 } from '~/utils/wallet';
 
 import { WQOracle, WQRouter } from '~/abi';
@@ -83,7 +83,7 @@ export default {
       /**
        * @property setTokenPricesUSD - method of oracle
        */
-      const inst = await createInstance(WQOracle, ENV.WORKNET_ORACLE);
+      const inst = createInstance(WQOracle, ENV.WORKNET_ORACLE);
       const res = await inst.methods.setTokenPricesUSD(nonce, v, r, s, prices, maxRatio, symbols).send({
         from: getWalletAddress(),
         // because sometimes the wrong amount of gas is calculated
@@ -103,7 +103,7 @@ export default {
         WQRouter,
         ENV.WORKNET_ROUTER,
         [currency],
-        getProvider(),
+        GetWalletProvider(),
       );
       commit('setMinRatio', new BigNumber(minRatio).shiftedBy(-18).multipliedBy(100).toNumber());
     } catch (e) {

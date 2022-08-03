@@ -253,13 +253,14 @@ Vue.mixin({
     ScrollToTop: () => window.scrollTo(0, 0),
     IsProd: () => IS_PROD,
     ShowModalSuccess({
-      title, subtitle, img, path,
+      title, subtitle, img, path, link,
     }) {
       this.ShowModal({
         key: modals.status,
         img: img || images.SUCCESS,
         title: title || this.$t('meta.success'),
         subtitle,
+        link,
         path,
       });
     },
