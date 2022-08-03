@@ -185,8 +185,9 @@ export default {
 
       case NotificationAction.QUEST_STATUS_UPDATED:
         if (![QuestStatuses.WaitWorker, QuestStatuses.Done].includes(data.status)) {
-          notification.sender = userRole === UserRole.EMPLOYER ? assignedWorker
-            || wqInfoSender : user;
+          notification.sender = userRole === UserRole.EMPLOYER
+            ? assignedWorker || wqInfoSender
+            : user;
         } else {
           notification.sender = wqInfoSender;
         }
