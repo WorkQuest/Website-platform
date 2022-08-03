@@ -115,7 +115,6 @@ export default {
   }) {
     try {
       await this.$wsNotifs.subscribe('/notifications/referral', async (msg) => {
-        console.log(msg);
         const { data: dataMessage } = msg;
         const paidEventsList = JSON.parse(JSON.stringify(getters.getPaidEventsList));
         const referralsList = JSON.parse(JSON.stringify(getters.getReferralsList));
