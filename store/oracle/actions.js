@@ -87,7 +87,7 @@ export default {
       await inst.methods.setTokenPricesUSD(nonce, v, r, s, prices, maxRatio, symbols).send({
         from: getWalletAddress(),
         // because sometimes the wrong amount of gas is calculated
-        gas: 300000,
+        gas: 500000,
         gasPrice,
       });
       return success();
