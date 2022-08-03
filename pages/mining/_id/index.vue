@@ -722,6 +722,7 @@ export default {
 
             this.SetLoader(false);
             if (!feeRes.ok) {
+              this.ShowToast(feeRes.msg);
               return;
             }
 
@@ -798,6 +799,7 @@ export default {
             ]);
             this.SetLoader(false);
             if (!feeRes.ok) {
+              this.ShowToast(feeRes.msg);
               return;
             }
             this.ShowModal({
