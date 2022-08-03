@@ -5,7 +5,7 @@
   >
     <base-filter-dd class="filters-panel__item" />
     <base-dd
-      v-if="userRole === UserRole.EMPLOYER"
+      v-if="isEmployer"
       v-model="selectedRating"
       class="filters-panel__item"
       mode="blackFont"
@@ -22,7 +22,7 @@
       data-selector="PRIORITY"
     />
     <base-dd
-      v-if="userRole === UserRole.WORKER"
+      v-if="!isEmployer"
       v-model="selectedTypeOfEmployment"
       class="filters-panel__item"
       mode="blackFont"
@@ -31,7 +31,7 @@
       data-selector="TYPE-EMPLOYMENT"
     />
     <base-dd
-      v-if="userRole === UserRole.WORKER"
+      v-if="!isEmployer"
       v-model="selectedWorkplace"
       class="filters-panel__item"
       mode="blackFont"
@@ -95,6 +95,7 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'PanelFilters',
+  UserRole,
   data() {
     return {
       selectedRating: null,
@@ -113,7 +114,6 @@ export default {
       activeModalKey: 'modals/getCurrentModalKey',
       isModalShowed: 'modals/getIsShow',
     }),
-    UserRole() { return UserRole; },
     selectedSpec() {
       const specs = this.selectedSpecializations?.query || [];
       const query = {};
@@ -133,8 +133,10 @@ export default {
       return WorkplaceFilter.map((item) => this.$t(`workPlaces.${item}`));
     },
     payPeriodItems() {
-      return PayPeriodsFilter.map((item, i) => (i === 0 ? this.$t('quests.allVariants')
-        : this.$t(`quests.payPeriods.${item}`)));
+      return PayPeriodsFilter.map((item, i) => (
+        i === 0
+          ? this.$t('quests.allVariants')
+          : this.$t(`quests.payPeriods.${item}`)));
     },
     prices() {
       const { from, to } = this.selectedPrice;
@@ -189,7 +191,10 @@ export default {
   },
   methods: {
     showPriceSearch() {
-      this.ShowModal({ key: modals.priceSearch, title: this.$t(`meta.${this.isEmployer ? 'costPerHour' : 'price'}`) });
+      this.ShowModal({
+        key: modals.priceSearch,
+        title: this.$t(`meta.${this.isEmployer ? 'costPerHour' : 'price'}`),
+      });
     },
     sortByTime() {
       this.selectedSort = this.selectedSort === 'desc' ? 'asc' : 'desc';
