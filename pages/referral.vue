@@ -448,12 +448,12 @@ export default {
             fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
           },
           submitMethod: async () => {
-            const res = await this.$store.dispatch('referral/claimReferralReward', this.userAddress);
-            if (res.ok) {
+            const { ok, result } = await this.$store.dispatch('referral/claimReferralReward', this.userAddress);
+            if (ok) {
               await this.$store.dispatch('referral/fetchPaidEventsList');
               this.ShowModal({
                 key: modals.transactionSend,
-                txUrl: `${ExplorerUrl}/tx/${res.result.transactionHash}`,
+                txUrl: `${ExplorerUrl}/tx/${result.transactionHash}`,
               });
             }
           },
@@ -532,12 +532,11 @@ export default {
             fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
           },
           submitMethod: async () => {
-            const res = await this.$store.dispatch('referral/addReferrals');
-            if (res.ok) {
-              // TODO: подписаться на евенты по обновлению с бэка
+            const { ok, result } = await this.$store.dispatch('referral/addReferrals');
+            if (ok) {
               this.ShowModal({
                 key: modals.transactionSend,
-                txUrl: `${ExplorerUrl}/tx/${res.result.transactionHash}`,
+                txUrl: `${ExplorerUrl}/tx/${result.transactionHash}`,
               });
               await this.$store.dispatch('referral/setIsNeedRegistration', false);
             }
