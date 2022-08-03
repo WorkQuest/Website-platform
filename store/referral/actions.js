@@ -124,6 +124,7 @@ export default {
         const currentPage = getters.getCurrentPage;
 
         if (msg.action === 'RegisteredAffiliat') {
+          console.log('affiliat', msg);
           await dispatch('fetchReferralsList');
           dispatch('main/setLoading', false, { root: true });
           dispatch('modals/show', {
@@ -133,7 +134,8 @@ export default {
           { root: true });
         }
 
-        if (msg.action === 'RegisteredAffiliar') {
+        if (msg.action === 'RegisteredAffiliat') {
+          console.log('??? affiliar', msg);
           referralsList.unshift(dataMessage);
           referralsListCount = dataMessage.count;
 
