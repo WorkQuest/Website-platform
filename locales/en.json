@@ -1844,7 +1844,6 @@
     "pools": "Pools",
     "choose": "Choose",
     "agreement": "WorkQuest Liquidity Mining User Agreement.pdf",
-    "alreadyRegistered": "Address is already registered",
     "tableHead": {
       "poolAddress": "Pool address",
       "swaps": "Swaps",

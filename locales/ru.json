@@ -1434,7 +1434,6 @@
   },
   "notifications": {
     "newQuestForSpecialization": "Новый квест по выбранным специализациям",
-    "QuestEditedOnContract": "Квест отредактирован на контракте",
     "QuestEditedOnContract": "Цена квеста была изменена",
     "title": "Уведомления",
     "invite": "Приглашаем вас завершить квест",
@@ -1454,8 +1453,8 @@
     "QuestStatusUpdated": "Статус квеста обновлен",
     "userLeftReviewAboutQuest": "Оставил отзыв о квесте",
     "waitWorker": "Квест ожидает",
-    "DisputeDecision": "Решение спора",
     "registrationError": "Нет пользователей для  регистрации. Пожалуйста свяжитесь с разработчиками",
+    "DisputeDecision": "Решение спора",
     "newCommentInDiscussion": "Новый комментарий в дискуссии",
     "commentLiked": "Комментарий лайкнут",
     "questEdited": "Квест отредактирован",
