@@ -10,6 +10,8 @@ import {
 import { WQReferral } from '~/abi/index';
 import { REFERRAL_EVENTS } from '~/utils/сonstants/referral';
 import ENV from '~/utils/addresses/index';
+import modals from '~/store/modals/modals';
+import { ExplorerUrl } from '~/utils/enums';
 
 export default {
   async fetchRewardBalance({ commit }, userWalletAddress) {
@@ -115,7 +117,6 @@ export default {
   }) {
     try {
       await this.$wsNotifs.subscribe('/notifications/referral', async (msg) => {
-        console.log(msg);
         const { data: dataMessage } = msg;
         const paidEventsList = JSON.parse(JSON.stringify(getters.getPaidEventsList));
         const referralsList = JSON.parse(JSON.stringify(getters.getReferralsList));
@@ -123,8 +124,13 @@ export default {
         const currentPage = getters.getCurrentPage;
 
         if (msg.action === 'RegisteredAffiliat') {
-          dispatch('fetchReferralsList');
+          await dispatch('fetchReferralsList');
           dispatch('main/setLoading', false, { root: true });
+          dispatch('modals/show', {
+            key: modals.transactionSend,
+            txUrl: `${ExplorerUrl}/tx/${dataMessage.transactionHash}`,
+          },
+          { root: true });
         }
 
         if (msg.action === 'RegisteredAffiliar') {

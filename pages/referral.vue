@@ -525,12 +525,8 @@ export default {
             fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
           },
           submitMethod: async () => {
-            const { ok, result } = await this.$store.dispatch('referral/addReferrals');
+            const { ok } = await this.$store.dispatch('referral/addReferrals');
             if (ok) {
-              this.ShowModal({
-                key: modals.transactionSend,
-                txUrl: `${ExplorerUrl}/tx/${result.transactionHash}`,
-              });
               await this.$store.dispatch('referral/setIsNeedRegistration', false);
             }
           },
