@@ -32,19 +32,8 @@ export default {
   },
   computed: {
     classByMode() {
-      switch (this.mode) {
-        case 'twoFA':
-          return 'two-auth';
-        case 'wallet':
-          return 'wallet';
-        case 'reward':
-          return 'reward';
-        case 'mnemonic':
-          return 'mnemonic';
-        default: {
-          return '';
-        }
-      }
+      if (this.mode === 'twoFA') return 'two-auth';
+      return this.mode || '';
     },
   },
 };
