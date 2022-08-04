@@ -24,6 +24,8 @@ export const NotificationAction = {
   NEW_DISCUSSION_LIKE: 'newDiscussionLike',
   QUEST_EDITED_ON_CONTRACT: 'QuestEditedOnContract',
   UPDATE_RATING_STATISTIC: 'updateRatingStatistic',
+  NEW_QUEST_FOR_SPECIALIZATION: 'newQuestForSpecialization',
+  PAID_REFERRAL: 'PaidReferral',
 };
 
 export const LocalNotificationAction = {
@@ -52,9 +54,11 @@ export const notificationsQuestsActions = Object.freeze([
   NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE,
   NotificationAction.WAIT_WORKER,
   NotificationAction.QUEST_EDITED,
+  NotificationAction.QUEST_EDITED_ON_CONTRACT,
   NotificationAction.QUEST_END_SOON,
 ]);
 
+// Setup sender as assigned quest employer
 export const notificationCommonFilterActions = Object.freeze([
   NotificationAction.EMPLOYER_INVITED_WORKER_TO_QUEST,
   NotificationAction.WORKER_ACCEPTED_INVITATION_TO_QUEST,
@@ -64,6 +68,7 @@ export const notificationCommonFilterActions = Object.freeze([
   NotificationAction.EMPLOYER_REJECTED_WORKERS_RESPONSE,
 ]);
 
+// Setup sender as assigned quest worker
 export const notificationEmployerFilterActions = Object.freeze([
   NotificationAction.WORKER_RESPONDED_TO_QUEST,
   NotificationAction.WORKER_ACCEPTED_QUEST,
@@ -71,6 +76,7 @@ export const notificationEmployerFilterActions = Object.freeze([
   NotificationAction.WORKER_REJECTED_QUEST,
 ]);
 
+// Setup sender as notification.user
 export const notificationCommonFilterAction2 = Object.freeze([
   NotificationAction.QUEST_EDITED,
   NotificationAction.NEW_DISCUSSION_LIKE,
@@ -78,3 +84,14 @@ export const notificationCommonFilterAction2 = Object.freeze([
   NotificationAction.EMPLOYER_ACCEPTED_COMPLETED_QUEST,
   NotificationAction.WAIT_WORKER,
 ]);
+
+export const QuestNotificationByStatus = Object.freeze({
+  [-3]: 'questClosed',
+  [-2]: 'questDisputeStarted',
+  [-1]: 'questBlockedByAdmin',
+  1: 'QuestStatusUpdated',
+  2: 'questInvitationSentToWorker',
+  3: 'questWorkInProgress',
+  4: 'questWorkSentForReview',
+  5: 'questCompleted',
+});

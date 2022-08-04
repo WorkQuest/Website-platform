@@ -254,12 +254,6 @@ export default {
     }
 
     if (sessionStorage.getItem('confirmToken')) this.ShowToast(this.$t('messages.loginAfterRegistration'), ' ');
-
-    const isRef = this.$router.history._startLocation.includes('ref');
-    if (isRef) {
-      const ref = this.$router.history._startLocation.replace('/?ref=', '');
-      sessionStorage.setItem('referralId', ref);
-    }
   },
   async beforeDestroy() {
     if (this.isStartedTimer) {
@@ -269,11 +263,7 @@ export default {
       }));
     }
     if (!this.addressAssigned && !this.$cookies.get('access') && !this.$cookies.get('userStatus')) {
-      const refId = sessionStorage.getItem('referralId');
       await this.$store.dispatch('user/logout', false);
-      if (refId?.length) {
-        sessionStorage.setItem('referralId', refId);
-      }
     }
   },
   methods: {

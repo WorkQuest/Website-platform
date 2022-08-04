@@ -51,7 +51,7 @@
             <div class="notification__quest quest">
               <div class="quest__invitation">
                 {{
-                  notification.params.isLocal
+                  notification.params.isLocal || (notification.data && notification.data.message)
                     ? notification.data.message
                     : notificationActionKey(notification)
                 }}
@@ -423,15 +423,12 @@ export default {
     font-size: 16px;
     color: $blue;
     letter-spacing: 0.03em;
+
+    width: 100%;
+    display: inline-block;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: initial;
-
-    display: inline-block;
-    line-clamp: 3;
-    -webkit-line-clamp: 3;
-    box-orient: vertical;
-    -webkit-box-orient: vertical;
+    white-space: nowrap;
     transition: .5s;
     &_hov:hover {
         cursor: pointer;
@@ -454,12 +451,6 @@ export default {
     &__container {
       max-width: 100%;
       width: auto;
-    }
-  }
-  .notification {
-    grid-template-columns: 52px auto 100px;
-    &__quest {
-      min-width: auto;
     }
   }
 }

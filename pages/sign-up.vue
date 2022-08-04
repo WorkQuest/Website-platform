@@ -157,7 +157,16 @@ export default {
       isPasswordVisible: false,
       isPasswordConfirmVisible: false,
       inProgress: false,
+
+      referralId: null,
     };
+  },
+  beforeCreate() {
+    this.$store.dispatch('user/logout', false);
+  },
+  mounted() {
+    const { ref } = this.$route.query;
+    if (ref) this.referralId = ref;
   },
   methods: {
     async signUp() {
@@ -165,16 +174,16 @@ export default {
       this.model.email = this.model.email.trim();
       this.model.firstName = this.model.firstName.trim();
       this.model.lastName = this.model.lastName.trim();
-      const referralId = sessionStorage.getItem('referralId');
       const payload = {
         firstName: this.model.firstName,
         lastName: this.model.lastName,
         email: this.model.email,
         password: this.model.password,
-        ...referralId && { referralId },
       };
+      if (this.referralId) payload.referralId = this.referralId;
       const response = await this.$store.dispatch('user/signUp', payload);
       if (response.ok) {
+        sessionStorage.removeItem('referralId');
         sessionStorage.setItem('resend-timer', JSON.stringify({
           timerValue: resendEmailLifetime,
           createdAt: Date.now(),
@@ -188,7 +197,7 @@ export default {
           subtitle: this.$t('registration.emailConfirm'),
         });
       }
-      this.inProgress = true;
+      this.inProgress = false;
     },
   },
 };
