@@ -55,7 +55,7 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'ModalOpenADeposit',
+  name: 'CtmModalSignWorkQuest',
   data() {
     return {
       userName: '',

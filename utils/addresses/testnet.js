@@ -16,7 +16,7 @@ export default {
   WQ_EXPLORER: 'https://testnet-explorer-api.workquest.co/api/v1',
   WQ_ORACLE_URL: 'https://testnet-oracle.workquest.co/api/v1',
   WQ_LIQUIDATOR_URL: 'https://testnet-liquidator.workquest.co/api/v1',
-  NOTIFS_URL: 'https://notifications.workquest.co/api/',
+  NOTIFS_URL: 'https://testnet-notification.workquest.co/api/',
 
   WS_NOTIFS_URL: 'wss://testnet-notification.workquest.co/api/v1/notifications',
   WS_CHAT_ACTIONS_URL: 'wss://testnet-app.workquest.co/api/v1/notifications/chat',

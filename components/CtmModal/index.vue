@@ -90,7 +90,6 @@ export default {
     [modals.swapTokens]: () => import('./CtmModalSwapTokens'),
     [modals.gallery]: () => import('./CtmModalGallery'),
     [modals.areYouSure]: () => import('./CtmModalAreYouSure'),
-    [modals.referralClaim]: () => import('./CtmModalReferralClaim'),
     [modals.valueSend]: () => import('./CtmModalValueSend'),
     [modals.claimRewards]: () => import('./CtmModalClaimRewards'),
     [modals.buyWQT]: () => import('./CtmModalBuyWQT'),

@@ -1433,7 +1433,8 @@
     }
   },
   "notifications": {
-    "QuestEditedOnContract": "Квест отредактирован на контракте",
+    "newQuestForSpecialization": "Новый квест по выбранным специализациям",
+    "QuestEditedOnContract": "Цена квеста была изменена",
     "title": "Уведомления",
     "invite": "Приглашаем вас завершить квест",
     "OpenDispute": "Открыт спор",
@@ -1452,18 +1453,26 @@
     "QuestStatusUpdated": "Статус квеста обновлен",
     "userLeftReviewAboutQuest": "Оставил отзыв о квесте",
     "waitWorker": "Квест ожидает",
-    "DisputeDecision": "Решение спора",
     "registrationError": "Нет пользователей для  регистрации. Пожалуйста свяжитесь с разработчиками",
+    "DisputeDecision": "Решение спора",
     "newCommentInDiscussion": "Новый комментарий в дискуссии",
     "commentLiked": "Комментарий лайкнут",
     "questEdited": "Квест отредактирован",
     "questEndSoon": "Квест скоро закончится",
     "newDiscussionLike": "Новый лайк на дискуссии",
-    "updateRatingStatistic": "Новый рейтинг статистики"
+    "updateRatingStatistic": "Новый рейтинг статистики",
+    "questClosed": "Квест закрыт",
+    "questDisputeStarted": "Открыт диспут для квеста",
+    "questBlockedByAdmin": "Квест заблокирован администратором",
+    "questInvitationSentToWorker": "Отправлено приглашение на квест",
+    "questWorkInProgress": "Квест стартовал",
+    "questWorkSentForReview": "Работа отправлена на проверку",
+    "questCompleted": "Квест завершен",
+    "PaidReferral": "Новое реферальное вознаграждение"
   },
   "wallet": {
-    "addressType": "Тип адреса",
     "frozen": "Замороженный баланс",
+    "addressType": "Тип адреса",
     "walletAddress": "Wallet address",
     "cryptoWallet": "Crypto wallet",
     "send": "Отправить",
@@ -1709,6 +1718,7 @@
     "earnCrypto": "Earn Crypto",
     "everyTimeYourFriends": "Каждый раз, когда ваши друзья выполняют первый квест, вы получаете комиссию WQT до $20 в режиме реального времени!",
     "historyOfRewards": "History of rewards",
+    "alreadyRegistered": "Адрес уже зарегистрирован",
     "tableHead": {
       "name": "Имя",
       "userID": "User ID",

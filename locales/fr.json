@@ -1433,7 +1433,8 @@
     }
   },
   "notifications": {
-    "QuestEditedOnContract": "Quest edited on contract",
+    "newQuestForSpecialization": "New quest for selected specializations",
+    "QuestEditedOnContract": "Quest price is edited",
     "title": "Notifications",
     "OpenDispute": "Open dispute",
     "openDispute": "Open dispute",
@@ -1459,7 +1460,15 @@
     "questEdited": "Quest edited",
     "questEndSoon": "Quest end soon",
     "newDiscussionLike": "New like on discussion",
-    "updateRatingStatistic": "New rating statistic"
+    "updateRatingStatistic": "New rating statistic",
+    "questClosed": "Quest closed",
+    "questDisputeStarted": "Opened dispute for a quest",
+    "questBlockedByAdmin": "Quest blocked by Admin",
+    "questInvitationSentToWorker": "Quest invitation sent",
+    "questWorkInProgress": "Quest is started",
+    "questWorkSentForReview": "Work sent for review",
+    "questCompleted": "Quest completed",
+    "PaidReferral": "New referral reward"
   },
   "wallet": {
     "frozen": "Frozen balance",
@@ -1708,6 +1717,7 @@
     "earnCrypto": "Gagnez des cryptomonnaies",
     "everyTimeYourFriends": "Chaque fois que vos amis réalisent une première quête, vous recevez jusqu'à 20 USD de commission en WQT en temps réel !",
     "historyOfRewards": "Historique des récompenses",
+    "alreadyRegistered": "Address is already registered",
     "tableHead": {
       "name": "Nom",
       "userID": "Identifiant d'utilisateur",

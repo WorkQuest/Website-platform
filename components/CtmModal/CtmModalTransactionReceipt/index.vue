@@ -4,6 +4,12 @@
     :title="options.title || $tc('modals.txInfo')"
   >
     <div class="info__content content">
+      <div
+        v-if="options.description"
+        class="content__description"
+      >
+        {{ options.description }}
+      </div>
       <div class="content__fields">
         <div
           v-for="(item, i) of options.fields"
@@ -149,6 +155,9 @@ export default {
 }
 .content{
   padding: 0 28px 30px 28px!important;
+  &__description {
+    color: $black500;
+  }
   &__fields {
     margin-top: 20px;
   }

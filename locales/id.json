@@ -1433,7 +1433,8 @@
     }
   },
   "notifications": {
-    "QuestEditedOnContract": "Quest edited on contract",
+    "newQuestForSpecialization": "New quest for selected specializations",
+    "QuestEditedOnContract": "Quest price is edited",
     "title": "Notifications",
     "OpenDispute": "Open dispute",
     "openDispute": "Open dispute",
@@ -1459,7 +1460,15 @@
     "questEdited": "Quest edited",
     "questEndSoon": "Quest end soon",
     "newDiscussionLike": "New like on discussion",
-    "updateRatingStatistic": "New rating statistic"
+    "updateRatingStatistic": "New rating statistic",
+    "questClosed": "Quest closed",
+    "questDisputeStarted": "Opened dispute for a quest",
+    "questBlockedByAdmin": "Quest blocked by Admin",
+    "questInvitationSentToWorker": "Quest invitation sent",
+    "questWorkInProgress": "Quest is started",
+    "questWorkSentForReview": "Work sent for review",
+    "questCompleted": "Quest completed",
+    "PaidReferral": "New referral reward"
   },
   "wallet": {
     "frozen": "Frozen balance",
@@ -1708,6 +1717,7 @@
     "earnCrypto": "Hasilkan Kripto",
     "everyTimeYourFriends": "Setiap kali teman Anda melakukan Quest pertama, Anda akan mendapatkan komisi WQT hingga $20 secara langsung!",
     "historyOfRewards": "Riwayat hadiah",
+    "alreadyRegistered": "Address is already registered",
     "tableHead": {
       "name": "Nama",
       "userID": "ID pengguna",
