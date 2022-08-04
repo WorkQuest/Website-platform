@@ -184,7 +184,7 @@ export default {
       clearTimeout(this.searchTimeout);
       this.searchTimeout = setTimeout(() => {
         // TODO search
-      }, 600);
+      }, 150);
     },
     async changeTimeSorting() {
       this.params['sort[createdAt]'] = this.params['sort[createdAt]'] === 'asc' ? 'desc' : 'asc';

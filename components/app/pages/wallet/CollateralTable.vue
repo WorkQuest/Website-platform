@@ -220,13 +220,13 @@ export default {
         this.idxHistory = null;
         this.$store.commit('collateral/setHistoryCollateral', { rows: [], count: null });
       } else {
-        this.idxHistory = idx;
         await this.checkActionsPossibilities(item);
         await this.fetchCollateralInfo({
           address: this.walletAddress,
           collateralId: item.id,
           params: {},
         });
+        this.idxHistory = idx;
       }
     },
 
@@ -314,10 +314,10 @@ export default {
         availableToDepositWUSD: this.availableToDepositWUSD,
         availableToDepositCollateral: this.availableToAddCollateral,
         amountToRemoveCollateral: new BigNumber(debt).shiftedBy(-18).toString(),
-        submit: async (method, currency) => {
+        submit: async (method) => {
           this.SetLoader(true);
 
-          const payload = [index, currency];
+          const payload = [index, symbol];
           if (method === 'removeCollateral') {
             payload.splice(1, 0, debt);
           }

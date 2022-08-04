@@ -248,6 +248,8 @@ export default {
     },
 
     async handleLotAction() {
+      // TODO if auctionStatus === 1 return
+      // ??????
       if (!this.isAuth) {
         this.ShowToast(this.$t('messages.loginToContinue'));
         return;
@@ -329,8 +331,8 @@ export default {
         // TODO need to fix response for sendWalletTransaction
         if (isSuccess === false) this.ShowModalFail({ subtitle: errorMsg });
         else this.ShowModalSuccess({});
-      }).catch((e) => {
-        this.ShowToast(e.msg);
+      }).catch(() => {
+        console.log('User rejected method.');
       }).finally(() => {
         this.SetLoader(false);
       });

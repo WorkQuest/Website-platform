@@ -23,7 +23,7 @@ export default {
       const { result: { count, auction } } = await this.$axiosLiquidator.$get('/auction/getLots', { params });
 
       const balanceData = rootGetters['wallet/getBalanceData'];
-
+      // TODO added logic for status 2, look at lotBuyed property, if length more then 1, add new item for this lot in array
       commit('setLost', {
         count,
         lots: auction.map((item) => {
