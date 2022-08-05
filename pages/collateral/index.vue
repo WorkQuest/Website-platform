@@ -178,11 +178,14 @@ import {
 import { getGasPrice, getWalletAddress } from '~/utils/wallet';
 import { WQRouter } from '~/abi';
 import walletOperations from '~/plugins/mixins/walletOperations';
+import { IS_PLUG_PROD } from '~/utils/locker-data';
 
 export default {
   name: 'Collateral',
   mixins: [walletOperations],
   layout({ store }) {
+    // TODO PLUG for release
+    if (IS_PLUG_PROD) return Layout.DEFAULT;
     return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
   },
   data() {
