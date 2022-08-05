@@ -1,7 +1,6 @@
 export default {
   default: 'default',
   status: 'status',
-  emailConfirm: 'emailConfirm',
   restore: 'restore',
   privacy: 'privacy',
   skills: 'skills',
@@ -75,11 +74,11 @@ export default {
   getWUSD: 'getWUSD',
   buyAuction: 'buyAuction',
   neededToEnable2FA: 'neededToEnable2FA',
-  referralClaim: 'referralClaim',
   referralRegistration: 'referralRegistration',
   valueSend: 'valueSend',
   downloadApp: 'downloadApp',
   claimRewards: 'claimRewards',
   buyWQT: 'buyWQT',
   report: 'report',
+  pendingHash: 'pendingHash',
 };

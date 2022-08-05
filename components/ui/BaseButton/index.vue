@@ -24,7 +24,7 @@
     :class="btnClass"
     :type="isSubmit ? 'submit' : 'button'"
     :data-selector="`ACTION-BTN-CLICK-${dataSelector.toUpperCase()}`"
-    @click="$emit('click')"
+    @click="$emit('click', $event)"
   >
     {{ text }}
     <span
@@ -354,8 +354,8 @@ export default {
     }
   }
   &_light {
-    background: #FFFFFF !important;
-    color: $black800 !important;
+    background: #FFFFFF;
+    color: $black800;
     transition: 0.5s;
     &:hover {
       background: $black100 !important;

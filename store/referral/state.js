@@ -3,8 +3,9 @@ export default () => ({
   paidEventsList: [],
   referralsList: [],
   referralsListCount: 0,
+  unregisteredReferralsList: [],
+  unregisteredReferralsCount: 0,
   createdReferralList: [],
   referralSignature: {},
   currentPage: 1,
-  isNeedRegistration: false,
 });

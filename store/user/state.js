@@ -1,6 +1,7 @@
 export default () => ({
   currentLang: '',
   twoFACode: '',
+  twoFAPassed: false,
   verificationCode: '',
   tokens: {
     access: null,

@@ -185,9 +185,7 @@ import {
   UserStatuses,
 } from '~/utils/enums';
 import { images } from '~/utils/images';
-import { accessLifetime } from '~/utils/сonstants/cookiesLifetime';
-
-const timerDefaultValue = 60;
+import { accessLifetime, resendEmailLifetime } from '~/utils/сonstants/cookiesLifetime';
 
 export default {
   name: 'SignIn',
@@ -203,7 +201,7 @@ export default {
       hiddenResend: true,
       disableResend: true,
       isStartedTimer: false,
-      timerValue: timerDefaultValue,
+      timerValue: resendEmailLifetime,
       timer: null,
       addressAssigned: false,
       userWalletAddress: null,
@@ -227,29 +225,18 @@ export default {
       return isStartedTimer ? this.$tc('meta.units.seconds', this.DeclOfNum(timerValue), { count: timerValue }) : '';
     },
   },
-  watch: {
-    userStatus() {
-      if (this.userStatus === UserStatuses.Unconfirmed || this.timer) {
-        this.hiddenResend = false;
-        if (!this.isStartedTimer) this.disableResend = false;
-      } else {
-        this.hiddenResend = true;
-        this.disableResend = true;
-      }
-    },
-  },
   created() {
     window.addEventListener('beforeunload', this.beforeunload);
     const { token } = this.$route.query;
     if (token) sessionStorage.setItem('confirmToken', String(token));
   },
   async mounted() {
-    this.continueTimer();
     const access = this.$cookies.get('access');
     const refresh = this.$cookies.get('refresh');
     this.userStatus = this.$cookies.get('userStatus');
     if (+this.userStatus === UserStatuses.Confirmed && access) await this.redirectUser();
 
+    this.continueTimer();
     this.isLoginWithSocial = this.$cookies.get('socialNetwork');
     if (this.isLoginWithSocial && access && refresh && +this.userStatus === UserStatuses.Confirmed) {
       this.SetLoader(true);
@@ -267,50 +254,40 @@ export default {
     }
 
     if (sessionStorage.getItem('confirmToken')) this.ShowToast(this.$t('messages.loginAfterRegistration'), ' ');
-
-    const isRef = this.$router.history._startLocation.includes('ref');
-    if (isRef) {
-      const ref = this.$router.history._startLocation.replace('/?ref=', '');
-      sessionStorage.setItem('referralId', ref);
-    }
   },
   async beforeDestroy() {
     if (this.isStartedTimer) {
-      this.$cookies.set('resend-timer', {
+      sessionStorage.setItem('resend-timer', JSON.stringify({
         timerValue: this.timerValue,
         createdAt: Date.now(),
-      });
+      }));
     }
     if (!this.addressAssigned && !this.$cookies.get('access') && !this.$cookies.get('userStatus')) {
-      const refId = sessionStorage.getItem('referralId');
       await this.$store.dispatch('user/logout', false);
-      if (refId?.length) {
-        sessionStorage.setItem('referralId', refId);
-      }
     }
   },
   methods: {
     beforeunload() {
       if (this.isStartedTimer) {
-        this.$cookies.set('resend-timer', {
+        sessionStorage.setItem('resend-timer', JSON.stringify({
           timerValue: this.timerValue,
           createdAt: Date.now(),
-        });
+        }));
         this.hiddenResend = true;
-      } else this.$cookies.remove('resend-timer');
+      } else sessionStorage.removeItem('resend-timer');
       this.clearCookies();
     },
     clearTimer() {
-      this.$cookies.remove('resend-timer');
-      this.timerValue = timerDefaultValue;
+      sessionStorage.removeItem('resend-timer');
+      this.timerValue = resendEmailLifetime;
       clearInterval(this.timerId);
       this.isStartedTimer = false;
       this.disableResend = false;
     },
     continueTimer() {
-      if (this.userStatus === UserStatuses.Unconfirmed) this.hiddenResend = false;
-      this.timer = this.$cookies.get('resend-timer');
-      if (!this.timer) return;
+      this.timer = JSON.parse(sessionStorage.getItem('resend-timer'));
+      if (!this.timer || !this.$cookies.get('access')) return;
+      this.hiddenResend = false;
       this.timer.timerValue -= (this.$moment().diff(this.timer.createdAt) / 1000).toFixed(0);
       if (this.timer.timerValue <= 0) {
         this.clearTimer();
@@ -320,15 +297,21 @@ export default {
       this.startTimer();
     },
     startTimer() {
-      if (!this.isStartedTimer) {
-        this.timerId = setInterval(() => {
-          if (this.timerId && this.timerValue === 0) this.clearTimer();
-          this.timerValue -= 1;
-        }, 1000);
+      if (this.isStartedTimer) return;
 
-        this.isStartedTimer = true;
-        this.disableResend = true;
-      }
+      this.timer = {
+        timerValue: resendEmailLifetime,
+        createdAt: Date.now(),
+      };
+      sessionStorage.setItem('resend-timer', JSON.stringify(this.timer));
+      this.timerId = setInterval(() => {
+        if (this.timerId && this.timerValue === 0) this.clearTimer();
+        this.timerValue -= 1;
+      }, 1000);
+
+      this.hiddenResend = false;
+      this.isStartedTimer = true;
+      this.disableResend = true;
     },
     clearCookies() {
       const mnemonicInLocalStorage = JSON.parse(localStorage.getItem('mnemonic'));
@@ -368,19 +351,11 @@ export default {
       this.step = step;
     },
 
-    showConfirmEmailModal() {
-      this.ShowModal({
-        key: modals.emailConfirm,
-      });
-    },
-
     async resendLetter() {
       this.model.email = this.model.email.trim();
       const { email, password } = this.model;
       if (!email.trim() || !password) {
-        await this.$store.dispatch('main/showToast', {
-          text: this.$tc('signIn.enterEmail'),
-        });
+        this.ShowToast(this.$tc('signIn.enterEmail'));
         return;
       }
       if (!this.$cookies.get('access')) {
@@ -392,10 +367,7 @@ export default {
       }
       if (this.$cookies.get('access')) {
         await this.$store.dispatch('user/resendEmail', { email });
-        await this.$store.dispatch('main/showToast', {
-          title: this.$t('registration.emailConfirmTitle'),
-          text: this.$t('registration.emailConfirmNewLetter'),
-        });
+        this.ShowToast(this.$t('registration.emailConfirmNewLetter'), this.$t('registration.emailConfirmTitle'));
         this.startTimer();
       }
     },
@@ -419,6 +391,7 @@ export default {
         if (result.totpIsActive) {
           await this.ShowModal({
             key: modals.securityCheck,
+            isForLogin: true,
             actionMethod: async () => await this.nextStepAction(),
           });
         } else {
@@ -431,20 +404,41 @@ export default {
       const confirmToken = sessionStorage.getItem('confirmToken');
       // Unconfirmed account w/o confirm token
       if (this.userStatus === UserStatuses.Unconfirmed && !confirmToken) {
-        await this.$store.dispatch('main/showToast', {
-          title: this.$t('registration.emailConfirmTitle'),
-          text: this.$t('registration.emailConfirm'),
-        });
+        this.timer = JSON.parse(sessionStorage.getItem('resend-timer'));
+        if (!this.timer) {
+          this.timer = {
+            timerValue: this.timerValue,
+            createdAt: Date.now(),
+          };
+          sessionStorage.setItem('resend-timer', JSON.stringify(this.timer));
+        }
+        this.continueTimer();
+        this.ShowToast(this.$t('registration.emailConfirm'), this.$t('registration.emailConfirmTitle'));
         this.SetLoader(false);
         return;
       }
 
-      this.clearTimer();
-
-      // Redirect to confirm account
-      if (confirmToken) {
+      // Confirmation account
+      if (confirmToken && this.userStatus === UserStatuses.Unconfirmed) {
         setCipherKey(this.model.password);
-        await this.redirectUser();
+        const confirmRes = await this.$store.dispatch('user/confirm', {
+          confirmCode: sessionStorage.getItem('confirmToken'),
+        });
+        if (confirmRes.ok) {
+          this.userStatus = UserStatuses.NeedSetRole;
+          await this.redirectUser();
+        } else {
+          this.timer = JSON.parse(sessionStorage.getItem('resend-timer'));
+          if (!this.timer) {
+            this.timer = {
+              timerValue: this.timerValue,
+              createdAt: Date.now(),
+            };
+            sessionStorage.setItem('resend-timer', JSON.stringify(this.timer));
+          }
+          this.continueTimer();
+          this.ShowToast(this.$t('meta.wrongToken'), this.$t('registration.emailConfirmTitle'));
+        }
         this.SetLoader(false);
         return;
       }
@@ -500,10 +494,7 @@ export default {
       }
 
       // Session & Storage invalid mnemonics
-      await this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.error'),
-        text: this.$t('messages.mnemonic'),
-      });
+      this.ShowToast(this.$t('messages.mnemonic'), this.$t('toasts.error'));
       this.step = WalletState.ImportMnemonic;
     },
     async assignWallet(wallet) {
@@ -518,10 +509,7 @@ export default {
       }
       if (res.code === 400011) {
         // На данный mnemonic уже привязан какой-то аккаунт
-        await this.$store.dispatch('main/showToast', {
-          title: this.$t('toasts.error'),
-          text: this.$t('messages.mnemonic'),
-        });
+        this.ShowToast(this.$t('messages.mnemonic'), this.$t('toasts.error'));
       }
     },
     async importWallet(wallet) {
@@ -538,10 +526,7 @@ export default {
         return;
       }
       // Phrase not assigned to this account
-      await this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.error'),
-        text: this.$t('messages.mnemonic'),
-      });
+      this.ShowToast(this.$t('messages.mnemonic'), this.$t('toasts.error'));
     },
     saveToStorage(wallet) {
       initWallet(wallet.address, wallet.privateKey);
@@ -560,12 +545,12 @@ export default {
     async redirectUser() {
       this.addressAssigned = true;
       this.$cookies.set('userLogin', true, { path: Path.ROOT, maxAge: accessLifetime });
-      // redirect to confirm access if token exists & unconfirmed account
-      const confirmToken = sessionStorage.getItem('confirmToken');
-      if ((this.userStatus === UserStatuses.Unconfirmed || !this.userAddress) && confirmToken) {
-        await this.$router.push(`${Path.ROLE}/?token=${confirmToken}`);
+
+      if (this.userStatus === UserStatuses.NeedSetRole) {
+        await this.$router.push(Path.ROLE);
         return;
       }
+
       sessionStorage.removeItem('confirmToken');
       if (!this.userData.id) await this.$store.dispatch('user/getUserData');
 

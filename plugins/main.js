@@ -3,11 +3,10 @@ import moment from 'moment';
 import VueTippy, { TippyComponent } from 'vue-tippy';
 import converter from 'bech32-converting';
 import BigNumber from 'bignumber.js';
+import heic2any from 'heic2any';
 import modals from '~/store/modals/modals';
 import { TokenSymbols } from '~/utils/enums';
-import { QuestMethods, QuestStatuses } from '~/utils/сonstants/quests';
 import { images } from '~/utils/images';
-import { ERC20, WorkQuest } from '~/abi';
 import ENV, { IS_PROD } from '~/utils/addresses/index';
 
 Vue.use(VueTippy);
@@ -20,6 +19,17 @@ Vue.mixin({
     };
   },
   methods: {
+    async HEICConvertTo(file, toType = 'images/jpeg') {
+      try {
+        return await heic2any({
+          blob: file,
+          toType,
+        });
+      } catch (e) {
+        console.error('main/heicConvert', e);
+        return null;
+      }
+    },
     ComingSoon() {
       this.ShowModal({
         key: modals.status,
@@ -52,10 +62,15 @@ Vue.mixin({
       const fetchData = [];
       const fetchUrlsData = [];
       const medias = [];
-      // eslint-disable-next-line no-restricted-syntax
-      for (const item of files) {
-        if (item.mediaId) medias.push(item.mediaId);
-        else fetchData.push(this.$store.dispatch('user/getUploadFileLink', { contentType: item.file?.type }));
+      for (let i = 0; i < files.length; i += 1) {
+        let { file } = files[i];
+        if (file?.type === 'images/heic') {
+          // eslint-disable-next-line no-await-in-loop
+          file = await this.HEICConvertTo(file);
+          files[i] = file;
+        }
+        if (files[i].mediaId) medias.push(files[i].mediaId);
+        else fetchData.push(this.$store.dispatch('user/getUploadFileLink', { contentType: file?.type }));
       }
       if (!fetchData.length) return medias;
       const urls = await Promise.all(fetchData);
@@ -238,13 +253,14 @@ Vue.mixin({
     ScrollToTop: () => window.scrollTo(0, 0),
     IsProd: () => IS_PROD,
     ShowModalSuccess({
-      title, subtitle, img, path,
+      title, subtitle, img, path, link,
     }) {
       this.ShowModal({
         key: modals.status,
         img: img || images.SUCCESS,
         title: title || this.$t('meta.success'),
         subtitle,
+        link,
         path,
       });
     },
@@ -276,37 +292,28 @@ Vue.mixin({
     async ShowTxReceipt({
       from, to, amount, currency, fee, title,
     }) {
+      const fields = {};
+      if (from) fields.from = { name: this.$t('meta.fromBig'), value: from };
+      if (to) fields.to = { name: this.$t('meta.toBig'), value: to };
+      if (amount !== undefined) fields.amount = { name: this.$t('modals.amount'), value: amount, symbol: currency };
+      if (fee?.gasPrice && fee?.gas) {
+        fields.fee = {
+          name: this.$t('wallet.table.trxFee'),
+          value: new BigNumber(fee.gasPrice).multipliedBy(fee.gas).shiftedBy(-18).toFixed(),
+          symbol: TokenSymbols.WQT,
+        };
+      }
+
       return new Promise(async (resolve, reject) => {
         this.ShowModal({
           key: modals.transactionReceipt,
           title: title || this.$t('modals.takeWUSD'),
-          fields: {
-            from: { name: this.$t('meta.fromBig'), value: from },
-            to: { name: this.$t('meta.toBig'), value: to },
-            amount: {
-              name: this.$t('modals.amount'),
-              value: amount,
-              symbol: currency,
-            },
-            fee: {
-              name: this.$t('wallet.table.trxFee'),
-              value: new BigNumber(fee.gasPrice).multipliedBy(fee.gas).shiftedBy(-18).toFixed(),
-              symbol: TokenSymbols.WQT,
-            },
-          },
+          fields,
           isDontOffLoader: true,
           submitMethod: async () => await resolve(),
-          cancelMethod: async () => await reject(new Error('Cancel')),
+          cancelMethod: async () => await reject(),
         });
       });
-    },
-    ClearZero(value) {
-      if (!value) return '';
-      value = value.toString();
-      while (value.startsWith('0') && value.length > 1 && !(value.startsWith('0,') || value.startsWith('0.'))) {
-        value = value.substr(1, value.length);
-      }
-      return value;
     },
   },
 });

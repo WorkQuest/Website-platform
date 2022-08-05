@@ -17,13 +17,14 @@
           </div>
           <base-field
             v-model="securityCode"
+            auto-focus
             :disabled="inProgress"
             data-selector="SECURITY-CODE"
             :placeholder="$t('securityCheck.placeholder')"
             :name="$tc('meta.securityCheckSmall')"
             rules="required|alpha_num|length:6"
             class="content__input"
-            @enter="handleSubmit(hide)"
+            @enter="handleSubmit(submit)"
           />
           <div class="content__body">
             {{ $t('meta.googleConfCodeDesc') }}
@@ -34,7 +35,7 @@
             class="buttons__button"
             :disabled="!validated || !passed || invalid || inProgress"
             data-selector="SEND"
-            @click="handleSubmit(hide)"
+            @click="handleSubmit(submit)"
           >
             {{ $t('meta.btns.send') }}
           </base-btn>
@@ -65,16 +66,18 @@ export default {
     }),
   },
   methods: {
-    async hide() {
+    async submit() {
       if (this.inProgress) return;
-      const { actionMethod } = this.options;
+      const { actionMethod, isForLogin } = this.options;
       this.inProgress = true;
-      const result = await this.$store.dispatch('user/validateTOTP', { token: this.securityCode });
+      const result = await this.$store.dispatch(`user/${isForLogin ? 'validateTOTP' : 'validateSessionTOTP'}`,
+        { token: this.securityCode });
       this.inProgress = false;
       if (result) {
-        this.$cookies.set('2fa', true, { path: Path.ROOT, maxAge: lifetime2FA });
+        if (isForLogin) await this.$store.dispatch('user/getMainData');
+        else this.$store.commit('user/setTwoFAPassed', true);
+
         await this.CloseModal();
-        await this.$store.dispatch('user/getMainData');
         await actionMethod();
       } else {
         this.errorMsg = true;

@@ -7,9 +7,9 @@ import {
 
 import {
   getGasPrice,
-  getProvider,
   createInstance,
   getWalletAddress,
+  GetWalletProvider,
 } from '~/utils/wallet';
 
 import { WQOracle, WQRouter } from '~/abi';
@@ -24,6 +24,7 @@ export default {
     try {
       const { result } = await this.$axiosOracle.$get('/oracle/sign-price/tokens');
       commit('setCurrentPrices', result);
+      commit('setMaxRatio', result.maxRatio);
       return success(result);
     } catch (e) {
       return error();
@@ -45,51 +46,51 @@ export default {
       await dispatch('getCurrentTokensPrices');
 
       const {
-        nonce: timestamp, v, r, s,
+        nonce, v, r, s,
       } = getters.getCurrentPrices;
-      const [prices, symbols] = [getters.getPrices, getters.getSymbols];
+      const [prices, symbols, maxRatio] = [getters.getPrices, getters.getSymbols, getters.getMaxRatio];
 
       const fee = await getGasPrice(
         WQOracle,
         ENV.WORKNET_ORACLE,
         'setTokenPricesUSD',
-        [timestamp, v, r, s, prices, symbols],
+        [nonce, v, r, s, prices, maxRatio, symbols],
       );
       return success(fee);
     } catch (e) {
       console.error('oracle/feeSetTokenPrices', e);
-      return error();
+      return error(e.code, e.message, e);
     }
   },
 
   async setCurrentPriceTokens({ getters, dispatch }) {
     try {
       const { result: { gas, gasPrice } } = await dispatch('feeSetTokensPrices');
-      await dispatch('getCurrentTokensPrices');
 
       const {
-        nonce: timestamp, v, r, s,
+        nonce, v, r, s,
       } = getters.getCurrentPrices;
-      const [prices, symbols] = [getters.getPrices, getters.getSymbols];
+      const [prices, symbols, maxRatio] = [getters.getPrices, getters.getSymbols, getters.getMaxRatio];
 
-      if (gas && gasPrice) {
-        /**
-         * @property setTokenPricesUSD - method of oracle
-         */
-        const inst = await createInstance(WQOracle, ENV.WORKNET_ORACLE);
-        await inst.methods.setTokenPricesUSD(timestamp, v, r, s, prices, symbols).send({
-          from: getWalletAddress(),
-          gasPrice,
-          gas,
-        });
-        return success();
+      if (!gas || !gasPrice) {
+        dispatch('main/showToast', {
+          title: $nuxt.$t('toasts.error'),
+          text: $nuxt.$t('toasts.errorGetFee'),
+        }, { root: true });
+        return error();
       }
 
-      dispatch('main/showToast', {
-        title: $nuxt.$t('toasts.error'),
-        text: $nuxt.$t('toasts.errorGetFee'),
-      }, { root: true });
-      return error();
+      /**
+       * @property setTokenPricesUSD - method of oracle
+       */
+      const inst = createInstance(WQOracle, ENV.WORKNET_ORACLE);
+      const res = await inst.methods.setTokenPricesUSD(nonce, v, r, s, prices, maxRatio, symbols).send({
+        from: getWalletAddress(),
+        // because sometimes the wrong amount of gas is calculated
+        gas: 300000,
+        gasPrice,
+      });
+      return success(res);
     } catch (e) {
       console.error('oracle/setCurrentPriceTokens', e);
       return error();
@@ -102,7 +103,7 @@ export default {
         WQRouter,
         ENV.WORKNET_ROUTER,
         [currency],
-        getProvider(),
+        GetWalletProvider(),
       );
       commit('setMinRatio', new BigNumber(minRatio).shiftedBy(-18).multipliedBy(100).toNumber());
     } catch (e) {

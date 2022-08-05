@@ -25,14 +25,9 @@
         />
         <div class="wallet">
           <span class="wallet__address">{{ CutTxn($route.query.address) }}</span>
-          <button
-            v-clipboard:copy="$route.query.address"
-            v-clipboard:success="showSuccessCopied"
-            v-clipboard:error="clipboardErrorHandler"
-            type="button"
-          >
-            <span class="icon-copy" />
-          </button>
+          <button-copy
+            :copy-value="$route.query.address"
+          />
         </div>
       </div>
     </div>

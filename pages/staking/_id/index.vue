@@ -22,6 +22,7 @@
             <div class="link-cont__link link-cont__link_gray">
               {{ convertToBech32('wq', poolAddress) }}
             </div>
+            <!--TODO : change this button to button-copy -->
             <button
               type="button"
               data-selector="COPY-BTN"
@@ -29,6 +30,9 @@
             >
               <span class="icon-copy link-cont__icon" />
             </button>
+            <!--<button-copy-->
+            <!--@click="doCopy" -->
+            <!-- />-->
           </div>
         </div>
         <div

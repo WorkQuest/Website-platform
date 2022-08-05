@@ -10,7 +10,7 @@
       <div class="profile__personal-main">
         <ValidationProvider
           v-slot="{ validate }"
-          rules="ext:png,jpeg,jpg"
+          rules="ext:png,jpeg,jpg,heic"
           tag="div"
           class="profile__avatar"
         >
@@ -24,7 +24,7 @@
             id="avatar"
             class="profile__avatar-input"
             type="file"
-            accept="image/*"
+            accept="image/png, image/jpeg, image/heic"
             data-selector="ACTION-BTN-UPLOAD-PROFILE-IMAGE"
             @change="processFile($event, validate)"
           >
@@ -475,7 +475,11 @@ export default {
     async processFile(e, validate) {
       const isValid = await validate(e);
       const reader = new FileReader();
-      const file = e.target.files[0];
+      let file = e.target.files[0];
+      if (file.type === 'image/heic') {
+        file = await this.HEICConvertTo(file);
+        if (!file) return false;
+      }
       if (isValid.valid) {
         if (!file) return false;
         reader.readAsDataURL(file);
@@ -629,10 +633,8 @@ export default {
     grid-column-end: 3;
     height: 114px;
   }
-  &__description-textarea::v-deep {
-    .ctm-field__textarea {
-      height: 114px;
-    }
+  &__description-textarea:deep(.ctm-field__textarea) {
+    height: 114px;
   }
   &__error {
     color: $errorText;

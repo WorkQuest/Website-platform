@@ -13,6 +13,7 @@ export default () => ({
     BNB: { balance: 0, fullBalance: 0, decimals: 18 },
     ETH: { balance: 0, fullBalance: 0, decimals: 18 },
     USDT: { balance: 0, fullBalance: 0, decimals: 6 },
+    USDC: { balance: 0, fullBalance: 0, decimals: 6 },
     MATIC: { balance: 0, fullBalance: 0, decimals: 18 },
   },
   frozenBalance: 0,
@@ -26,4 +27,6 @@ export default () => ({
   stakingUserData: { WQT: {}, WUSD: {} },
 
   selectedNetwork: Chains.WORKNET,
+
+  pendingHashLink: null,
 });

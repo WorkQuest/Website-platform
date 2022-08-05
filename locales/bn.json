@@ -1,4 +1,8 @@
 {
+  "walletSwitcher": {
+    "wqWallet": "WQWallet",
+    "otherWallet": "Other wallet"
+  },
   "kyc": {
     "KYC": "KYC",
     "alreadyVerified": "Your profile already verified!"
@@ -99,7 +103,10 @@
       "add": "যোগ করুন",
       "addNow": "Add now",
       "take": "Take",
-      "swap": "Swap"
+      "swap": "Swap",
+      "generate": "Generate",
+      "remove": "Remove",
+      "init": "Init"
     },
     "placeholders": {
       "default": "",
@@ -181,6 +188,7 @@
     "raiseViews": "মতামত দিন",
     "educations": "শিক্ষা",
     "login": "লগইন করুন",
+    "wrongToken": "Wrong confirmation token. Please check the last letter on your email",
     "signUp": "নিবন্ধন করুন",
     "securityCheckBig": "নিরাপত্তা পরীক্ষা",
     "securityCheckSmall": "নিরাপত্তা পরীক্ষা",
@@ -205,8 +213,10 @@
     "settings": "সেটিংস",
     "costPerHour": "প্রতি ঘণ্টায় খরচ",
     "disputes": "বিরোধ",
+    "type": "Type",
     "success": "Success",
-    "fail": "Fail"
+    "fail": "Fail",
+    "attention": "Attention!"
   },
   "info": {
     "yourMessage": " Your message:",
@@ -955,6 +965,7 @@
     "alreadyRedeemed": "You already redeemed, wait!"
   },
   "modals": {
+    "txIsPending": "Transaction is pending",
     "coming": "Coming soon",
     "stillUnderConstruction": "Still under construction",
     "titles": {
@@ -1024,7 +1035,9 @@
       "withdrawInfo": "Withdrawal info",
       "downloadApp": "Download App",
       "downloadWallet": "Download Wallet App",
-      "sendPrivateMessage": "Send a private message"
+      "sendPrivateMessage": "Send a private message",
+      "initializeLot": "Initialize lot",
+      "buyLot": "Buy lot"
     },
     "errors": {
       "errorQuests": "Error with quests",
@@ -1088,6 +1101,7 @@
     "smallDescriptionForLoan": "???",
     "successBuyWUSD": "Successfully purchased WUSD",
     "setTokenPrice": "Setting up {token} price",
+    "updatePrices": "Update prices",
     "approveRouter": "Approve {token} to Router",
     "takeWUSD": "Buy your WUSD",
     "waitRoleCooldown": "You cannot change roles more than once a month. You can change role after {date} {time}",
@@ -1353,7 +1367,7 @@
       },
       "collateral": {
         "title": "Collateral",
-        "desc": "Some amazing text here. Look at that!"
+        "desc": "Provide different types of collateral for issuing $WUSD stablecoin and use it in various Defi platform functionality."
       },
       "staking": {
         "title": "WorkQuest Staking",
@@ -1419,7 +1433,8 @@
     }
   },
   "notifications": {
-    "QuestEditedOnContract": "Quest edited on contract",
+    "newQuestForSpecialization": "New quest for selected specializations",
+    "QuestEditedOnContract": "Quest price is edited",
     "title": "Notifications",
     "OpenDispute": "বিতর্ক শুরু করুন",
     "openDispute": "বিতর্ক শুরু করুন",
@@ -1445,7 +1460,15 @@
     "questEdited": "Quest edited",
     "questEndSoon": "Quest end soon",
     "newDiscussionLike": "New like on discussion",
-    "updateRatingStatistic": "New rating statistic"
+    "updateRatingStatistic": "New rating statistic",
+    "questClosed": "Quest closed",
+    "questDisputeStarted": "Opened dispute for a quest",
+    "questBlockedByAdmin": "Quest blocked by Admin",
+    "questInvitationSentToWorker": "Quest invitation sent",
+    "questWorkInProgress": "Quest is started",
+    "questWorkSentForReview": "Work sent for review",
+    "questCompleted": "Quest completed",
+    "PaidReferral": "New referral reward"
   },
   "wallet": {
     "frozen": "Frozen balance",
@@ -1466,12 +1489,18 @@
     },
     "collateral": {
       "balance": "Collateral balance",
-      "coin": "coin",
-      "sum": "sum",
-      "amountInDollars": "amount in dollars",
-      "attentionQuotient": "attention quotient",
-      "addTitle": "Add collateral",
-      "takeTitle": "Take collateral"
+      "collateralToken": "Collateral token",
+      "ratio": "Ratio (%)",
+      "generatedAmount": "WUSD generated",
+      "lockedAmount": "Locked",
+      "removeCollateral": "Remove collateral",
+      "needToRevert": "You need to revert WUSD (unchangeable amount):",
+      "generationTime": "Generation time",
+      "generationSubTitle": "Your collateral is over-secured. You can get generate extra WUSD.",
+      "tokenQuantity": "Collateral Token Quantity (unchangeable amount)",
+      "availableAmount": "MAX amount available to generate (unchangeable amount):",
+      "attentionInfoRise": "Collateral asset price rise, and now you can generate additional WUSD. Please note that if the price of collateral assets decreases, the risk of collateral being liquidated increases.",
+      "attentionInfoFalling": "Collateral asset price is falling, and now is a high risk of liquidation. Please note that you can deposit more collateral assets and decrease the risk of collateral liquidation."
     },
     "table": {
       "trx": "লেনদেন",
@@ -1482,6 +1511,7 @@
       "transferred": "স্থানান্তরিত টোকেন",
       "value": "পরিমাণ",
       "trxFee": "লেনদেন ফি",
+      "index": "Index",
       "empty": "Transactions list is empty"
     }
   },
@@ -1687,6 +1717,7 @@
     "earnCrypto": "ক্রিপ্টো উপার্জন করুন",
     "everyTimeYourFriends": "প্রতিবার আপনার বন্ধুরা প্রথম quest সম্পন্ন করলে আপনি তাৎক্ষণিকভাবে WQT কমিশন হিসাবে $20 পর্যন্ত পাবেন!",
     "historyOfRewards": "পুরস্কারের ইতিহাস",
+    "alreadyRegistered": "Address is already registered",
     "tableHead": {
       "name": "নাম",
       "userID": "ইউজার আইডি",
@@ -1845,7 +1876,7 @@
     "marketSize": "Total circulation supply",
     "sub": "Provide different types of collateral for issuing $WUSD stablecoin and use it in various Defi platform functionality: paying for Quests, receiving a salary, participating in retirement, insurance, lending&borrowing, staking, and savings programs.",
     "availableAsset": "Available collateral asset",
-    "minPercent": "Minimum collateral percentage",
+    "percent": "Collateral percentage",
     "wantToGetWUSDTitle": "Want to get $WUSD quickly?",
     "howToGetWUSD": "You must select the collateral currency you want to deposit to purchase the stablecoin and the amount of collateral asset you are willing to keep. Follow a few simple steps to enjoy the WorkQuest platform's benefits.",
     "getWUSD": "Get WUSD",
@@ -1879,20 +1910,22 @@
       "button": "Search auction"
     },
     "tabs": {
+      "inactive": "Inactive",
       "current": "Current",
       "completed": "Completed"
     },
     "card": {
-      "feeIncluded": "{feePercent}% commission already in the price",
-      "feeNotIncluded": "{feePercent}% commission not included",
-      "auctionDuration": "Auction duration",
+      "lotAmount": "Lot amount: {amount} {symbol}",
+      "lotPrice": "Lot price: {price} WUSD",
+      "feeIncluded": "including liquidation fees ({feePercent}%)",
+      "timeLeft": "Auction time left:",
       "completed": {
-        "type": "EVEN TYPE",
-        "sender": "SENDER",
-        "lotSize": "LOT SIZE",
-        "price": "MKR PRICE",
-        "timestamp": "TIMESTAMP",
-        "txHash": "TX"
+        "lotAmount": "Lot amount:",
+        "lotPrice": "Lot price:",
+        "lotBuyer": "Lot buyer:",
+        "lotProvider": "Lot provider",
+        "endPeriod": "Auction ending period:",
+        "txHash": "TxHash:"
       }
     }
   },
@@ -2029,6 +2062,7 @@
       "emptyDisputes": "Oops, there are no disputes here yet",
       "emptyPortfolios": "Oops, there's no portfolio here yet",
       "emptyReviews": "Oops, there are no reviews here yet",
+      "emptyCollaterals": "Oops, there are no collateral lots here yet",
       "employer": {
         "myQuests": {
           "desc": "আপনি এখনও quest তৈরি করেননি",

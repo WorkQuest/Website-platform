@@ -38,7 +38,6 @@ export const getCipherKey = () => cipherKey;
 export const setCipherKey = (key) => cipherKey = key;
 
 let web3 = new Web3(ENV.WQ_PROVIDER);
-export const getProvider = () => web3;
 export const createInstance = (_abi, _address) => new web3.eth.Contract(_abi, _address);
 
 let isEthNetwork = false;
@@ -362,7 +361,10 @@ export const getGasPrice = async (contractAbi, address, method, attr, value = nu
         ? inst.methods[method](...attr).estimateGas({ from: wallet.address, value })
         : inst.methods[method](...attr).estimateGas({ from: wallet.address }),
     ]);
-    return { gas: Number(gasEstimate), gasPrice: Number(gasPrice) };
+    return {
+      gas: Number(new BigNumber(gasEstimate).multipliedBy(1.05).toFixed(0)),
+      gasPrice: Number(gasPrice),
+    };
   } catch (e) {
     console.error('wallet/getGasPrice', e);
     return { gas: false, gasPrice: false };

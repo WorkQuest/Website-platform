@@ -178,7 +178,7 @@
           :limit="10"
           :limit-bytes="10485760"
           :limit-bytes-video="10485760"
-          accept="image/png, image/jpg, image/jpeg, video/mp4"
+          accept="image/png, image/jpg, image/jpeg, video/mp4, image/heic"
           :preloaded-files="files"
           :is-clear-data="isClearData"
           @change="updateFiles"
@@ -461,11 +461,13 @@ export default {
       }
     },
     async createQuest() {
+      const description = this.textarea.replace(/\s\s/g, '').trim();
+
       // Check balance before send data to backend
       const [feeRes] = await Promise.all([
         this.$store.dispatch('quests/getCreateQuestFeeData', {
           cost: this.price,
-          description: this.textarea,
+          description,
           nonce: '123',
         }),
         this.$store.dispatch('wallet/fetchWalletData', {
@@ -502,8 +504,8 @@ export default {
             payPeriod: PayPeriodsIndex[this.payPeriodsIndex],
             priority: PriorityFilter[this.runtimeIndex + 1].value,
             typeOfEmployment: TypeOfEmployments[this.employmentIndex],
-            title: this.questTitle,
-            description: this.textarea,
+            title: this.questTitle.trim(),
+            description,
             price: new BigNumber(this.price).shiftedBy(18).toString(),
             medias,
             specializationKeys: this.selectedSpecAndSkills,

@@ -1,6 +1,7 @@
 import ERC20 from '~/abi/ERC20';
 import WQBridge from '~/abi/WQBridge';
 import BuyWQT from '~/abi/BuyWQT';
+import WQAuction from '~/abi/WQAuction';
 import WQOracle from '~/abi/WQOracle';
 import WQRouter from '~/abi/WQRouter';
 import WQLending from '~/abi/WQLending';
@@ -20,6 +21,7 @@ export {
   ERC20,
   WQBridge,
   BuyWQT,
+  WQAuction,
   WQOracle,
   WQRouter,
   WQLending,

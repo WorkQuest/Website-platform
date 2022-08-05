@@ -183,7 +183,7 @@ export default {
   min-height: 247px;
   transition: .5s;
   &:hover {
-    box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.1);
+    @include shadow;
     cursor: pointer;
   }
   &__none {

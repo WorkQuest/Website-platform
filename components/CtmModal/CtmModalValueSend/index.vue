@@ -17,6 +17,7 @@
           :label="$tc('modals.amount')"
           :rules="`required|decimalPlaces:18|min_value:0.0001|${maxValue ? `max_value:${maxValue}` : ''}`"
           :name="$tc('modals.amount')"
+          auto-focus
         >
           <template
             v-if="maxValue"

@@ -3,36 +3,28 @@
     class="message"
     :title="$tc('modals.titles.addCase')"
   >
-    <!--    TODO: Поменять загрузчик-->
     <div class="ctm-modal__content">
       <div class="message">
         <div class="message__content">
           <div class="modal__desc">
-            <ValidationProvider
-              v-slot="{ validate }"
-              rules="required|ext:png,jpeg,jpg,gif"
-              tag="div"
-            >
-              <input
-                id="coverUpload"
-                class="edit__avatar"
-                type="file"
-                accept="image/*"
-                @change="processFile($event, validate)"
-              >
-            </ValidationProvider>
-            <validation-observer v-slot="{ validated, passed, invalid }">
-              <div>
-                <base-field
-                  v-model="caseTitle"
-                  :label="$tc('modals.title')"
-                  :placeholder="$t('modals.addTitle')"
-                  mode="gray"
-                  data-selector="CASE-TITLE"
-                  rules="required|text-title"
-                  :name="$tc('modals.title')"
-                />
-              </div>
+            <files-uploader
+              :multiple="false"
+              :limit="1"
+              :limit-bytes="10485760"
+              :accept="'image/png, image/jpg, image/jpeg, image/heic'"
+              rules="required"
+              @change="updateFiles"
+            />
+            <validation-observer v-slot="{ invalid }">
+              <base-field
+                v-model="caseTitle"
+                :label="$tc('modals.title')"
+                :placeholder="$t('modals.addTitle')"
+                mode="gray"
+                data-selector="CASE-TITLE"
+                rules="required|text-title|max:70"
+                :name="$tc('modals.title')"
+              />
               <div class="message__wrapper">
                 <base-textarea
                   id="textarea"
@@ -41,7 +33,7 @@
                   class="message__textarea"
                   data-selector="CASE-DESCRIPTION"
                   :placeholder="$t('modals.addDesc')"
-                  rules="required|text-desc"
+                  rules="text-desc|max:350"
                   :name="$tc('modals.description')"
                 />
               </div>
@@ -50,7 +42,7 @@
                   <base-btn
                     class="message__action"
                     data-selector="ADD-USER-CASE"
-                    :disabled="!valid || !validated || !passed || invalid"
+                    :disabled="invalid || !files.length"
                     @click="addUserCase"
                   >
                     {{ $t('meta.btns.send') }}
@@ -84,13 +76,9 @@ export default {
   components: {},
   data() {
     return {
-      valid: '',
       caseTitle: '',
       caseDescription: '',
-      portfolio: {
-        data: {},
-        file: {},
-      },
+      files: [],
     };
   },
   computed: {
@@ -102,57 +90,34 @@ export default {
   },
   methods: {
     async addUserCase() {
-      try {
-        this.SetLoader(true);
-        const { caseTitle, caseDescription } = this;
-        const { file, data } = this.portfolio;
-        const { url, mediaId } = data.result;
-        const formData = new FormData();
-        formData.append('image', file);
-        if (data.ok) {
-          const payload = { url, formData: file, type: file.type };
-          await this.$store.dispatch('user/setCaseImage', payload);
-        }
-        const { ok } = await this.$store.dispatch('user/setCaseData', {
-          title: caseTitle,
-          description: caseDescription,
-          mediaIds: [mediaId],
-        });
-        if (ok) {
-          await this.$store.dispatch('main/showToast', {
-            title: this.$t('toasts.caseAdded'),
-            variant: 'success',
-            text: this.$t('toasts.caseAdded'),
-          });
-        }
-        await this.getPortfolios();
-        this.CloseModal();
+      this.SetLoader(true);
+      const { caseTitle, caseDescription } = this;
+      const medias = await this.uploadFiles(this.files);
+      if (!medias.length) {
         this.SetLoader(false);
-      } catch (e) {
-        await this.getPortfolios();
-        this.CloseModal();
-        await this.$store.dispatch('main/showToast', {
-          title: this.$t('toasts.error'),
-          variant: 'warning',
-          text: `${e}`,
-        });
-        this.SetLoader(false);
+        return;
       }
+      const { ok } = await this.$store.dispatch('user/setCaseData', {
+        title: caseTitle,
+        description: caseDescription.trim() || ' ',
+        mediaIds: medias,
+      });
+      if (ok) {
+        await this.getPortfolios();
+        await this.$store.dispatch('main/showToast', {
+          title: this.$t('toasts.caseAdded'),
+          variant: 'success',
+          text: this.$t('toasts.caseAdded'),
+        });
+      }
+      this.CloseModal();
+      this.SetLoader(false);
     },
     async getPortfolios() {
       return await this.$store.dispatch('user/getUserPortfolios', { userId: this.userData.id });
     },
-    async processFile(e, validate) {
-      this.valid = await validate(e);
-      const file = e.target.files[0];
-      if (this.valid.valid) {
-        if (!file) return false;
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        this.portfolio.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
-        this.portfolio.file = file;
-      }
-      return this.portfolio;
+    async updateFiles(files) {
+      this.files = files;
     },
   },
 };
@@ -170,11 +135,6 @@ export default {
   }
 }
 
-.file {
-  &__wrapper {
-    margin: 0 0 25px 0;
-  }
-}
 .uploader-message {
   &__container {
     margin: 0 0 0 10% !important;
@@ -189,21 +149,6 @@ export default {
     content: "\e995";
     color: #0083C7;
     font-size: 20px;
-  }
-}
-
-.input {
-  &_grey {
-    border-radius: 6px;
-    padding: 11px 20px 11px 15px;
-    height: 46px;
-    width: 100%;
-    border: 0;
-    background-color: $black0;
-    resize: none;
-    &::placeholder {
-      color: $black200;
-    }
   }
 }
 

@@ -913,6 +913,7 @@ export default {
     line-height: 20px;
     color: $black700;
     word-break: break-word;
+    white-space: pre-line;
   }
 
   &__count {

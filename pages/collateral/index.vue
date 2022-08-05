@@ -19,7 +19,19 @@
             :key="i"
             class="info-block__third"
           >
-            <div class="info-block__title_big info-block__title_blue">
+            <div
+              v-if="item.isLoading"
+              class="info-block__loader-wrapper"
+            >
+              <loader
+                class="info-block__loader"
+                is-mini-loader
+              />
+            </div>
+            <div
+              v-else
+              class="info-block__title_big info-block__title_blue"
+            >
               {{ item.title }}
             </div>
             <div class="info-block__title_small">
@@ -101,14 +113,18 @@
                   {{ item.size }}
                 </div>
               </div>
-              <button class="btn__doc">
+              <a
+                :href="item.url"
+                target="_blank"
+                class="btn__doc"
+              >
                 {{ $t('meta.btns.download') }}
                 <img
                   class="download"
                   src="~/assets/img/ui/download.svg"
                   alt=""
                 >
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -161,16 +177,15 @@ import {
 } from '~/utils/enums';
 import { getGasPrice, getWalletAddress } from '~/utils/wallet';
 import { WQRouter } from '~/abi';
-import { IS_PLUG } from '~/utils/locker-data';
 import walletOperations from '~/plugins/mixins/walletOperations';
+import { IS_PLUG_PROD } from '~/utils/locker-data';
 
 export default {
   name: 'Collateral',
   mixins: [walletOperations],
   layout({ store }) {
-    // TODO plug for release
-    if (IS_PLUG) return Layout.DEFAULT;
-
+    // TODO PLUG for release
+    if (IS_PLUG_PROD) return Layout.DEFAULT;
     return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
   },
   data() {
@@ -183,6 +198,10 @@ export default {
       isAuth: 'user/isAuth',
       userData: 'user/getUserData',
 
+      totalSupply: 'collateral/getTotalSupply',
+      availableAssets: 'collateral/getAvailableAssets',
+      maxRatio: 'collateral/getMaxRatio',
+
       oraclePrices: 'oracle/getPrices',
       oracleSymbols: 'oracle/getSymbols',
       oracleCurrentPrices: 'oracle/getCurrentPrices',
@@ -192,35 +211,38 @@ export default {
     documents() {
       return [
         {
-          name: 'Some_document.pdf',
-          size: this.$tc('meta.units.mb', 1.2),
-          url: '',
+          name: 'WUSD Formed.pdf',
+          size: this.$tc('meta.units.mb', 2.9),
+          url: 'docs/collateral/WUSD Formed.pdf',
         },
         {
-          name: 'Some_document.pdf',
-          size: this.$tc('meta.units.mb', 1.2),
-          url: '',
+          name: 'WUSD Liquidation Parameters.pdf',
+          size: this.$tc('meta.units.mb', 1.7),
+          url: 'docs/collateral/WUSD Liquidation Parameters.pdf',
         },
         {
-          name: 'Some_document.pdf',
-          size: this.$tc('meta.units.mb', 1.2),
-          url: '',
+          name: 'WUSD Price Stabilization Mechanism.pdf',
+          size: this.$tc('meta.units.mb', 1.4),
+          url: 'docs/collateral/WUSD Price Stabilization Mechanism.pdf',
         },
       ];
     },
     cards() {
       return [
         {
-          title: this.$tc('meta.coins.count.dollarsCount', '417.1M'),
+          title: this.$t('meta.coins.count.dollarsCount', { count: this.totalSupply }),
           subtitle: this.$t('collateral.marketSize'),
+          isLoading: this.totalSupply === null,
         },
         {
-          title: this.$tc('meta.units.percentsCount', 4.31),
+          title: this.availableAssets.join(', '),
           subtitle: this.$t('collateral.availableAsset'),
+          isLoading: this.availableAssets.length === 0,
         },
         {
-          title: this.$tc('meta.units.percentsCount', 5),
-          subtitle: this.$t('collateral.minPercent'),
+          title: this.$t('meta.units.percentsCount', { count: `102-${this.maxRatio}` }),
+          subtitle: this.$t('collateral.percent'),
+          isLoading: this.maxRatio === null,
         },
       ];
     },
@@ -265,6 +287,9 @@ export default {
       ];
     },
   },
+  async mounted() {
+    await this.$store.dispatch('collateral/fetchCollateralsCommonInfo');
+  },
   methods: {
     async openModalGetWUSD() {
       if (!this.isAuth) {
@@ -276,65 +301,61 @@ export default {
         key: modals.getWUSD,
         submit: async ({ collateral, percent, currency }) => {
           this.SetLoader(true);
-
-          const { result: { gas, gasPrice } } = await this.$store.dispatch('oracle/feeSetTokensPrices');
+          const { result: { gas, gasPrice }, msg } = await this.$store.dispatch('oracle/feeSetTokensPrices');
           this.SetLoader(false);
-          if (gas && gasPrice) {
-            this.ShowModal({
-              key: modals.transactionReceipt,
-              title: this.$t('modals.setTokenPrice', { token: currency }),
-              fields: {
-                from: { name: this.$t('meta.fromBig'), value: this.convertToBech32('wq', getWalletAddress()) },
-                fee: {
-                  name: this.$t('wallet.table.trxFee'),
-                  value: new BigNumber(gasPrice).multipliedBy(gas).shiftedBy(-18).toFixed(),
-                  symbol: TokenSymbols.WQT,
-                },
-              },
-              submitMethod: async () => {
-                this.SetLoader(true);
-                await this.$store.dispatch('oracle/setCurrentPriceTokens');
-                await this.MakeApprove({
-                  tokenAddress: TokenMap[currency],
-                  contractAddress: this.ENV.WORKNET_ROUTER,
-                  amount: collateral,
-                  approveTitle: this.$t('modals.approveRouter', { token: currency }),
-                }).then(async () => {
-                  const collateralBN = new BigNumber(collateral).shiftedBy(+this.currentBalance[currency].decimals || 18).toFixed(0);
-                  const ratioBN = new BigNumber(percent).dividedBy(100).shiftedBy(18).toFixed(0);
 
-                  const fee = await getGasPrice(
-                    WQRouter,
-                    this.ENV.WORKNET_ROUTER,
-                    'produceWUSD',
-                    [collateralBN, ratioBN, currency],
-                  );
-
-                  this.SetLoader(false);
-                  if (!fee.gas || !fee.gasPrice) return;
-
-                  await this.ShowTxReceipt({
-                    from: this.convertToBech32('wq', getWalletAddress()),
-                    to: this.ENV.WORKNET_ROUTER,
-                    amount: collateral,
-                    currency,
-                    fee,
-                    title: this.$t('modals.takeWUSD'),
-                  }).then(async () => {
-                    const res = await this.$store.dispatch('collateral/sendProduceWUSD', {
-                      collateral: collateralBN,
-                      ratio: ratioBN,
-                      currency,
-                      fee,
-                    });
-                    if (res.ok) this.ShowToast(this.$t('modals.successBuyWUSD'), this.$t('meta.success'));
-                  });
-                }).finally(() => {
-                  this.SetLoader(false);
-                });
-              },
-            });
+          if (!gas || !gasPrice) {
+            this.ShowToast(msg);
+            return;
           }
+
+          await this.ShowTxReceipt({
+            title: this.$t('modals.setTokenPrice', { token: currency }),
+            from: this.convertToBech32('wq', getWalletAddress()),
+            fee: { gas, gasPrice },
+          }).then(async () => {
+            this.SetLoader(true);
+            await this.$store.dispatch('oracle/setCurrentPriceTokens');
+
+            await this.MakeApprove({
+              tokenAddress: TokenMap[currency],
+              contractAddress: this.ENV.WORKNET_ROUTER,
+              amount: collateral,
+              approveTitle: this.$t('modals.approveRouter', { token: currency }),
+            }).then(async () => {
+              const collateralBN = new BigNumber(collateral).shiftedBy(+this.currentBalance[currency].decimals || 18).toFixed(0);
+              const ratioBN = new BigNumber(percent).dividedBy(100).shiftedBy(18).toFixed(0);
+
+              const fee = await getGasPrice(
+                WQRouter,
+                this.ENV.WORKNET_ROUTER,
+                'produceWUSD',
+                [collateralBN, ratioBN, currency],
+              );
+
+              this.SetLoader(false);
+              if (!fee.gas || !fee.gasPrice) return;
+
+              await this.ShowTxReceipt({
+                from: this.convertToBech32('wq', getWalletAddress()),
+                to: this.ENV.WORKNET_ROUTER,
+                amount: collateral,
+                currency,
+                fee,
+                title: this.$t('modals.takeWUSD'),
+              }).then(async () => {
+                const res = await this.$store.dispatch('collateral/sendProduceWUSD', {
+                  collateral: collateralBN,
+                  ratio: ratioBN,
+                  currency,
+                  fee,
+                });
+                if (res.ok) this.ShowToast(this.$t('modals.successBuyWUSD'), this.$t('meta.success'));
+              });
+            });
+          }).finally(() => {
+            this.SetLoader(false);
+          });
         },
       });
     },
@@ -415,8 +436,13 @@ export default {
 
       &__doc {
         @extend .btn;
+        display: flex;
         width: 220px;
         height: 46px;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        text-decoration: none;
 
         .download {
           display: unset;
@@ -533,6 +559,18 @@ export default {
         flex-direction: column;
         align-items: center;
         gap: 10px;
+      }
+
+      &__loader-wrapper {
+        width: 37.5px;
+        height: 37.5px;
+        position: relative;
+      }
+
+      &__loader {
+        position: absolute;
+        top: -10px;
+        background: none;
       }
 
       &__square {

@@ -11,4 +11,6 @@ export default {
   getStakingUserData: (state) => state.stakingUserData,
 
   getSelectedNetwork: (state) => state.selectedNetwork,
+
+  getPendingHashLink: (state) => state.pendingHashLink,
 };

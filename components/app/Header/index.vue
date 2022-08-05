@@ -335,9 +335,13 @@ import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import moment from 'moment';
 import { images } from '~/utils/images';
-import { UserRole, Path } from '~/utils/enums';
+import {
+  UserRole, Path, Layout, PreventLogoutPathNames,
+} from '~/utils/enums';
 import { MessageAction } from '~/utils/сonstants/chat';
-import { IS_PLUG, LockedPaths } from '~/utils/locker-data';
+import {
+  IS_PLUG, LockedPaths, IS_PLUG_PROD, LockedProdPaths,
+} from '~/utils/locker-data';
 
 export default {
   name: 'Header',
@@ -577,7 +581,10 @@ export default {
     },
     toRoute(path) {
       // TODO plug for release
-      if (IS_PLUG && LockedPaths.includes(path)) {
+      if (
+        (IS_PLUG && LockedPaths.includes(path))
+        || (IS_PLUG_PROD && LockedProdPaths.includes(path))
+      ) {
         this.ComingSoon();
         return;
       }
@@ -660,8 +667,13 @@ export default {
       this.$router.push(`${Path.PROFILE}/${this.userData.id}`);
     },
     async logout() {
+      const preventRedirect = PreventLogoutPathNames.includes(this.$route.name);
       await this.$store.dispatch('user/logout');
-      await this.$router.push(Path.ROOT);
+      if (preventRedirect) {
+        this.$nuxt.setLayout(Layout.GUEST);
+        sessionStorage.setItem('preventDisconnectWeb3', 'yep');
+        sessionStorage.setItem('redirectTo', this.$route.path);
+      } else await this.$router.push(Path.ROOT);
     },
     closeAll() {
       this.isShowProfile = false;
@@ -1186,6 +1198,35 @@ export default {
 }
 
 @include _1199 {
+  .header {
+    &__body {
+      margin: 0 20px;
+    }
+  }
+}
+
+@include _1099 {
+  .header {
+    &__links {
+      grid-gap: 15px;
+    }
+
+    &__left {
+      grid-gap: 15px;
+    }
+
+    &__right {
+      grid-gap: 0;
+    }
+
+    &__btn {
+      margin-left: 5px;
+      min-width: 135px;
+    }
+  }
+}
+
+@include _991 {
   .ctm-menu {
     &__user {
       cursor: pointer;
@@ -1220,9 +1261,6 @@ export default {
       display: none !important;
     }
   }
-}
-
-@include _991 {
   .template {
     &__content {
       grid-template-rows: 72px 1fr auto;

@@ -7,14 +7,14 @@ import {
 
 import {
   GetWalletProvider,
-  connectWithMnemonic,
+  connectWithMnemonic, disconnect,
 } from '~/utils/wallet';
 
 import {
   UserStatuses,
   QuestModeReview,
   RaiseViewTariffPeriods,
-  TariffByIndex, Path,
+  TariffByIndex, Path, ConnectionTypes,
 } from '~/utils/enums';
 
 import { WQPromotion } from '~/abi/index';
@@ -61,14 +61,18 @@ export default {
     }
   },
   async setCaseImage({ commit }, { url, formData, type }) {
-    const response = await this.$axios.$put(url, formData, {
-      headers: {
-        'Content-Type': type,
-        'x-amz-acl': 'public-read',
-      },
-    });
-    commit('setCaseImage', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$put(url, formData, {
+        headers: {
+          'Content-Type': type,
+          'x-amz-acl': 'public-read',
+        },
+      });
+      commit('setCaseImage', response.result);
+      return response;
+    } catch (e) {
+      return error();
+    }
   },
   async setCaseData({ commit }, payload) {
     try {
@@ -76,7 +80,7 @@ export default {
       commit('setCaseData', response.result);
       return response;
     } catch (e) {
-      return console.log(e);
+      return error();
     }
   },
   async editCaseData({ commit }, { payload, id }) {
@@ -85,14 +89,14 @@ export default {
       commit('setCaseData', response.result);
       return response;
     } catch (e) {
-      return console.log(e);
+      return error();
     }
   },
   async deletePortfolio({ commit }, id) {
     try {
       return await this.$axios.$delete(`/v1/portfolio/${id}`);
     } catch (e) {
-      return console.log(e);
+      return error();
     }
   },
 
@@ -172,10 +176,16 @@ export default {
   async logout({ commit, dispatch }, isValidToken = true) {
     try {
       if (isValidToken) await this.$axios.$post('v1/auth/logout');
+
       await this.$wsChatActions.disconnect();
       await this.$wsNotifs.disconnect();
       await dispatch('wallet/unsubscribeWS', null, { root: true });
+
       commit('logOut');
+      commit('setTokens', { access: null, refresh: null });
+      commit('web3/setConnectionType', ConnectionTypes.WEB3, { root: true });
+      commit('wallet/setIsWalletConnected', false, { root: true });
+      disconnect(); // disconnect wq wallet
     } catch (e) {
       console.error('user/logout', e);
     }
@@ -185,12 +195,19 @@ export default {
       commit('setTokens', {
         access: this.$cookies.get('access'),
         refresh: this.$cookies.get('refresh'),
-        userStatus: UserStatuses.Confirmed,
       });
-      this.$cookies.set('role', payload.role, { path: Path.ROOT, maxAge: accessLifetime });
-      return await this.$axios.$post('/v1/auth/confirm-email', payload);
+      await this.$axios.$post('/v1/auth/confirm-email', payload);
+      this.$cookies.set('role', payload.role, {
+        path: Path.ROOT,
+        maxAge: accessLifetime,
+      });
+      this.$cookies.set('userStatus', UserStatuses.NeedSetRole, {
+        path: Path.ROOT,
+        maxAge: accessLifetime,
+      });
+      return success();
     } catch (e) {
-      return false;
+      return error();
     }
   },
   async getUserData({ commit }) {
@@ -359,17 +376,16 @@ export default {
   },
   async validateTOTP({ commit }, payload) {
     try {
-      const response = await this.$axios.$post('/v1/auth/validate-totp', payload);
+      const response = await this.$axios.$post('/v1/auth/session/current/validate-totp', payload);
       return response.result.isValid;
     } catch (e) {
       console.log('user/validateTOTP');
       return false;
     }
   },
-  // TODO: после добавления на бэке этого роута использовать его на Check2FA с активной сессией (EditQuest/DeleteQuest)
   async validateSessionTOTP({ _ }, payload) {
     try {
-      const response = await this.$axios.$post('/v1/auth/current-session/validate-totp', payload);
+      const response = await this.$axios.$post('/v1/totp/validate', payload);
       return response.result.isValid;
     } catch (e) {
       console.log('user/validateSessionTOTP');
