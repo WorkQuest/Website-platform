@@ -116,7 +116,7 @@ export default {
     }
     // Try to find mnemonic in storage by user wallet address
     // Checking session storage
-    const session = JSON.parse(sessionStorage.getItem('mnemonic'));
+    const session = JSON.parse(sessionStorage.getItem('wal'));
     let mnemonic = null;
     if (session) {
       mnemonic = session[this.userWalletAddress];
@@ -126,7 +126,7 @@ export default {
       }
     }
     // Checking local storage
-    const storage = JSON.parse(localStorage.getItem('mnemonic'));
+    const storage = JSON.parse(localStorage.getItem('wal'));
     if (!storage) {
       this.disconnect();
       return;
@@ -178,8 +178,8 @@ export default {
       if (res?.ok) this.allowAccess();
     },
     handleImport() {
-      sessionStorage.setItem('mnemonic', JSON.stringify({
-        ...JSON.parse(sessionStorage.getItem('mnemonic')),
+      sessionStorage.setItem('wal', JSON.stringify({
+        ...JSON.parse(sessionStorage.getItem('wal')),
         [this.userWalletAddress]: this.mnemonic,
       }));
       if (connectWithMnemonic(this.userWalletAddress)) this.allowAccess();

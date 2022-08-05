@@ -1,5 +1,6 @@
 import { ethers } from 'ethers';
 import { AES, enc } from 'crypto-js';
+import sha256 from 'crypto-js/sha256';
 import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
 import {
@@ -29,7 +30,7 @@ export const createWallet = (mnemonic) => {
   }
 };
 
-export const encryptStringWithKey = (toEncrypt, key) => AES.encrypt(toEncrypt, key).toString();
+export const encryptStringWithKey = (toEncrypt, key) => AES.encrypt(toEncrypt, sha256(key).toString()).toString();
 export const decryptStringWitheKey = (toDecrypt, key) => AES.decrypt(toDecrypt, key).toString(enc.Utf8);
 
 let cipherKey = null;
@@ -67,8 +68,8 @@ const wallet = {
 export const getIsWalletConnected = () => !!wallet.address && !!wallet.privateKey;
 export const getWalletAddress = () => wallet.address;
 // Метод нужен для вызова метода wallet не затрагивая другие данные
-export const initWallet = (address, key) => {
-  wallet.init(address, key);
+export const initWallet = (wal) => {
+  wallet.init(wal.address.toLowerCase(), wal.privateKey);
 };
 
 export const connectWalletToProvider = (providerType) => {
@@ -102,7 +103,7 @@ export const connectWallet = (userAddress, userPassword) => {
   if (!userPassword || !userAddress) return error();
   if (wallet.address && wallet.privateKey) return success();
   let _walletTemp;
-  const storageData = JSON.parse(localStorage.getItem('mnemonic'));
+  const storageData = JSON.parse(localStorage.getItem('wal'));
   if (!storageData) {
     return error();
   }
@@ -118,8 +119,8 @@ export const connectWallet = (userAddress, userPassword) => {
     _walletTemp = createWallet(mnemonic);
     if (_walletTemp && _walletTemp.address.toLowerCase() === userAddress) {
       wallet.init(_walletTemp.address.toLowerCase(), _walletTemp.privateKey);
-      sessionStorage.setItem('mnemonic', JSON.stringify({
-        ...JSON.parse(sessionStorage.getItem('mnemonic')),
+      sessionStorage.setItem('wal', JSON.stringify({
+        ...JSON.parse(sessionStorage.getItem('wal')),
         [userAddress]: mnemonic,
       }));
       return success();
@@ -135,7 +136,7 @@ export const connectWallet = (userAddress, userPassword) => {
  * @param userAddress
  */
 export const connectWithMnemonic = (userAddress) => {
-  const sessionData = JSON.parse(sessionStorage.getItem('mnemonic'));
+  const sessionData = JSON.parse(sessionStorage.getItem('wal'));
   if (!sessionData) return false;
   const mnemonic = sessionData[userAddress];
   if (!mnemonic) return false;

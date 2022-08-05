@@ -238,19 +238,15 @@ export default {
         return;
       }
       this.isWalletAssigned = true;
-      initWallet(wallet.address.toLowerCase(), wallet.privateKey);
+      initWallet(wallet);
       if (this.isLoginWithSocialNetwork) {
         await this.redirectUser();
         this.SetLoader(false);
         return;
       }
-      localStorage.setItem('mnemonic', JSON.stringify({
-        ...JSON.parse(localStorage.getItem('mnemonic')),
+      localStorage.setItem('wal', JSON.stringify({
+        ...JSON.parse(localStorage.getItem('wal')),
         [wallet.address.toLowerCase()]: encryptStringWithKey(wallet.mnemonic.phrase, getCipherKey()),
-      }));
-      sessionStorage.setItem('mnemonic', JSON.stringify({
-        ...JSON.parse(sessionStorage.getItem('mnemonic')),
-        [wallet.address.toLowerCase()]: wallet.mnemonic.phrase,
       }));
       await this.redirectUser();
       this.SetLoader(false);
