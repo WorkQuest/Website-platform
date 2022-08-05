@@ -34,8 +34,17 @@ export default {
       isWalletConnected: 'wallet/getIsWalletConnected',
     }),
   },
-  beforeMount() {
-    if (this.isWalletConnected) this.$store.commit('web3/setConnectionType', ConnectionTypes.WQ_WALLET);
+  created() {
+    if (this.isWalletConnected) {
+      this.$store.commit('web3/setConnectionType', ConnectionTypes.WQ_WALLET);
+      return;
+    }
+    if (this.access) {
+      this.$store.commit('web3/setConnectionType', ConnectionTypes.WQ_WALLET);
+      this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+      return;
+    }
+    this.$store.commit('web3/setConnectionType', ConnectionTypes.WEB3);
   },
   methods: {
     async handleSelect(connectionType) {

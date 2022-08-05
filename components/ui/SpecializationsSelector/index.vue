@@ -269,7 +269,6 @@ export default {
     },
     addSpecialization() {
       if (this.specCount <= 2) this.specCount += 1;
-      this.onChangeInputSpecs();
     },
     removeSpecialization(key) {
       this.selectedSkills[key] = [];

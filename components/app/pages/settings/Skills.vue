@@ -11,7 +11,7 @@
         <specializations-selector
           v-if="skills.selectedSpecAndSkills !== null"
           :skills="skills.selectedSpecAndSkills"
-          @changeSkills="updateSelectedSkills"
+          @changeSkills="$emit('updateSelectedSkills', $event)"
         />
         <div class="skills__add-info">
           <base-dd
@@ -104,11 +104,6 @@ export default {
         label: 'quests.payPeriods.title',
       },
     ];
-  },
-  methods: {
-    updateSelectedSkills(specAndSkills) {
-      this.skills.selectedSpecAndSkills = specAndSkills;
-    },
   },
 };
 </script>
