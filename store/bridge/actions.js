@@ -222,7 +222,7 @@ export default {
           swapsCount += 1;
         } else if (event === BridgeEvents.SWAP_REDEEMED) {
           swaps.some((item) => {
-            if (item.nonce === +msg.data.returnValues.nonce) {
+            if (+item.nonce === +msg.data.returnValues.nonce) {
               item.status = false;
               item.canRedeemed = false;
               return true;
