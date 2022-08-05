@@ -35,6 +35,7 @@
         :validation-error="validationError"
         @click="editUserData"
         @checkValidate="checkValidate"
+        @updateSelectedSkills="updateSelectedSkills"
       />
       <advanced
         id="2FA"
@@ -227,6 +228,9 @@ export default {
       this.profile.locationFull.location.longitude = +address.lng;
       this.profile.locationFull.location.latitude = +address.lat;
       this.profile.locationFull.locationPlaceName = address.formatted;
+    },
+    updateSelectedSkills(specAndSkills) {
+      this.skills.selectedSpecAndSkills = specAndSkills;
     },
 
     // MODALS METHODS
