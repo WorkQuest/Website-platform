@@ -376,17 +376,12 @@ export default {
 
 <style lang="scss" scoped>
 .collateral-page {
-  background: linear-gradient(to bottom, #103D7C 284px, #f6f8fa 284px);
-  display: flex;
-  justify-content: center;
-
   &__container {
     display: grid;
     grid-template-rows: 195px max-content;
     max-width: 1180px;
     grid-row-gap: 30px;
     width: 100%;
-    padding: 10px;
     box-sizing: border-box;
   }
 
@@ -733,7 +728,6 @@ export default {
 }
 @include _767 {
   .collateral-page {
-    background: linear-gradient(to bottom, #103D7C 220px, #f6f8fa 220px);
     &__container {
       grid-template-rows: auto auto;
       gap: 15px;
