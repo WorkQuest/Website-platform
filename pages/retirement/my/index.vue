@@ -114,7 +114,7 @@
             </div>
           </div>
         </template>
-        <div class="pension-page__info-block">
+        <div class="pension-page__history">
           <div class="info-block">
             <div class="info-block__table-title">
               {{ $t('pension.transactionHistory') }}
@@ -681,24 +681,17 @@ export default {
 
 <style lang="scss" scoped>
 .pension-page {
-  background: linear-gradient(to bottom, #103D7C 320px, #f6f8fa 320px);
-  display: flex;
-  justify-content: center;
-
   &__container {
-    display: grid;
-    grid-template-rows: 195px max-content;
-    max-width: 1180px;
-    grid-row-gap: 50px;
     width: 100%;
-    gap: 20px;
-    padding: 10px;
-    box-sizing: border-box;
 
     &_expired {
       @extend .pension-page__container;
       gap: 15px;
     }
+  }
+
+  &__history {
+    margin-top: 20px;
   }
 
   &__header {
@@ -722,10 +715,7 @@ export default {
   }
 
   &__content {
-    display: grid;
-    grid-row-gap: 30px;
     width: 100%;
-    grid-template-rows: 196px max-content;
 
     .btn-group {
       display: grid;
@@ -848,6 +838,10 @@ export default {
       background-color: #fff;
       border-radius: 6px;
 
+      &:not(:first-of-type) {
+        margin-top: 20px;
+      }
+
       &__select-table {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -926,6 +920,7 @@ export default {
 
       &__third {
         @extend .info-block;
+        margin-top: 0 !important;
         display: grid;
         grid-template-rows: min-content min-content auto;
 
@@ -1058,11 +1053,10 @@ export default {
 
   &__table {
     border-radius: 6px !important;
-    overflow: hidden;
+    overflow: auto;
 
     .table {
       margin: 20px 0 0 0;
-
       &:first-child {
         border-radius: 0 !important;
       }
@@ -1080,7 +1074,6 @@ export default {
   }
 
   @include _991 {
-    background: linear-gradient(to bottom, #103D7C 245px, #f6f8fa 245px);
     &__content {
       .info-block {
         &__grid {
@@ -1089,12 +1082,8 @@ export default {
       }
     }
     &__table {
-      overflow: auto;
-      width: calc(100vw - 20px);
-
       .table {
         width: 1024px;
-
         & > .table {
           border-radius: 0 !important;
         }
@@ -1102,12 +1091,7 @@ export default {
     }
   }
 
-  @include _767 {
-    background: linear-gradient(to bottom, #103D7C 220px, #f6f8fa 220px);
-    &__container {
-      grid-template-rows: auto auto;
-      gap: 15px;
-    }
+  @include _991 {
     &__table {
       &__empty {
         .absence {
@@ -1128,8 +1112,6 @@ export default {
       }
     }
     &__content {
-      grid-template-rows: max-content max-content max-content;
-
       .info-block {
         &__triple {
           grid-template-rows: repeat(2, 1fr);
