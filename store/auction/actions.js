@@ -97,7 +97,7 @@ export default {
       commit('setLost', { count, lots });
       return success();
     } catch (e) {
-      console.error('auction/fetchLots', e);
+      console.error('auction/fetchBoughtLots', e);
       return error();
     }
   },
