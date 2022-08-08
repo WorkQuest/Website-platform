@@ -15,7 +15,7 @@
         />
         <div
           class="template__main"
-          :class="{'template__main_padding' : isChatOpened}"
+          :class="{'template__main_padding' : isChatOpened, 'template__main_margin': isShowBluePanel}"
         >
           <nuxt />
         </div>
@@ -132,7 +132,6 @@ export default {
   &__main {
     z-index: 1;
     position: relative;
-    padding: 0 20px;
     max-width: 1180px;
     margin: 0 auto 80px auto;
     width: 100%;
@@ -140,11 +139,21 @@ export default {
     &_padding {
       padding-bottom: 0;
     }
+
+    &_margin {
+      padding-top: 30px;
+    }
   }
 }
 .stop-scrolling{
   overflow: hidden;
   height: 100vh;
+}
+
+@include _1199 {
+  .template__main {
+    padding: 20px 20px 0 20px;
+  }
 }
 
 @include _991 {
