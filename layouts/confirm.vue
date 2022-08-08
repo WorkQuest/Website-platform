@@ -167,7 +167,7 @@ export default {
       if (res?.ok) this.allowAccess();
     },
     handleImport() {
-      if (connectWithMnemonic(this.userWalletAddress)) this.allowAccess();
+      if (connectWithMnemonic(this.mnemonic, this.userWalletAddress)) this.allowAccess();
       else {
         this.ShowToast(this.$t('messages.mnemonic'));
         if (this.counter >= this.tryLimit) {

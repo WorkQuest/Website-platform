@@ -135,21 +135,17 @@ export const connectWallet = (userAddress, userPassword) => {
 
 /**
  * Connect to wallet with mnemonic from session
+ * @param phrase
  * @param userAddress
  */
-export const connectWithMnemonic = (userAddress) => {
-  // TODO: check here for social connect wallet!!
-  // const sessionData = JSON.parse(sessionStorage.getItem('wal'));
-  // if (!sessionData) return false;
-  // const mnemonic = sessionData[userAddress];
-  // if (!mnemonic) return false;
-  // const _walletTemp = createWallet(mnemonic);
-  // if (_walletTemp?.address?.toLowerCase() === userAddress) {
-  //   initWallet(_walletTemp);
-  //   return true;
-  // }
-  // return false;
-  console.error('NOT REFACTORED YET / CONNECT WITH MNEMONIC / WALLET');
+export const connectWithMnemonic = (phrase, userAddress) => {
+  if (!phrase || !userAddress) return false;
+  const _walletTemp = createWallet(phrase);
+  if (_walletTemp?.address?.toLowerCase() === userAddress) {
+    initWallet(_walletTemp);
+    return true;
+  }
+  return false;
 };
 
 export const disconnect = () => {
