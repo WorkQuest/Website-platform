@@ -176,14 +176,30 @@ export const RouterNames = {
   SIGN_IN: 'sign-in',
   SIGN_UP: 'sign-up',
   ROLE: 'role',
+
+  CREDITING: 'crediting',
+  REFERRAL: 'referral',
+  REFERRAL_MY: 'referral-my',
+  RETIREMENT: 'retirement',
+  RETIREMENT_MY: 'retirement-my',
+  STAKING: 'staking',
+  STAKING_ID: 'staking-id',
+  INSURING: 'insuring',
+  BRIDGE: 'bridge',
+  MINING: 'mining',
+  MINING_ID: 'mining-id',
+  LENDING: 'lending',
+  COLLATERAL: 'collateral',
+  SAVINGS: 'savings',
+  SAVINGS_ID: 'savings-id',
 };
 
 export const PreventLogoutPathNames = [
-  'mining',
-  'mining-id',
-  'bridge',
-  'crediting',
-  'collateral',
+  RouterNames.MINING,
+  RouterNames.MINING_ID,
+  RouterNames.BRIDGE,
+  RouterNames.CREDITING,
+  RouterNames.COLLATERAL,
 ];
 
 export const PathDAO = {
