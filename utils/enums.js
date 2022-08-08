@@ -195,6 +195,24 @@ export const RouterNames = {
   SAVINGS_ID: 'savings-id',
 };
 
+export const DeFiBluePanelPathNames = [
+  RouterNames.BRIDGE,
+  RouterNames.MINING,
+  RouterNames.MINING_ID,
+  RouterNames.INSURING,
+  RouterNames.INSURING_ID,
+  RouterNames.LENDING,
+  RouterNames.REFERRAL,
+  RouterNames.REFERRAL_MY,
+  RouterNames.STAKING,
+  RouterNames.STAKING_ID,
+  RouterNames.COLLATERAL,
+  RouterNames.RETIREMENT,
+  RouterNames.RETIREMENT_MY,
+  RouterNames.SAVINGS,
+  RouterNames.SAVINGS_ID,
+];
+
 export const PreventLogoutPathNames = [
   RouterNames.MINING,
   RouterNames.MINING_ID,

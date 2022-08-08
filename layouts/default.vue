@@ -36,7 +36,9 @@
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import modals from '~/store/modals/modals';
-import { Path, RouterNames, UserRole } from '~/utils/enums';
+import {
+  DeFiBluePanelPathNames, Path, RouterNames, UserRole,
+} from '~/utils/enums';
 import localNotifications from '~/plugins/mixins/localNotifications';
 
 export default {
@@ -55,23 +57,7 @@ export default {
       userWalletAddress: 'user/getUserWalletAddress',
     }),
     isShowBluePanel() { // for DeFi pages
-      return [
-        RouterNames.BRIDGE,
-        RouterNames.MINING,
-        RouterNames.MINING_ID,
-        RouterNames.INSURING,
-        RouterNames.INSURING_ID,
-        RouterNames.LENDING,
-        RouterNames.REFERRAL,
-        RouterNames.REFERRAL_MY,
-        RouterNames.STAKING,
-        RouterNames.STAKING_ID,
-        RouterNames.COLLATERAL,
-        RouterNames.RETIREMENT,
-        RouterNames.RETIREMENT_MY,
-        RouterNames.SAVINGS,
-        RouterNames.SAVINGS_ID,
-      ].includes(this.$route.name);
+      return DeFiBluePanelPathNames.includes(this.$route.name);
     },
   },
   created() {
