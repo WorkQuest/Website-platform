@@ -286,10 +286,6 @@ export default {
 
 <style lang="scss" scoped>
 .crediting {
-  background: linear-gradient(to bottom, #103D7C 290px, #f6f8fa 232px);
-  display: flex;
-  justify-content: center;
-
   &__container {
     display: grid;
     grid-template-rows: 180px max-content;
@@ -437,7 +433,6 @@ export default {
   }
 
   @include _767 {
-    background: linear-gradient(to bottom, #103D7C 280px, #f6f8fa 195px);
     .desc {
       width: auto;
     }
