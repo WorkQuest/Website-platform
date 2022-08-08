@@ -66,7 +66,7 @@
             <span class="item-btn__text">
               {{ $t('auction.time') }}
             </span>
-            <span :class="`item-btn__icon icon icon-Sorting_${params['sort[createdAt]'] === 'desc' ? 'descending' : 'ascending'}`" />
+            <span :class="`item-btn__icon icon icon-Sorting_${sort === 'desc' ? 'descending' : 'ascending'}`" />
           </base-btn>
         </div>
       </div>
@@ -79,8 +79,8 @@
         ]"
       >
         <auction-card
-          v-for="lot in lots"
-          :key="lot.id"
+          v-for="(lot,i) in lots"
+          :key="lot.id + i"
           :lot="lot"
           :type-of-lot="currentTab"
         />
@@ -135,12 +135,11 @@ export default {
       currentTab: LotsStatuses.INACTIVE,
 
       params: {
-        'sort[createdAt]': 'desc',
-        status: LotsStatuses.INACTIVE,
         limit: LIMIT,
         offset: 0,
         q: '',
       },
+      sort: 'desc',
       currentPage: 1,
     };
   },
@@ -162,17 +161,15 @@ export default {
     currentTab: {
       async handler(value) {
         this.currentPage = 1;
-        this.params.status = value;
-        this.params['sort[createdAt]'] = 'desc';
+        this.sort = 'desc';
         this.$store.commit('auction/setLost', { lots: [], count: 0 });
-        await this.fetchLots({ params: this.params });
+        await this.fetchLots({ lotStatus: value, params: this.params, sort: this.sort });
       },
     },
   },
   mounted() {
-    this.fetchLots({
-      params: this.params,
-    });
+    this.$store.dispatch('wallet/getBalance');
+    this.fetchLots({ lotStatus: LotsStatuses.INACTIVE, params: this.params, sort: this.sort });
   },
   methods: {
     ...mapActions({
@@ -190,13 +187,13 @@ export default {
       }, 150);
     },
     async changeTimeSorting() {
-      this.params['sort[createdAt]'] = this.params['sort[createdAt]'] === 'asc' ? 'desc' : 'asc';
-      await this.fetchLots({ params: this.params });
+      this.sort = this.sort === 'asc' ? 'desc' : 'asc';
+      await this.fetchLots({ lotStatus: this.currentTab, params: this.params, sort: this.sort });
     },
     async setPage(value) {
       this.currentPage = value;
       this.params.offset = LIMIT * (value - 1);
-      await this.fetchLots({ params: this.params });
+      await this.fetchLots({ lotStatus: this.currentTab, params: this.params, sort: this.sort });
     },
   },
 };

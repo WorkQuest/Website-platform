@@ -123,35 +123,19 @@ export default {
     isCompleted() {
       return this.typeOfLot === LotsStatuses.BOUGHT;
     },
-    /**
-     * @property lotBuyed
-     * @property buyerInfo - information about the completed purchase
-     * @property userWallet
-     * @returns {[{link: string, title: VueI18n.TranslateResult, value: *},{link: string, title: VueI18n.TranslateResult, value: *},{link: boolean, title: VueI18n.TranslateResult, value: string},{link: boolean, title: VueI18n.TranslateResult, value: string},{link: boolean, title: VueI18n.TranslateResult, value: string},null]|*[]}
-     */
     completedLotFields() {
       const {
-        lotBuyed,
         symbol,
         userWallet,
-      } = this.lot;
-
-      if (!lotBuyed?.length) return [];
-
-      const {
-        cost,
+        lotAmount,
+        lotPrice,
         buyer,
-        amount,
         timestamp,
         transactionHash,
-      } = lotBuyed[0];
+      } = this.lot;
 
       const buyerConverted = this.convertToBech32('wq', buyer);
       const userWalletConverted = this.convertToBech32('wq', userWallet);
-
-      const lotDecimals = this.balanceData[symbol].decimals;
-      const lotAmount = Number(new BigNumber(amount).shiftedBy(-lotDecimals).toFixed(4, 1));
-      const lotPrice = Number(new BigNumber(cost).shiftedBy(-18).toFixed(4, 1));
 
       return [
         {
