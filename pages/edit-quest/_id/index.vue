@@ -7,7 +7,7 @@
   >
     <div class="main__body page">
       <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
+        v-slot="{handleSubmit, invalid}"
         tag="div"
       >
         <div
@@ -43,7 +43,7 @@
                 :label="$tc('meta.price')"
                 data-selector="PRICE-FIELD"
                 placeholder="0 WUSD"
-                rules="required|decimal|decimalPlaces:16|min_value:1"
+                rules="required|decimal|decimalPlaces:18|min_value:1"
                 :name="$tc('meta.price')"
               />
             </div>
