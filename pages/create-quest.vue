@@ -385,7 +385,6 @@ export default {
       try {
         if (address.length) {
           this.addresses = await this.geoCode.geolookup(address);
-          console.log('this.addresses', this.addresses);
           this.coordinates = { lng: this.addresses[0].lng, lat: this.addresses[0].lat };
         } else this.addresses = [];
       } catch (e) {
