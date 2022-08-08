@@ -1,6 +1,4 @@
-import { AES, enc } from 'crypto-js';
 import { Path, UserStatuses } from '~/utils/enums';
-import { createWallet, getIsWalletConnected, initWallet } from '~/utils/wallet';
 
 // eslint-disable-next-line func-names
 export default async function ({
@@ -33,11 +31,13 @@ export default async function ({
     }
 
     // Reconnect wallet on refresh page
+    const { getIsWalletConnected } = require('~/utils/wallet');
     if (getIsWalletConnected() === false) {
       const walletAddress = store.getters['user/getUserWalletAddress'];
       if (walletAddress) {
+        const { decryptStringWitheKey, createWallet, initWallet } = require('~/utils/wallet');
         const sessionKey = sessionStorage.getItem(walletAddress);
-        const wal = createWallet(AES.decrypt(sessionKey, window.clientInformation.userAgent)?.toString(enc.Utf8));
+        const wal = createWallet(decryptStringWitheKey(sessionKey, window.clientInformation.userAgent));
         if (wal?.address?.toLowerCase() === walletAddress) {
           initWallet(wal);
         }
