@@ -1,5 +1,6 @@
-// eslint-disable-next-line func-names
+import { AES, enc } from 'crypto-js';
 import { Path, UserStatuses } from '~/utils/enums';
+import { createWallet, getIsWalletConnected, initWallet } from '~/utils/wallet';
 
 // eslint-disable-next-line func-names
 export default async function ({
@@ -29,6 +30,18 @@ export default async function ({
     }
     if ((+userStatus === UserStatuses.NeedSetRole || !store.getters['user/getUserWalletAddress']) && route.path !== Path.ROLE) {
       return redirect(Path.ROLE);
+    }
+
+    // Reconnect wallet on refresh page
+    if (getIsWalletConnected() === false) {
+      const walletAddress = store.getters['user/getUserWalletAddress'];
+      if (walletAddress) {
+        const sessionKey = sessionStorage.getItem(walletAddress);
+        const wal = createWallet(AES.decrypt(sessionKey, window.clientInformation.userAgent)?.toString(enc.Utf8));
+        if (wal?.address?.toLowerCase() === walletAddress) {
+          initWallet(wal);
+        }
+      }
     }
 
     return true;

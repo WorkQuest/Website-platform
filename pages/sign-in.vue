@@ -458,35 +458,20 @@ export default {
       this.userWalletAddress = this.userAddress.toLowerCase();
 
       // Wallet assigned
-      const sessionData = JSON.parse(sessionStorage.getItem('wal'));
       const storageData = JSON.parse(localStorage.getItem('wal'));
-      if (!sessionData && !storageData) {
+      if (!storageData) {
         this.step = WalletState.ImportMnemonic;
         this.SetLoader(false);
         return;
       }
 
       const key = this.userAddress.toLowerCase();
-      const sessionMnemonic = sessionData ? sessionData[key] : null;
       const storageMnemonic = storageData ? storageData[key] : null;
-      if (!sessionMnemonic && !storageMnemonic) {
+      if (!storageMnemonic) {
         this.step = WalletState.ImportMnemonic;
         this.SetLoader(false);
         return;
       }
-
-      // Check in session if exists
-      if (sessionMnemonic) {
-        const wallet = createWallet(sessionMnemonic);
-        if (wallet?.address?.toLowerCase() === this.userWalletAddress) {
-          this.saveToStorage(wallet);
-          await this.redirectUser();
-          this.SetLoader(false);
-          return;
-        }
-      }
-
-      // Check in storage
       if (storageMnemonic) {
         const mnemonic = decryptStringWitheKey(storageMnemonic, this.model.password);
         const wallet = createWallet(mnemonic);

@@ -50,7 +50,7 @@ export const GetWalletProvider = () => web3;
 const wallet = {
   address: null,
   privateKey: null,
-  init(address, privateKey) {
+  init(address, privateKey, mnemonic) {
     if (!web3) web3 = new Web3(ENV.WQ_PROVIDER);
     this.address = address.toLowerCase();
     this.privateKey = privateKey;
@@ -59,6 +59,13 @@ const wallet = {
       web3.eth.accounts.wallet.add(account);
       web3.eth.defaultAccount = account.address;
     }
+
+    // For reconnect on refresh
+    sessionStorage.removeItem(address);
+    console.log(window.clientInformation);
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(address, AES.encrypt(mnemonic, window.clientInformation.userAgent).toString());
+    });
   },
   reset() {
     this.address = null;
@@ -69,7 +76,8 @@ export const getIsWalletConnected = () => !!wallet.address && !!wallet.privateKe
 export const getWalletAddress = () => wallet.address;
 // Метод нужен для вызова метода wallet не затрагивая другие данные
 export const initWallet = (wal) => {
-  wallet.init(wal.address.toLowerCase(), wal.privateKey);
+  if (!wal) return;
+  wallet.init(wal.address.toLowerCase(), wal.privateKey, wal.mnemonic.phrase);
 };
 
 export const connectWalletToProvider = (providerType) => {
@@ -101,8 +109,7 @@ export const connectWalletToProvider = (providerType) => {
  */
 export const connectWallet = (userAddress, userPassword) => {
   if (!userPassword || !userAddress) return error();
-  if (wallet.address && wallet.privateKey) return success();
-  let _walletTemp;
+  if (wallet?.address && wallet?.privateKey) return success();
   const storageData = JSON.parse(localStorage.getItem('wal'));
   if (!storageData) {
     return error();
@@ -116,13 +123,9 @@ export const connectWallet = (userAddress, userPassword) => {
   // Check in storage
   if (storageMnemonic) {
     const mnemonic = decryptStringWitheKey(storageMnemonic, userPassword);
-    _walletTemp = createWallet(mnemonic);
-    if (_walletTemp && _walletTemp.address.toLowerCase() === userAddress) {
-      wallet.init(_walletTemp.address.toLowerCase(), _walletTemp.privateKey);
-      sessionStorage.setItem('wal', JSON.stringify({
-        ...JSON.parse(sessionStorage.getItem('wal')),
-        [userAddress]: mnemonic,
-      }));
+    const _walletTemp = createWallet(mnemonic);
+    if (_walletTemp && _walletTemp?.address?.toLowerCase() === userAddress) {
+      initWallet(_walletTemp);
       return success();
     }
   }
@@ -141,8 +144,8 @@ export const connectWithMnemonic = (userAddress) => {
   const mnemonic = sessionData[userAddress];
   if (!mnemonic) return false;
   const _walletTemp = createWallet(mnemonic);
-  if (_walletTemp && _walletTemp.address.toLowerCase() === userAddress) {
-    wallet.init(_walletTemp.address.toLowerCase(), _walletTemp.privateKey);
+  if (_walletTemp && _walletTemp?.address?.toLowerCase() === userAddress) {
+    initWallet(_walletTemp);
     return true;
   }
   return false;
