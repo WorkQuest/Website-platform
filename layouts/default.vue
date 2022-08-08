@@ -54,12 +54,13 @@ export default {
       isShow: 'modals/getIsShow',
       userWalletAddress: 'user/getUserWalletAddress',
     }),
-    isShowBluePanel() { // for DeFi
+    isShowBluePanel() { // for DeFi pages
       return [
         RouterNames.BRIDGE,
         RouterNames.MINING,
         RouterNames.MINING_ID,
         RouterNames.INSURING,
+        RouterNames.INSURING_ID,
         RouterNames.LENDING,
         RouterNames.REFERRAL,
         RouterNames.REFERRAL_MY,

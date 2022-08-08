@@ -573,19 +573,8 @@ export default {
 
 <style lang="scss" scoped>
 .referral-page {
-  background: linear-gradient(to bottom, $darkblue 370px, $white100 370px);
-  display: flex;
-  justify-content: center;
-
   &__container {
-    display: grid;
-    grid-template-rows: 225px max-content;
-    max-width: 1180px;
-    gap: 30px;
-    justify-content: center;
     width: 100%;
-    padding: 10px;
-    box-sizing: content-box;
   }
 
   &__header {
@@ -595,16 +584,11 @@ export default {
     align-self: center;
   }
 
-  &__content {
-    display: grid;
-    grid-row-gap: 30px;
-    grid-template-rows: 225px max-content max-content;
-  }
-
   &__table {
     margin-bottom: 25px;
-
+    overflow: auto;
     table {
+      min-width: 1180px;
       margin: 0 !important;
       border-radius: 0 !important;
     }
@@ -626,6 +610,8 @@ export default {
 }
 
 .info-block {
+  margin-top: 20px;
+  padding-bottom: 20px;
   background-color: $white;
   border-radius: 6px;
   position: relative;
@@ -819,19 +805,19 @@ export default {
     }
   }
 
-        &_last-reward {
-          display: grid;
-          background-color: $black0;
-          border-radius: 5px;
-          height: 50px;
-          line-height: 50px;
-          width: calc(100% - 40px);
-          margin-left: 20px;
-          padding: 0 10px;
-          flex-wrap: wrap;
-          gap: 10px;
-          grid-template-columns: 5fr auto;
-        }
+  &_last-reward {
+    display: grid;
+    background-color: $black0;
+    border-radius: 5px;
+    height: 50px;
+    line-height: 50px;
+    width: calc(100% - 40px);
+    margin-left: 20px;
+    padding: 0 10px;
+    flex-wrap: wrap;
+    gap: 10px;
+    grid-template-columns: 5fr auto;
+  }
 
   &__link {
     display: flex;
@@ -895,40 +881,7 @@ export default {
   }
 }
 
-@include _991 {
-  .referral-page {
-    background: linear-gradient(to bottom, $darkblue 245px, $white100 245px);
-
-    &__container {
-      gap: 15px;
-      grid-template-rows: 150px auto;
-    }
-
-    &__table {
-      overflow: auto;
-      width: calc(100vw - 20px);
-
-      .table {
-        width: 1180px;
-      }
-    }
-  }
-}
-
 @include _767 {
-  .referral-page {
-    background: linear-gradient(to bottom, $darkblue 220px, $white100 220px);
-
-    &__container {
-      grid-template-rows: repeat(2, auto);
-      gap: 24px;
-    }
-
-    &__content {
-      grid-template-rows: 450px max-content max-content;
-    }
-  }
-
   .title {
     font-size: 36px;
     margin-bottom: 15px;
@@ -942,42 +895,42 @@ export default {
   }
 
   .info-block {
-      &_couple {
-        grid-template-rows: repeat(2, 1fr);
-        grid-template-columns: unset;
-        gap: 20px;
-      }
+    &_couple {
+      grid-template-rows: repeat(2, 1fr);
+      grid-template-columns: unset;
+      gap: 20px;
+    }
 
-      &__steps {
-        grid-template-rows: repeat(3, 1fr);
-        grid-template-columns: unset;
-        gap: 60px;
+    &__steps {
+      grid-template-rows: repeat(3, 1fr);
+      grid-template-columns: unset;
+      gap: 60px;
 
-        .step {
-          &:not(:last-child) {
-            &:after {
-              right: calc(50% - 7px);
-              bottom: -5px;
-              top: unset;
-            }
-          }
-
-          &:not(:first-child) {
-            &:before {
-              right: calc(50% - 7px);
-              left: unset;
-              top: - 5px;
-            }
+      .step {
+        &:not(:last-child) {
+          &:after {
+            right: calc(50% - 7px);
+            bottom: -5px;
+            top: unset;
           }
         }
 
-        &:after {
-          height: 100%;
-          width: 2px;
-          left: 50%;
-          top: 0;
+        &:not(:first-child) {
+          &:before {
+            right: calc(50% - 7px);
+            left: unset;
+            top: - 5px;
+          }
         }
       }
+
+      &:after {
+        height: 100%;
+        width: 2px;
+        left: 50%;
+        top: 0;
+      }
+    }
   }
 }
 </style>

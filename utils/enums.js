@@ -185,6 +185,7 @@ export const RouterNames = {
   STAKING: 'staking',
   STAKING_ID: 'staking-id',
   INSURING: 'insuring',
+  INSURING_ID: 'insuring-id',
   BRIDGE: 'bridge',
   MINING: 'mining',
   MINING_ID: 'mining-id',
