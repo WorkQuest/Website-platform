@@ -239,6 +239,7 @@ export default {
       }
       this.isWalletAssigned = true;
       initWallet(wallet.address.toLowerCase(), wallet.privateKey);
+      await this.$store.dispatch('notifications/getNotifications');
       if (this.isLoginWithSocialNetwork) {
         await this.redirectUser();
         this.SetLoader(false);

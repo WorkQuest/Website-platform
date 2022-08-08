@@ -31,9 +31,9 @@ export default {
   methods: {
     /**
      * The total number of local notifications
-     * @returns {Promise<number>}
+     * @returns {number}
      */
-    async getCountLocalNotifications() {
+    getCountLocalNotifications() {
       let counterLocalNotifications = 2; // Starter counter notifications below without any condition
       if (this.statusKYC === SumSubStatuses.NOT_VERIFIED) counterLocalNotifications += 1;
       if (this.status2FA === TwoFAStatuses.DISABLED) counterLocalNotifications += 1;
@@ -47,7 +47,7 @@ export default {
      */
     async setLocalNotifications(counterBackendNotifications = 0) {
       const { $cookies } = this;
-      const counterLocalNotifications = await this.getCountLocalNotifications();
+      const counterLocalNotifications = this.getCountLocalNotifications();
       await this.$store.dispatch('notifications/setCounterNotifications', counterBackendNotifications + counterLocalNotifications);
       await this.$store.dispatch('notifications/createLocalNotification', {
         id: '1',
