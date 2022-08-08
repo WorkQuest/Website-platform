@@ -139,6 +139,7 @@ export const connectWallet = (userAddress, userPassword) => {
  * @param userAddress
  */
 export const connectWithMnemonic = (userAddress) => {
+  // TODO: check here for social connect wallet!!
   const sessionData = JSON.parse(sessionStorage.getItem('wal'));
   if (!sessionData) return false;
   const mnemonic = sessionData[userAddress];
