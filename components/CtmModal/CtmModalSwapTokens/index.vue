@@ -4,7 +4,7 @@
     :title="$tc('modals.titles.swapTokens')"
   >
     <validation-observer
-      v-slot="{handleSubmit, invalid}"
+      v-slot="{ handleSubmit, invalid }"
       class="claim__content content"
       tag="div"
     >
@@ -16,7 +16,8 @@
         data-selector="OLD-TOKENS"
         :name="$tc('mining.swapTokens.oldTokens')"
         :label="$tc('mining.swapTokens.oldTokens')"
-        :rules="`required|decimal|min_value:0.00001|max_value:${balance}`"
+        :rules="`required|decimal|min_value:0.00001|max_value:${balance}|decimalPlaces:${oldToken.decimals}`"
+        auto-focus
       >
         <template
           v-slot:right-absolute
@@ -73,6 +74,8 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
+import { fetchContractData, getAccountAddress, success } from '~/utils/web3';
+import { ERC20 } from '~/abi';
 
 export default {
   name: 'CtmModalSwapTokens',
@@ -81,7 +84,7 @@ export default {
       amount: 0,
       oldToken: {
         balance: 0,
-        decimals: 0,
+        decimals: 18,
         symbol: '',
       },
     };
@@ -95,12 +98,12 @@ export default {
     },
   },
   async mounted() {
-    this.oldToken = await this.fetchTokenInfo(this.ENV.BSC_OLD_WQT_TOKEN);
+    const { oldTokenData } = this.options;
+    if (oldTokenData) {
+      this.oldToken = oldTokenData;
+    }
   },
   methods: {
-    ...mapActions({
-      fetchTokenInfo: 'mining/fetchTokenInfo',
-    }),
     maxBalance() {
       this.amount = this.balance;
     },

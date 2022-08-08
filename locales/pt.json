@@ -1,4 +1,8 @@
 {
+  "walletSwitcher": {
+    "wqWallet": "WQWallet",
+    "otherWallet": "Other wallet"
+  },
   "kyc": {
     "KYC": "KYC",
     "alreadyVerified": "Your profile already verified!"
@@ -1429,7 +1433,8 @@
     }
   },
   "notifications": {
-    "QuestEditedOnContract": "Quest edited on contract",
+    "newQuestForSpecialization": "New quest for selected specializations",
+    "QuestEditedOnContract": "Quest price is edited",
     "title": "Notifications",
     "OpenDispute": "Abrir disputa",
     "openDispute": "Abrir disputa",
@@ -1455,7 +1460,15 @@
     "questEdited": "Quest edited",
     "questEndSoon": "Quest end soon",
     "newDiscussionLike": "New like on discussion",
-    "updateRatingStatistic": "New rating statistic"
+    "updateRatingStatistic": "New rating statistic",
+    "questClosed": "Quest closed",
+    "questDisputeStarted": "Opened dispute for a quest",
+    "questBlockedByAdmin": "Quest blocked by Admin",
+    "questInvitationSentToWorker": "Quest invitation sent",
+    "questWorkInProgress": "Quest is started",
+    "questWorkSentForReview": "Work sent for review",
+    "questCompleted": "Quest completed",
+    "PaidReferral": "New referral reward"
   },
   "wallet": {
     "frozen": "Frozen balance",
@@ -1704,6 +1717,7 @@
     "earnCrypto": "Ganhe cripto",
     "everyTimeYourFriends": "Sempre que os seus amigos fazem uma primeira Busca, receberá até 20 dólares em comissão WQT em tempo real!",
     "historyOfRewards": "Histórico de recompensas",
+    "alreadyRegistered": "Address is already registered",
     "tableHead": {
       "name": "Nome",
       "userID": "ID do utilizador",

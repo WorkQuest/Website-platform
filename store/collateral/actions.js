@@ -30,7 +30,7 @@ export default {
       /**
        * @property produceWUSD - method of router
        */
-      const inst = await createInstance(WQRouter, ENV.WORKNET_ROUTER);
+      const inst = createInstance(WQRouter, ENV.WORKNET_ROUTER);
       await inst.methods.produceWUSD(collateral, ratio, currency).send({
         from: getWalletAddress(),
         gasPrice,
@@ -173,7 +173,7 @@ export default {
         return error();
       }
 
-      const inst = await createInstance(WQRouter, ENV.WORKNET_ROUTER);
+      const inst = createInstance(WQRouter, ENV.WORKNET_ROUTER);
       await inst.methods[method](...payload).send({
         from: getWalletAddress(),
         gasPrice,

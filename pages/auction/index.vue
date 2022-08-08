@@ -106,6 +106,7 @@
 import { mapActions, mapGetters } from 'vuex';
 import AuctionCard from '~/components/app/pages/auction/AuctionCard';
 import { Layout } from '~/utils/enums';
+import { IS_PLUG_PROD } from '~/utils/locker-data';
 
 const LotsStatuses = {
   INACTIVE: 0,
@@ -120,6 +121,8 @@ export default {
   name: 'Auction',
   LotsStatuses,
   layout({ store }) {
+    // TODO PLUG for release
+    if (IS_PLUG_PROD) return Layout.DEFAULT;
     return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
   },
   components: {

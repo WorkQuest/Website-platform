@@ -1,4 +1,8 @@
 {
+  "walletSwitcher": {
+    "wqWallet": "WQWallet",
+    "otherWallet": "Other wallet"
+  },
   "kyc": {
     "KYC": "KYC",
     "alreadyVerified": "Your profile already verified!"
@@ -1429,7 +1433,8 @@
     }
   },
   "notifications": {
-    "QuestEditedOnContract": "Quest edited on contract",
+    "newQuestForSpecialization": "New quest for selected specializations",
+    "QuestEditedOnContract": "Quest price is edited",
     "title": "Notifications",
     "OpenDispute": "বিতর্ক শুরু করুন",
     "openDispute": "বিতর্ক শুরু করুন",
@@ -1455,7 +1460,15 @@
     "questEdited": "Quest edited",
     "questEndSoon": "Quest end soon",
     "newDiscussionLike": "New like on discussion",
-    "updateRatingStatistic": "New rating statistic"
+    "updateRatingStatistic": "New rating statistic",
+    "questClosed": "Quest closed",
+    "questDisputeStarted": "Opened dispute for a quest",
+    "questBlockedByAdmin": "Quest blocked by Admin",
+    "questInvitationSentToWorker": "Quest invitation sent",
+    "questWorkInProgress": "Quest is started",
+    "questWorkSentForReview": "Work sent for review",
+    "questCompleted": "Quest completed",
+    "PaidReferral": "New referral reward"
   },
   "wallet": {
     "frozen": "Frozen balance",
@@ -1704,6 +1717,7 @@
     "earnCrypto": "ক্রিপ্টো উপার্জন করুন",
     "everyTimeYourFriends": "প্রতিবার আপনার বন্ধুরা প্রথম quest সম্পন্ন করলে আপনি তাৎক্ষণিকভাবে WQT কমিশন হিসাবে $20 পর্যন্ত পাবেন!",
     "historyOfRewards": "পুরস্কারের ইতিহাস",
+    "alreadyRegistered": "Address is already registered",
     "tableHead": {
       "name": "নাম",
       "userID": "ইউজার আইডি",

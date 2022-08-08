@@ -2,6 +2,18 @@ import { Path } from '~/utils/enums';
 
 export const IS_PLUG = ['master', 'testnet'].includes(process.env.BRANCH);
 
+export const IS_PLUG_PROD = process.env.BRANCH === 'master';
+
+export const LockedProdPages = [
+  'collateral',
+  'auction',
+];
+
+export const LockedProdPaths = [
+  Path.COLLATERAL,
+  Path.AUCTION,
+];
+
 export const LockedPages = [
   'retirement',
   'retirement/my',

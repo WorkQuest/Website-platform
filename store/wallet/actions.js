@@ -125,9 +125,10 @@ export default {
   async fetchCommonTokenInfo({ commit, getters }) {
     try {
       const chain = getters.getSelectedNetwork;
+      const provider = GetWalletProvider();
       const tokens = await Promise.all(WalletTokensData[chain].tokenAddresses.map(async (address) => await Promise.all([
-        fetchContractData('symbol', ERC20, address, [], GetWalletProvider()),
-        fetchContractData('decimals', ERC20, address, [], GetWalletProvider()),
+        fetchContractData('symbol', ERC20, address, [], provider),
+        fetchContractData('decimals', ERC20, address, [], provider),
       ])));
       tokens.forEach((item) => commit('setCommonTokenData', item));
     } catch (e) {
@@ -478,7 +479,7 @@ export default {
       const userId = rootGetters['user/getUserData'].id;
       const accountAddress = getWalletAddress();
       const nonce = await provider.eth.getTransactionCount(accountAddress);
-      const bridgeInstance = await new provider.eth.Contract(BuyWQT, bridgeAddress);
+      const bridgeInstance = new provider.eth.Contract(BuyWQT, bridgeAddress);
       const value = new BigNumber(amount).shiftedBy(Number(decimals)).toString();
       const data = [nonce, toChainIndex, value, accountAddress, userId, symbol];
 
