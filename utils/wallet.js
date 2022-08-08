@@ -62,7 +62,6 @@ const wallet = {
 
     // For reconnect on refresh
     sessionStorage.removeItem(address);
-    console.log(window.clientInformation);
     window.addEventListener('beforeunload', () => {
       sessionStorage.setItem(address, AES.encrypt(mnemonic, window.clientInformation.userAgent).toString());
     });
