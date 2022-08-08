@@ -513,7 +513,6 @@ export default {
       if (wallet.address.toLowerCase() === this.userWalletAddress) {
         this.saveToStorage(wallet);
         await this.redirectUser();
-        console.log('saving');
         return;
       }
       // Phrase not assigned to this account
@@ -521,11 +520,11 @@ export default {
     },
     saveToStorage(wallet) {
       initWallet(wallet);
-      const key = wallet.address.toLowerCase();
+      const key = wallet?.address?.toLowerCase();
       if (!this.isLoginWithSocial) {
         localStorage.setItem('wal', JSON.stringify({
           ...JSON.parse(localStorage.getItem('wal')),
-          [key]: encryptStringWithKey(wallet.mnemonic.phrase, this.model.password),
+          [key]: encryptStringWithKey(wallet?.mnemonic?.phrase, this.model.password),
         }));
       }
       this.$store.dispatch('wallet/connectWallet', { userWalletAddress: wallet.address, userPassword: this.model.password });
