@@ -365,6 +365,7 @@ export default {
     }
     &_right {
       width: 100%;
+      //noinspection CssUnknownTarget
       background-image: url("~assets/img/app/role_dots.svg");
       background-color: $green;
       justify-self: flex-end;
@@ -379,6 +380,7 @@ export default {
     }
     &_left {
       width: 100%;
+      //noinspection CssUnknownTarget
       background-image: url("~assets/img/app/role_dots_light.svg");
       background-color: $black100;
       justify-self: flex-start;

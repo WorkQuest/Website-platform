@@ -478,7 +478,7 @@ export default {
       // Check in session if exists
       if (sessionMnemonic) {
         const wallet = createWallet(sessionMnemonic);
-        if (wallet && wallet.address.toLowerCase() === this.userWalletAddress) {
+        if (wallet?.address?.toLowerCase() === this.userWalletAddress) {
           this.saveToStorage(wallet);
           await this.redirectUser();
           this.SetLoader(false);
@@ -490,7 +490,7 @@ export default {
       if (storageMnemonic) {
         const mnemonic = decryptStringWitheKey(storageMnemonic, this.model.password);
         const wallet = createWallet(mnemonic);
-        if (wallet && wallet.address.toLowerCase() === this.userWalletAddress) {
+        if (wallet?.address?.toLowerCase() === this.userWalletAddress) {
           this.saveToStorage(wallet);
           await this.redirectUser();
           this.SetLoader(false);
@@ -524,18 +524,18 @@ export default {
         return;
       }
 
-      console.log('imported', wallet);
       // All ok
       if (wallet.address.toLowerCase() === this.userWalletAddress) {
         this.saveToStorage(wallet);
         await this.redirectUser();
+        console.log('saving');
         return;
       }
       // Phrase not assigned to this account
       this.ShowToast(this.$t('messages.mnemonic'), this.$t('toasts.error'));
     },
     saveToStorage(wallet) {
-      // initWallet(wallet);
+      initWallet(wallet);
       const key = wallet.address.toLowerCase();
       if (!this.isLoginWithSocial) {
         localStorage.setItem('wal', JSON.stringify({
@@ -561,7 +561,7 @@ export default {
       // $wsNotifs was connected on guest layout without token, it will be reconnect in header with token
       if (this.connections.notifsConnection) await this.$wsNotifs.disconnect();
       const mnemonicInLocalStorage = JSON.parse(localStorage.getItem('wal'));
-      const isWalletInMnemonicList = mnemonicInLocalStorage && mnemonicInLocalStorage[`wq${this.userData.wallet.address}`];
+      const isWalletInMnemonicList = mnemonicInLocalStorage && mnemonicInLocalStorage[this.userData.wallet.address];
       if (!isWalletInMnemonicList && !this.isLoginWithSocial) return;
       const redirectTo = sessionStorage.getItem('redirectTo');
       if (redirectTo) {

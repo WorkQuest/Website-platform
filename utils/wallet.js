@@ -31,7 +31,7 @@ export const createWallet = (mnemonic) => {
 };
 
 export const encryptStringWithKey = (toEncrypt, key) => AES.encrypt(toEncrypt, sha256(key).toString()).toString();
-export const decryptStringWitheKey = (toDecrypt, key) => AES.decrypt(toDecrypt, key).toString(enc.Utf8);
+export const decryptStringWitheKey = (toDecrypt, key) => AES.decrypt(toDecrypt, sha256(key).toString()).toString(enc.Utf8);
 
 let cipherKey = null;
 export const getCipherKey = () => cipherKey;
