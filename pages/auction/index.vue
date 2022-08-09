@@ -123,6 +123,7 @@ export default {
   layout({ store }) {
     // TODO PLUG for release
     if (IS_PLUG_PROD) return Layout.DEFAULT;
+    // TODO check why isAuth is false after reload page
     return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
   },
   components: {
@@ -147,8 +148,11 @@ export default {
     ...mapGetters({
       userData: 'user/getUserData',
       walletAddress: 'user/getUserWalletAddress',
+
       lots: 'auction/getLots',
       lotsCount: 'auction/getLotsCount',
+
+      isWalletConnected: 'wallet/getIsWalletConnected',
     }),
     searchPlaceholder() {
       return this.$t('auction.search.placeholder');
@@ -167,9 +171,12 @@ export default {
       },
     },
   },
-  mounted() {
-    this.$store.dispatch('wallet/getBalance');
-    this.fetchLots({ lotStatus: LotsStatuses.INACTIVE, params: this.params, sort: this.sort });
+  async beforeMount() {
+    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+  },
+  async mounted() {
+    await this.fetchLots({ lotStatus: LotsStatuses.INACTIVE, params: this.params, sort: this.sort });
+    if (this.isWalletConnected) await this.$store.dispatch('wallet/getBalance');
   },
   methods: {
     ...mapActions({

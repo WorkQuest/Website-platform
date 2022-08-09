@@ -171,19 +171,24 @@ export default {
       ];
     },
     startedLotFields() {
-      const { auctionStarted, symbol, priceValue } = this.lot;
+      const { auctionStarted, symbol } = this.lot;
       if (this.typeOfLot !== LotsStatuses.STARTED || !auctionStarted?.length) {
         return { lotAmount: '', lotPrice: '' };
       }
 
       // amount - its amount of collateral token on liquidation
       // endCost - final price of collateral lot
-      const { amount } = auctionStarted[0];
+      const { amount, endCost } = auctionStarted[0];
 
       const lotDecimals = this.balanceData[symbol].decimals;
+      const _amount = new BigNumber(amount).shiftedBy(-lotDecimals);
+      const _endCost = new BigNumber(endCost).shiftedBy(-18);
+
+      const price = new BigNumber(_amount).multipliedBy(_endCost).toString();
+      const fee = new BigNumber(price).multipliedBy(0.13);
       return {
         lotAmount: Number(new BigNumber(amount).shiftedBy(-lotDecimals).toFixed(4, 1)),
-        lotPrice: Number(new BigNumber(priceValue).shiftedBy(-18).toFixed(4, 1)),
+        lotPrice: Number(new BigNumber(price).plus(fee).toFixed(4, 1)),
       };
     },
     url() {

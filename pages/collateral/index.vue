@@ -197,6 +197,8 @@ export default {
     ...mapGetters({
       isAuth: 'user/isAuth',
       userData: 'user/getUserData',
+      // TODO fix it in makeApprove
+      userWalletAddress: 'user/getUserWalletAddress',
 
       totalSupply: 'collateral/getTotalSupply',
       availableAssets: 'collateral/getAvailableAssets',

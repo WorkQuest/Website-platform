@@ -73,28 +73,33 @@ export default {
       });
 
       const balanceData = rootGetters['wallet/getBalanceData'];
-      let lots = [];
-      for (let i = 0; i < auction.length - 1; i += 1) {
-        const { symbol, lotBuyed } = auction[i];
-        lots = [...lots, ...lotBuyed.map((lot) => {
-          const {
-            cost, buyer, amount, timestamp, transactionHash,
-          } = lot;
 
-          let symbolDecimals = balanceData[symbol].decimals;
-          if (symbolDecimals === 6) symbolDecimals += symbolDecimals;
-          return {
-            ...auction[i],
-            buyer,
-            timestamp,
-            transactionHash,
-            lotAmount: Number(new BigNumber(amount).shiftedBy(-symbolDecimals).toFixed(4, 1)),
-            lotPrice: Number(new BigNumber(cost).shiftedBy(-18).toFixed(4, 1)),
-          };
-        }),
+      let lots = [];
+      auction.forEach((item) => {
+        const { symbol, lotBuyed } = item;
+        lots = [
+          ...lots,
+          ...lotBuyed.map((lot) => {
+            const {
+              cost, buyer, amount, timestamp, transactionHash,
+            } = lot;
+
+            let symbolDecimals = balanceData[symbol].decimals;
+            if (symbolDecimals === 6) symbolDecimals += symbolDecimals;
+            return {
+              ...item,
+              buyer,
+              timestamp,
+              transactionHash,
+              lotAmount: Number(new BigNumber(amount).shiftedBy(-symbolDecimals).toFixed(4, 1)),
+              lotPrice: Number(new BigNumber(cost).shiftedBy(-18).toFixed(4, 1)),
+            };
+          }),
         ];
-      }
+      });
+
       commit('setLost', { count, lots });
+
       return success();
     } catch (e) {
       console.error('auction/fetchBoughtLots', e);
