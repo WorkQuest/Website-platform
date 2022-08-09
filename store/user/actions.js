@@ -131,14 +131,15 @@ export default {
       return success(ok);
     } catch (e) {
       console.error('user/sendReviewDispute', e);
-      return error(e.response.data.code, e.response.data.msg);
+      return error(e.code, e.msg);
     }
   },
   async registerWallet({ commit }, payload) {
     try {
       return await this.$axios.$post('/v1/auth/register/wallet', payload);
     } catch (e) {
-      return error(e.response.data.code, e.response.data.msg);
+      console.error('user/registerWallet', e);
+      return error(e.code, e.msg);
     }
   },
   async signIn({ commit, dispatch, state }, payload) {
@@ -274,14 +275,24 @@ export default {
     return response;
   },
   async passwordSendCode({ commit }, payload) {
-    const response = await this.$axios.$post('/v1/restore-password/send-code', payload);
-    commit('setSendCode', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$post('/v1/restore-password/send-code', payload);
+      commit('setSendCode', response.result);
+      return success();
+    } catch (e) {
+      console.error('user/passwordSendCode', e);
+      return error(e.code, e.msg);
+    }
   },
   async passwordChange({ commit }, payload) {
-    const response = await this.$axios.$post('/v1/restore-password/set-password', payload);
-    commit('setUserPassword', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$post('/v1/restore-password/set-password', payload);
+      commit('setUserPassword', response.result);
+      return success();
+    } catch (e) {
+      console.error('user/passwordChange', e);
+      return error(e.code, e.msg);
+    }
   },
 
   async imageType({ commit }, payload) {
@@ -329,8 +340,8 @@ export default {
       commit('setTwoFAStatus', false);
       return response;
     } catch (e) {
-      const { data } = e.response;
-      return error(data.code, data.msg, data);
+      console.error('user/disable2FA', e);
+      return error(e.code, e.msg, e);
     }
   },
   async enable2FA({ commit }, payload) {
@@ -339,8 +350,8 @@ export default {
       commit('setTwoFACode', response.result);
       return response;
     } catch (e) {
-      const { data } = e.response;
-      return error(data.code, data.msg, data);
+      console.error('user/enable2FA', e);
+      return error(e.code, e.msg, e);
     }
   },
   async confirmEnable2FA({ commit }, payload) {
