@@ -97,9 +97,16 @@
 <script>
 import ClickOutside from 'vue-click-outside';
 import Content from '~/components/wiki/content.vue';
+import { IS_PLUG_PROD } from '~/utils/locker-data';
+import { Layout } from '~/utils/enums';
 
 export default {
   name: 'Wiki',
+  layout({ store }) {
+    // TODO PLUG for release
+    if (IS_PLUG_PROD) return Layout.DEFAULT;
+    return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
+  },
   components: {
     Content,
   },

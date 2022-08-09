@@ -7,7 +7,7 @@ import {
 
 import {
   GetWalletProvider,
-  connectWithMnemonic, disconnect,
+  disconnect,
 } from '~/utils/wallet';
 
 import {
@@ -214,7 +214,6 @@ export default {
     try {
       const { result } = await this.$axios.$get('/v1/profile/me');
       commit('setUserData', result);
-      if (result.wallet?.address) connectWithMnemonic(result.wallet.address);
       return success(result);
     } catch (e) {
       return error();

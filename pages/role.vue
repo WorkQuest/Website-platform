@@ -238,19 +238,15 @@ export default {
         return;
       }
       this.isWalletAssigned = true;
-      initWallet(wallet.address.toLowerCase(), wallet.privateKey);
+      initWallet(wallet);
       if (this.isLoginWithSocialNetwork) {
         await this.redirectUser();
         this.SetLoader(false);
         return;
       }
-      localStorage.setItem('mnemonic', JSON.stringify({
-        ...JSON.parse(localStorage.getItem('mnemonic')),
+      localStorage.setItem('wal', JSON.stringify({
+        ...JSON.parse(localStorage.getItem('wal')),
         [wallet.address.toLowerCase()]: encryptStringWithKey(wallet.mnemonic.phrase, getCipherKey()),
-      }));
-      sessionStorage.setItem('mnemonic', JSON.stringify({
-        ...JSON.parse(sessionStorage.getItem('mnemonic')),
-        [wallet.address.toLowerCase()]: wallet.mnemonic.phrase,
       }));
       await this.redirectUser();
       this.SetLoader(false);
@@ -369,6 +365,7 @@ export default {
     }
     &_right {
       width: 100%;
+      //noinspection CssUnknownTarget
       background-image: url("~assets/img/app/role_dots.svg");
       background-color: $green;
       justify-self: flex-end;
@@ -383,6 +380,7 @@ export default {
     }
     &_left {
       width: 100%;
+      //noinspection CssUnknownTarget
       background-image: url("~assets/img/app/role_dots_light.svg");
       background-color: $black100;
       justify-self: flex-start;
