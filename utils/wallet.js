@@ -1,5 +1,6 @@
 import { ethers } from 'ethers';
 import { AES, enc } from 'crypto-js';
+import sha256 from 'crypto-js/sha256';
 import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
 import {
@@ -29,8 +30,8 @@ export const createWallet = (mnemonic) => {
   }
 };
 
-export const encryptStringWithKey = (toEncrypt, key) => AES.encrypt(toEncrypt, key).toString();
-export const decryptStringWitheKey = (toDecrypt, key) => AES.decrypt(toDecrypt, key).toString(enc.Utf8);
+export const encryptStringWithKey = (toEncrypt, key) => AES.encrypt(toEncrypt, sha256(key).toString()).toString();
+export const decryptStringWitheKey = (toDecrypt, key) => AES.decrypt(toDecrypt, sha256(key).toString()).toString(enc.Utf8);
 
 let cipherKey = null;
 export const getCipherKey = () => cipherKey;
@@ -49,7 +50,7 @@ export const GetWalletProvider = () => web3;
 const wallet = {
   address: null,
   privateKey: null,
-  init(address, privateKey) {
+  init(address, privateKey, mnemonic) {
     if (!web3) web3 = new Web3(ENV.WQ_PROVIDER);
     this.address = address.toLowerCase();
     this.privateKey = privateKey;
@@ -58,6 +59,12 @@ const wallet = {
       web3.eth.accounts.wallet.add(account);
       web3.eth.defaultAccount = account.address;
     }
+
+    // For reconnect on refresh
+    sessionStorage.removeItem(address);
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(address, encryptStringWithKey(mnemonic, window.clientInformation.userAgent));
+    });
   },
   reset() {
     this.address = null;
@@ -67,8 +74,9 @@ const wallet = {
 export const getIsWalletConnected = () => !!wallet.address && !!wallet.privateKey;
 export const getWalletAddress = () => wallet.address;
 // Метод нужен для вызова метода wallet не затрагивая другие данные
-export const initWallet = (address, key) => {
-  wallet.init(address, key);
+export const initWallet = (wal) => {
+  if (!wal) return;
+  wallet.init(wal.address.toLowerCase(), wal.privateKey, wal.mnemonic.phrase);
 };
 
 export const connectWalletToProvider = (providerType) => {
@@ -101,8 +109,7 @@ export const connectWalletToProvider = (providerType) => {
 export const connectWallet = (userAddress, userPassword) => {
   if (!userPassword || !userAddress) return error();
   if (wallet.address && wallet.privateKey) return success();
-  let _walletTemp;
-  const storageData = JSON.parse(localStorage.getItem('mnemonic'));
+  const storageData = JSON.parse(localStorage.getItem('wal'));
   if (!storageData) {
     return error();
   }
@@ -115,13 +122,9 @@ export const connectWallet = (userAddress, userPassword) => {
   // Check in storage
   if (storageMnemonic) {
     const mnemonic = decryptStringWitheKey(storageMnemonic, userPassword);
-    _walletTemp = createWallet(mnemonic);
-    if (_walletTemp && _walletTemp.address.toLowerCase() === userAddress) {
-      wallet.init(_walletTemp.address.toLowerCase(), _walletTemp.privateKey);
-      sessionStorage.setItem('mnemonic', JSON.stringify({
-        ...JSON.parse(sessionStorage.getItem('mnemonic')),
-        [userAddress]: mnemonic,
-      }));
+    const _walletTemp = createWallet(mnemonic);
+    if (_walletTemp?.address?.toLowerCase() === userAddress) {
+      initWallet(_walletTemp);
       return success();
     }
   }
@@ -132,16 +135,14 @@ export const connectWallet = (userAddress, userPassword) => {
 
 /**
  * Connect to wallet with mnemonic from session
+ * @param phrase
  * @param userAddress
  */
-export const connectWithMnemonic = (userAddress) => {
-  const sessionData = JSON.parse(sessionStorage.getItem('mnemonic'));
-  if (!sessionData) return false;
-  const mnemonic = sessionData[userAddress];
-  if (!mnemonic) return false;
-  const _walletTemp = createWallet(mnemonic);
-  if (_walletTemp && _walletTemp.address.toLowerCase() === userAddress) {
-    wallet.init(_walletTemp.address.toLowerCase(), _walletTemp.privateKey);
+export const connectWithMnemonic = (phrase, userAddress) => {
+  if (!phrase || !userAddress) return false;
+  const _walletTemp = createWallet(phrase);
+  if (_walletTemp?.address?.toLowerCase() === userAddress) {
+    initWallet(_walletTemp);
     return true;
   }
   return false;
