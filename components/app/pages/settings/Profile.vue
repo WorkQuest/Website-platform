@@ -338,8 +338,8 @@ export default {
     return {
       selectedAddressIndex: null,
       geoCode: null,
-      firstPhone: { codeRegion: 'RU', phone: null, fullPhone: null },
-      secondPhoneNumber: { codeRegion: 'RU', phone: null, fullPhone: null },
+      firstPhone: { codeRegion: 'US', phone: null, fullPhone: null },
+      secondPhoneNumber: { codeRegion: 'US', phone: null, fullPhone: null },
       newEducation: { from: '', to: '', place: '' },
       newWorkExp: { from: '', to: '', place: '' },
       isSearchDDStatus: false,
