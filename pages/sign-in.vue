@@ -483,7 +483,7 @@ export default {
         }
       }
 
-      // Session & Storage invalid mnemonics
+      // Storage invalid mnemonics
       this.ShowToast(this.$t('messages.mnemonic'), this.$t('toasts.error'));
       this.step = WalletState.ImportMnemonic;
     },
