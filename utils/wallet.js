@@ -108,7 +108,7 @@ export const connectWalletToProvider = (providerType) => {
  */
 export const connectWallet = (userAddress, userPassword) => {
   if (!userPassword || !userAddress) return error();
-  if (wallet?.address && wallet?.privateKey) return success();
+  if (wallet.address && wallet.privateKey) return success();
   const storageData = JSON.parse(localStorage.getItem('wal'));
   if (!storageData) {
     return error();
