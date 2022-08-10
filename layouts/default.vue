@@ -85,10 +85,10 @@ export default {
       }
     },
     CheckMnemonic() {
-      const mnemonicInLocalStorage = JSON.parse(localStorage.getItem('mnemonic'));
+      const mnemonicInLocalStorage = JSON.parse(localStorage.getItem('wal'));
       const isWalletInMnemonicList = mnemonicInLocalStorage && mnemonicInLocalStorage[this.userWalletAddress];
       if (!this.$cookies.get('socialNetwork')
-        && (!isWalletInMnemonicList || !localStorage.getItem('mnemonic'))) {
+        && (!isWalletInMnemonicList || !localStorage.getItem('wal'))) {
         this.$cookies.remove('access');
         this.$cookies.remove('refresh');
         this.$cookies.remove('userLogin');

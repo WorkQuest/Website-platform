@@ -95,9 +95,9 @@
           data-selector="ADDRESS-FIELD"
           mode="icon"
           :selector="true"
-          rules="required"
+          :rules="{required: true, geo_is_address: {geoCode} }"
           :name="$tc('quests.address')"
-          @selector="getAddressInfo(address)"
+          @selector="debouncedAddressSearch(address)"
         >
           <template v-slot:left>
             <span class="icon-map" />
@@ -202,6 +202,7 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
+import debounce from '~/utils/debounce';
 import {
   PriorityFilter, TokenMap, TokenSymbols, TypeOfEmployments, PayPeriodsIndex, WorkplaceIndex,
 } from '~/utils/enums';
@@ -232,6 +233,7 @@ export default {
       geoCode: null,
       isClearData: false,
       isCheckedEditAfter: false,
+      debouncedAddressSearch: null,
     };
   },
   computed: {
@@ -290,10 +292,12 @@ export default {
       key: process.env.GMAPKEY,
       lang: this.$i18n?.localeProperties?.code || 'en-US',
     });
+    this.debouncedAddressSearch = debounce(this.getAddressInfo, 300);
     this.SetLoader(false);
   },
   async beforeDestroy() {
     await this.setQuestDraft();
+    this.debouncedAddressSearch = null;
   },
   methods: {
     async clearData() {

@@ -115,23 +115,12 @@ export default {
       return;
     }
     // Try to find mnemonic in storage by user wallet address
-    // Checking session storage
-    const session = JSON.parse(sessionStorage.getItem('mnemonic'));
-    let mnemonic = null;
-    if (session) {
-      mnemonic = session[this.userWalletAddress];
-      if (mnemonic) {
-        this.toDecrypt = mnemonic;
-        return;
-      }
-    }
-    // Checking local storage
-    const storage = JSON.parse(localStorage.getItem('mnemonic'));
+    const storage = JSON.parse(localStorage.getItem('wal'));
     if (!storage) {
       this.disconnect();
       return;
     }
-    mnemonic = storage[this.userWalletAddress];
+    const mnemonic = storage[this.userWalletAddress];
     if (!mnemonic) {
       this.disconnect();
       return;
@@ -178,11 +167,7 @@ export default {
       if (res?.ok) this.allowAccess();
     },
     handleImport() {
-      sessionStorage.setItem('mnemonic', JSON.stringify({
-        ...JSON.parse(sessionStorage.getItem('mnemonic')),
-        [this.userWalletAddress]: this.mnemonic,
-      }));
-      if (connectWithMnemonic(this.userWalletAddress)) this.allowAccess();
+      if (connectWithMnemonic(this.mnemonic, this.userWalletAddress)) this.allowAccess();
       else {
         this.ShowToast(this.$t('messages.mnemonic'));
         if (this.counter >= this.tryLimit) {

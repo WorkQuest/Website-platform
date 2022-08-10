@@ -193,6 +193,7 @@ export const RouterNames = {
   COLLATERAL: 'collateral',
   SAVINGS: 'savings',
   SAVINGS_ID: 'savings-id',
+  WIKI: 'wiki',
 };
 
 export const DeFiBluePanelPathNames = [
@@ -219,6 +220,7 @@ export const PreventLogoutPathNames = [
   RouterNames.BRIDGE,
   RouterNames.CREDITING,
   RouterNames.COLLATERAL,
+  RouterNames.WIKI,
 ];
 
 export const PathDAO = {
