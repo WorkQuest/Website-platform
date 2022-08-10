@@ -212,8 +212,6 @@ export default {
 
   &__content {
     width: 100%;
-    max-width: 1180px;
-    margin: 0 auto;
   }
 
   &__title {
@@ -242,10 +240,6 @@ export default {
 
 @include _1199 {
   .employees {
-    &__content {
-      padding: 0 20px;
-    }
-
     &__cards {
       grid-template-columns: repeat(3, 1fr);
     }
@@ -260,11 +254,6 @@ export default {
 
 @include _575 {
   .employees {
-
-    &__content {
-      padding: 0 10px;
-    }
-
     &__cards {
       grid-template-columns: 1fr;
       grid-gap: 10px;

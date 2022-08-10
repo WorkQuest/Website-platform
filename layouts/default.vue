@@ -12,6 +12,7 @@
         <div
           v-show="isShowBluePanel"
           class="blue-panel"
+          :class="{'blue-panel_white': $route.name === 'profile-id'}"
         />
         <div
           class="template__main"
@@ -106,6 +107,10 @@ export default {
 
 .blue-panel {
   @include blue-panel;
+
+  &_white {
+    background: $white !important;
+  }
 }
 
 .template {

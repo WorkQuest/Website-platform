@@ -1,5 +1,8 @@
 <template>
-  <div data-selector="PAGE-PROFILE">
+  <div
+    class="page-profile page__profile__section"
+    data-selector="PAGE-PROFILE"
+  >
     <div class="section section__container section__container_white">
       <div class="container container__block">
         <userInfo />
@@ -484,6 +487,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.page-profile {
+  position: relative;
+}
 .quests__cards {
   display: grid;
   grid-template-columns: 1fr;
@@ -512,8 +518,6 @@ export default {
   }
 }
 .container {
-  width: 1180px;
-  margin: 0 auto;
   display: grid;
   gap: 20px;
 }
@@ -535,6 +539,7 @@ export default {
 
 .block {
   &__statistic {
+    margin-top: 10px;
     padding: 20px 0;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -654,10 +659,14 @@ export default {
   }
 }
 @include _1199 {
-  .container {
-    width: 100%;
-    padding-left: 10px;
-    padding-right: 10px;
+  .section {
+    &__container {
+      width: 100vw;
+      margin: -20px -20px 10px -20px;
+      &_white {
+        background-color: $white;
+      }
+    }
   }
 }
 @include _575 {

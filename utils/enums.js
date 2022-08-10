@@ -194,6 +194,7 @@ export const RouterNames = {
   SAVINGS: 'savings',
   SAVINGS_ID: 'savings-id',
   WIKI: 'wiki',
+  PROFILE_ID: 'profile-id',
 };
 
 export const DeFiBluePanelPathNames = [
@@ -212,6 +213,7 @@ export const DeFiBluePanelPathNames = [
   RouterNames.RETIREMENT_MY,
   RouterNames.SAVINGS,
   RouterNames.SAVINGS_ID,
+  RouterNames.PROFILE_ID,
 ];
 
 export const PreventLogoutPathNames = [

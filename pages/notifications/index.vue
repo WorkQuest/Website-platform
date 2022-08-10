@@ -127,7 +127,7 @@ export default {
         limit: 10,
         offset: 0,
       },
-      page: 5, // TODO 1;
+      page: 1,
     };
   },
   computed: {
@@ -290,6 +290,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex-shrink: 0;
   }
   &__sender {
     display: flex;
@@ -367,12 +368,6 @@ export default {
 }
 
 @include _1199 {
-  .notifications-page {
-    padding: 10px;
-    &__main-container {
-      padding: 5px;
-    }
-  }
   .notification {
     padding: 10px 0;
   }
@@ -383,9 +378,6 @@ export default {
 }
 
 @include _767 {
-  .notification-page {
-    padding: 5px;
-  }
   .notification {
      &__remove {
        visibility: visible;

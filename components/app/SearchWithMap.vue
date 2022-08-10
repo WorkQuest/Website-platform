@@ -260,8 +260,6 @@ export default {
 
 @include _1199 {
   .search {
-    padding: 0 20px;
-
     &__block {
       grid-template-columns: 160px 1fr 155px 220px;
 
@@ -317,7 +315,6 @@ export default {
 
 @include _575 {
   .search {
-    padding: 0 10px;
     margin-top: 10px;
 
     &__block {
