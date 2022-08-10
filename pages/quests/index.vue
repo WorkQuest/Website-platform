@@ -233,8 +233,6 @@ export default {
 
   &__content {
     width: 100%;
-    max-width: 1180px;
-    margin: 0 auto;
   }
 
   &__title {
@@ -260,19 +258,8 @@ export default {
   }
 }
 
-@include _1199 {
-  .quests__content {
-    padding: 0 20px;
-  }
-}
-
 @include _575 {
   .quests {
-
-    &__content {
-      padding: 0 10px;
-    }
-
     &__cards {
       grid-gap: 10px;
     }
