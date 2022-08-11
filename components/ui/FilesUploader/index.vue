@@ -63,6 +63,7 @@
       data-selector="FILE-UPLOADER-INPUT"
       :multiple="multiple"
       :accept="accept"
+      :value="selectedFile"
       @change="onChange"
     >
   </div>
@@ -107,6 +108,7 @@ export default {
         text: '',
       },
       acceptedTypes: [],
+      selectedFile: '',
     };
   },
   computed: {

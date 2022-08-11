@@ -180,7 +180,9 @@
             >
               {{ $t('meta.allTransactions') }}
             </base-btn>
+            <!-- TODO del v-show, this plug for release -->
             <base-btn
+              v-show="!$options.IS_PLUG_PROD"
               data-selector="SWITCH-COLLATERAL"
               :mode="getSwitchButtonMode(walletTables.COLLATERAL)"
               @click="selectedWalletTable = walletTables.COLLATERAL"
@@ -211,8 +213,9 @@
               :total-pages="totalPages"
             />
           </div>
+          <!-- TODO del v-if, remove this plug for release -->
           <div
-            v-else
+            v-if="selectedWalletTable === walletTables.COLLATERAL && !$options.IS_PLUG_PROD"
             class="wallet__txs"
           >
             <CollateralTable />
@@ -241,12 +244,12 @@ import EmptyData from '~/components/app/info/emptyData';
 import CollateralTable from '~/components/app/pages/wallet/CollateralTable';
 import { error, success } from '~/utils/web3';
 import { BuyWQTTokensData } from '~/utils/сonstants/bridge';
-import { IS_PLUG } from '~/utils/locker-data';
+import { IS_PLUG_PROD } from '~/utils/locker-data';
 
 export default {
   name: 'Wallet',
   middleware: 'auth',
-  IS_PLUG,
+  IS_PLUG_PROD,
   components: { EmptyData, CollateralTable },
   TokenSymbols,
   Chains,
@@ -411,6 +414,11 @@ export default {
 
     this.updateWQAddress();
     window.addEventListener('resize', this.updateWQAddress);
+
+    if (this.tokens[this.ddValue].title !== this.selectedToken) {
+      const i = this.tokens.findIndex((item) => item.title === this.selectedToken);
+      if (i !== -1) this.ddValue = i;
+    }
 
     await this.$store.dispatch('wallet/setCallbackWS', this.loadData);
     await this.loadData(true);
@@ -622,11 +630,11 @@ export default {
   }
 
   &__card {
-    box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
+    @include shadow;
   }
 
   &__balance {
-    box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
+    @include shadow;
   }
 
   &__body {
@@ -706,7 +714,7 @@ export default {
 
   &__table {
     position: relative;
-    box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
+    @include shadow;
     max-width: 100%;
     overflow-x: auto;
   }

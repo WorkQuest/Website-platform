@@ -27,6 +27,7 @@
               {{ $t('modals.amount') }}
             </div>
             <base-field
+              ref="amount"
               v-model.lazy="amount"
               type="number"
               placeholder="0,05"
@@ -87,9 +88,10 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { Chains, TokenSymbols } from '~/utils/enums';
+import { Chains, ConnectionTypes, TokenSymbols } from '~/utils/enums';
 import { BridgeAddresses } from '~/utils/сonstants/bridge';
-import { getChainIdByChain } from '~/utils/web3';
+import { getChainIdByChain, GetWeb3Provider } from '~/utils/web3';
+import { getProvider, GetWalletProvider } from '~/utils/wallet';
 
 export default {
   name: 'ModalSwap',
@@ -105,7 +107,15 @@ export default {
       account: 'web3/getAccount',
       options: 'modals/getOptions',
       currentToken: 'bridge/getToken',
+
+      web3Account: 'web3/getAccount',
+      userWalletAddress: 'user/getUserWalletAddress',
+      connectionType: 'web3/getConnectionType',
     }),
+    getProviderByConnection() {
+      if (this.connectionType === ConnectionTypes.WEB3) return GetWeb3Provider;
+      return GetWalletProvider;
+    },
     tokens() {
       const availableTokens = [TokenSymbols.WQT];
       const { from, to } = this.options;
@@ -119,6 +129,10 @@ export default {
       const chain = this.options?.to?.chain;
       if (chain === Chains.WORKNET) return this.convertToBech32('wq', this.account.address);
       return this.account.address;
+    },
+    account() {
+      if (this.connectionType === ConnectionTypes.WEB3) return this.web3Account;
+      return { address: this.userWalletAddress };
     },
   },
   watch: {
@@ -144,19 +158,24 @@ export default {
       fetchBalance: 'bridge/fetchBalance',
     }),
     async handlerFetchBalance(symbol) {
+      this.SetLoader(true);
       const { to, from } = this.options;
-
+      const provider = this.getProviderByConnection();
       await this.fetchBalance({
+        accountAddress: this.account.address,
         symbol,
         toChainIndex: to.index,
         tokenAddress: from.tokenAddress[symbol],
         bridgeAddress: BridgeAddresses[from.chain],
         isNative: from.nativeSymbol === symbol,
+        provider,
       });
+      this.SetLoader(false);
     },
     setMaxValue() {
       this.amount = this.currentToken.amount;
-      this.$refs.observer.validate();
+      this.$refs.amount.$refs.input.focus();
+      this.$refs.amount.$refs.input.blur();
     },
     async showSwapInfoModal() {
       this.amount = (this.amount.toString()).replace(/[,]/g, '.');
@@ -165,6 +184,7 @@ export default {
         amount: this.amount,
         symbol: this.tokens[this.tokenId],
         isNative: from.nativeSymbol === this.tokens[this.tokenId],
+        decimals: this.currentToken.decimals,
       });
     },
   },

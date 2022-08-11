@@ -113,7 +113,7 @@ export default {
                 name: this.$t('meta.fromBig'),
                 value: isHexUserWalletAddress ? this.userWalletAddress : this.convertToBech32('wq', this.userWalletAddress),
               },
-              to: { name: this.$t('meta.toBig'), value: contractAddress },
+              to: { name: this.$t('meta.toBig'), value: contractAddress?.toLowerCase() },
               amount: { name: this.$t('modals.amount'), value: amount, symbol },
               fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: nativeTokenSymbol },
             },

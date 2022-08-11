@@ -8,6 +8,24 @@ export default {
   setReferralsList(state, list) {
     state.referralsList = list;
   },
+  addReferralsList(state, list) {
+    state.referralsList = [
+      ...state.referralsList,
+      ...list,
+    ];
+  },
+  setUnregisteredReferralsCount(state, count) {
+    state.unregisteredReferralsCount = count;
+  },
+  setUnregisteredReferralsList(state, list) {
+    state.unregisteredReferralsList = list;
+  },
+  addUnregisteredReferralsList(state, list) {
+    state.unregisteredReferralsList = [
+      ...state.unregisteredReferralsList,
+      ...list,
+    ];
+  },
   setReferralsListCount(state, count) {
     state.referralsListCount = count;
   },
@@ -19,8 +37,5 @@ export default {
   },
   setCurrentPage(state, page) {
     state.currentPage = page;
-  },
-  setIsNeedRegistration(state, boolean) {
-    state.isNeedRegistration = boolean;
   },
 };

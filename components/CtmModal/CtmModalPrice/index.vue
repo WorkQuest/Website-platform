@@ -3,76 +3,73 @@
     class="price"
     :title="options.title"
   >
-    <div class="price__content content">
-      <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
-        class="content__observer"
-        tag="form"
-        @submit.prevent="submit"
-      >
-        <div class="content__title">
-          {{ $t('modals.enterPriceRange') }}
-        </div>
-        <div class="content__grid grid">
-          <div class="grid__field">
-            <div class="grid__title">
-              {{ $t('meta.fromBig') }}
-            </div>
-            <div class="input__container">
-              <base-field
-                v-model="priceFrom"
-                class="grid__input"
-                data-selector="PRICE-FROM"
-                :placeholder="$tc('meta.coins.count.WUSDCount', 0)"
-                rules="decimal|max_value:99999999999999|decimalPlaces:18"
-                :name="$t('meta.fromBig')"
-              />
-              <span
-                class="icon-off_outline_close input__clear"
-                @click="priceFrom=null"
-              />
-            </div>
+    <validation-observer
+      v-slot="{handleSubmit, invalid}"
+      class="price__content content"
+      tag="div"
+    >
+      <div class="content__title">
+        {{ $t('modals.enterPriceRange') }}
+      </div>
+      <div class="content__grid grid">
+        <div class="grid__field">
+          <div class="grid__title">
+            {{ $t('meta.fromBig') }}
           </div>
-          <div class="grid__field">
-            <div class="grid__title">
-              {{ $t('meta.toBig') }}
-            </div>
-            <div class="input__container">
-              <base-field
-                v-model="priceTo"
-                class="grid__field"
-                data-selector="PRICE-TO"
-                :placeholder="$tc('meta.coins.count.WUSDCount', 10000)"
-                :rules="`decimal${priceFrom ? '|min_value:'+priceFrom : ''}|max_value:99999999999999|decimalPlaces:18`"
-                :name="$tc('meta.toBig')"
-              />
-              <span
-                class="icon-off_outline_close input__clear"
-                @click="priceTo=null"
-              />
-            </div>
+          <div class="input__container">
+            <base-field
+              v-model="priceFrom"
+              class="grid__input"
+              data-selector="PRICE-FROM"
+              :placeholder="$tc('meta.coins.count.WUSDCount', 0)"
+              rules="decimal|max_value:99999999999999|decimalPlaces:18"
+              :name="$tc('meta.fromBig')"
+            />
+            <span
+              class="icon-off_outline_close input__clear"
+              @click="priceFrom=null"
+            />
           </div>
         </div>
-        <div class="content__buttons buttons">
-          <base-btn
-            mode="outline"
-            class="buttons__action"
-            data-selector="CANCEL"
-            @click="CloseModal"
-          >
-            {{ $t('meta.btns.cancel') }}
-          </base-btn>
-          <base-btn
-            class="buttons__action"
-            :disabled="invalid"
-            data-selector="SUBMIT"
-            @click="handleSubmit(submit)"
-          >
-            {{ $t('meta.btns.submit') }}
-          </base-btn>
+        <div class="grid__field">
+          <div class="grid__title">
+            {{ $t('meta.toBig') }}
+          </div>
+          <div class="input__container">
+            <base-field
+              v-model="priceTo"
+              class="grid__field"
+              data-selector="PRICE-TO"
+              :placeholder="$tc('meta.coins.count.WUSDCount', 10000)"
+              :rules="`decimal${priceFrom ? '|min_value:'+priceFrom : ''}|max_value:99999999999999|decimalPlaces:18`"
+              :name="$tc('meta.toBig')"
+            />
+            <span
+              class="icon-off_outline_close input__clear"
+              @click="priceTo=null"
+            />
+          </div>
         </div>
-      </validation-observer>
-    </div>
+      </div>
+      <div class="content__buttons buttons">
+        <base-btn
+          mode="outline"
+          class="buttons__action"
+          data-selector="CANCEL"
+          @click="CloseModal"
+        >
+          {{ $t('meta.btns.cancel') }}
+        </base-btn>
+        <base-btn
+          class="buttons__action"
+          :disabled="invalid"
+          data-selector="SUBMIT"
+          @click="handleSubmit(submit)"
+        >
+          {{ $t('meta.btns.submit') }}
+        </base-btn>
+      </div>
+    </validation-observer>
   </ctm-modal-box>
 </template>
 

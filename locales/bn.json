@@ -1,4 +1,8 @@
 {
+  "walletSwitcher": {
+    "wqWallet": "WQWallet",
+    "otherWallet": "Other wallet"
+  },
   "kyc": {
     "KYC": "KYC",
     "alreadyVerified": "Your profile already verified!"
@@ -101,7 +105,8 @@
       "take": "Take",
       "swap": "Swap",
       "generate": "Generate",
-      "remove": "Remove"
+      "remove": "Remove",
+      "init": "Init"
     },
     "placeholders": {
       "default": "",
@@ -278,7 +283,8 @@
     "have_funds": "Not enough {symbol} to complete this transaction",
     "min_buy_wqt" : "To avoid unnecessary fees and network slippage, the minimum amount for this pair is ${min} {symbol}",
     "max_buy_wqt": "To avoid unnecessary fees and network slippage, the maximum amount for this pair is ${max} {symbol}",
-    "min_tokens_amount": "Insufficient tokens, min amount {min} {symbol}."
+    "min_tokens_amount": "Insufficient tokens, min amount {min} {symbol}.",
+    "geo_is_address": "Please enter correct address"
   },
   "about": {
     "text": "Work Quest হলো ব্লকচেইন প্রযুক্তির উপর ভিত্তি করে কাজ খোঁজার এবং নিয়োগকর্তার পক্ষ থেকে quest মোডে যেকোনো কাজ সমাধানের জন্য একটি সামাজিক প্রকল্প। অপনি কি চাকুরি খুজছেন? একটি work quest আপনাকে আপনার এবং আপনার শহরের পাশে কোনো quest খুঁজে পেতে সাহায্য করবে। লক্ষ্য পূরণ করতে আপনার কি কর্মী প্রয়োজন? শুধুমাত্র work quest সাইটে একটি অনুসন্ধান তৈরি করুন। এই সেবা quest সম্পাদনের বাধ্যবাধকতার নিশ্চয়তা প্রদান করে। নিয়োগকর্তার তহবিল আমাদের কাছে গচ্ছিত রাখা হয়, কর্মচারী কাজ সম্পাদনের নিশ্চয়তা দিলে তার অ্যাকাউন্টে তহবিল জমা করা হয়। রেটিং, পর্যালোচনা এবং সম্পন্ন quest তালিকা সম্বলিত ব্যবস্থার সহায়তায় সহজেই সৎ মানুষ এবং সেরা বিশেষজ্ঞদের খুঁজে পাওয়া যাবে।\n\n          আমাদের লক্ষ্য হলো নিয়োগকর্তা এবং কর্মচারীর মধ্যে যোগাযোগ সহজ করে তোলা, লক্ষ লক্ষ মানুষকে কর্মসংস্থানে সাহায্য করা, তাদের আর্থিক অবস্থার উন্নয়ন করা, সমস্ত খাতে নির্ভরযোগ্য পেশাদার খোঁজার আজীবন সমস্যার সমাধান করে বিশ্বাস, পারস্পরিক শ্রদ্ধা এবং সকল অংশগ্রহণকারীর কল্যাণের ভিত্তিতে প্রগতিশীল ডিজিটাল অর্থনীতি গড়ে তোলা। "
@@ -1030,7 +1036,9 @@
       "withdrawInfo": "Withdrawal info",
       "downloadApp": "Download App",
       "downloadWallet": "Download Wallet App",
-      "sendPrivateMessage": "Send a private message"
+      "sendPrivateMessage": "Send a private message",
+      "initializeLot": "Initialize lot",
+      "buyLot": "Buy lot"
     },
     "errors": {
       "errorQuests": "Error with quests",
@@ -1094,6 +1102,7 @@
     "smallDescriptionForLoan": "???",
     "successBuyWUSD": "Successfully purchased WUSD",
     "setTokenPrice": "Setting up {token} price",
+    "updatePrices": "Update prices",
     "approveRouter": "Approve {token} to Router",
     "takeWUSD": "Buy your WUSD",
     "waitRoleCooldown": "You cannot change roles more than once a month. You can change role after {date} {time}",
@@ -1425,7 +1434,8 @@
     }
   },
   "notifications": {
-    "QuestEditedOnContract": "Quest edited on contract",
+    "newQuestForSpecialization": "New quest for selected specializations",
+    "QuestEditedOnContract": "Quest price is edited",
     "title": "Notifications",
     "OpenDispute": "বিতর্ক শুরু করুন",
     "openDispute": "বিতর্ক শুরু করুন",
@@ -1451,7 +1461,15 @@
     "questEdited": "Quest edited",
     "questEndSoon": "Quest end soon",
     "newDiscussionLike": "New like on discussion",
-    "updateRatingStatistic": "New rating statistic"
+    "updateRatingStatistic": "New rating statistic",
+    "questClosed": "Quest closed",
+    "questDisputeStarted": "Opened dispute for a quest",
+    "questBlockedByAdmin": "Quest blocked by Admin",
+    "questInvitationSentToWorker": "Quest invitation sent",
+    "questWorkInProgress": "Quest is started",
+    "questWorkSentForReview": "Work sent for review",
+    "questCompleted": "Quest completed",
+    "PaidReferral": "New referral reward"
   },
   "wallet": {
     "frozen": "Frozen balance",
@@ -1702,6 +1720,7 @@
     "earnCrypto": "ক্রিপ্টো উপার্জন করুন",
     "everyTimeYourFriends": "প্রতিবার আপনার বন্ধুরা প্রথম quest সম্পন্ন করলে আপনি তাৎক্ষণিকভাবে WQT কমিশন হিসাবে $20 পর্যন্ত পাবেন!",
     "historyOfRewards": "পুরস্কারের ইতিহাস",
+    "alreadyRegistered": "Address is already registered",
     "tableHead": {
       "name": "নাম",
       "userID": "ইউজার আইডি",
@@ -1894,20 +1913,22 @@
       "button": "Search auction"
     },
     "tabs": {
+      "inactive": "Inactive",
       "current": "Current",
       "completed": "Completed"
     },
     "card": {
-      "feeIncluded": "{feePercent}% commission already in the price",
-      "feeNotIncluded": "{feePercent}% commission not included",
-      "auctionDuration": "Auction duration",
+      "lotAmount": "Lot amount: {amount} {symbol}",
+      "lotPrice": "Lot price: {price} WUSD",
+      "feeIncluded": "including liquidation fees ({feePercent}%)",
+      "timeLeft": "Auction time left:",
       "completed": {
-        "type": "EVEN TYPE",
-        "sender": "SENDER",
-        "lotSize": "LOT SIZE",
-        "price": "MKR PRICE",
-        "timestamp": "TIMESTAMP",
-        "txHash": "TX"
+        "lotAmount": "Lot amount:",
+        "lotPrice": "Lot price:",
+        "lotBuyer": "Lot buyer:",
+        "lotProvider": "Lot provider",
+        "endPeriod": "Auction ending period:",
+        "txHash": "TxHash:"
       }
     }
   },

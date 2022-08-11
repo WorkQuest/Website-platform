@@ -106,8 +106,8 @@ export default {
         this.CloseModal();
         this.success();
       } else {
-        const date = new Date(result.response.data.data.endDateOfTimeout);
-        if (result.response.data.code === 403000) {
+        const date = new Date(result.data.endDateOfTimeout);
+        if (result.code === 403000) {
           this.ShowModal({
             key: modals.status,
             img: require('~/assets/img/ui/error.svg'),

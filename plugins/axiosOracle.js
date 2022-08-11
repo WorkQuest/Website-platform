@@ -5,7 +5,7 @@ export default function ({ $axios, store }, inject) {
 
   axiosOracle.onError(async (error) => {
     console.error(error);
-    throw error;
+    throw error?.response?.data;
   });
   inject('axiosOracle', axiosOracle);
 }

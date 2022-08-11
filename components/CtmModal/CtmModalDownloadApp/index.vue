@@ -77,17 +77,15 @@ export default {
   &-desktop{
     max-width: 382px !important;
   }
-  &::v-deep{
-    .ctm-modal__content{
-      padding-top: 10px;
-    }
-    .ctm-modal__title{
-      margin: 0 auto;
-    }
-    .ctm-modal__desc{
-      color: $black600;
-      font-weight: 400;
-    }
+  &:deep(.ctm-modal__content) {
+    padding-top: 10px;
+  }
+  &:deep(.ctm-modal__title){
+    margin: 0 auto;
+  }
+  &:deep(.ctm-modal__desc){
+    color: $black600;
+    font-weight: 400;
   }
 }
 .links{

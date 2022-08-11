@@ -1,4 +1,8 @@
 {
+  "walletSwitcher": {
+    "wqWallet": "WQWallet",
+    "otherWallet": "Other wallet"
+  },
   "kyc": {
     "KYC": "KYC",
     "alreadyVerified": "Your profile already verified!"
@@ -101,7 +105,8 @@
       "take": "Take",
       "swap": "Swap",
       "generate": "Generate",
-      "remove": "Remove"
+      "remove": "Remove",
+      "init": "Init"
     },
     "placeholders": {
       "default": "",
@@ -278,7 +283,8 @@
     "have_funds": "Not enough {symbol} to complete this transaction",
     "min_buy_wqt" : "To avoid unnecessary fees and network slippage, the minimum amount for this pair is ${min} {symbol}",
     "max_buy_wqt": "To avoid unnecessary fees and network slippage, the maximum amount for this pair is ${max} {symbol}",
-    "min_tokens_amount": "Insufficient tokens, min amount {min} {symbol}."
+    "min_tokens_amount": "Insufficient tokens, min amount {min} {symbol}.",
+    "geo_is_address": "Please enter correct address"
   },
   "about": {
     "text": "WorkQuest est un projet social basé sur la technologie blockchain visant à faciliter la recherche d’emploi et résoudre toutes les tâches des employeurs en mode quête. Cherchez-vous un emploi ? WorkQuest vous aidera à trouver une quête à côté de chez vous ou dans votre ville. Avez-vous besoin de travailleurs pour réaliser certains objectifs ? Il suffit de créer une quête sur le site de WorkQuest. Le service assume les obligations de garantie pour l'exécution des quêtes. Les fonds des employeurs sont conservés auprès de nous. Si l'employé(e) fournit une confirmation de l'exécution du travail, les fonds sont reversés sur son compte. Le système d'évaluations, de notes et la liste des quêtes accomplies aideront à trouver facilement des personnes honnêtes et des spécialistes fiables.\n\n          Notre objectif est de simplifier la communication entre les employeurs et les employés, d'aider des millions de personnes à trouver des emplois, d'améliorer leur situation financière, de résoudre le problème permanent de recherche de professionnels fiables dans tous les secteurs pour créer une économie numérique progressive fondée sur les principes de confiance, de respect mutuel et de bien-être de tous ses participants."
@@ -1030,7 +1036,9 @@
       "withdrawInfo": "Withdrawal info",
       "downloadApp": "Telecharger l'application",
       "downloadWallet": "Download Wallet App",
-      "sendPrivateMessage": "Send a private message"
+      "sendPrivateMessage": "Send a private message",
+      "initializeLot": "Initialize lot",
+      "buyLot": "Buy lot"
     },
     "errors": {
       "errorQuests": "Error with quests",
@@ -1094,6 +1102,7 @@
     "smallDescriptionForLoan": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     "successBuyWUSD": "Successfully purchased WUSD",
     "setTokenPrice": "Setting up {token} price",
+    "updatePrices": "Update prices",
     "approveRouter": "Approve {token} to Router",
     "takeWUSD": "Buy your WUSD",
     "waitRoleCooldown": "You cannot change roles more than once a month. You can change role after {date} {time}",
@@ -1425,7 +1434,8 @@
     }
   },
   "notifications": {
-    "QuestEditedOnContract": "Quest edited on contract",
+    "newQuestForSpecialization": "New quest for selected specializations",
+    "QuestEditedOnContract": "Quest price is edited",
     "title": "Notifications",
     "OpenDispute": "Open dispute",
     "openDispute": "Open dispute",
@@ -1451,7 +1461,15 @@
     "questEdited": "Quest edited",
     "questEndSoon": "Quest end soon",
     "newDiscussionLike": "New like on discussion",
-    "updateRatingStatistic": "New rating statistic"
+    "updateRatingStatistic": "New rating statistic",
+    "questClosed": "Quest closed",
+    "questDisputeStarted": "Opened dispute for a quest",
+    "questBlockedByAdmin": "Quest blocked by Admin",
+    "questInvitationSentToWorker": "Quest invitation sent",
+    "questWorkInProgress": "Quest is started",
+    "questWorkSentForReview": "Work sent for review",
+    "questCompleted": "Quest completed",
+    "PaidReferral": "New referral reward"
   },
   "wallet": {
     "frozen": "Frozen balance",
@@ -1702,6 +1720,7 @@
     "earnCrypto": "Gagnez des cryptomonnaies",
     "everyTimeYourFriends": "Chaque fois que vos amis réalisent une première quête, vous recevez jusqu'à 20 USD de commission en WQT en temps réel !",
     "historyOfRewards": "Historique des récompenses",
+    "alreadyRegistered": "Address is already registered",
     "tableHead": {
       "name": "Nom",
       "userID": "Identifiant d'utilisateur",
@@ -1894,20 +1913,22 @@
       "button": "Search auction"
     },
     "tabs": {
+      "inactive": "Inactive",
       "current": "Current",
       "completed": "Completed"
     },
     "card": {
-      "feeIncluded": "{feePercent}% commission already in the price",
-      "feeNotIncluded": "{feePercent}% commission not included",
-      "auctionDuration": "Auction duration",
+      "lotAmount": "Lot amount: {amount} {symbol}",
+      "lotPrice": "Lot price: {price} WUSD",
+      "feeIncluded": "including liquidation fees ({feePercent}%)",
+      "timeLeft": "Auction time left:",
       "completed": {
-        "type": "EVEN TYPE",
-        "sender": "SENDER",
-        "lotSize": "LOT SIZE",
-        "price": "MKR PRICE",
-        "timestamp": "TIMESTAMP",
-        "txHash": "TX"
+        "lotAmount": "Lot amount:",
+        "lotPrice": "Lot price:",
+        "lotBuyer": "Lot buyer:",
+        "lotProvider": "Lot provider",
+        "endPeriod": "Auction ending period:",
+        "txHash": "TxHash:"
       }
     }
   },

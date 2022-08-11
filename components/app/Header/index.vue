@@ -339,7 +339,9 @@ import {
   UserRole, Path, Layout, PreventLogoutPathNames,
 } from '~/utils/enums';
 import { MessageAction } from '~/utils/сonstants/chat';
-import { IS_PLUG, LockedPaths } from '~/utils/locker-data';
+import {
+  IS_PLUG, LockedPaths, IS_PLUG_PROD, LockedProdPaths,
+} from '~/utils/locker-data';
 
 export default {
   name: 'Header',
@@ -579,7 +581,10 @@ export default {
     },
     toRoute(path) {
       // TODO plug for release
-      if (IS_PLUG && LockedPaths.includes(path)) {
+      if (
+        (IS_PLUG && LockedPaths.includes(path))
+        || (IS_PLUG_PROD && LockedProdPaths.includes(path))
+      ) {
         this.ComingSoon();
         return;
       }
@@ -665,9 +670,9 @@ export default {
       const preventRedirect = PreventLogoutPathNames.includes(this.$route.name);
       await this.$store.dispatch('user/logout');
       if (preventRedirect) {
+        this.$nuxt.setLayout(Layout.GUEST);
         sessionStorage.setItem('preventDisconnectWeb3', 'yep');
         sessionStorage.setItem('redirectTo', this.$route.path);
-        this.$nuxt.setLayout(Layout.GUEST);
       } else await this.$router.push(Path.ROOT);
     },
     closeAll() {

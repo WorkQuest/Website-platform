@@ -49,26 +49,22 @@ export default {
   },
   methods: {
     async restore() {
-      const payload = {
+      const { ok, msg } = await this.$store.dispatch('user/passwordSendCode', {
         email: this.emailInput,
-      };
-      try {
-        const response = await this.$store.dispatch('user/passwordSendCode', payload);
-        if (response?.ok) {
-          this.ShowModal({
-            key: modals.status,
-            path: Path.SIGN_IN,
-            img: require('~/assets/img/ui/email.svg'),
-            title: this.$t('modals.titles.emailConfirmTitle'),
-            subtitle: this.$t('registration.emailConfirm'),
-          });
-        }
-      } catch (e) {
-        console.log(e);
+      });
+      if (ok) {
+        this.ShowModal({
+          key: modals.status,
+          path: Path.SIGN_IN,
+          img: require('~/assets/img/ui/email.svg'),
+          title: this.$t('modals.titles.emailConfirmTitle'),
+          subtitle: this.$t('registration.emailConfirm'),
+        });
+      } else {
         await this.$store.dispatch('main/showToast', {
           title: this.$t('toasts.error'),
           variant: 'warning',
-          text: e.response?.data?.msg,
+          text: msg,
         });
       }
     },

@@ -56,13 +56,13 @@
             v-click-outside="hideSearchDD"
             :placeholder="$t('settings.addressInput')"
             data-selector="ADDRESS"
-            rules="max:100|required"
+            :rules="{required: true, geo_is_address: {geoCode} }"
             mode="icon"
             :selector="isSearchDDStatus"
             :name="$t('meta.addressSmall')"
             @focus="isSearchDDStatus = true"
             @blur="checkValidate"
-            @selector="getAddressInfo(profile.locationFull.locationPlaceName)"
+            @selector="debouncedAddressSearch(profile.locationFull.locationPlaceName)"
           >
             <template v-slot:left>
               <span class="icon icon-location" />
@@ -303,6 +303,7 @@ import StatusKYC from './StatusKYC.vue';
 import AddForm from './AddForm.vue';
 import { UserRole } from '~/utils/enums';
 import { images } from '~/utils/images';
+import debounce from '~/utils/debounce';
 
 export default {
   name: 'SettingsProfile',
@@ -337,8 +338,8 @@ export default {
     return {
       selectedAddressIndex: null,
       geoCode: null,
-      firstPhone: { codeRegion: 'RU', phone: null, fullPhone: null },
-      secondPhoneNumber: { codeRegion: 'RU', phone: null, fullPhone: null },
+      firstPhone: { codeRegion: 'US', phone: null, fullPhone: null },
+      secondPhoneNumber: { codeRegion: 'US', phone: null, fullPhone: null },
       newEducation: { from: '', to: '', place: '' },
       newWorkExp: { from: '', to: '', place: '' },
       isSearchDDStatus: false,
@@ -423,6 +424,7 @@ export default {
           icon: 'icon-facebook',
         },
       ],
+      debouncedAddressSearch: null,
     };
   },
   computed: {
@@ -467,6 +469,7 @@ export default {
       key: process.env.GMAPKEY,
       lang: this.$i18n?.localeProperties?.code || 'en-US',
     });
+    this.debouncedAddressSearch = debounce(this.getAddressInfo, 300);
     this.validationRefs();
   },
   methods: {
@@ -633,10 +636,8 @@ export default {
     grid-column-end: 3;
     height: 114px;
   }
-  &__description-textarea::v-deep {
-    .ctm-field__textarea {
-      height: 114px;
-    }
+  &__description-textarea:deep(.ctm-field__textarea) {
+    height: 114px;
   }
   &__error {
     color: $errorText;

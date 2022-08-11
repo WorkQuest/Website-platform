@@ -106,13 +106,6 @@ export default {
         });
       }
     },
-    showToastError(e) {
-      return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.error'),
-        variant: 'warning',
-        text: e.response?.data?.msg,
-      });
-    },
     showDeleteCaseModal(id) {
       this.ShowModal({
         key: modals.deleteCase,

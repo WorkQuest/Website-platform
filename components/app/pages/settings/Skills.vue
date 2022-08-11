@@ -11,7 +11,7 @@
         <specializations-selector
           v-if="skills.selectedSpecAndSkills !== null"
           :skills="skills.selectedSpecAndSkills"
-          @changeSkills="updateSelectedSkills"
+          @changeSkills="$emit('updateSelectedSkills', $event)"
         />
         <div class="skills__add-info">
           <base-dd
@@ -24,16 +24,16 @@
             :placeholder="$t(dd.placeholder)"
             :items="dd.items"
             mode="small"
-            :label="$t(dd.label)"
+            :label="$tc(dd.label)"
           />
           <base-field
             v-model="skills.perHour"
-            rules="max:7|decimal"
+            rules="greaterThanZero|max:7|decimal"
             class="skills__cost"
             data-selector="COST-PER-HOUR"
             :placeholder="skills.perHour || $t('meta.costPerHour')"
-            :label="$t('meta.costPerHour')"
-            :name="$t('meta.costPerHour')"
+            :label="$tc('meta.costPerHour')"
+            :name="$tc('meta.costPerHour')"
             type="number"
           />
         </div>
@@ -104,11 +104,6 @@ export default {
         label: 'quests.payPeriods.title',
       },
     ];
-  },
-  methods: {
-    updateSelectedSkills(specAndSkills) {
-      this.skills.selectedSpecAndSkills = specAndSkills;
-    },
   },
 };
 </script>

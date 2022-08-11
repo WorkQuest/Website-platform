@@ -4,7 +4,7 @@ import {
   Path,
   DaoUrl,
   PathDAO,
-  UserRole,
+  UserRole, ResponsesType,
 } from '~/utils/enums';
 
 import {
@@ -13,7 +13,7 @@ import {
   notificationsQuestsActions,
   notificationCommonFilterActions,
   notificationCommonFilterAction2,
-  notificationEmployerFilterActions,
+  notificationEmployerFilterActions, QuestNotificationByStatus,
 } from '~/utils/notifications';
 
 import { error, success } from '~/utils/web3';
@@ -22,6 +22,7 @@ import { images } from '~/utils/images';
 
 import ENV from '~/utils/addresses/index';
 import { notificationLifetime } from '~/utils/сonstants/cookiesLifetime';
+import { QuestStatuses } from '~/utils/сonstants/quests';
 
 export default {
 
@@ -152,6 +153,27 @@ export default {
     const wqInfoSender = { avatar: { url: images.WQ_LOGO_ROUNDED }, firstName: $nuxt.$t('ui.notifications.workquestInfo') };
 
     switch (action) {
+      case NotificationAction.PAID_REFERRAL:
+        notification.sender = wqInfoSender;
+        notification.params = {
+          ...notification.params,
+          title: data.title,
+          path: Path.REFERRAL,
+        };
+        notification.data = {
+          message: $nuxt.$t(`notifications.${NotificationAction.PAID_REFERRAL}`),
+        };
+        break;
+
+      case NotificationAction.NEW_QUEST_FOR_SPECIALIZATION:
+        notification.sender = wqInfoSender;
+        notification.params = {
+          ...notification.params,
+          title: data.title,
+          path: `${Path.QUESTS}/${data.id}`,
+        };
+        break;
+
       case NotificationAction.UPDATE_RATING_STATISTIC:
         notification.sender = wqInfoSender;
         notification.params = {
@@ -160,9 +182,19 @@ export default {
           path: `${Path.PROFILE}/${user.id}`,
         };
         break;
+
       case NotificationAction.QUEST_STATUS_UPDATED:
-        notification.sender = userRole === UserRole.EMPLOYER ? assignedWorker
-          || wqInfoSender : user;
+        if (![QuestStatuses.WaitWorker, QuestStatuses.Done].includes(data.status)) {
+          notification.sender = userRole === UserRole.EMPLOYER
+            ? assignedWorker || wqInfoSender
+            : user;
+        } else {
+          notification.sender = wqInfoSender;
+        }
+        notification.data = {
+          ...notification.data,
+          message: $nuxt.$t(`notifications.${QuestNotificationByStatus[data.status]}`),
+        };
         notification.params = {
           ...notification.params,
           title,
@@ -170,6 +202,24 @@ export default {
         };
         break;
 
+      case NotificationAction.QUEST_EDITED:
+        if (userRole === UserRole.WORKER) {
+          notification.data = {
+            ...notification.data,
+            message: $nuxt.$t(
+              data?.responseType === ResponsesType.Invited
+                ? 'ui.notifications.invitedQuestEdited'
+                : 'ui.notifications.respondedQuestEdited',
+            ),
+          };
+        } else {
+          notification.data = {
+            ...notification.data,
+            message: $nuxt.$t('notifications.questEdited'),
+          };
+        }
+        break;
+      // Can be changed on contract only quest price
       case NotificationAction.QUEST_EDITED_ON_CONTRACT:
         notification.sender = {
           avatar: user.avatar,
@@ -181,19 +231,6 @@ export default {
           title,
           path: `${Path.QUESTS}/${quest?.id || id}`,
         };
-
-        // TODO: проверка на то были ли мы приглашены на квест или мы сами подали на него
-        // на бэке не хватает поля
-        // ui.notifications.respondedQuestEdited - u responded
-        // ui.notifications.invitedQuestEdited - that u invited
-        if (userRole === UserRole.WORKER) {
-          notification.params.isLocal = false;
-          notification.data = {
-            ...notification.data,
-            message: $nuxt.$t('ui.notifications.respondedQuestEdited'),
-          };
-        }
-
         break;
 
       case NotificationAction.OPENED_DISPUTE:

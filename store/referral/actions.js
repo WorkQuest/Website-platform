@@ -5,11 +5,13 @@ import {
 } from '~/utils/wallet';
 import {
   error,
-  fetchContractData,
+  fetchContractData, success,
 } from '~/utils/web3';
 import { WQReferral } from '~/abi/index';
-import { REFERRAL_EVENTS } from '~/utils/сonstants/referral';
+import { REFERRAL_EVENTS, REFERRAL_FETCH_LIMIT, REFERRAL_STATUS } from '~/utils/сonstants/referral';
 import ENV from '~/utils/addresses/index';
+import modals from '~/store/modals/modals';
+import { ExplorerUrl } from '~/utils/enums';
 
 export default {
   async fetchRewardBalance({ commit }, userWalletAddress) {
@@ -28,14 +30,13 @@ export default {
       return error();
     }
   },
-  async claimReferralReward(_, userAddress) {
+  async claimReferralReward({ _ }) {
     try {
-      const payload = {
+      const res = await sendWalletTransaction('claim', {
         abi: WQReferral,
         address: ENV.WORKNET_REFERRAL,
-        userAddress,
-      };
-      return await sendWalletTransaction('claim', payload);
+      });
+      return success(res);
     } catch (e) {
       console.error(`claimReferralReward: ${e}`);
       return error();
@@ -55,26 +56,68 @@ export default {
       return false;
     }
   },
-  async fetchReferralsList({ commit }) {
+  /**
+   * @property isLoadingMore
+   * @property referrals
+   * @property referralUser
+   * @property referralStatus
+   * @param commit
+   * @param payload params: object, isLoadingMore: boolean
+   * @param params
+   * @returns {Promise<boolean|*>}
+   */
+  async fetchReferralsList({ commit, getters }, payload) {
     try {
-      const { result, ok } = await this.$axios.$get('v1/user/me/referral-program/referrals');
+      const config = {};
+      if (payload?.params) {
+        config.params = payload.params;
+      } else {
+        config.params = {
+          limit: REFERRAL_FETCH_LIMIT,
+          offset: 0,
+        };
+      }
+      const { result } = await this.$axios.$get('v1/user/me/referral-program/referrals', config);
 
       if (result.referrals.length) {
-        const isNeedRegistration = result.referrals.some((item) => item.referralUser.referralStatus === 'created' && item.ratingStatistic);
-
         commit('setReferralsListCount', result.count);
-        commit('setReferralsList', result.referrals);
-        commit('setIsNeedRegistration', isNeedRegistration);
+
+        if (payload?.isLoadingMore) commit('addReferralsList', result.referrals);
+        else commit('setReferralsList', result.referrals);
       }
 
-      return ok;
+      return success(result);
     } catch (e) {
-      return false;
+      return error();
+    }
+  },
+  async fetchReferralsToRegister({ commit }, payload) {
+    try {
+      const config = {};
+      if (payload?.params) {
+        config.params = payload.params;
+      } else {
+        config.params = {
+          limit: REFERRAL_FETCH_LIMIT,
+          offset: 0,
+          referralStatus: REFERRAL_STATUS.Created,
+        };
+      }
+      const { result } = await this.$axios.$get('v1/user/me/referral-program/referrals', config);
+
+      commit('setUnregisteredReferralsCount', result.count);
+
+      if (payload?.isLoadingMore) commit('addUnregisteredReferralsList', result.referrals);
+      else commit('setUnregisteredReferralsList', result.referrals);
+
+      return success();
+    } catch (e) {
+      return error();
     }
   },
   async fetchCreatedReferralList({ commit }) {
     try {
-      const { result, ok } = await this.$axios.$get('v1/user/me/referral-program/referral/signature/created-referrals');
+      const { result } = await this.$axios.$get('v1/user/me/referral-program/referral/signature/created-referrals');
 
       if (result) {
         const signature = {};
@@ -84,22 +127,21 @@ export default {
         commit('setCreatedReferralList', result.addresses);
         commit('setReferralSignature', signature);
       }
-      return ok;
+      return success();
     } catch (e) {
-      return false;
+      return error();
     }
   },
-  async addReferrals({ getters }, userAddress) {
+  async addReferrals({ getters }) {
     const signature = getters.getReferralSignature;
     const addresses = getters.getCreatedReferralList;
     try {
-      const payload = {
+      const res = await sendWalletTransaction('addReferrals', {
         abi: WQReferral,
         address: ENV.WORKNET_REFERRAL,
         data: [signature.v, signature.r, signature.s, addresses],
-        userAddress,
-      };
-      return await sendWalletTransaction('addReferrals', payload);
+      });
+      return success(res);
     } catch (e) {
       console.error(`addReferrals: ${e}`);
       return error();
@@ -107,24 +149,24 @@ export default {
   },
   async subscribeToReferralEvents({
     getters, rootGetters, commit, dispatch,
-  }, userAddress) {
+  }) {
     try {
-      await this.$wsNotifs.subscribe(`/notifications/referral/${userAddress}`, async (msg) => {
-        console.log('subscribeToReferralEvents massage', msg);
+      await this.$wsNotifs.subscribe('/notifications/referral', async (msg) => {
         const { data: dataMessage } = msg;
         const paidEventsList = JSON.parse(JSON.stringify(getters.getPaidEventsList));
-        const referralsList = JSON.parse(JSON.stringify(getters.getReferralsList));
-        let referralsListCount = JSON.parse(JSON.stringify(getters.getReferralsListCount));
         const currentPage = getters.getCurrentPage;
 
-        if (msg.action === 'RegisteredAffiliar') {
-          referralsList.unshift(dataMessage);
-          referralsListCount = dataMessage.count;
-
-          const isNeedRegistration = referralsList.some((item) => item.referralUser.referralStatus === 'created' && item.ratingStatistic);
-          commit('setReferralsListCount', referralsListCount);
-          commit('setReferralsList', referralsList);
-          commit('setIsNeedRegistration', isNeedRegistration);
+        if (msg.action === REFERRAL_EVENTS.RegisteredAffiliat) {
+          await Promise.all([
+            dispatch('fetchReferralsList'),
+            dispatch('fetchReferralsToRegister'),
+            dispatch('main/setLoading', false, { root: true }),
+          ]);
+          dispatch('modals/show', {
+            key: modals.transactionSend,
+            txUrl: `${ExplorerUrl}/tx/${dataMessage.transactionHash}`,
+          },
+          { root: true });
         } else if (msg.action === REFERRAL_EVENTS.RewardClaimed && currentPage === 1) {
           const userData = rootGetters['user/getUserData'];
           dispatch('main/setLoading', false, { root: true });
@@ -170,17 +212,14 @@ export default {
       console.log('subscribeToReferralEvents err', err);
     }
   },
-  async unsubscribeToReferralEvents(_, userAddress) {
+  async unsubscribeToReferralEvents({ _ }) {
     try {
-      await this.$wsNotifs.unsubscribe(`/notifications/referral/${userAddress}`);
+      await this.$wsNotifs.unsubscribe('/notifications/referral');
     } catch (err) {
       console.log('unsubscribeToReferralEvents err', err);
     }
   },
   updateCurrentPage({ commit }, page) {
     commit('setCurrentPage', page);
-  },
-  setIsNeedRegistration({ commit }, payload) {
-    commit('setIsNeedRegistration', payload);
   },
 };

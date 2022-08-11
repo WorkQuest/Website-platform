@@ -1,4 +1,8 @@
 {
+  "walletSwitcher": {
+    "wqWallet": "WQWallet",
+    "otherWallet": "Другой кошелек"
+  },
   "kyc": {
     "KYC": "KYC",
     "alreadyVerified": "Ваш профиль уже подтвержден!"
@@ -101,7 +105,8 @@
       "take": "Take",
       "swap": "Swap",
       "generate": "Generate",
-      "remove": "Remove"
+      "remove": "Remove",
+      "init": "Init"
     },
     "placeholders": {
       "default": "",
@@ -278,7 +283,8 @@
     "have_funds": "Не достаточно {symbol} что бы завершить транзакцию",
     "min_buy_wqt" : "To avoid unnecessary fees and network slippage, the minimum amount for this pair is ${min} {symbol}",
     "max_buy_wqt": "To avoid unnecessary fees and network slippage, the maximum amount for this pair is ${max} {symbol}",
-    "min_tokens_amount": "Insufficient tokens, min amount {min} {symbol}."
+    "min_tokens_amount": "Insufficient tokens, min amount {min} {symbol}.",
+    "geo_is_address": "Введите корректный адрес"
   },
   "about": {
     "text": "Work Quest — это социальный проект на основе технологии блокчейн для поиска работы и решения любых задач со стороны работодателя в режиме квеста. Вы ищете работу? Work Quest поможет найти квест рядом с вами и вашим городом. Нужны ли вам рабочие для выполнения целей? Просто создайте квест на сайте Work Quest. Сервис берет на себя гарантийные обязательства по выполнению квестов. Средства работодателя хранятся у нас, если работник дает подтверждение о выполнении работы, он получает задаток денежных средств на свой счет. Система рейтингов, обзоров и список выполненных квестов помогут легко найти честных людей и лучших специалистов.\n Наша цель – упростить коммуникацию между работодателем и работником, помочь трудоустроить миллионы людей, улучшить их материальное положение, решить проблему поиска надежных профессионалов во всех отраслях, создать прогрессивную цифровую экономику, построенную на принципах доверия, взаимного уважения и благополучия всех его участников."
@@ -1030,7 +1036,9 @@
       "withdrawInfo": "Withdrawal info",
       "downloadApp": "Скачайте приложение",
       "downloadWallet": "Download Wallet App",
-      "sendPrivateMessage": "Отправить личное сообщение"
+      "sendPrivateMessage": "Отправить личное сообщение",
+      "initializeLot": "Initialize lot",
+      "buyLot": "Buy lot"
     },
     "errors": {
       "errorQuests": "Error with quests",
@@ -1094,6 +1102,7 @@
     "smallDescriptionForLoan": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     "successBuyWUSD": "Successfully purchased WUSD",
     "setTokenPrice": "Setting up {token} price",
+    "updatePrices": "Update prices",
     "approveRouter": "Approve {token} to Router",
     "takeWUSD": "Buy your WUSD",
     "waitRoleCooldown": "You cannot change roles more than once a month. You can change role after {date} {time}",
@@ -1425,7 +1434,8 @@
     }
   },
   "notifications": {
-    "QuestEditedOnContract": "Квест отредактирован на контракте",
+    "newQuestForSpecialization": "Новый квест по выбранным специализациям",
+    "QuestEditedOnContract": "Цена квеста была изменена",
     "title": "Уведомления",
     "invite": "Приглашаем вас завершить квест",
     "OpenDispute": "Открыт спор",
@@ -1444,18 +1454,26 @@
     "QuestStatusUpdated": "Статус квеста обновлен",
     "userLeftReviewAboutQuest": "Оставил отзыв о квесте",
     "waitWorker": "Квест ожидает",
-    "DisputeDecision": "Решение спора",
     "registrationError": "Нет пользователей для  регистрации. Пожалуйста свяжитесь с разработчиками",
+    "DisputeDecision": "Решение спора",
     "newCommentInDiscussion": "Новый комментарий в дискуссии",
     "commentLiked": "Комментарий лайкнут",
     "questEdited": "Квест отредактирован",
     "questEndSoon": "Квест скоро закончится",
     "newDiscussionLike": "Новый лайк на дискуссии",
-    "updateRatingStatistic": "Новый рейтинг статистики"
+    "updateRatingStatistic": "Новый рейтинг статистики",
+    "questClosed": "Квест закрыт",
+    "questDisputeStarted": "Открыт диспут для квеста",
+    "questBlockedByAdmin": "Квест заблокирован администратором",
+    "questInvitationSentToWorker": "Отправлено приглашение на квест",
+    "questWorkInProgress": "Квест стартовал",
+    "questWorkSentForReview": "Работа отправлена на проверку",
+    "questCompleted": "Квест завершен",
+    "PaidReferral": "Новое реферальное вознаграждение"
   },
   "wallet": {
-    "addressType": "Тип адреса",
     "frozen": "Замороженный баланс",
+    "addressType": "Тип адреса",
     "walletAddress": "Wallet address",
     "cryptoWallet": "Crypto wallet",
     "send": "Отправить",
@@ -1703,6 +1721,7 @@
     "earnCrypto": "Earn Crypto",
     "everyTimeYourFriends": "Каждый раз, когда ваши друзья выполняют первый квест, вы получаете комиссию WQT до $20 в режиме реального времени!",
     "historyOfRewards": "History of rewards",
+    "alreadyRegistered": "Адрес уже зарегистрирован",
     "tableHead": {
       "name": "Имя",
       "userID": "User ID",
@@ -1895,20 +1914,22 @@
       "button": "Search auction"
     },
     "tabs": {
+      "inactive": "Inactive",
       "current": "Current",
       "completed": "Completed"
     },
     "card": {
-      "feeIncluded": "{feePercent}% commission already in the price",
-      "feeNotIncluded": "{feePercent}% commission not included",
-      "auctionDuration": "Auction duration",
+      "lotAmount": "Lot amount: {amount} {symbol}",
+      "lotPrice": "Lot price: {price} WUSD",
+      "feeIncluded": "including liquidation fees ({feePercent}%)",
+      "timeLeft": "Auction time left:",
       "completed": {
-        "type": "EVEN TYPE",
-        "sender": "SENDER",
-        "lotSize": "LOT SIZE",
-        "price": "MKR PRICE",
-        "timestamp": "TIMESTAMP",
-        "txHash": "TX"
+        "lotAmount": "Lot amount:",
+        "lotPrice": "Lot price:",
+        "lotBuyer": "Lot buyer:",
+        "lotProvider": "Lot provider",
+        "endPeriod": "Auction ending period:",
+        "txHash": "TxHash:"
       }
     }
   },

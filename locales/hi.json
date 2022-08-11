@@ -1,4 +1,8 @@
 {
+  "walletSwitcher": {
+    "wqWallet": "WQWallet",
+    "otherWallet": "Other wallet"
+  },
   "kyc": {
     "KYC": "KYC",
     "alreadyVerified": "Your profile already verified!"
@@ -101,7 +105,8 @@
       "take": "Take",
       "swap": "Swap",
       "generate": "Generate",
-      "remove": "Remove"
+      "remove": "Remove",
+      "init": "Init"
     },
     "placeholders": {
       "default": "प्लेसहोल्डर",
@@ -278,7 +283,8 @@
     "have_funds": "Not enough {symbol} to complete this transaction",
     "min_buy_wqt" : "To avoid unnecessary fees and network slippage, the minimum amount for this pair is ${min} {symbol}",
     "max_buy_wqt": "To avoid unnecessary fees and network slippage, the maximum amount for this pair is ${max} {symbol}",
-    "min_tokens_amount": "Insufficient tokens, min amount {min} {symbol}."
+    "min_tokens_amount": "Insufficient tokens, min amount {min} {symbol}.",
+    "geo_is_address": "Please enter correct address"
   },
   "about": {
     "text": "WorkQuest एक सोशल प्रोजेक्ट है जो ब्लॉकचेन तकनीक पर आधारित है, यह काम खोजने और quest मोड में एंप्लॉयर यानी नियोक्ता वाले टास्क पूरे करने के लिए है। क्या आप जॉब की तलाश में हैं? WorkQuest आपको अपने करीब या अपने शहर के बगल में quest ढूंढ़ने में मदद करेगा। क्या आपको अपने काम पूरे करने के लिए वर्कर चाहिए? बस यह करें कि WorkQuest की साइट पर एक quest बनाएं। यह सेवा quests को पूरा करने के लिए वारंटी दायित्वों को अपने ऊपर लेती है। एंप्लॉयर हमारे पास पैसा जमा करता है, यदि कर्मचारी काम पूरा करने की पुष्टि कर देता है, तो उसके अपने खाते में पैसा जमा कर दिया जाता है। रेटिंग, रिव्यू और पूरे किए गए quests की सूची का सिस्टम सही व ईमानदार लोगों और बेहतरीन विशेषज्ञों को आसानी से खोजने में मदद करता है।\n\n          हमारा लक्ष्य एंप्लॉयर और कर्मचारी के बीच कम्युनिकेशन को सरल बनाना है, लाखों लोगों को रोजगार देने में मदद करना, उनकी वित्तीय स्थिति में सुधार करना, सभी सेक्टर में भरोसेमंद प्रोफेशनल खोजने की हमेशा की दिक्कत को हल करना है ताकि एक लगातार प्रगति करती डिजिटल अर्थव्यवस्था बनाई जा सके जो विश्वास, आपसी सम्मान और इसके सभी प्रतिभागियों की भलाई के सिद्धांतों पर आधारित हो।"
@@ -1030,7 +1036,9 @@
       "withdrawInfo": "Withdrawal info",
       "downloadApp": "Download App",
       "downloadWallet": "Download Wallet App",
-      "sendPrivateMessage": "Send a private message"
+      "sendPrivateMessage": "Send a private message",
+      "initializeLot": "Initialize lot",
+      "buyLot": "Buy lot"
     },
     "errors": {
       "errorQuests": "Error with quests",
@@ -1094,6 +1102,7 @@
     "smallDescriptionForLoan": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     "successBuyWUSD": "Successfully purchased WUSD",
     "setTokenPrice": "Setting up {token} price",
+    "updatePrices": "Update prices",
     "approveRouter": "Approve {token} to Router",
     "takeWUSD": "Buy your WUSD",
     "waitRoleCooldown": "You cannot change roles more than once a month. You can change role after {date} {time}",
@@ -1425,7 +1434,8 @@
     }
   },
   "notifications": {
-    "QuestEditedOnContract": "Quest edited on contract",
+    "newQuestForSpecialization": "New quest for selected specializations",
+    "QuestEditedOnContract": "Quest price is edited",
     "title": "Notifications",
     "OpenDispute": "Open dispute",
     "openDispute": "Open dispute",
@@ -1451,7 +1461,15 @@
     "questEdited": "Quest edited",
     "questEndSoon": "Quest end soon",
     "newDiscussionLike": "New like on discussion",
-    "updateRatingStatistic": "New rating statistic"
+    "updateRatingStatistic": "New rating statistic",
+    "questClosed": "Quest closed",
+    "questDisputeStarted": "Opened dispute for a quest",
+    "questBlockedByAdmin": "Quest blocked by Admin",
+    "questInvitationSentToWorker": "Quest invitation sent",
+    "questWorkInProgress": "Quest is started",
+    "questWorkSentForReview": "Work sent for review",
+    "questCompleted": "Quest completed",
+    "PaidReferral": "New referral reward"
   },
   "wallet": {
     "frozen": "Frozen balance",
@@ -1702,6 +1720,7 @@
     "earnCrypto": "क्रिप्टो कमाएं",
     "everyTimeYourFriends": "हर बार जब भी आपके दोस्त पहली Quest करते हैं, तो आपको रियल टाइम में WQT कमीशन में $20 तक की राशि मिलेगी!",
     "historyOfRewards": "पुरस्कार हिस्ट्री",
+    "alreadyRegistered": "Address is already registered",
     "tableHead": {
       "name": "नाम",
       "userID": "यूजर आईडी",
@@ -1894,20 +1913,22 @@
       "button": "Search auction"
     },
     "tabs": {
+      "inactive": "Inactive",
       "current": "Current",
       "completed": "Completed"
     },
     "card": {
-      "feeIncluded": "{feePercent}% commission already in the price",
-      "feeNotIncluded": "{feePercent}% commission not included",
-      "auctionDuration": "Auction duration",
+      "lotAmount": "Lot amount: {amount} {symbol}",
+      "lotPrice": "Lot price: {price} WUSD",
+      "feeIncluded": "including liquidation fees ({feePercent}%)",
+      "timeLeft": "Auction time left:",
       "completed": {
-        "type": "EVEN TYPE",
-        "sender": "SENDER",
-        "lotSize": "LOT SIZE",
-        "price": "MKR PRICE",
-        "timestamp": "TIMESTAMP",
-        "txHash": "TX"
+        "lotAmount": "Lot amount:",
+        "lotPrice": "Lot price:",
+        "lotBuyer": "Lot buyer:",
+        "lotProvider": "Lot provider",
+        "endPeriod": "Auction ending period:",
+        "txHash": "TxHash:"
       }
     }
   },
