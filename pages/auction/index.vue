@@ -66,7 +66,7 @@
             <span class="item-btn__text">
               {{ $t('auction.time') }}
             </span>
-            <span :class="`item-btn__icon icon icon-Sorting_${params['sort[createdAt]'] === 'desc' ? 'descending' : 'ascending'}`" />
+            <span :class="`item-btn__icon icon icon-Sorting_${sort === 'desc' ? 'descending' : 'ascending'}`" />
           </base-btn>
         </div>
       </div>
@@ -79,8 +79,8 @@
         ]"
       >
         <auction-card
-          v-for="lot in lots"
-          :key="lot.id"
+          v-for="(lot,i) in lots"
+          :key="lot.id + i"
           :lot="lot"
           :type-of-lot="currentTab"
         />
@@ -123,6 +123,7 @@ export default {
   layout({ store }) {
     // TODO PLUG for release
     if (IS_PLUG_PROD) return Layout.DEFAULT;
+    // TODO check why isAuth is false after reload page
     return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
   },
   components: {
@@ -135,12 +136,11 @@ export default {
       currentTab: LotsStatuses.INACTIVE,
 
       params: {
-        'sort[createdAt]': 'desc',
-        status: LotsStatuses.INACTIVE,
         limit: LIMIT,
         offset: 0,
         q: '',
       },
+      sort: 'desc',
       currentPage: 1,
     };
   },
@@ -148,8 +148,11 @@ export default {
     ...mapGetters({
       userData: 'user/getUserData',
       walletAddress: 'user/getUserWalletAddress',
+
       lots: 'auction/getLots',
       lotsCount: 'auction/getLotsCount',
+
+      isWalletConnected: 'wallet/getIsWalletConnected',
     }),
     searchPlaceholder() {
       return this.$t('auction.search.placeholder');
@@ -162,21 +165,30 @@ export default {
     currentTab: {
       async handler(value) {
         this.currentPage = 1;
-        this.params.status = value;
-        this.params['sort[createdAt]'] = 'desc';
-        this.$store.commit('auction/setLost', { lots: [], count: 0 });
-        await this.fetchLots({ params: this.params });
+        this.sort = 'desc';
+        await this.clearLots();
+        await this.fetchLots({ lotStatus: value, params: this.params, sort: this.sort });
       },
     },
   },
-  mounted() {
-    this.fetchLots({
-      params: this.params,
-    });
+  async beforeMount() {
+    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+  },
+  async mounted() {
+    await this.fetchLots({ lotStatus: LotsStatuses.INACTIVE, params: this.params, sort: this.sort });
+    if (!this.isWalletConnected) return;
+    await Promise.all([
+      this.getBalance(),
+      this.fetchDuration(),
+    ]);
   },
   methods: {
     ...mapActions({
+      getBalance: 'wallet/getBalance',
+
       fetchLots: 'auction/fetchLots',
+      clearLots: 'auction/clearLots',
+      fetchDuration: 'auction/fetchAuctionsDuration',
     }),
 
     goSearch() {
@@ -187,16 +199,16 @@ export default {
       clearTimeout(this.searchTimeout);
       this.searchTimeout = setTimeout(() => {
         // TODO search
-      }, 600);
+      }, 150);
     },
     async changeTimeSorting() {
-      this.params['sort[createdAt]'] = this.params['sort[createdAt]'] === 'asc' ? 'desc' : 'asc';
-      await this.fetchLots({ params: this.params });
+      this.sort = this.sort === 'asc' ? 'desc' : 'asc';
+      await this.fetchLots({ lotStatus: this.currentTab, params: this.params, sort: this.sort });
     },
     async setPage(value) {
       this.currentPage = value;
       this.params.offset = LIMIT * (value - 1);
-      await this.fetchLots({ params: this.params });
+      await this.fetchLots({ lotStatus: this.currentTab, params: this.params, sort: this.sort });
     },
   },
 };

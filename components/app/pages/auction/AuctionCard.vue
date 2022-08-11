@@ -33,7 +33,7 @@
         {{
           $t('auction.card.lotAmount', {
             amount: $options.LotsStatuses.STARTED === typeOfLot
-              ? startedLotFields.lotAmount
+              ? startedLotAmount
               : lot._liquidityValue,
             symbol: lot.symbol
           })
@@ -43,13 +43,16 @@
         {{
           $t('auction.card.lotPrice', {
             price: $options.LotsStatuses.STARTED === typeOfLot
-              ? startedLotFields.lotPrice
+              ? startedLotPrice
               : lot._price
           })
         }}
       </p>
-      <p class="auction-card__text">
-        {{ $t('auction.card.feeIncluded', {feePercent: 13}) }}
+      <p
+        v-if="typeOfLot === $options.LotsStatuses.STARTED"
+        class="auction-card__text"
+      >
+        {{ $t('auction.card.rewardIncluded', {rewardPercent: 3}) }}
       </p>
       <p
         v-if="typeOfLot === $options.LotsStatuses.INACTIVE"
@@ -62,9 +65,10 @@
         class="auction-card__duration"
       >
         {{ $t('auction.card.timeLeft') }}
-        {{ auctionDuration.days ? $tc('meta.units.days', DeclOfNum(auctionDuration.days), {count: auctionDuration.days}) : '' }}
-        {{ auctionDuration.hours ? $tc('meta.units.hours', DeclOfNum(auctionDuration.hours), {count: auctionDuration.hours}) : '' }}
-        {{ auctionDuration.minutes ? $tc('meta.units.minutes', DeclOfNum(auctionDuration.minutes), {count: auctionDuration.minutes}) : '' }}
+        {{ durationTime.days ? $tc('meta.units.days', DeclOfNum(durationTime.days), {count: durationTime.days}) : '' }}
+        {{ durationTime.hours ? $tc('meta.units.hours', DeclOfNum(durationTime.hours), {count: durationTime.hours}) : '' }}
+        {{ durationTime.minutes ? $tc('meta.units.minutes', DeclOfNum(durationTime.minutes), {count: durationTime.minutes}) : '' }}
+        {{ durationTime.seconds ? $tc('meta.units.seconds', DeclOfNum(durationTime.seconds), {count: durationTime.seconds}) : '' }}
       </p>
       <base-btn
         data-selector="ACTION-AUCTION"
@@ -82,6 +86,7 @@ import { mapActions, mapGetters } from 'vuex';
 import { ExplorerUrl, TokenSymbols } from '~/utils/enums';
 import { getContractFeeData, sendWalletTransaction } from '~/utils/wallet';
 import { WQAuction } from '~/abi';
+import walletOperations from '~/plugins/mixins/walletOperations';
 
 const LotsStatuses = {
   INACTIVE: 0,
@@ -90,9 +95,22 @@ const LotsStatuses = {
   CANCELED: 3,
 };
 
+const LOWER_BOUND_COST = {
+  develop: 0.999,
+  testnet: 0.999,
+  master: 0.999,
+}[process.env.BRANCH];
+
+const UPPER_BOUND_COST = {
+  develop: 1.01,
+  testnet: 1.01,
+  master: 1.01,
+}[process.env.BRANCH];
+
 export default {
   name: 'AuctionCard',
   LotsStatuses,
+  mixins: [walletOperations],
   props: {
     lot: {
       type: Object,
@@ -104,44 +122,41 @@ export default {
       default: LotsStatuses.STARTED,
     },
   },
+  data() {
+    return {
+      startedLotPrice: null,
+      intervalId: null,
+      durationTime: {
+        days: '',
+        hours: '',
+        minutes: '',
+        seconds: '',
+      },
+    };
+  },
   computed: {
     ...mapGetters({
       isAuth: 'user/isAuth',
       walletAddress: 'user/getUserWalletAddress',
       balanceData: 'wallet/getBalanceData',
+      duration: 'auction/getDuration',
     }),
     isCompleted() {
       return this.typeOfLot === LotsStatuses.BOUGHT;
     },
-    /**
-     * @property lotBuyed
-     * @property buyerInfo - information about the completed purchase
-     * @property userWallet
-     * @returns {[{link: string, title: VueI18n.TranslateResult, value: *},{link: string, title: VueI18n.TranslateResult, value: *},{link: boolean, title: VueI18n.TranslateResult, value: string},{link: boolean, title: VueI18n.TranslateResult, value: string},{link: boolean, title: VueI18n.TranslateResult, value: string},null]|*[]}
-     */
     completedLotFields() {
       const {
-        lotBuyed,
         symbol,
         userWallet,
-      } = this.lot;
-
-      if (!lotBuyed?.length) return [];
-
-      const {
-        cost,
+        lotAmount,
+        lotPrice,
         buyer,
-        amount,
         timestamp,
         transactionHash,
-      } = lotBuyed[0];
+      } = this.lot;
 
       const buyerConverted = this.convertToBech32('wq', buyer);
       const userWalletConverted = this.convertToBech32('wq', userWallet);
-
-      const lotDecimals = this.balanceData[symbol].decimals;
-      const lotAmount = new BigNumber(amount).shiftedBy(-lotDecimals).toFixed(4, 1);
-      const lotPrice = new BigNumber(cost).shiftedBy(-18).toFixed(4, 1);
 
       return [
         {
@@ -156,7 +171,8 @@ export default {
         },
         {
           title: this.$t('auction.card.completed.lotAmount'),
-          value: `${lotAmount} ${symbol}`,
+          // TODO Дождаться Васю, я не должен в итоговую сумму лота прибавлять 3%
+          value: `${new BigNumber(lotAmount).multipliedBy(1.03).toFixed(4, 1)} ${symbol}`,
           link: false,
         },
         {
@@ -176,38 +192,19 @@ export default {
         },
       ];
     },
-    startedLotFields() {
+    startedLotAmount() {
       const { auctionStarted, symbol } = this.lot;
       if (this.typeOfLot !== LotsStatuses.STARTED || !auctionStarted?.length) {
-        return { lotAmount: '', lotPrice: '' };
+        return { lotAmount: '' };
       }
+      // amount - its amount of collateral token on liquidation
+      const { amount } = auctionStarted[0];
 
-      const { amount, endCost } = auctionStarted[0];
       const lotDecimals = this.balanceData[symbol].decimals;
-      return {
-        lotAmount: new BigNumber(amount).shiftedBy(-lotDecimals).toFixed(4, 1),
-        lotPrice: new BigNumber(endCost).shiftedBy(-18).toFixed(4, 1),
-      };
+      return Number(new BigNumber(amount).shiftedBy(-lotDecimals).multipliedBy(1.03).toFixed(4, 1));
     },
     url() {
       return `${ExplorerUrl}/address/${this.lot.userWallet}`;
-    },
-    auctionDuration() {
-      const started = this.$moment(this.lot.createdAt);
-      let durationInSec = this.$moment().diff(started) / 1000;
-      const returnedValue = {};
-      if (new BigNumber(durationInSec).isGreaterThanOrEqualTo(86400)) {
-        returnedValue.days = new BigNumber(durationInSec).dividedToIntegerBy(86400).toFixed();
-        durationInSec -= new BigNumber(86400).multipliedBy(returnedValue.days).toFixed();
-      }
-      if (new BigNumber(durationInSec).isGreaterThanOrEqualTo(3600)) {
-        returnedValue.hours = new BigNumber(durationInSec).dividedToIntegerBy(3600).toFixed();
-        durationInSec -= new BigNumber(3600).multipliedBy(returnedValue.hours).toFixed();
-      }
-      if (new BigNumber(durationInSec).isGreaterThanOrEqualTo(60)) {
-        returnedValue.minutes = new BigNumber(durationInSec).dividedToIntegerBy(60).toFixed();
-      }
-      return returnedValue;
     },
     contractAddress() {
       return {
@@ -218,11 +215,72 @@ export default {
       }[this.lot.symbol];
     },
   },
+  /**
+   * @property auctionStarted - info about started lot
+   */
+  mounted() {
+    if (this.typeOfLot !== LotsStatuses.STARTED) return;
+    const { symbol } = this.lot;
+    this.willFinish = this.$moment(this.lot.auctionStarted[0].timestamp * 1000).add(this.duration[symbol], 'seconds');
+    this.intervalId = setInterval(() => {
+      if (this.typeOfLot === LotsStatuses.STARTED) {
+        const { auctionStarted } = this.lot;
+        const { endCost, amount } = auctionStarted[0];
+        this.calcStartedLotPrice(symbol, endCost, amount);
+      }
+      this.calcDurationTime(this.willFinish);
+    }, 1000);
+  },
+  beforeDestroy() {
+    clearInterval(this.intervalId);
+  },
   methods: {
     ...mapActions({
       calcFeeSetTokenPrices: 'oracle/feeSetTokensPrices',
       setTokenPrices: 'oracle/setCurrentPriceTokens',
     }),
+
+    calcDurationTime(willFinish) {
+      const now = this.$moment();
+      let durationInSec = this.$moment(willFinish).diff(now) / 1000;
+
+      if (new BigNumber(durationInSec).isGreaterThanOrEqualTo(86400)) {
+        this.durationTime.days = new BigNumber(durationInSec).dividedToIntegerBy(86400).toFixed();
+        durationInSec -= new BigNumber(86400).multipliedBy(this.durationTime.days).toFixed();
+      }
+
+      if (new BigNumber(durationInSec).isGreaterThanOrEqualTo(3600)) {
+        this.durationTime.hours = new BigNumber(durationInSec).dividedToIntegerBy(3600).toFixed();
+        durationInSec -= new BigNumber(3600).multipliedBy(this.durationTime.hours).toFixed();
+      }
+
+      if (new BigNumber(durationInSec).isGreaterThanOrEqualTo(60)) {
+        this.durationTime.minutes = new BigNumber(durationInSec).dividedToIntegerBy(60).toFixed();
+        durationInSec -= new BigNumber(60).multipliedBy(this.durationTime.minutes).toFixed();
+      }
+
+      this.durationTime.seconds = durationInSec;
+    },
+
+    calcStartedLotPrice(symbol, endCost, amount) {
+      //              a
+      // (lot.endPrice * lowerBoundCost) / 1e18 +
+      //               b                                            c
+      // ((lot.endTime - block.timestamp) * (upperBoundCost - lowerBoundCost) * lot.endPrice) / auctionDuration / 1e18;
+      const a = new BigNumber(endCost).multipliedBy(LOWER_BOUND_COST).shiftedBy(-18).toString();
+
+      const b = new BigNumber(this.willFinish?.unix()).minus(this.$moment().unix()).toString();
+
+      const c = new BigNumber(UPPER_BOUND_COST).minus(LOWER_BOUND_COST).multipliedBy(endCost).toString();
+
+      const d = new BigNumber(b).multipliedBy(c).dividedBy(this.duration[symbol]).shiftedBy(-18)
+        .toString();
+
+      const finalPrice = new BigNumber(a).plus(d);
+      const lotDecimals = this.balanceData[symbol].decimals;
+      const _amount = new BigNumber(amount).shiftedBy(-lotDecimals).toString();
+      this.startedLotPrice = new BigNumber(finalPrice).multipliedBy(_amount).toFixed(4, 1);
+    },
 
     async handleLotAction() {
       if (!this.isAuth) {
@@ -250,7 +308,8 @@ export default {
         }
 
         method = 'startAuction';
-        data.push(new BigNumber(this.lot.liquidityValue).shiftedBy(-12).toFixed(0));
+        const lotDecimals = +(this.balanceData[this.lot.symbol].decimals) === 6 ? 12 : 0;
+        data.push(new BigNumber(this.lot.liquidityValue).shiftedBy(-lotDecimals).toFixed(0));
 
         await this.ShowTxReceipt({
           title: this.$t('modals.updatePrices'),
@@ -268,6 +327,12 @@ export default {
         }).finally(() => {
           this.SetLoader(false);
         });
+      } else {
+        await this.MakeApprove({
+          tokenAddress: this.ENV.WORKNET_WUSD_TOKEN,
+          contractAddress: this.ENV.WORKNET_ROUTER,
+          amount: this.startedLotAmount,
+        }).then(() => { isContinue = true; });
       }
 
       if (!isContinue) {
@@ -305,8 +370,8 @@ export default {
         // TODO need to fix response for sendWalletTransaction
         if (isSuccess === false) this.ShowModalFail({ subtitle: errorMsg });
         else this.ShowModalSuccess({});
-      }).catch((e) => {
-        this.ShowToast(e.msg);
+      }).catch(() => {
+        console.log('User rejected method.');
       }).finally(() => {
         this.SetLoader(false);
       });

@@ -1,7 +1,10 @@
 <template>
   <div
     class="loader"
-    :class="{'loader_hider': isLoaderBackgroundHider}"
+    :class="[
+      {'loader_hider': isLoaderBackgroundHider},
+      {'loader_mini': isMiniLoader},
+    ]"
   >
     <div class="loader__body">
       <div :class="{'loader__modal': loaderStatusText }">
@@ -66,6 +69,10 @@ export default {
 
   &_hider {
     background: $black0;
+  }
+
+  &_mini {
+    z-index: 1;
   }
 
   &__body {

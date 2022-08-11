@@ -6,7 +6,7 @@ import {
 } from '~/utils/wallet';
 
 import { success, error } from '~/utils/web3';
-import { ERC20, WQRouter } from '~/abi';
+import { WQRouter } from '~/abi';
 import ENV from '~/utils/addresses';
 
 export default {
@@ -49,22 +49,26 @@ export default {
    * @param commit
    * @param address
    * @param params
+   * @param rootGetters
    * @property $axiosLiquidator - axios instance for liquidator
    * @returns {Promise<{msg: string, code: number, data: null, ok: boolean}|{result: *, ok: boolean}>}
    */
 
-  async fetchCollaterals({ commit }, { address, params }) {
+  async fetchCollaterals({ commit, rootGetters }, { address, params }) {
     try {
-      const { ok, result: { collateral, count } } = await this.$axiosLiquidator.$get(`/user/collateral/${address}`, { params });
-      // TODO get decimals by symbol
+      const { result: { collateral, count } } = await this.$axiosLiquidator.$get(`/user/collateral/${address}`, { params });
+      const balanceData = rootGetters['wallet/getBalanceData'];
       commit('setCollaterals', {
-        collaterals: collateral.map((item) => ({
-          ...item,
-          _price: Number(new BigNumber(item.price).shiftedBy(-18).toFixed(4, 1)),
-          lockedAmount: Number(new BigNumber(item.collateral).shiftedBy(-6).toFixed(4, 1)),
-          colRatio: new BigNumber(item.deposit).shiftedBy(-18).multipliedBy(100).toString(),
-          wusdGenerated: Number(new BigNumber(item.debt).shiftedBy(-18).toFixed(4, 1)),
-        })),
+        collaterals: collateral.map((item) => {
+          const symbolDecimals = balanceData[item.symbol].decimals;
+          return {
+            ...item,
+            _price: Number(new BigNumber(item.price).shiftedBy(-18).toFixed(4, 1)),
+            lockedAmount: Number(new BigNumber(item.collateral).shiftedBy(-symbolDecimals).toFixed(4, 1)),
+            colRatio: Number(new BigNumber(item.deposit).shiftedBy(-18).multipliedBy(100).toFixed(4, 1)),
+            wusdGenerated: Number(new BigNumber(item.debt).shiftedBy(-18).toFixed(4, 1)),
+          };
+        }),
         count,
       });
       return success();
@@ -80,28 +84,32 @@ export default {
    * @property produced - produced collateral
    * @param commit
    * @param getters
+   * @param rootGetters
    * @param address
    * @param collateralId
    * @param params
    * @returns {Promise<{msg: string, code: number, data: null, ok: boolean}|{result: *, ok: boolean}>}
    */
-  async fetchCollateralInfo({ commit, getters }, { address, collateralId, params }) {
+  async fetchCollateralInfo({ commit, getters, rootGetters }, { address, collateralId, params }) {
     try {
       const {
-        ok, result: {
+        result: {
           id, collateral, debt, deposit, price, produced, removed, moved,
         },
       } = await this.$axiosLiquidator.$get(`/user/collateral/${address}/${collateralId}`, { params });
-      if (produced.length) produced[0].status = 4;
-      if (removed.length) removed[0].status = -1;
-      const rows = [...removed, ...moved, ...produced];
-      commit('setHistoryCollateral', {
-        rows: rows.map((row, i) => {
-          // TODO by status of deposit need add border color
 
+      if (produced.length) produced[0].status = 4;
+      if (removed.length) removed.forEach((item) => { item.status = -1; });
+      const rows = [...removed, ...moved, ...produced];
+      rows.sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1));
+
+      const balanceData = rootGetters['wallet/getBalanceData'];
+      commit('setHistoryCollateral', {
+        rows: rows.map((row) => {
+          // TODO by status of deposit need add border color
           const _price = Number(new BigNumber(row.price).shiftedBy(-18).toFixed(4, 1));
-          // TODO decimal need use by symbol
-          const lockedAmount = Number(new BigNumber(row.collateral).shiftedBy(-6).toFixed(4, 1));
+          const symbolDecimals = balanceData[row.symbol].decimals;
+          const lockedAmount = Number(new BigNumber(row.collateral).shiftedBy(-symbolDecimals).toFixed(4, 1));
           const wusdGenerated = Number(new BigNumber(row.debt).shiftedBy(-18).toFixed(4, 1));
           return {
             ...row,
@@ -119,11 +127,12 @@ export default {
           col.price = price;
           col._price = Number(new BigNumber(price).shiftedBy(-18).toFixed(4, 1));
 
+          const symbolDecimals = balanceData[col.symbol].decimals;
           col.collateral = collateral;
-          col.lockedAmount = Number(new BigNumber(collateral).shiftedBy(-6).toFixed(4, 1));
+          col.lockedAmount = Number(new BigNumber(collateral).shiftedBy(-symbolDecimals).toFixed(4, 1));
 
           col.deposit = deposit;
-          col.colRatio = new BigNumber(deposit).shiftedBy(-18).multipliedBy(100).toString();
+          col.colRatio = Number(new BigNumber(deposit).shiftedBy(-18).multipliedBy(100).toFixed(4, 1));
 
           col.debt = debt;
           col.wusdGenerated = Number(new BigNumber(debt).shiftedBy(-18).toFixed(4, 1));
@@ -160,7 +169,6 @@ export default {
       );
 
       if (!gasPrice || !gas) {
-      //   TODO нужно будет как то выделить время и выяснить причину
         console.log(`Something wrong with calc fee for ${method}`);
         return error();
       }
