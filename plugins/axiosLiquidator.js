@@ -5,7 +5,7 @@ export default function ({ $axios, store }, inject) {
 
   axios.onError(async (error) => {
     console.error(error);
-    throw error;
+    throw error?.response?.data;
   });
   inject('axiosLiquidator', axios);
 }

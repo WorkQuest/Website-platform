@@ -313,6 +313,18 @@ extend('have_funds', {
   params: ['balance', 'amount', 'symbol'],
 });
 
+extend('geo_is_address', {
+  params: ['geoCode'],
+  validate: async (value, { geoCode }) => {
+    try {
+      const address = await geoCode.geolookup(value);
+      return Array.isArray(address) && address.length > 0;
+    } catch (e) {
+      return false;
+    }
+  },
+});
+
 export default ({ app }) => {
   configure({
     defaultMessage: (_field_, values) => app.i18n.t(`messages.${values._rule_}`, values),

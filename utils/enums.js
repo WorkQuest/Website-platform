@@ -184,6 +184,7 @@ export const PreventLogoutPathNames = [
   'bridge',
   'crediting',
   'collateral',
+  'wiki',
 ];
 
 export const PathDAO = {

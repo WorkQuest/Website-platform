@@ -7,7 +7,7 @@
   >
     <div class="main__body page">
       <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
+        v-slot="{handleSubmit, invalid}"
         tag="div"
       >
         <div
@@ -43,7 +43,7 @@
                 :label="$tc('meta.price')"
                 data-selector="PRICE-FIELD"
                 placeholder="0 WUSD"
-                rules="required|decimal|decimalPlaces:16|min_value:1"
+                rules="required|decimal|decimalPlaces:18|min_value:1"
                 :name="$tc('meta.price')"
               />
             </div>
@@ -94,9 +94,9 @@
               :placeholder="$t('quests.address')"
               mode="icon"
               :selector="true"
-              rules="required"
+              :rules="{required: true, geo_is_address: {geoCode} }"
               :name="$tc('quests.address')"
-              @selector="getAddressInfo(address)"
+              @selector="debouncedAddressSearch(address)"
             >
               <template v-slot:left>
                 <span class="icon-map" />
@@ -238,6 +238,7 @@ import { error, success } from '~/utils/web3';
 import { CommissionForCreatingAQuest } from '~/utils/сonstants/commission';
 import { images } from '~/utils/images';
 import walletOperations from '~/plugins/mixins/walletOperations';
+import debounce from '~/utils/debounce';
 
 const { GeoCode } = require('geo-coder');
 
@@ -268,6 +269,7 @@ export default {
       mode: this.$route.query?.mode || '',
       geoCode: null,
       prevPrice: null,
+      debouncedAddressSearch: null,
     };
   },
   computed: {
@@ -420,6 +422,7 @@ export default {
     this.coordinates.lat = location.latitude;
 
     this.prevPrice = this.price;
+    this.debouncedAddressSearch = debounce(this.getAddressInfo, 300);
     this.SetLoader(false);
   },
   methods: {
