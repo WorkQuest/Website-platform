@@ -72,6 +72,8 @@ export default {
   }
 
   &_mini {
+    position: relative;
+    background: none;
     z-index: 1;
   }
 
