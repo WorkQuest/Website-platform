@@ -197,8 +197,6 @@ export default {
     ...mapGetters({
       isAuth: 'user/isAuth',
       userData: 'user/getUserData',
-      // TODO fix it in makeApprove
-      userWalletAddress: 'user/getUserWalletAddress',
 
       totalSupply: 'collateral/getTotalSupply',
       availableAssets: 'collateral/getAvailableAssets',
@@ -288,6 +286,9 @@ export default {
         },
       ];
     },
+  },
+  async beforeMount() {
+    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   async mounted() {
     await this.$store.dispatch('collateral/fetchCollateralsCommonInfo');

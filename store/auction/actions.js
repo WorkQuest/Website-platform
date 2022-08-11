@@ -3,6 +3,9 @@ import {
   error,
   success,
 } from '~/utils/web3';
+import { createInstance } from '~/utils/wallet';
+import { WQAuction } from '~/abi';
+import ENV from '~/utils/addresses/index';
 
 const LotsStatuses = {
   INACTIVE: 0,
@@ -63,6 +66,10 @@ export default {
     }
   },
 
+  async clearLots({ commit }) {
+    commit('setLost', { count: 0, lots: [] });
+  },
+
   async fetchBoughtLots({ commit, rootGetters }, { params, sort }) {
     try {
       const { result: { count, auction } } = await this.$axiosLiquidator.$get('/auction/lots/auctionBought', {
@@ -103,6 +110,33 @@ export default {
       return success();
     } catch (e) {
       console.error('auction/fetchBoughtLots', e);
+      return error();
+    }
+  },
+
+  async fetchAuctionsDuration({ commit }) {
+    try {
+      const auctions = [
+        ENV.WORKNET_USDT_AUCTION,
+        ENV.WORKNET_USDC_AUCTION,
+        ENV.WORKNET_ETH_AUCTION,
+        ENV.WORKNET_BNB_AUCTION,
+      ];
+      const instances = await Promise.all(auctions.map((auction) => createInstance(WQAuction, auction)));
+
+      const [USDT_DURATION, USDC_DURATION, ETH_DURATION, BNB_DURATION] = await Promise.all(
+        instances.map((inst) => inst.methods.auctionDuration().call()),
+      );
+
+      commit('setDuration', {
+        USDT: USDT_DURATION,
+        USDC: USDC_DURATION,
+        ETH: ETH_DURATION,
+        BNB: BNB_DURATION,
+      });
+      return success();
+    } catch (e) {
+      console.error('auction/fetchAuctionsDuration', e);
       return error();
     }
   },

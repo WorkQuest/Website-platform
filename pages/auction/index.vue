@@ -166,7 +166,7 @@ export default {
       async handler(value) {
         this.currentPage = 1;
         this.sort = 'desc';
-        this.$store.commit('auction/setLost', { lots: [], count: 0 });
+        await this.clearLots();
         await this.fetchLots({ lotStatus: value, params: this.params, sort: this.sort });
       },
     },
@@ -176,11 +176,18 @@ export default {
   },
   async mounted() {
     await this.fetchLots({ lotStatus: LotsStatuses.INACTIVE, params: this.params, sort: this.sort });
-    if (this.isWalletConnected) await this.$store.dispatch('wallet/getBalance');
+    if (this.isWalletConnected) {
+      await this.getBalance();
+      await this.fetchDuration();
+    }
   },
   methods: {
     ...mapActions({
+      getBalance: 'wallet/getBalance',
+
       fetchLots: 'auction/fetchLots',
+      clearLots: 'auction/clearLots',
+      fetchDuration: 'auction/fetchAuctionsDuration',
     }),
 
     goSearch() {
