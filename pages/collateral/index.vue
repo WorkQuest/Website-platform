@@ -207,6 +207,7 @@ export default {
       oracleCurrentPrices: 'oracle/getCurrentPrices',
 
       currentBalance: 'wallet/getBalanceData',
+      isWalletConnected: 'wallet/getIsWalletConnected',
     }),
     documents() {
       return [
@@ -288,7 +289,7 @@ export default {
     },
   },
   async beforeMount() {
-    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+    if (!this.isWalletConnected) await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   async mounted() {
     await this.$store.dispatch('collateral/fetchCollateralsCommonInfo');

@@ -81,28 +81,25 @@ export default {
 
       const balanceData = rootGetters['wallet/getBalanceData'];
 
-      let lots = [];
+      const lots = [];
       auction.forEach((item) => {
         const { symbol, lotBuyed } = item;
-        lots = [
-          ...lots,
-          ...lotBuyed.map((lot) => {
-            const {
-              cost, buyer, amount, timestamp, transactionHash,
-            } = lot;
+        lots.push(...lotBuyed.map((lot) => {
+          const {
+            cost, buyer, amount, timestamp, transactionHash,
+          } = lot;
 
-            let symbolDecimals = balanceData[symbol].decimals;
-            if (symbolDecimals === 6) symbolDecimals += symbolDecimals;
-            return {
-              ...item,
-              buyer,
-              timestamp,
-              transactionHash,
-              lotAmount: Number(new BigNumber(amount).shiftedBy(-symbolDecimals).toFixed(4, 1)),
-              lotPrice: Number(new BigNumber(cost).shiftedBy(-18).toFixed(4, 1)),
-            };
-          }),
-        ];
+          let symbolDecimals = balanceData[symbol].decimals;
+          if (symbolDecimals === 6) symbolDecimals += symbolDecimals;
+          return {
+            ...item,
+            buyer,
+            timestamp,
+            transactionHash,
+            lotAmount: Number(new BigNumber(amount).shiftedBy(-symbolDecimals).toFixed(4, 1)),
+            lotPrice: Number(new BigNumber(cost).shiftedBy(-18).toFixed(4, 1)),
+          };
+        }));
       });
 
       commit('setLost', { count, lots });
@@ -116,16 +113,13 @@ export default {
 
   async fetchAuctionsDuration({ commit }) {
     try {
-      const auctions = [
-        ENV.WORKNET_USDT_AUCTION,
-        ENV.WORKNET_USDC_AUCTION,
-        ENV.WORKNET_ETH_AUCTION,
-        ENV.WORKNET_BNB_AUCTION,
-      ];
-      const instances = await Promise.all(auctions.map((auction) => createInstance(WQAuction, auction)));
-
       const [USDT_DURATION, USDC_DURATION, ETH_DURATION, BNB_DURATION] = await Promise.all(
-        instances.map((inst) => inst.methods.auctionDuration().call()),
+        [
+          ENV.WORKNET_USDT_AUCTION,
+          ENV.WORKNET_USDC_AUCTION,
+          ENV.WORKNET_ETH_AUCTION,
+          ENV.WORKNET_BNB_AUCTION,
+        ].map((auction) => createInstance(WQAuction, auction).methods.auctionDuration().call()),
       );
 
       commit('setDuration', {

@@ -5,6 +5,6 @@ export default {
   },
 
   setDuration(state, data) {
-    state.duration = { ...data };
+    state.duration = data;
   },
 };

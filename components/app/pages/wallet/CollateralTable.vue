@@ -220,12 +220,14 @@ export default {
         this.idxHistory = null;
         this.$store.commit('collateral/setHistoryCollateral', { rows: [], count: null });
       } else {
-        await this.checkActionsPossibilities(item);
-        await this.fetchCollateralInfo({
-          address: this.walletAddress,
-          collateralId: item.id,
-          params: {},
-        });
+        await Promise.all([
+          this.checkActionsPossibilities(item),
+          this.fetchCollateralInfo({
+            address: this.walletAddress,
+            collateralId: item.id,
+            params: {},
+          }),
+        ]);
         this.idxHistory = idx;
       }
     },

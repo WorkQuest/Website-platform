@@ -176,10 +176,11 @@ export default {
   },
   async mounted() {
     await this.fetchLots({ lotStatus: LotsStatuses.INACTIVE, params: this.params, sort: this.sort });
-    if (this.isWalletConnected) {
-      await this.getBalance();
-      await this.fetchDuration();
-    }
+    if (!this.isWalletConnected) return;
+    await Promise.all([
+      this.getBalance(),
+      this.fetchDuration(),
+    ]);
   },
   methods: {
     ...mapActions({

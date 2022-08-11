@@ -283,8 +283,6 @@ export default {
     },
 
     async handleLotAction() {
-      // TODO if auctionStatus === 1 return
-      // ??????
       if (!this.isAuth) {
         this.ShowToast(this.$t('messages.loginToContinue'));
         return;
