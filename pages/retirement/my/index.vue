@@ -1004,6 +1004,7 @@ export default {
   .ava {
     height: 33px;
     width: 33px;
+    object-fit: cover;
     border-radius: 50%;
     background-color: #fff;
     flex: none;
