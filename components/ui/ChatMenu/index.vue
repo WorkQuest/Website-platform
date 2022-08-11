@@ -16,9 +16,7 @@
         class="chat-menu"
         :class="menuItems.length?'chat-menu-secondary-position':'chat-menu-main-position'"
       >
-        <div
-          class="chat-menu__items"
-        >
+        <div class="chat-menu__items">
           <template v-if="menuItems.length">
             <div
               v-for="(item, index) in menuItems"
@@ -38,7 +36,7 @@
             </div>
             <div
               class="chat-menu__item"
-              @click="showCreateChatModal()"
+              @click="showCreateChatModal"
             >
               {{ $t('chat.createGroupChat') }}
             </div>
@@ -141,28 +139,19 @@ export default {
       });
     },
     async leaveChat() {
-      if (await this.$store.dispatch('chat/leaveFromChat', this.currChat.id)) this.$router.push(`${Path.MESSAGES}`);
+      if (await this.$store.dispatch('chat/leaveFromChat', this.currChat.id)) await this.$router.push(`${Path.MESSAGES}`);
 
       this.CloseModal();
     },
-    showCreateChatModal() {
+    async showCreateChatModal() {
       this.closeChatMenu();
-      if (this.chats.count) {
-        this.ShowModal({
-          key: modals.chatCreate,
-          isCreating: true,
-          itsOwner: true,
-          isMembersList: false,
-          isAdding: false,
-        });
-      } else {
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/warning.svg'),
-          title: this.$t('modals.errors.error'),
-          subtitle: this.$t('modals.errors.dontHavePeople'),
-        });
-      }
+      this.ShowModal({
+        key: modals.chatCreate,
+        isCreating: true,
+        itsOwner: true,
+        isMembersList: false,
+        isAdding: false,
+      });
     },
   },
 };
