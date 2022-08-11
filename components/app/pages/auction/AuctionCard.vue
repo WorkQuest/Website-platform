@@ -259,7 +259,7 @@ export default {
         durationInSec -= new BigNumber(60).multipliedBy(this.durationTime.minutes).toFixed();
       }
 
-      this.durationTime.seconds = durationInSec;
+      this.durationTime.seconds = Math.ceil(durationInSec);
     },
 
     calcStartedLotPrice(symbol, endCost, amount) {
