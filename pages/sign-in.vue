@@ -358,22 +358,20 @@ export default {
     async resendLetter() {
       this.model.email = this.model.email.trim();
       const { email, password } = this.model;
-      if (!email.trim() || !password) {
-        this.ShowToast(this.$tc('signIn.enterEmail'));
+
+      if (!email || !password) {
+        this.ShowToast(this.$t('signIn.enterEmail'));
         return;
       }
+
       if (!this.$cookies.get('access')) {
-        const payload = {
-          email,
-          password,
-        };
-        await this.$store.dispatch('user/signIn', { payload });
+        await this.$store.dispatch('user/signIn', { email, password });
+        return;
       }
-      if (this.$cookies.get('access')) {
-        await this.$store.dispatch('user/resendEmail', { email });
-        this.ShowToast(this.$t('registration.emailConfirmNewLetter'), this.$t('registration.emailConfirmTitle'));
-        this.startTimer();
-      }
+
+      await this.$store.dispatch('user/resendEmail', { email });
+      this.ShowToast(this.$t('registration.emailConfirmNewLetter'), this.$t('registration.emailConfirmTitle'));
+      this.startTimer();
     },
     async signIn() {
       if (this.isLoading) return;

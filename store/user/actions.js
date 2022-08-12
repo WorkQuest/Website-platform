@@ -161,7 +161,7 @@ export default {
   async signUp({ commit }, payload) {
     try {
       const response = await this.$axios.$post('/v1/auth/register', payload);
-      commit('setTokens', response.result);
+      commit('setTokens', { access: response.result.access });
       return response;
     } catch (e) {
       return error();
@@ -183,7 +183,6 @@ export default {
       await dispatch('wallet/unsubscribeWS', null, { root: true });
 
       commit('logOut');
-      commit('setTokens', { access: null, refresh: null });
       commit('web3/setConnectionType', ConnectionTypes.WEB3, { root: true });
       commit('wallet/setIsWalletConnected', false, { root: true });
       disconnect(); // disconnect wq wallet
