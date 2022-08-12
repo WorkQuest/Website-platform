@@ -28,7 +28,7 @@
         >
           <template v-slot:left>
             <img
-              src="~assets/img/icons/email.svg"
+              :src="$options.images.EMAIL"
               alt=""
             >
           </template>
@@ -47,7 +47,7 @@
         >
           <template v-slot:left>
             <img
-              src="~assets/img/icons/password.svg"
+              :src="$options.images.PASSWORD"
               alt=""
             >
           </template>
@@ -82,9 +82,11 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { images } from '~/utils/images';
 
 export default {
   name: 'ModalSignWorkQuest',
+  images,
   data() {
     return {
       model: { email: '', password: '' },
