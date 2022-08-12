@@ -3,50 +3,79 @@
     class="messageSend"
     :title="$tc('modals.titles.signWorkQuest')"
   >
-    <div class="ctm-modal__content sign">
-      <div class="sign sign__description">
+    <ValidationObserver
+      v-slot="{ handleSubmit }"
+      class="auth__content"
+      tag="div"
+    >
+      <div class="auth__description">
         {{ $t('signWorkQuest.description') }}
       </div>
-      <div class="error-msg">
-        {{ errorMsg ? $t('errors.incorrectPass') : null }}
-      </div>
-      <div class="ctm-modal__content-field">
+      <form
+        class="auth__fields"
+        action=""
+        @submit.prevent="handleSubmit(submit)"
+      >
         <base-field
-          v-model="userName"
-          data-selector="USER-NAME"
-          :is-hide-error="true"
-          :placeholder="$t('signWorkQuest.daoUsername')"
+          v-model="model.email"
+          class="auth__input"
+          rules="required|email"
+          :name="$t('signUp.email')"
+          :placeholder="$t('signUp.email')"
           mode="icon"
+          autocomplete="username"
+          data-selector="EMAIL"
         >
           <template v-slot:left>
-            <span class="icon-user" />
+            <img
+              src="~assets/img/icons/email.svg"
+              alt=""
+            >
           </template>
         </base-field>
-      </div>
-      <div class="ctm-modal__content-field">
         <base-field
-          v-model="userPassword"
-          data-selector="USER-PASSWORD"
-          :is-hide-error="true"
-          :placeholder="$t('signWorkQuest.daoPass')"
+          v-model="model.password"
+          class="auth__input"
+          :placeholder="$t('signUp.password')"
           mode="icon"
+          :name="$t('signUp.password')"
+          autocomplete="current-password"
+          rules="required_if|min:8"
+          type="password"
+          vid="confirmation"
+          data-selector="PASSWORD"
         >
           <template v-slot:left>
-            <span class="icon-Lock" />
+            <img
+              src="~assets/img/icons/password.svg"
+              alt=""
+            >
           </template>
         </base-field>
-      </div>
-      <div class="ctm-modal__content-btns">
-        <div class="btn-group">
-          <base-btn
-            data-selector="SIGN-IN"
-            @click="hide()"
+        <div class="auth__tools">
+          <base-checkbox
+            v-model="isRememberMeSelected"
+            name="rememberMe"
+            :label="$t('signIn.remember')"
+          />
+          <div
+            class="auth__text auth__text_link"
+            data-selector="ACTION-BTN-FORGOT-PASSWORD"
+            @click="showRestoreModal"
           >
-            {{ $t('meta.signIn') }}
+            {{ $t('meta.btns.forgot') }}
+          </div>
+        </div>
+        <div class="auth__action">
+          <base-btn
+            :disabled="inProgress"
+            selector="LOGIN"
+          >
+            {{ $t('meta.login') }}
           </base-btn>
         </div>
-      </div>
-    </div>
+      </form>
+    </ValidationObserver>
   </ctm-modal-box>
 </template>
 
@@ -55,12 +84,12 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'CtmModalSignWorkQuest',
+  name: 'ModalSignWorkQuest',
   data() {
     return {
-      userName: '',
-      userPassword: '',
-      errorMsg: '',
+      model: { email: '', password: '' },
+      isRememberMeSelected: false,
+      inProgress: false,
     };
   },
   computed: {
@@ -69,87 +98,86 @@ export default {
     }),
   },
   methods: {
-    async hide() {
-      // const payload = {
-      //   userName: this.userName_input,
-      //   userPassword: this.userPassword_input,
-      // };
-      // try {
-      //   const response = await this.$store.dispatch('user/editUserPassword', payload);
-      // if (response?.ok) {
-      //   this.ShowModal({
-      //     key: modals.status,
-      //     img: require('assets/img/ui/password_changed.svg'),
-      //     title: this.$t('restore.modal'),
-      //   });
-      // }
-      // } catch (e) {
-      //   this.errorMsg = e;
-      //   console.log(e);
-      // }
-      this.ShowModal({
-        key: modals.securityCheck,
-      });
+    async submit() {
+      const { submitMethod } = this.options;
+      this.inProgress = true;
+      await submitMethod(this.model, this.isRememberMeSelected);
+      this.inProgress = false;
+    },
+    showRestoreModal() {
+      this.ShowModal({ key: modals.restore });
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.sign__description {
-  padding-top: 15px;
-  padding-bottom: 10px;
-}
 .icon {
   font-size: 25px;
   color: $blue;
   align-items: center;
+
   &-Lock:before {
     @extend .icon;
     content: "\ea24";
   }
+
   &-user::before {
     @extend .icon;
     content: "\e90c";
   }
 }
+
 .error-msg {
-  color:red;
+  color: red;
 }
-.ctm-modal {
+
+.auth {
   @include modalKit;
+  max-width: 450px !important;
+  height: fit-content !important;
+
   &__content-field {
     margin: 15px 0 0 0;
   }
 
   &__content-btns {
-    .btn-group{
-      display: grid;
-      grid-gap: 20px;
-      gap: 20px;
-      margin-top: 25px;
-    }
-  }
-
-  &__label {
-    margin-bottom: 5px;
-  }
-
-  &__content {
-    padding-top: 0 !important;
-  }
-}
-
-.messageSend {
-  max-width: 450px !important;
-  &__content {
     display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
     grid-gap: 20px;
+    gap: 20px;
+    margin-top: 25px;
   }
+
+  &__content {
+    padding: 25px !important;
+  }
+
   &__action {
-    margin-top: 10px;
+    margin-top: 20px;
+  }
+
+  &__description {
+    padding-top: 15px;
+    padding-bottom: 10px;
+  }
+  &__tools {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__text {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    line-height: 130%;
+
+    &_link {
+      padding-left: 5px;
+      font-weight: 300;
+      font-size: 16px;
+      color: #0083C7;
+      text-decoration: underline;
+      cursor: pointer;
+    }
   }
 }
 </style>
