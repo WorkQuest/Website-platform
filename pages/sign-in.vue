@@ -174,7 +174,7 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import {
-  createWallet, decryptStringWitheKey, encryptStringWithKey, initWallet, setCipherKey,
+  createWallet, decryptStringWithKey, encryptStringWithKey, initWallet, setCipherKey,
 } from '~/utils/wallet';
 import CreateWallet from '~/components/ui/CreateWallet';
 import {
@@ -472,7 +472,7 @@ export default {
         return;
       }
       if (storageMnemonic) {
-        const mnemonic = decryptStringWitheKey(storageMnemonic, this.model.password);
+        const mnemonic = decryptStringWithKey(storageMnemonic, this.model.password);
         const wallet = createWallet(mnemonic);
         if (wallet?.address?.toLowerCase() === this.userWalletAddress) {
           this.saveToStorage(wallet);
