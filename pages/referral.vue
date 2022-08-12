@@ -41,7 +41,7 @@
             </div>
             <div
               v-if="paidEventsList.length"
-              class="user_last-reward"
+              class="user__last-reward"
             >
               <div class="user__info">
                 <img
@@ -577,6 +577,11 @@ export default {
     width: 100%;
   }
 
+  &__content {
+    display: flex;
+    flex-direction: column;
+  }
+
   &__header {
     max-width: 450px;
     font-weight: 500;
@@ -585,7 +590,6 @@ export default {
   }
 
   &__table {
-    margin-bottom: 25px;
     overflow: auto;
     table {
       min-width: 1180px;
@@ -611,7 +615,6 @@ export default {
 
 .info-block {
   margin-top: 20px;
-  padding-bottom: 20px;
   background-color: $white;
   border-radius: 6px;
   position: relative;
@@ -684,14 +687,13 @@ export default {
   }
 
   &__link {
-    border: 1px solid $black0;
-    border-radius: 6px;
-    width: calc(100% - 40px);
-    margin-left: 20px;
-    padding: 0 20px;
     display: grid;
     grid-template-columns: 1fr 23px;
     gap: 10px;
+    padding: 0 20px;
+    margin: 0 20px 20px 20px;
+    border: 1px solid $black0;
+    border-radius: 6px;
     height: 46px;
     align-items: center;
 
@@ -721,8 +723,7 @@ export default {
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 60px;
     position: relative;
-    width: calc(100% - 40px);
-    margin: 0 0 20px 20px;
+    margin: 0 20px 20px 20px;
 
     &:after {
       content: "";
@@ -763,7 +764,6 @@ export default {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 10px;
-  width: calc(100% - 40px);
   margin: 0 0 0 20px;
   line-height: 33px;
 
@@ -805,14 +805,12 @@ export default {
     }
   }
 
-  &_last-reward {
+  &__last-reward {
     display: grid;
     background-color: $black0;
     border-radius: 5px;
-    height: 50px;
     line-height: 50px;
-    width: calc(100% - 40px);
-    margin-left: 20px;
+    margin: 0 20px;
     padding: 0 10px;
     flex-wrap: wrap;
     gap: 10px;
@@ -931,6 +929,15 @@ export default {
         top: 0;
       }
     }
+  }
+}
+
+@include _480 {
+  .user__last-reward {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0;
+    margin-bottom: 20px;
   }
 }
 </style>
