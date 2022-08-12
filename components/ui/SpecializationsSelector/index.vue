@@ -271,10 +271,30 @@ export default {
       if (this.specCount <= 2) this.specCount += 1;
     },
     removeSpecialization(key) {
-      this.selectedSkills[key] = [];
-      this.specIndex[key] = -1;
-      this.displaySpecIndex[key] = -1;
-      this.skillIndex[key] = -1;
+      // need to shift left
+      if (key !== 3) {
+        for (let i = key; i < 3; i += 1) {
+          // shift left
+          this.specIndex[i] = this.specIndex[i + 1];
+          this.displaySpecIndex[i] = this.displaySpecIndex[i + 1];
+          this.hideSelectedSkills[i] = this.hideSelectedSkills[i + 1];
+          this.skillIndex[i] = this.skillIndex[i + 1];
+          this.selectedSkills[i] = this.selectedSkills[i + 1];
+          // clear right
+          this.specIndex[i + 1] = -1;
+          this.displaySpecIndex[i + 1] = -1;
+          this.hideSelectedSkills[i + 1] = [];
+          this.skillIndex[i + 1] = -1;
+          this.selectedSkills[i + 1] = [];
+        }
+      } else {
+        // clear current
+        this.specIndex[key] = -1;
+        this.displaySpecIndex[key] = -1;
+        this.hideSelectedSkills[key] = [];
+        this.selectedSkills[key] = [];
+        this.skillIndex[key] = -1;
+      }
       this.specCount -= 1;
       this.onChangeInputSpecs();
     },
