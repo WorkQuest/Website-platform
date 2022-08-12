@@ -16,7 +16,7 @@
         />
         <div
           class="template__main"
-          :class="{'template__main_padding' : isChatOpened, 'template__main_margin': isShowBluePanel}"
+          :class="{'template__main_padding' : isChatOpened, 'template__main_margin': isShowBluePanel, 'template__main_disabled-margin': isDisableMargin}"
         >
           <nuxt />
         </div>
@@ -59,6 +59,9 @@ export default {
     }),
     isShowBluePanel() { // for DeFi pages
       return DeFiBluePanelPathNames.includes(this.$route.name);
+    },
+    isDisableMargin() { // content full width
+      return this.$route.name === RouterNames.QUESTS_ID;
     },
   },
   created() {
@@ -132,6 +135,11 @@ export default {
       padding-bottom: 0;
     }
 
+    &_disabled-margin {
+      margin: 0 !important;
+      max-width: none;
+    }
+
     &_margin {
       padding-top: 30px;
     }
@@ -145,13 +153,17 @@ export default {
 @include _1199 {
   .template__main {
     padding: 20px 20px 0 20px;
+    &_disabled-margin {
+      padding: 0 !important;
+    }
   }
 }
 
 @include _991 {
-  .template {
-    &__main {
-      margin: 0 auto 40px auto;
+  .template__main {
+    margin: 0 auto 40px auto;
+    &_disabled-margin {
+      padding: 0 !important;
     }
   }
 }

@@ -195,6 +195,8 @@ export const RouterNames = {
   SAVINGS_ID: 'savings-id',
   WIKI: 'wiki',
   PROFILE_ID: 'profile-id',
+  QUESTS: 'quests',
+  QUESTS_ID: 'quests-id',
 };
 
 export const DeFiBluePanelPathNames = [
