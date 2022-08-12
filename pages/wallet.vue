@@ -123,7 +123,7 @@
               <base-btn
                 data-selector="SHOW-TRANSFER-MODAL"
                 class="balance__btn"
-                @click="showTransferModal()"
+                @click="showTransferModal"
               >
                 {{ $t('modals.titles.withdraw') }}
               </base-btn>

@@ -32,7 +32,7 @@
               >
                 <input
                   :id="item.name"
-                  v-model="selCurrencyID"
+                  v-model="selCurrency"
                   type="radio"
                   class="checkpoints__item"
                   :value="item.id"
@@ -54,7 +54,7 @@
               :value="amountWUSD"
               class="content__input"
               placeholder="10 WUSD"
-              rules="required|decimal"
+              rules="required|greaterThanZero|decimal"
               :name="$tc('modals.fieldCountOf', { countOf: $options.TokenSymbols.WUSD })"
               type="number"
               data-selector="WUSD"
@@ -70,7 +70,7 @@
               :value="amountCollateral"
               class="content__input"
               :placeholder="`10 ${currentCurrency}`"
-              :rules="`required|decimal|not_enough_funds:${currentBalance[currentCurrency].fullBalance}|max_value:${currentBalance[currentCurrency].fullBalance}`"
+              :rules="`required|decimal|greaterThanZero|not_enough_funds:${currentBalance[currentCurrency].fullBalance}|max_value:${currentBalance[currentCurrency].fullBalance}`"
               :name="$tc('modals.fieldCountOf', { countOf: `${ currentCurrency } collateral` })"
               type="number"
               data-selector="TOKEN"
@@ -145,7 +145,7 @@ export default {
   data() {
     return {
       maxRatio: 0,
-      selCurrencyID: TokenMap.USDT,
+      selCurrency: TokenMap.USDT,
       amountWUSD: '',
       amountCollateral: '',
       collateralPercent: '',
@@ -168,13 +168,14 @@ export default {
       ratio: 'oracle/getSecurityRatio',
 
       userWalletAddress: 'user/getUserWalletAddress',
+
       currentBalance: 'wallet/getBalanceData',
     }),
     optimalCollateralPercent() {
       return new BigNumber(this.optimalCollateralRatio).toFixed(0);
     },
     currentCurrency() {
-      return this.checkpoints.find((el) => el.id === this.selCurrencyID).name;
+      return this.checkpoints.find((el) => el.id === this.selCurrency).name;
     },
     collateralPercentClear() {
       return this.collateralPercent.replace(/[^0-9,.]/g, '');
@@ -206,9 +207,10 @@ export default {
     },
   },
   watch: {
-    selCurrencyID: {
+    selCurrency: {
       async handler() {
         this.clearForm();
+        await this.fetchMinRatio({ currency: this.currentCurrency });
         await this.getCollateralData();
         this.setActualCollateralPercent();
       },
@@ -218,9 +220,6 @@ export default {
         this.calculateCollateral();
       },
     },
-  },
-  async beforeMount() {
-    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   async mounted() {
     this.SetLoader(true);
