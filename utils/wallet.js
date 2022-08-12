@@ -31,7 +31,7 @@ export const createWallet = (mnemonic) => {
 };
 
 export const encryptStringWithKey = (toEncrypt, key) => AES.encrypt(toEncrypt, sha256(key).toString()).toString();
-export const decryptStringWitheKey = (toDecrypt, key) => AES.decrypt(toDecrypt, sha256(key).toString()).toString(enc.Utf8);
+export const decryptStringWithKey = (toDecrypt, key) => AES.decrypt(toDecrypt, sha256(key).toString()).toString(enc.Utf8);
 
 let cipherKey = null;
 export const getCipherKey = () => cipherKey;
@@ -121,7 +121,7 @@ export const connectWallet = (userAddress, userPassword) => {
 
   // Check in storage
   if (storageMnemonic) {
-    const mnemonic = decryptStringWitheKey(storageMnemonic, userPassword);
+    const mnemonic = decryptStringWithKey(storageMnemonic, userPassword);
     const _walletTemp = createWallet(mnemonic);
     if (_walletTemp?.address?.toLowerCase() === userAddress) {
       initWallet(_walletTemp);

@@ -37,8 +37,8 @@ export default async function ({
       if (walletAddress) {
         const sessionKey = sessionStorage.getItem(walletAddress);
         if (sessionKey) {
-          const { decryptStringWitheKey, createWallet, initWallet } = require('~/utils/wallet');
-          const wal = createWallet(decryptStringWitheKey(sessionKey, window.clientInformation.userAgent));
+          const { decryptStringWithKey, createWallet, initWallet } = require('~/utils/wallet');
+          const wal = createWallet(decryptStringWithKey(sessionKey, window.clientInformation.userAgent));
           if (wal?.address?.toLowerCase() === walletAddress) {
             initWallet(wal);
           }
