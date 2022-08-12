@@ -699,7 +699,7 @@ export default {
 
     .title {
       font-weight: 500;
-      color: #FFF;
+      color: $white;
       width: 530px;
       font-size: 45px;
       line-height: 110%;
@@ -734,8 +734,8 @@ export default {
       box-sizing: border-box;
       font-weight: 400;
       font-size: 16px;
-      color: #0083C7;
-      border: 1px solid #0083C71A;
+      color: $blue;
+      border: 1px solid $blue100;
       border-radius: 6px;
       transition: .3s;
 
@@ -745,7 +745,7 @@ export default {
         top: 130px;
         right: 15px;
         width: 20px;
-        color: #fff;
+        color: $white;
         font-size: 0;
 
         &:hover {
@@ -755,43 +755,43 @@ export default {
       }
 
       &:hover {
-        background-color: #0083C71A;
+        background-color: $blue100;
         border: 0;
       }
 
       &_bl {
         @extend .btn;
-        background-color: #0083C7;
+        background-color: $blue;
         border: unset;
-        color: #fff;
+        color: $white;
 
         &:hover {
-          background-color: #103d7c;
+          background-color: $darkblue;
         }
       }
 
       &_red {
         @extend .btn_bl;
-        background-color: #DF3333;
+        background-color: $red;
       }
     }
 
     .text {
       font-size: 16px;
       font-weight: 400;
-      color: #8D96A1;
+      color: $black500;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
 
       &__faq {
-        color: #4C5767;
+        color: $black600;
         font-weight: 500;
 
         &_gray {
           font-size: 16px;
           font-weight: 400;
-          color: #8D96A1;
+          color: $black400;
           height: 0;
           transition: height 300ms;
           overflow: hidden;
@@ -801,7 +801,7 @@ export default {
           height: auto;
           font-size: 16px;
           font-weight: 400;
-          color: #8D96A1;
+          color: $black400;
           transition: height 300ms;
           margin-top: 20px;
         }
@@ -811,7 +811,7 @@ export default {
         @extend .text;
         font-weight: 500;
         font-size: 18px;
-        color: #0083C7;
+        color: $blue;
       }
 
       &_small {
@@ -835,7 +835,7 @@ export default {
     }
 
     .info-block {
-      background-color: #fff;
+      background-color: $white;
       border-radius: 6px;
 
       &:not(:first-of-type) {
@@ -901,14 +901,14 @@ export default {
       &__perc {
         font-weight: 700;
         font-size: 20px;
-        color: #0083C7;
+        color: $blue;
         align-self: flex-end;
       }
 
       &__period {
         font-weight: 400;
         font-size: 16px;
-        color: #0083C7;
+        color: $blue;
         align-self: flex-start;
       }
 
@@ -938,12 +938,12 @@ export default {
       }
 
       &__title {
-        color: #0083C7;
+        color: $blue;
         font-weight: 700;
         font-size: 25px;
 
         &_gray {
-          color: #7C838D;
+          color: $black500;
           font-weight: 400;
           font-size: 16px;
           margin-left: 20px;
@@ -953,17 +953,17 @@ export default {
       &__subtitle {
         font-weight: 400;
         font-size: 16px;
-        color: #7C838D;
+        color: $black500;
 
         &_black {
           @extend .info-block__title_gray;
           margin-bottom: 20px;
-          color: #1D2127;
+          color: $black800;
         }
 
         &_red {
           @extend .info-block__subtitle_black;
-          color: #DF3333;
+          color: $red;
         }
       }
 
@@ -1006,7 +1006,7 @@ export default {
     width: 33px;
     object-fit: cover;
     border-radius: 50%;
-    background-color: #fff;
+    background-color: $white;
     flex: none;
   }
 
@@ -1041,12 +1041,12 @@ export default {
 
       &_green {
         @extend .user__value;
-        color: #00AA5B;
+        color: $green;
       }
 
       &_gray {
         @extend .user__value;
-        color: #7C838D;
+        color: $black500;
         font-weight: 400;
       }
     }
