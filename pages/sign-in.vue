@@ -206,7 +206,7 @@ export default {
       addressAssigned: false,
       userWalletAddress: null,
       step: WalletState.Default,
-      model: { email: '', password: '', totp: '' },
+      model: { email: '', password: '' },
       remember: false,
       userStatus: '',
       userAddress: '',
@@ -383,7 +383,7 @@ export default {
       if (this.isLoading) return;
       this.SetLoader(true);
       const { ok, result } = await this.$store.dispatch('user/signIn', {
-        params: { ...model },
+        params: model,
         isRemember: rememberMe,
       });
       if (ok) {
