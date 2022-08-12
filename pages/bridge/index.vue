@@ -652,11 +652,11 @@ export default {
     .header {
       &__btn {
         width: 200px;
+        margin-bottom: 10px;
       }
 
       &__address {
         color: $black200;
-        margin-top: 10px;
         font-weight: 400;
         font-size: 16px;
         line-height: 130%;
