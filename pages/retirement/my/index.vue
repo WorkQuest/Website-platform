@@ -835,6 +835,8 @@ export default {
     }
 
     .info-block {
+      display: flex;
+      flex-direction: column;
       background-color: $white;
       border-radius: 6px;
 
