@@ -7,6 +7,7 @@
     :rules="rules"
     :name="name"
     :vid="vid"
+    :debounce="100000"
     mode="aggressive"
     slim
   >
