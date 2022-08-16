@@ -36,10 +36,6 @@ export const NotificationAction = {
 };
 
 export const LocalNotificationAction = {
-  KYC: 'kyc',
-  TWOFA: '2fa',
-  GET_REWARD: 'reward',
-  PROFILE_FILLED: 'filled',
   RATE_THE_QUEST: 'quest',
   QUEST_DRAFT: 'questDraft',
   QUESTS_SPECS: 'questsSpecs',
