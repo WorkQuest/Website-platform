@@ -2,8 +2,16 @@
   <div class="notifications-page">
     <div class="notifications-page__main-container">
       <div class="info-block info-block__container">
-        <div class="info-block__title">
-          {{ $t('ui.notifications.title') }}
+        <div class="info-block__header">
+          <div class="info-block__title">
+            {{ $t('ui.notifications.title') }}
+          </div>
+          <base-btn
+            class="button__read-all"
+            @click="handleAllAsRead"
+          >
+            Mark all as read
+          </base-btn>
         </div>
 
         <div
@@ -150,6 +158,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    handleAllAsRead() {
+      // TODO: отправить запрос на read all
+    },
     checkLocalOrSystemNotif(notification) {
       return notification?.params?.isLocal || !notification?.sender?.id;
     },
@@ -263,6 +274,12 @@ export default {
   text-outline: none;
 }
 
+.button__read-all {
+  width: fit-content;
+  padding: 0 20px;
+  height: 26px;
+}
+
 .info-block {
   background: $white;
   border-radius: 6px;
@@ -276,13 +293,19 @@ export default {
     display: grid;
   }
 
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 20px 0;
+  }
+
   &__title {
     @include text-simple;
     font-weight: 500;
     font-size: 18px;
     color: $black800;
     letter-spacing: 0.05em;
-    padding: 20px 20px 0;
   }
 
   &__pager {
