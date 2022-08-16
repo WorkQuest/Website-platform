@@ -1412,21 +1412,12 @@
   },
   "localNotifications": {
     "messages": {
-      "inviteFriends": "Invite your friends and get rewarded!",
-      "wiki": "You can get acquainted with all the functionality of the platform on the WorkQuest Wiki page!",
-      "kyc": "You can enable KYC on Sumsub page.",
-      "twoFA": "You can enable 2FA in settings.",
-      "fillSettingsData": "You can fill your profile data in settings.",
       "questDraft": "You have a saved draft of the quest.",
       "rateTheQuest": "Please rate the completed work on the quest.",
       "reviewEmp": "Please, review your Employer!",
       "reviewWorker": "Please, review your Employee!"
     },
     "btns": {
-      "inviteFriends": "Get Reward",
-      "wiki": "Go to Wiki",
-      "kyc": "Enable KYC",
-      "toSettings": "Go to Settings",
       "questDraft": "Go to Create Quest page",
       "rateTheQuest": "Go to Quest page",
       "reviewEmp": "Go to Employer Profile",
@@ -1469,7 +1460,13 @@
     "questWorkInProgress": "Quest is started",
     "questWorkSentForReview": "Work sent for review",
     "questCompleted": "Quest completed",
-    "PaidReferral": "New referral reward"
+    "PaidReferral": "New referral reward",
+
+    "EnableDoubleAuthentication": "You can enable 2FA in settings.",
+    "InviteFriendsReward": "Invite your friends and get rewarded!",
+    "WorkQuestWikiPage": "You can get acquainted with all the functionality of the platform on the WorkQuest Wiki page!",
+    "EnableSumsubKYC": "You can enable KYC on Sumsub page.",
+    "FillProfileDataOnSettings": "You can fill your profile data in settings."
   },
   "wallet": {
     "frozen": "Frozen balance",
