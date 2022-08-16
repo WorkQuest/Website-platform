@@ -160,7 +160,7 @@ export const Path = {
   MESSAGES: '/messages',
   EDIT_QUEST: '/edit-quest',
   COLLATERAL: '/collateral',
-  WIKI: '/wiki',
+  WIKI: 'https://workquest.wiki/',
   RAISED_VIEWS: '/raised-views',
   NOTIFICATIONS: '/notifications',
   RETIREMENT: '/retirement',
@@ -184,7 +184,6 @@ export const PreventLogoutPathNames = [
   'bridge',
   'crediting',
   'collateral',
-  'wiki',
 ];
 
 export const PathDAO = {
