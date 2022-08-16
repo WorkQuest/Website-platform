@@ -165,7 +165,7 @@ export default {
       if (await this.$store.dispatch('chat/leaveFromChat', this.currChat.id)) await this.$router.push(`${Path.MESSAGES}`);
       this.CloseModal();
     },
-    async showCreateChatModal() {
+    showCreateChatModal() {
       this.closeChatMenu();
       this.ShowModal({
         key: modals.chatCreate,
