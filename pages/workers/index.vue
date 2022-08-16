@@ -242,6 +242,9 @@ export default {
 
 @include _1199 {
   .employees {
+    &__content {
+      padding: 0 10px;
+    }
     &__cards {
       grid-template-columns: repeat(3, 1fr);
     }

@@ -141,7 +141,7 @@ export default {
     }
 
     &_margin {
-      padding-top: 30px;
+      padding-top: 30px !important;
     }
   }
 }
@@ -152,9 +152,12 @@ export default {
 
 @include _1199 {
   .template__main {
-    padding: 20px 20px 0 20px;
+    padding: 0 10px;
     &_disabled-margin {
       padding: 0 !important;
+    }
+    &_margin {
+      padding-top: 30px !important;
     }
   }
 }
@@ -164,6 +167,9 @@ export default {
     margin: 0 auto 40px auto;
     &_disabled-margin {
       padding: 0 !important;
+    }
+    &_margin {
+      padding-top: 30px !important;
     }
   }
 }
