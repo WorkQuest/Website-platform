@@ -180,7 +180,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { Path, WikiUrl } from '~/utils/enums';
+import { Path } from '~/utils/enums';
 import { URLS, LEGAL_INFO, COMPANY } from '~/utils/сonstants/footer';
 
 export default {
@@ -206,7 +206,7 @@ export default {
     },
     companyLinks() {
       return [
-        { title: this.$t('footer.company.wqWiki'), path: WikiUrl },
+        { title: this.$t('footer.company.wqWiki'), path: URLS.WIKI },
         { title: this.$t('meta.aboutUs'), path: COMPANY.ABOUT_US },
         { title: this.$t('footer.company.leadership'), path: COMPANY.LEADERSHIP },
       ];
