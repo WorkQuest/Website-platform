@@ -12,7 +12,6 @@
         <div
           v-show="isShowBluePanel"
           class="blue-panel"
-          :class="{'blue-panel_white': $route.name === 'profile-id'}"
         />
         <div
           class="template__main"
@@ -61,7 +60,12 @@ export default {
       return DeFiBluePanelPathNames.includes(this.$route.name);
     },
     isDisableMargin() { // content full width
-      return [RouterNames.QUESTS_ID, RouterNames.QUESTS, RouterNames.WORKERS].includes(this.$route.name);
+      return [
+        RouterNames.QUESTS_ID,
+        RouterNames.QUESTS,
+        RouterNames.WORKERS,
+        RouterNames.PROFILE_ID,
+      ].includes(this.$route.name);
     },
   },
   created() {
@@ -110,10 +114,6 @@ export default {
 
 .blue-panel {
   @include blue-panel;
-
-  &_white {
-    background: $white !important;
-  }
 }
 
 .template {
@@ -136,7 +136,7 @@ export default {
     }
 
     &_disabled-margin {
-      margin: 0 !important;
+      margin: 0 0 20px 0 !important;
       max-width: none;
     }
 

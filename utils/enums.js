@@ -216,7 +216,6 @@ export const DeFiBluePanelPathNames = [
   RouterNames.RETIREMENT_MY,
   RouterNames.SAVINGS,
   RouterNames.SAVINGS_ID,
-  RouterNames.PROFILE_ID,
 ];
 
 export const PreventLogoutPathNames = [

@@ -662,7 +662,7 @@ export default {
   .section {
     &__container {
       width: 100vw;
-      margin: -20px -20px 10px -20px;
+      //margin: -20px -20px 10px -20px;
       &_white {
         background-color: $white;
       }
