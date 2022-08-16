@@ -298,7 +298,7 @@ export default {
 
   &__remove {
     margin-left: auto;
-    height: 15px;
+    height: 12px;
     margin-bottom: 10px;
     cursor: pointer;
     visibility: hidden;
