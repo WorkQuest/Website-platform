@@ -32,7 +32,7 @@
       <wallet-switcher class="mining-page__switcher" />
       <div class="mining-page__content">
         <div
-          class="info-block__grid"
+          class="info-block__grid info-block_space-top-mini"
           :class="{'info-block__grid_double': chain === $options.Chains.BINANCE}"
         >
           <div class="info-block__icons">
@@ -157,7 +157,7 @@
             </div>
           </div>
         </div>
-        <div class="info-block">
+        <div class="info-block info-block_space-top">
           <div class="info-block__name_bold">
             {{ $t('mining.liquidityPoolProviders') }}
           </div>
@@ -165,13 +165,13 @@
             {{ $t('mining.liquidityProvidersEarn') }}
           </div>
         </div>
-        <div class="info-block">
+        <div class="info-block info-block_space-top">
           <div class="info-block__name">
             {{ $t('mining.liquidity') }}
           </div>
           <chart :special-chart-data="miningChartData" />
         </div>
-        <div class="info-block">
+        <div class="info-block info-block_space-top">
           <div class="info-block__name">
             {{ $t('mining.transactions') }}
           </div>
@@ -994,9 +994,15 @@ export default {
   &__content {
     width: 100%;
     .info-block {
-      margin-top: 30px;
       background-color: #fff;
       border-radius: 6px;
+
+      &_space-top {
+        margin-top: 30px;
+        &-mini {
+          margin-top: 10px;
+        }
+      }
 
       &__chart {
         width: 100%;
