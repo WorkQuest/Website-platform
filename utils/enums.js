@@ -251,6 +251,13 @@ export const ExplorerUrl = {
   develop: 'https://dev-explorer.workquest.co',
 }[process.env.BRANCH];
 
+export const WikiUrl = {
+  master: 'https://dev.workquest.wiki',
+  testnet: 'https://dev.workquest.wiki',
+  stage: 'https://dev.workquest.wiki',
+  develop: 'https://dev.workquest.wiki', // TODO: add prod urls
+}[process.env.BRANCH];
+
 export const NetworksData = {
   ETH_MAIN: {
     chainId: ChainsId.ETH_MAIN,

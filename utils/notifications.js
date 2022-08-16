@@ -26,6 +26,13 @@ export const NotificationAction = {
   UPDATE_RATING_STATISTIC: 'updateRatingStatistic',
   NEW_QUEST_FOR_SPECIALIZATION: 'newQuestForSpecialization',
   PAID_REFERRAL: 'PaidReferral',
+
+  // notifications after registration
+  KYC: 'EnableSumsubKYC',
+  TWOFA: 'EnableDoubleAuthentication',
+  WIKI: 'WorkQuestWikiPage',
+  GET_REWARD: 'InviteFriendsReward',
+  PROFILE_FILLED: 'FillProfileDataOnSettings',
 };
 
 export const LocalNotificationAction = {

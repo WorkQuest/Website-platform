@@ -113,13 +113,11 @@ import { mapGetters } from 'vuex';
 import { UserRole, Path } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 import { images } from '~/utils/images';
-import localNotifications from '~/plugins/mixins/localNotifications';
 
 export default {
   name: 'Notifications',
   UserRole,
   images,
-  mixins: [localNotifications],
   data() {
     return {
       notifications: [],
@@ -160,8 +158,7 @@ export default {
       return notification.sender?.avatar?.url || images.EMPTY_AVATAR;
     },
     notificationActionKey(notification) {
-      const symbol = ['notifications.newDiscussionLike'].includes(notification.actionNameKey) ? '.' : ':';
-      return `${this.$t(notification.actionNameKey)}${symbol}`;
+      return `${this.$t(notification.actionNameKey)}`;
     },
     toUserProfile(notification) {
       if (notification?.params?.isLocal) return;
@@ -222,9 +219,7 @@ export default {
     },
     async getNotifications() {
       await this.$store.dispatch('notifications/getNotifications', { params: this.filter });
-      const numberOfNotifAdded = await this.getCountLocalNotifications();
-      const notifAddedBeforeNewPage = numberOfNotifAdded - (this.filter.limit - (this.notifsCount % this.filter.limit));
-      await this.setLocalNotifications(this.notifsCount);
+      const notifAddedBeforeNewPage = this.filter.limit - (this.notifsCount % this.filter.limit);
       this.notifications = this.notificationsList;
       if (notifAddedBeforeNewPage > 0 && this.page === this.totalPages && this.totalPages > 1) {
         this.notifications = [...this.notifications].splice(1, notifAddedBeforeNewPage);
@@ -424,15 +419,16 @@ export default {
     color: $blue;
     letter-spacing: 0.03em;
 
-    width: 100%;
+    width: fit-content;
+    max-width: 100%;
     display: inline-block;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    transition: .5s;
+    transition: .2s color ease-in-out;
     &_hov:hover {
         cursor: pointer;
-        color: $black300;
+        color: $black500;
       }
   }
 }
