@@ -6,7 +6,7 @@
     />
     <div
       class="search-with-map__search search"
-      :class="{'search_on-map search_margin': isShowMap}"
+      :class="{'search_on-map': isShowMap}"
     >
       <div
         class="search__block"
@@ -187,11 +187,6 @@ export default {
 
 .search-with-map__map-block {
   height: 435px;
-  margin-top: 72px; // header height
-  width: 100vw;
-  left: 0;
-  top: 0;
-  position: fixed;
 
   &_hidden {
     display: none;
@@ -199,12 +194,8 @@ export default {
 }
 
 .search {
+  max-width: 1180px;
   margin: 30px auto;
-
-  // if map showed
-  &_margin {
-    margin-top: 435px !important;
-  }
 
   &_on-map {
     position: relative;
@@ -269,6 +260,8 @@ export default {
 
 @include _1199 {
   .search {
+    padding: 0 20px;
+
     &__block {
       grid-template-columns: 160px 1fr 155px 220px;
 
@@ -324,6 +317,7 @@ export default {
 
 @include _575 {
   .search {
+    padding: 0 10px;
     margin-top: 10px;
 
     &__block {

@@ -61,7 +61,7 @@ export default {
       return DeFiBluePanelPathNames.includes(this.$route.name);
     },
     isDisableMargin() { // content full width
-      return this.$route.name === RouterNames.QUESTS_ID;
+      return [RouterNames.QUESTS_ID, RouterNames.QUESTS, RouterNames.WORKERS].includes(this.$route.name);
     },
   },
   created() {
