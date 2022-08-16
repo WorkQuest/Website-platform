@@ -91,8 +91,8 @@
               class="txFee__loader-wrapper"
             >
               <loader
-                is-mini-loader
                 class="txFee__loader"
+                is-mini-loader
               />
             </div>
             <div
@@ -377,15 +377,15 @@ export default {
 
 .txFee {
   &__loader-wrapper {
-    width: 10px;
+    width: 37px;
+    height: 37px;
     margin-left: 10px;
     position: relative;
   }
 
   &__loader {
     position: absolute;
-    top: -10px;
-    background: none;
+    top: -20px !important;
   }
 
   &__amount {

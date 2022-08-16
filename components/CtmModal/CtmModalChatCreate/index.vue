@@ -213,8 +213,16 @@ export default {
         params: { ...filter, excludeMembersChatId: chatId || undefined },
       };
       await this.$store.dispatch('chat/getUsersForGroupChat', config);
-      this.members = users.list;
       this.SetLoader(false);
+      if (users.count) this.members = users.list;
+      else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.errors.error'),
+          subtitle: this.$t('modals.errors.dontHavePeople'),
+        });
+      }
     },
     hide() {
       const { options: { isAdding }, chatMembers } = this;

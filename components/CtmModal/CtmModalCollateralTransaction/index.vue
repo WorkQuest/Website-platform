@@ -112,7 +112,7 @@ export default {
     return {
       selCurrencyID: TokenSymbols.WUSD,
       currentDeposit: null,
-    // selectedMethod: null,
+      selectedMethod: null,
     };
   },
   computed: {
@@ -121,8 +121,8 @@ export default {
     }),
     checkpoints() {
       return [
-        { name: TokenSymbols.WUSD, address: TokenMap.WUSD },
-        { name: TokenSymbols[this.options.symbol], address: TokenMap[this.options.symbol] },
+        { name: TokenSymbols.WUSD },
+        { name: TokenSymbols[this.options.symbol] },
       ];
     },
     modalTitle() {
@@ -142,14 +142,22 @@ export default {
       }[this.options.mode];
     },
   },
+  watch: {
+    selCurrencyID() {
+      if (['disposeDebt', 'addCollateral'].includes(this.options.mode)) {
+        this.selectedMethod = this.selCurrencyID === TokenSymbols.WUSD ? 'disposeDebt' : 'addCollateral';
+      }
+    },
+  },
   mounted() {
-    this.selCurrencyID = this.options.selCurrencyID || this.options.symbol;
+    this.selectedMethod = this.options.mode;
+    this.selCurrencyID = this.options.symbol;
   },
   methods: {
     handleSubmit() {
-      const { submit, mode } = this.options;
+      const { submit } = this.options;
       this.CloseModal();
-      submit(mode, this.selCurrencyID);
+      submit(this.selectedMethod);
     },
   },
 };

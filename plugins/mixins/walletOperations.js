@@ -1,10 +1,16 @@
 import BigNumber from 'bignumber.js';
+import { mapGetters } from 'vuex';
 import { QuestMethods, QuestStatuses } from '~/utils/сonstants/quests';
 import { ERC20, WorkQuest } from '~/abi';
 import modals from '~/store/modals/modals';
 import { TokenSymbols } from '~/utils/enums';
 
 export default {
+  computed: {
+    ...mapGetters({
+      userWalletAddress: 'user/getUserWalletAddress',
+    }),
+  },
   methods: {
     async DeleteQuest(questData) {
       const { status, contractAddress } = questData;

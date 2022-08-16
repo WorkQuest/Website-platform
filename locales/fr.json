@@ -1920,7 +1920,7 @@
     "card": {
       "lotAmount": "Lot amount: {amount} {symbol}",
       "lotPrice": "Lot price: {price} WUSD",
-      "feeIncluded": "including liquidation fees ({feePercent}%)",
+      "rewardIncluded": "including liquidation rewards ({rewardPercent}%)",
       "timeLeft": "Auction time left:",
       "completed": {
         "lotAmount": "Lot amount:",
