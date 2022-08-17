@@ -187,6 +187,7 @@ export default {
     }
     &_disable-indentation {
       padding: 0;
+      margin: 0;
     }
   }
 }
