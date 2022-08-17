@@ -353,10 +353,6 @@ export default {
       text-overflow: ellipsis;
       white-space: nowrap;
       transition: .2s color ease-in-out;
-      &_hov:hover {
-        cursor: pointer;
-        color: $black500;
-      }
     }
   }
 }
