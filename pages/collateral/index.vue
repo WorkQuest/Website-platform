@@ -303,7 +303,9 @@ export default {
       await this.$store.dispatch('wallet/getBalance');
       this.ShowModal({
         key: modals.getWUSD,
-        submit: async ({ collateral, percent, currency }) => {
+        submit: async ({
+          amountWUSD, collateral, percent, currency,
+        }) => {
           this.SetLoader(true);
           const { result: { gas, gasPrice }, msg } = await this.$store.dispatch('oracle/feeSetTokensPrices');
           this.SetLoader(false);
@@ -325,6 +327,7 @@ export default {
               tokenAddress: TokenMap[currency],
               contractAddress: this.ENV.WORKNET_ROUTER,
               amount: collateral,
+              symbol: currency,
               approveTitle: this.$t('modals.approveRouter', { token: currency }),
             }).then(async () => {
               const collateralBN = new BigNumber(collateral).shiftedBy(+this.currentBalance[currency].decimals || 18).toFixed(0);
@@ -343,8 +346,8 @@ export default {
               await this.ShowTxReceipt({
                 from: this.convertToBech32('wq', getWalletAddress()),
                 to: this.ENV.WORKNET_ROUTER,
-                amount: collateral,
-                currency,
+                amount: amountWUSD,
+                currency: TokenSymbols.WUSD,
                 fee,
                 title: this.$t('modals.takeWUSD'),
               }).then(async () => {
