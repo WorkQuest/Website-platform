@@ -138,19 +138,19 @@ export default {
       padding-bottom: 0;
     }
 
+    &_margin {
+      padding-top: 30px;
+    }
+
     &_disabled-margin {
-      margin: 0 0 20px 0 !important;
+      margin: 0 0 20px 0;
       max-width: none;
     }
 
     &_disable-indentation {
-      margin: 0 !important;
+      margin: 0;
       max-width: none;
-      padding: 0 !important;
-    }
-
-    &_margin {
-      padding-top: 30px !important;
+      padding: 0;
     }
   }
 }
@@ -164,16 +164,14 @@ export default {
 @include _1199 {
   .template__main {
     padding: 0 10px;
+    &_margin {
+      padding-top: 30px;
+    }
     &_disabled-margin {
-      padding: 0 !important;
+      padding: 0;
     }
     &_disable-indentation {
-      margin: 0 !important;
-      max-width: none;
-      padding: 0 !important;
-    }
-    &_margin {
-      padding-top: 30px !important;
+      padding: 0;
     }
   }
 }
@@ -181,16 +179,14 @@ export default {
 @include _991 {
   .template__main {
     margin: 0 auto 40px auto;
+    &_margin {
+      padding-top: 30px;
+    }
     &_disabled-margin {
-      padding: 0 !important;
+      padding: 0;
     }
     &_disable-indentation {
-      margin: 0 !important;
-      max-width: none;
-      padding: 0 !important;
-    }
-    &_margin {
-      padding-top: 30px !important;
+      padding: 0;
     }
   }
 }
