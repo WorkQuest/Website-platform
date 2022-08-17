@@ -295,6 +295,9 @@ export default {
     });
     this.debouncedAddressSearch = debounce(this.getAddressInfo, 300);
     this.SetLoader(false);
+
+    // correctly address on loadpage
+    this.addressesBuffer = [{ formatted: this.address }];
   },
   async beforeDestroy() {
     await this.setQuestDraft();

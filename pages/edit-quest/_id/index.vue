@@ -424,6 +424,9 @@ export default {
 
     this.prevPrice = this.price;
     this.debouncedAddressSearch = debounce(this.getAddressInfo, 300);
+
+    // correctly address on loadpage
+    this.addressesBuffer = [{ formatted: locationPlaceName }];
     this.SetLoader(false);
   },
   methods: {
