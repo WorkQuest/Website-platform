@@ -27,7 +27,7 @@
       <form
         class="auth__fields"
         action=""
-        @submit.prevent="handleSubmit(signIn)"
+        @submit.prevent="handleSubmit(toSignIn)"
       >
         <base-field
           ref="email"
@@ -174,7 +174,7 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import {
-  createWallet, decryptStringWitheKey, encryptStringWithKey, initWallet, setCipherKey,
+  createWallet, decryptStringWithKey, encryptStringWithKey, initWallet, setCipherKey,
 } from '~/utils/wallet';
 import CreateWallet from '~/components/ui/CreateWallet';
 import {
@@ -206,7 +206,7 @@ export default {
       addressAssigned: false,
       userWalletAddress: null,
       step: WalletState.Default,
-      model: { email: '', password: '', totp: '' },
+      model: { email: '', password: '' },
       remember: false,
       userStatus: '',
       userAddress: '',
@@ -373,18 +373,16 @@ export default {
       this.ShowToast(this.$t('registration.emailConfirmNewLetter'), this.$t('registration.emailConfirmTitle'));
       this.startTimer();
     },
-    async signIn() {
+    async toSignIn() {
+      this.model.email = this.model.email.trim();
+      await this.signIn(this.model, this.remember);
+    },
+    async signIn(model, rememberMe) {
       if (this.isLoading) return;
       this.SetLoader(true);
-      this.model.email = this.model.email.trim();
-      const { email, password } = this.model;
-      const payload = {
-        email,
-        password,
-      };
       const { ok, result } = await this.$store.dispatch('user/signIn', {
-        params: payload,
-        isRemember: this.remember,
+        params: model,
+        isRemember: rememberMe,
       });
       if (ok) {
         this.$cookies.set('userStatus', result.userStatus, { path: Path.ROOT, maxAge: accessLifetime });
@@ -403,6 +401,7 @@ export default {
       this.SetLoader(false);
     },
     async nextStepAction() {
+      this.CloseModal(); // for modal sign in
       const confirmToken = sessionStorage.getItem('confirmToken');
       // Unconfirmed account w/o confirm token
       if (this.userStatus === UserStatuses.Unconfirmed && !confirmToken) {
@@ -471,7 +470,7 @@ export default {
         return;
       }
       if (storageMnemonic) {
-        const mnemonic = decryptStringWitheKey(storageMnemonic, this.model.password);
+        const mnemonic = decryptStringWithKey(storageMnemonic, this.model.password);
         const wallet = createWallet(mnemonic);
         if (wallet?.address?.toLowerCase() === this.userWalletAddress) {
           this.saveToStorage(wallet);
@@ -570,6 +569,7 @@ export default {
     showSignWorkQuest() {
       this.ShowModal({
         key: modals.signWorkQuest,
+        submitMethod: async (model, isRememberMe) => await this.signIn(model, isRememberMe),
       });
     },
   },

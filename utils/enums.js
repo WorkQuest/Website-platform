@@ -160,7 +160,6 @@ export const Path = {
   MESSAGES: '/messages',
   EDIT_QUEST: '/edit-quest',
   COLLATERAL: '/collateral',
-  WIKI: '/wiki',
   RAISED_VIEWS: '/raised-views',
   NOTIFICATIONS: '/notifications',
   RETIREMENT: '/retirement',
@@ -176,15 +175,57 @@ export const RouterNames = {
   SIGN_IN: 'sign-in',
   SIGN_UP: 'sign-up',
   ROLE: 'role',
+
+  CREDITING: 'crediting',
+  REFERRAL: 'referral',
+  REFERRAL_MY: 'referral-my',
+  RETIREMENT: 'retirement',
+  RETIREMENT_MY: 'retirement-my',
+  STAKING: 'staking',
+  STAKING_ID: 'staking-id',
+  INSURING: 'insuring',
+  INSURING_ID: 'insuring-id',
+  BRIDGE: 'bridge',
+  MINING: 'mining',
+  MINING_ID: 'mining-id',
+  LENDING: 'lending',
+  COLLATERAL: 'collateral',
+  SAVINGS: 'savings',
+  SAVINGS_ID: 'savings-id',
+  WIKI: 'wiki',
+  PROFILE_ID: 'profile-id',
+  QUESTS: 'quests',
+  QUESTS_ID: 'quests-id',
+  WORKERS: 'workers',
+  MESSAGES: 'messages',
+  MESSAGES_ID: 'messages-id',
 };
 
+export const DeFiBluePanelPathNames = [
+  RouterNames.BRIDGE,
+  RouterNames.MINING,
+  RouterNames.MINING_ID,
+  RouterNames.INSURING,
+  RouterNames.INSURING_ID,
+  RouterNames.LENDING,
+  RouterNames.REFERRAL,
+  RouterNames.REFERRAL_MY,
+  RouterNames.STAKING,
+  RouterNames.STAKING_ID,
+  RouterNames.COLLATERAL,
+  RouterNames.RETIREMENT,
+  RouterNames.RETIREMENT_MY,
+  RouterNames.SAVINGS,
+  RouterNames.SAVINGS_ID,
+];
+
 export const PreventLogoutPathNames = [
-  'mining',
-  'mining-id',
-  'bridge',
-  'crediting',
-  'collateral',
-  'wiki',
+  RouterNames.MINING,
+  RouterNames.MINING_ID,
+  RouterNames.BRIDGE,
+  RouterNames.CREDITING,
+  RouterNames.COLLATERAL,
+  RouterNames.WIKI,
 ];
 
 export const PathDAO = {
@@ -251,6 +292,8 @@ export const ExplorerUrl = {
   stage: 'https://stage-explorer.workquest.co',
   develop: 'https://dev-explorer.workquest.co',
 }[process.env.BRANCH];
+
+export const WikiUrl = 'https://workquest.wiki';
 
 export const NetworksData = {
   ETH_MAIN: {

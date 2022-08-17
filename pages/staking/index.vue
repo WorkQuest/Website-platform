@@ -206,10 +206,6 @@ export default {
 
 <style lang="scss" scoped>
 .staking-page {
-  background: linear-gradient(to bottom, #103D7C 370px, #f6f8fa 370px);
-  display: flex;
-  justify-content: center;
-
   &__container {
     display: grid;
     grid-template-rows: 190px max-content;
@@ -326,7 +322,6 @@ export default {
   }
 
   @include _767 {
-    background: linear-gradient(to bottom, #103D7C 320px, #f6f8fa 320px);
     &__container {
       grid-template-rows: auto auto;
       gap: 24px;

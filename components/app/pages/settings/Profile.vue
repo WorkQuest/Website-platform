@@ -56,7 +56,7 @@
             v-click-outside="hideSearchDD"
             :placeholder="$t('settings.addressInput')"
             data-selector="ADDRESS"
-            :rules="{required: true, geo_is_address: {geoCode} }"
+            :rules="{required: true, geo_is_address: { addresses: addressesBuffer } }"
             mode="icon"
             :selector="isSearchDDStatus"
             :name="$t('meta.addressSmall')"
@@ -344,6 +344,7 @@ export default {
       newWorkExp: { from: '', to: '', place: '' },
       isSearchDDStatus: false,
       addresses: [],
+      addressesBuffer: [],
       coordinates: { lng: '', lat: '', address: '' },
       mainInputs: [
         {
@@ -462,6 +463,9 @@ export default {
     profile() {
       this.secondPhoneNumber = this.profileSecondPhone;
       this.firstPhone = this.profileFirstPhone;
+
+      // correctly address on loadpage
+      this.addressesBuffer = [{ formatted: this.profile.locationFull.locationPlaceName }];
     },
   },
   mounted() {
@@ -520,9 +524,11 @@ export default {
       try {
         if (keyword.length) {
           this.addresses = await this.geoCode.geolookup(keyword);
+          this.addressesBuffer = this.addresses;
         } else this.addresses = [];
       } catch (e) {
         this.addresses = [];
+        this.addressesBuffer = [];
         console.error('Geo look up is failed', e);
       }
     },

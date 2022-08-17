@@ -95,7 +95,7 @@
           data-selector="ADDRESS-FIELD"
           mode="icon"
           :selector="true"
-          :rules="{required: true, geo_is_address: {geoCode} }"
+          :rules="{required: true, geo_is_address: { addresses: addressesBuffer } }"
           :name="$tc('quests.address')"
           @selector="debouncedAddressSearch(address)"
         >
@@ -229,6 +229,7 @@ export default {
       price: '',
       coordinates: {},
       addresses: [],
+      addressesBuffer: [], // for vee validate
       files: [],
       geoCode: null,
       isClearData: false,
@@ -294,6 +295,9 @@ export default {
     });
     this.debouncedAddressSearch = debounce(this.getAddressInfo, 300);
     this.SetLoader(false);
+
+    // correctly address on loadpage
+    this.addressesBuffer = [{ formatted: this.address }];
   },
   async beforeDestroy() {
     await this.setQuestDraft();
@@ -385,10 +389,12 @@ export default {
       try {
         if (address.length) {
           this.addresses = await this.geoCode.geolookup(address);
+          this.addressesBuffer = this.addresses;
           this.coordinates = { lng: this.addresses[0].lng, lat: this.addresses[0].lat };
         } else this.addresses = [];
       } catch (e) {
         this.addresses = [];
+        this.addressesBuffer = [];
         console.error('Geo look up is failed', e);
       }
     },

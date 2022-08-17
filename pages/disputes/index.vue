@@ -127,11 +127,6 @@ export default {
 }
 
 @include _1199 {
-  .main {
-    &__body {
-      padding: 20px;
-    }
-  }
   .page {
     &__dispute-cards {
       grid-template-columns: 1fr;
@@ -141,11 +136,6 @@ export default {
 }
 
 @include _575 {
-  .main {
-    &__body {
-      padding: 0 20px;
-    }
-  }
   .page {
     &__dispute-cards {
       grid-gap: 15px;

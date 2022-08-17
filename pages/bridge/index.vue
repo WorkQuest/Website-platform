@@ -173,7 +173,7 @@
           v-if="totalPages > 1"
           v-model="page"
           :total-pages="totalPages"
-          class="table__pages"
+          class="bridge-page__pages"
         />
       </div>
     </div>
@@ -629,10 +629,6 @@ export default {
 }
 
 .bridge-page {
-  background: linear-gradient(to bottom, #103D7C 420px, #f6f8fa 420px);
-  display: flex;
-  justify-content: center;
-
   &__empty-info {
     .absence {
       background: white;
@@ -640,12 +636,11 @@ export default {
   }
 
   &__container {
-    display: grid;
-    grid-template-rows: 190px max-content;
-    max-width: 1180px;
-    grid-row-gap: 20px;
     width: 100%;
-    box-sizing: border-box;
+  }
+
+  &__pages {
+    margin-top: 20px;
   }
 
   &__header {
@@ -657,11 +652,11 @@ export default {
     .header {
       &__btn {
         width: 200px;
+        margin-bottom: 10px;
       }
 
       &__address {
         color: $black200;
-        margin-top: 10px;
         font-weight: 400;
         font-size: 16px;
         line-height: 130%;
@@ -691,8 +686,6 @@ export default {
   }
 
   &__content {
-    display: grid;
-    grid-row-gap: 30px;
     width: 100%;
 
     .btn {
@@ -730,8 +723,10 @@ export default {
     }
 
     .info-block {
+      overflow: auto;
       background-color: #fff;
       border-radius: 6px;
+      margin-top: 20px;
 
       &__swap-cont {
         display: grid;
@@ -840,6 +835,8 @@ export default {
 
   &__table {
     .table {
+      min-width: 1180px;
+
       &__value {
         font-weight: 400;
         font-size: 16px;
@@ -868,30 +865,7 @@ export default {
     }
   }
 
-  @include _1199 {
-    .bridge-page__container {
-      padding: 0 30px !important;
-    }
-  }
-
-  @include _991 {
-    .bridge-page__table {
-      overflow: auto;
-    }
-    &__table {
-      width: calc(100vw - 80px);
-
-      .table {
-        width: 1180px;
-      }
-    }
-  }
-
   @include _767 {
-    &__container {
-      grid-template-rows: 170px auto;
-      gap: 24px;
-    }
     &__header {
       .title {
         font-size: 38px;
@@ -904,15 +878,9 @@ export default {
         }
       }
     }
-    &__content {
-      grid-template-rows: auto;
-    }
   }
 
   @include _575 {
-    &__container {
-      grid-template-rows: max-content auto;
-    }
     .header {
       flex-direction: column;
       &__address {

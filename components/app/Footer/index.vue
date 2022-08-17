@@ -206,7 +206,7 @@ export default {
     },
     companyLinks() {
       return [
-        { title: this.$t('footer.company.wqWiki'), path: Path.WIKI },
+        { title: this.$t('footer.company.wqWiki'), path: URLS.WIKI },
         { title: this.$t('meta.aboutUs'), path: COMPANY.ABOUT_US },
         { title: this.$t('footer.company.leadership'), path: COMPANY.LEADERSHIP },
       ];

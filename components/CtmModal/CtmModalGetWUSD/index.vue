@@ -3,128 +3,125 @@
     class="getWUSD"
     :title="$tc('modals.titles.buyWUSD')"
   >
+    <div class="getWUSD__checkpoints checkpoints">
+      <label
+        for="checkpoints__main"
+        class="checkpoints__label"
+      >
+        {{ $t('modals.chooseTheCurrency') }}
+      </label>
+      <div
+        id="checkpoints__main"
+        class="checkpoints__main"
+      >
+        <div
+          v-for="(item, i) in checkpoints"
+          :key="i"
+          class="checkpoints__array"
+        >
+          <input
+            :id="item.name"
+            v-model="selCurrency"
+            type="radio"
+            class="checkpoints__item"
+            :value="item.id"
+          >
+          <label
+            class="checkpoints__name"
+            :for="item.name"
+          >
+            {{ item.name }}
+          </label>
+        </div>
+      </div>
+    </div>
     <validation-observer
       v-slot="{handleSubmit, invalid}"
       ref="form"
       tag="div"
       class="getWUSD__content content"
     >
-      <form
-        action=""
-        @submit.prevent="handleSubmit(requestGetWUSD)"
+      <div class="content__field">
+        <div class="content__label">
+          {{ $t('modals.countOfReceivedWUSD') }}
+        </div>
+        <base-field
+          ref="amount_wusd"
+          v-model="amountWUSD"
+          class="content__input"
+          placeholder="10 WUSD"
+          :rules="rulesWUSDInput"
+          :name="$tc('modals.fieldCountOf', { countOf: $options.TokenSymbols.WUSD })"
+          vid="WUSD"
+          type="number"
+          data-selector="WUSD"
+          @input="onChangeWUSD"
+        />
+      </div>
+      <div class="content__field">
+        <div class="content__label">
+          {{ $t('modals.countOfCollateral') }}
+        </div>
+        <base-field
+          ref="amount_input"
+          v-model="amountCollateral"
+          class="content__input"
+          :placeholder="`10 ${currentCurrency}`"
+          :rules="rulesCollateralInput"
+          :name="$tc('modals.fieldCountOf', { countOf: `${ currentCurrency } collateral` })"
+          vid="Collateral"
+          type="number"
+          data-selector="TOKEN"
+          @input="onChangeCollateral"
+        />
+      </div>
+      <div
+        class="content__field"
+        @keydown.delete="ChangeCaretPosition($refs.percentInput)"
       >
-        <div class="content__body">
-          <div class="content__checkpoints checkpoints">
-            <label
-              for="checkpoints__main"
-              class="checkpoints__label"
-            >
-              {{ $t('modals.chooseTheCurrency') }}
-            </label>
-            <div
-              id="checkpoints__main"
-              class="checkpoints__main"
-            >
-              <div
-                v-for="(item, i) in checkpoints"
-                :key="i"
-                class="checkpoints__array"
-              >
-                <input
-                  :id="item.name"
-                  v-model="selCurrency"
-                  type="radio"
-                  class="checkpoints__item"
-                  :value="item.id"
-                >
-                <label
-                  class="checkpoints__name"
-                  :for="item.name"
-                >
-                  {{ item.name }}
-                </label>
-              </div>
-            </div>
-          </div>
-          <div class="content__field">
-            <div class="content__label">
-              {{ $t('modals.countOfReceivedWUSD') }}
-            </div>
-            <base-field
-              :value="amountWUSD"
-              class="content__input"
-              placeholder="10 WUSD"
-              rules="required|greaterThanZero|decimal"
-              :name="$tc('modals.fieldCountOf', { countOf: $options.TokenSymbols.WUSD })"
-              type="number"
-              data-selector="WUSD"
-              @input="onChangeWUSD"
-            />
-          </div>
-          <div class="content__field">
-            <div class="content__label">
-              {{ $t('modals.countOfCollateral') }}
-            </div>
-            <base-field
-              id="amount_input"
-              :value="amountCollateral"
-              class="content__input"
-              :placeholder="`10 ${currentCurrency}`"
-              :rules="`required|decimal|greaterThanZero|not_enough_funds:${currentBalance[currentCurrency].fullBalance}|max_value:${currentBalance[currentCurrency].fullBalance}`"
-              :name="$tc('modals.fieldCountOf', { countOf: `${ currentCurrency } collateral` })"
-              type="number"
-              data-selector="TOKEN"
-              @input="onChangeCollateral"
-            />
-          </div>
-          <div
-            class="content__field"
-            @keydown.delete="ChangeCaretPosition( $refs.percentInput)"
-          >
-            <div class="content__label">
-              {{ $t('modals.percentageConversion') }}
-            </div>
-            <base-field
-              ref="percentInput"
-              :value="collateralPercent"
-              class="content__input"
-              placeholder="150 %"
-              :rules="`required|min_percent:${minRatio}|max_percent:${maxRatio}|zeroFail|min:2|max:4`"
-              :name="$tc('modals.fieldPercentConversion').toLowerCase()"
-              data-selector="PERCENT"
-              @input="calcCollateralPercent"
-            />
-            <slider
-              :value="Number(collateralPercentClear)"
-              :mode="$options.SLIDER_MODE.BLUE"
-              :from="minRatio"
-              :to="maxRatio"
-              @change="calcCollateralPercent"
-            />
-            <div class="content__text">
-              {{ $t('modals.conversionAdditionalInfo', {min_percent: collateralPercentClear, risks: getRisksGrade}) }}
-            </div>
-          </div>
+        <div class="content__label">
+          {{ $t('modals.percentageConversion') }}
         </div>
-        <div class="content__buttons buttons">
-          <base-btn
-            class="buttons__button"
-            mode="outline"
-            data-selector="CANCEL"
-            :is-submit="false"
-            @click="CloseModal"
-          >
-            {{ $t('meta.btns.cancel') }}
-          </base-btn>
-          <base-btn
-            class="buttons__button"
-            data-selector="SUBMIT"
-            :disabled="invalid"
-          >
-            {{ $t('meta.btns.submit') }}
-          </base-btn>
+        <base-field
+          ref="percentInput"
+          :value="collateralPercent"
+          class="content__input"
+          placeholder="150 %"
+          :rules="`required|min_percent:${minRatio}|max_percent:${maxRatio}|zeroFail|min:2|max:4`"
+          :name="$tc('modals.fieldPercentConversion').toLowerCase()"
+          data-selector="PERCENT"
+          @input="calcCollateralPercent"
+        />
+        <slider
+          :value="Number(collateralPercentClear)"
+          :mode="$options.SLIDER_MODE.BLUE"
+          :from="minRatio"
+          :to="maxRatio"
+          @change="calcCollateralPercent"
+        />
+        <div class="content__text">
+          {{ $t('modals.conversionAdditionalInfo', {min_percent: collateralPercentClear, risks: getRisksGrade}) }}
         </div>
-      </form>
+      </div>
+      <div class="content__buttons buttons">
+        <base-btn
+          class="buttons__button"
+          mode="outline"
+          data-selector="CANCEL"
+          :is-submit="false"
+          @click="CloseModal"
+        >
+          {{ $t('meta.btns.cancel') }}
+        </base-btn>
+        <base-btn
+          class="buttons__button"
+          data-selector="SUBMIT"
+          :disabled="invalid"
+          @click="handleSubmit(requestGetWUSD)"
+        >
+          {{ $t('meta.btns.submit') }}
+        </base-btn>
+      </div>
     </validation-observer>
   </ctm-modal-box>
 </template>
@@ -146,8 +143,8 @@ export default {
     return {
       maxRatio: 0,
       selCurrency: TokenMap.USDT,
-      amountWUSD: '',
-      amountCollateral: '',
+      amountWUSD: null,
+      amountCollateral: null,
       collateralPercent: '',
       currentCurrencyPrice: 0,
       optimalCollateralRatio: 0,
@@ -204,6 +201,17 @@ export default {
       ) return this.$t('modals.mediumRisk');
 
       return this.$t('modals.lowRisk');
+    },
+    rulesWUSDInput() {
+      const decimal_places = `decimalPlaces:${this.currentBalance[TokenSymbols.WUSD].decimals}`;
+      return `required|decimal|greaterThanZero|${decimal_places}`;
+    },
+    rulesCollateralInput() {
+      const { currentBalance, currentCurrency } = this;
+      const not_enough_funds = `not_enough_funds:${currentBalance[currentCurrency].fullBalance}`;
+      const max_value = `max_value:${currentBalance[currentCurrency].fullBalance}`;
+      const decimal_places = `decimalPlaces:${currentBalance[currentCurrency].decimals}`;
+      return `required|decimal|greaterThanZero|${not_enough_funds}|${max_value}|${decimal_places}`;
     },
   },
   watch: {
@@ -262,19 +270,19 @@ export default {
     },
     calculateWUSD() {
       if (+this.amountCollateral > 0 && +this.collateralPercentClear > 0 && +this.currentCurrencyPrice > 0) {
-        this.amountWUSD = new BigNumber(this.amountCollateral)
+        this.amountWUSD = Number(new BigNumber(this.amountCollateral)
           .multipliedBy(this.currentCurrencyPrice)
           .dividedBy(this.currentCollateralRatio)
-          .toFixed();
-      }
+          .toFixed(18, 1));
+      } else this.amountWUSD = null;
     },
     calculateCollateral() {
       if (+this.amountWUSD > 0 && +this.collateralPercentClear > 0 && +this.currentCurrencyPrice > 0) {
-        this.amountCollateral = new BigNumber(this.amountWUSD)
-          .multipliedBy(this.currentCollateralRatio)
-          .dividedBy(this.currentCurrencyPrice)
-          .toFixed();
-      }
+        this.amountCollateral = Number(new BigNumber(+this.amountWUSD)
+          .multipliedBy(+this.currentCollateralRatio)
+          .dividedBy(+this.currentCurrencyPrice)
+          .toFixed(+this.currentBalance[this.currentCurrency].decimals, 1));
+      } else this.amountCollateral = null;
     },
     async getCollateralData() {
       await this.fetchRatio();
@@ -297,8 +305,8 @@ export default {
       this.collateralPercent = `${this.optimalCollateralPercent}%`;
     },
     clearForm() {
-      this.amountWUSD = '';
-      this.amountCollateral = '';
+      this.amountWUSD = null;
+      this.amountCollateral = null;
       this.collateralPercent = '';
       this.$refs.form.reset();
     },
@@ -311,6 +319,7 @@ export default {
       const { submit } = this.options;
       this.CloseModal();
       await submit({
+        amountWUSD: this.amountWUSD,
         collateral: this.amountCollateral,
         percent: this.collateralPercent.substr(0, this.collateralPercent.length - 1),
         currency: this.currentCurrency,
@@ -325,10 +334,18 @@ export default {
 .getWUSD {
   max-width: 490px !important;
   height: auto !important;
-  padding: 0 !important;
+
+  &__checkpoints {
+    padding: 0 28px;
+    margin: 30px 0;
+
+    &_label {
+      margin-bottom: 10px;
+    }
+  }
 
   &__content {
-    padding: 25px 28px 30px 28px;
+    padding: 0 28px 30px;
   }
 }
 
@@ -356,13 +373,6 @@ export default {
     margin-top: 3px;
   }
 
-  &__checkpoints {
-    margin-bottom: 25px;
-
-    &_label {
-      margin-bottom: 10px;
-    }
-  }
 }
 
 .checkpoints {
@@ -375,8 +385,8 @@ export default {
 
   &__main {
     display: grid;
-    //grid-template-rows: repeat(3, 1fr);
-    grid-template-rows: 1fr;
+    // dependence on count of collateral tokens USDT, USDC ... (look at checkpoints array)
+    grid-template-rows: repeat(2, 1fr);
     text-align: left;
     justify-content: flex-start;
     gap: 13px;

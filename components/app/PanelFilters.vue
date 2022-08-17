@@ -213,7 +213,7 @@ export default {
   grid-gap: 20px;
 
   &__item, &__item-btn {
-    min-width: 180px;
+    width: 100%;
   }
 }
 
@@ -243,7 +243,6 @@ export default {
 
 @include _1199 {
   .filters-panel {
-
     &__item, &__item-btn {
       min-width: 160px;
     }
@@ -261,6 +260,14 @@ export default {
   .filters-panel {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(3, 43px);
+    grid-gap: 10px;
+  }
+}
+
+@include _480 {
+  .filters-panel {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(6, 43px);
     grid-gap: 10px;
   }
 }

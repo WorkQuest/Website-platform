@@ -94,7 +94,7 @@
               :placeholder="$t('quests.address')"
               mode="icon"
               :selector="true"
-              :rules="{required: true, geo_is_address: {geoCode} }"
+              :rules="{required: true, geo_is_address: { addresses: addressesBuffer } }"
               :name="$tc('quests.address')"
               @selector="debouncedAddressSearch(address)"
             >
@@ -265,6 +265,7 @@ export default {
       price: '',
       coordinates: {},
       addresses: [],
+      addressesBuffer: [],
       files: [],
       mode: this.$route.query?.mode || '',
       geoCode: null,
@@ -423,6 +424,9 @@ export default {
 
     this.prevPrice = this.price;
     this.debouncedAddressSearch = debounce(this.getAddressInfo, 300);
+
+    // correctly address on loadpage
+    this.addressesBuffer = [{ formatted: locationPlaceName }];
     this.SetLoader(false);
   },
   methods: {
@@ -554,6 +558,7 @@ export default {
       try {
         if (address.length) {
           this.addresses = await this.geoCode.geolookup(address);
+          this.addressesBuffer = this.addresses;
           this.coordinates = {
             lng: this.addresses[0].lng,
             lat: this.addresses[0].lat,
@@ -561,6 +566,7 @@ export default {
         } else this.addresses = [];
       } catch (e) {
         this.addresses = [];
+        this.addressesBuffer = [];
         console.error('Geo look up is failed', e);
       }
     },
