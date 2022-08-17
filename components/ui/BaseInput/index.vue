@@ -49,6 +49,8 @@
         :data-selector="`BASE-INPUT-FIELD-${dataSelector.toUpperCase()}`"
         :value="mode === 'convertDate' ? convertDate(value) : value"
         :type="customType"
+        :max="maxDate"
+        :min="minDate"
         :autocomplete="autocomplete"
         :disabled="disabled"
         @input="input"
@@ -176,6 +178,12 @@ export default {
     },
   },
   computed: {
+    maxDate() {
+      return this.type === 'date' ? this.$moment().format('YYYY-MM-DD') : '';
+    },
+    minDate() {
+      return this.type === 'date' ? this.$moment().format('1900-01-01') : '';
+    },
     customType() {
       return this.type === 'number' ? 'customNumber' : this.type;
     },
