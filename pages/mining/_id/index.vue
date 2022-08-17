@@ -32,7 +32,7 @@
       <wallet-switcher class="mining-page__switcher" />
       <div class="mining-page__content">
         <div
-          class="info-block__grid"
+          class="info-block__grid info-block_space-top-mini"
           :class="{'info-block__grid_double': chain === $options.Chains.BINANCE}"
         >
           <div class="info-block__icons">
@@ -157,7 +157,7 @@
             </div>
           </div>
         </div>
-        <div class="info-block">
+        <div class="info-block info-block_space-top">
           <div class="info-block__name_bold">
             {{ $t('mining.liquidityPoolProviders') }}
           </div>
@@ -165,13 +165,13 @@
             {{ $t('mining.liquidityProvidersEarn') }}
           </div>
         </div>
-        <div class="info-block">
+        <div class="info-block info-block_space-top">
           <div class="info-block__name">
             {{ $t('mining.liquidity') }}
           </div>
           <chart :special-chart-data="miningChartData" />
         </div>
-        <div class="info-block">
+        <div class="info-block info-block_space-top">
           <div class="info-block__name">
             {{ $t('mining.transactions') }}
           </div>
@@ -950,22 +950,13 @@ export default {
 }
 
 .mining-page {
-  background: linear-gradient(to bottom, #103D7C 325px, #f6f8fa 325px);
-  display: flex;
-  justify-content: center;
-
   &__connect {
+    margin-bottom: 10px;
     width: 150px;
   }
 
   &__container {
-    display: grid;
-    grid-template-rows: 65px max-content;
-    max-width: 1180px;
-    grid-row-gap: 50px;
     width: 100%;
-    gap: 15px;
-    padding: 10px;
     box-sizing: border-box;
   }
 
@@ -980,7 +971,7 @@ export default {
     align-self: flex-end;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 
     .btn {
       background-color: unset;
@@ -1001,13 +992,17 @@ export default {
   }
 
   &__content {
-    display: grid;
-    grid-row-gap: 30px;
     width: 100%;
-
     .info-block {
       background-color: #fff;
       border-radius: 6px;
+
+      &_space-top {
+        margin-top: 30px;
+        &-mini {
+          margin-top: 10px;
+        }
+      }
 
       &__chart {
         width: 100%;
@@ -1021,6 +1016,7 @@ export default {
 
         &_black {
           color: #1D2127;
+          margin-left: 5px;
         }
 
         &_big {
@@ -1100,6 +1096,7 @@ export default {
 
       &__third {
         @extend .info-block;
+        margin-top: 30px;
         padding: 20px;
         display: flex;
         flex-direction: column;
@@ -1181,6 +1178,7 @@ export default {
     font-size: 16px;
     line-height: 130%;
     text-align: right;
+    margin-bottom: 10px;
     span {
       font-weight: 600;
       color: $black0;
@@ -1195,14 +1193,13 @@ export default {
   }
 
   &__pager {
+    margin-top: 30px;
     margin-left: auto;
   }
 
   @include _991 {
     &__table {
       overflow: auto;
-      width: calc(100vw - 20px);
-
       .table {
         width: 1180px;
       }
@@ -1280,7 +1277,7 @@ export default {
   }
 }
 
-@include _767 {
+@include _991 {
   .third {
     &__container {
       text-align: center;

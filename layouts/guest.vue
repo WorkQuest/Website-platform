@@ -70,7 +70,14 @@
             </div>
           </div>
         </div>
-        <div class="template__main">
+        <div
+          v-show="isShowBluePanel"
+          class="blue-panel"
+        />
+        <div
+          class="template__main"
+          :class="{'template__main_blue-panel': isShowBluePanel}"
+        >
           <nuxt />
         </div>
         <Footer
@@ -89,7 +96,7 @@
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import moment from 'moment';
-import { Path } from '~/utils/enums';
+import { DeFiBluePanelPathNames, Path } from '~/utils/enums';
 
 export default {
   name: 'GuestLayout',
@@ -112,6 +119,9 @@ export default {
         localeSrc: `${item}.svg`,
         localeText: this.$t(`ui.locals.${item}`),
       }));
+    },
+    isShowBluePanel() { // for DeFi pages
+      return DeFiBluePanelPathNames.includes(this.$route.name);
     },
   },
   watch: {
@@ -163,6 +173,10 @@ export default {
   }
 }
 
+.blue-panel {
+  @include blue-panel;
+}
+
 .primary {
   height: 100vh;
   overflow-y: auto;
@@ -180,6 +194,13 @@ export default {
     padding-bottom: 80px;
     transition: 1s;
     width: 100%;
+
+    &_blue-panel {
+      position: relative;
+      max-width: 1180px;
+      width: 100%;
+      margin: 30px auto 80px auto;
+    }
   }
 }
 

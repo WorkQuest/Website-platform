@@ -921,7 +921,7 @@ export default {
     font-weight: normal;
     font-size: 16px;
     line-height: 130%;
-    color: #8D96A2;
+    color: $black400;
   }
 }
 
@@ -1003,6 +1003,7 @@ export default {
     width: 40px;
     height: 40px;
     cursor: pointer;
+    border: 1px solid $black0;
   }
 
   &__more-data {
@@ -1042,17 +1043,17 @@ export default {
 
     &_low {
       background: rgba(34, 204, 20, 0.1);
-      color: #22CC14;
+      color: $green;
     }
 
     &_urgent {
       background: rgba(223, 51, 51, 0.1);
-      color: #DF3333;
+      color: $red;
     }
 
     &_normal {
       background: rgba(232, 210, 13, 0.1);
-      color: #E8D20D;
+      color: $yellow
     }
   }
   &__payPeriod {
@@ -1124,19 +1125,19 @@ export default {
   &-chat_green:before {
     @extend .icon;
     content: "\e9ba";
-    color: #00AA5B;
+    color: $green;
   }
 
   &-caret_down_blue:before {
     @extend .icon;
     content: "\ea48";
-    color: #0083C7;
+    color: $blue;
   }
 
   &-chevron_big_left:before {
     @extend .icon;
     content: "\ea4d";
-    color: #0083C7;
+    color: $blue;
   }
 
   &-location:before {
