@@ -383,7 +383,6 @@ export default {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    max-width: 400px;
     background: $white;
     border-radius: 6px;
     justify-items: center;

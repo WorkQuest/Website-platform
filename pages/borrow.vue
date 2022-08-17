@@ -475,9 +475,6 @@ export default {
 
 <style lang="scss" scoped>
   .borrow {
-    background: linear-gradient(to bottom, #103D7C 320px, #f6f8fa 320px);
-    display: flex;
-    justify-content: center;
     &__container {
       max-width: 1180px;
       width: 100%;

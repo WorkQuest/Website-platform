@@ -18,7 +18,7 @@
             :class="{'notification_gray' : !notification.seen}"
             @click="goToEvent(notification)"
           >
-            <template v-if="notification.sender">
+            <div class="notification__left">
               <div class="notification__avatar">
                 <img
                   class="avatar"
@@ -28,58 +28,58 @@
                   @click="toUserProfile(notification)"
                 >
               </div>
-              <div class="notification__inviter inviter">
-                <span
-                  class="inviter__name"
-                  :class="{'inviter__name_hov': !checkLocalOrSystemNotif(notification) }"
-                  @click="notification.params.isLocal ? '' : toUserProfile(notification)"
-                >
-                  {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
-                </span>
-                <span
-                  v-if="notification.sender.additionalInfo"
-                  class="inviter__company"
-                >
+              <div class="notification__info info">
+                <template v-if="notification.sender">
+                  <div class="notification__inviter inviter">
+                    <span
+                      class="inviter__name"
+                      :class="{'inviter__name_hov': !checkLocalOrSystemNotif(notification) }"
+                      @click="notification.params.isLocal ? '' : toUserProfile(notification)"
+                    >
+                      {{ UserName(notification.sender.firstName, notification.sender.lastName) }}
+                    </span>
+                    <span
+                      v-if="notification.sender.additionalInfo"
+                      class="inviter__company"
+                    >
+                      {{
+                        notification.sender.additionalInfo.company
+                          ? `${$t('modals.fromAddress')} ${notification.sender.additionalInfo.company}`
+                          : ''
+                      }}
+                    </span>
+                  </div>
+                </template>
+                <div class="info__text">
                   {{
-                    notification.sender.additionalInfo.company
-                      ? `${$t('modals.fromAddress')} ${notification.sender.additionalInfo.company}`
-                      : ''
+                    notification.params.isLocal || (notification.data && notification.data.message)
+                      ? notification.data.message
+                      : notificationActionKey(notification)
                   }}
-                </span>
+                </div>
+                <div
+                  v-if="notification.params"
+                  class="info__title"
+                  :class="{'info__title_hov': !notification.params.isLocal}"
+                  @click="notification.params.isLocal ? '' : goToEvent(notification, true)"
+                >
+                  {{ notification.params.title }}
+                </div>
+                <div class="info__date">
+                  {{ $moment(notification.createdAt).format('MMMM Do YYYY, h:mm') }}
+                </div>
               </div>
-            </template>
-            <div class="notification__quest quest">
-              <div class="quest__invitation">
-                {{
-                  notification.params.isLocal || (notification.data && notification.data.message)
-                    ? notification.data.message
-                    : notificationActionKey(notification)
-                }}
-              </div>
-              <div
-                v-if="notification.params"
-                class="quest__title"
-                :class="{'quest__title_hov': !notification.params.isLocal}"
-                @click="notification.params.isLocal ? '' : goToEvent(notification, true)"
+            </div>
+            <div class="notification__right">
+              <img
+                v-if="!notification.params.isLocal"
+                class="notification__remove"
+                :src="$options.images.CLOSE"
+                alt="x"
+                @click="tryRemoveNotification($event, notification)"
               >
-                {{ notification.params.title }}
-              </div>
-            </div>
-            <div class="notification__date">
-              {{ $moment(notification.createdAt).format('MMMM Do YYYY, h:mm') }}
-            </div>
-            <img
-              v-if="!notification.params.isLocal"
-              class="notification__remove"
-              :src="$options.images.CLOSE"
-              alt="x"
-              @click="tryRemoveNotification($event, notification)"
-            >
-            <div
-              v-if="notification.params"
-              class="notification__button"
-            >
               <base-btn
+                v-if="notification.params"
                 mode="outline"
                 :link="notification.params.isExternalLink ? `${notification.params.externalBase}${notification.params.path}` : ''"
                 class="button__view"
@@ -113,13 +113,11 @@ import { mapGetters } from 'vuex';
 import { UserRole, Path } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 import { images } from '~/utils/images';
-import localNotifications from '~/plugins/mixins/localNotifications';
 
 export default {
   name: 'Notifications',
   UserRole,
   images,
-  mixins: [localNotifications],
   data() {
     return {
       notifications: [],
@@ -160,8 +158,7 @@ export default {
       return notification.sender?.avatar?.url || images.EMPTY_AVATAR;
     },
     notificationActionKey(notification) {
-      const symbol = ['notifications.newDiscussionLike'].includes(notification.actionNameKey) ? '.' : ':';
-      return `${this.$t(notification.actionNameKey)}${symbol}`;
+      return `${this.$t(notification.actionNameKey)}`;
     },
     toUserProfile(notification) {
       if (notification?.params?.isLocal) return;
@@ -222,9 +219,7 @@ export default {
     },
     async getNotifications() {
       await this.$store.dispatch('notifications/getNotifications', { params: this.filter });
-      const numberOfNotifAdded = await this.getCountLocalNotifications();
-      const notifAddedBeforeNewPage = numberOfNotifAdded - (this.filter.limit - (this.notifsCount % this.filter.limit));
-      await this.setLocalNotifications(this.notifsCount);
+      const notifAddedBeforeNewPage = this.filter.limit - (this.notifsCount % this.filter.limit);
       this.notifications = this.notificationsList;
       if (notifAddedBeforeNewPage > 0 && this.page === this.totalPages && this.totalPages > 1) {
         this.notifications = [...this.notifications].splice(1, notifAddedBeforeNewPage);
@@ -245,308 +240,153 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .notifications-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
+  margin-top: 20px;
   &__main-container {
-    max-width: 1180px;
-    width: 100%;
-    padding-top: 30px;
+    border-radius: 6px;
+    background: $white;
+    padding: 10px;
+  }
+}
+.info-block {
+  padding: 10px;
+  &__title {
+    font-weight: 500;
+    font-size: 18px;
+  }
+  &__pager {
+    margin-top: 20px;
   }
 }
 
 .button__view {
   text-decoration: none;
   text-outline: none;
-}
-
-.info-block {
-  background: $white;
-  border-radius: 6px;
-
-  &__no-content {
-    margin: 0 0 20px;
-    background: transparent;
-  }
-
-  &__container {
-    display: grid;
-  }
-
-  &__title {
-    @include text-simple;
-    font-weight: 500;
-    font-size: 18px;
-    color: $black800;
-    letter-spacing: 0.05em;
-    padding: 20px 20px 0;
-  }
-
-  &__pager {
-    float: unset;
-    justify-self: flex-end;
-    margin: 20px;
-    border: 1px solid $black0
-  }
-}
-
-.icon-chevron_left {
-  display: block;
-  margin-bottom: 10px;
-  margin-left: -8px;
-  cursor: pointer;
-  &:before {
-    color: $blue;
-    font-size: 40px;
-  }
+  width: 150px;
 }
 
 .notification {
-  display: grid;
-  grid-template-columns: 52px auto 150px;
-  grid-template-rows: 19px auto 1fr;
-  gap: 10px 15px;
-  grid-template-areas:
-    "avatar inviter button"
-    "avatar quest button"
-    "avatar date button";
-  width: 100%;
-  padding: 20px;
-  min-width: 0;
-
-  &_gray {
-    background: $wheat;
-  }
-
-  &:not(:last-child) {
+  display: flex;
+  padding: 20px 0;
+  &:not(:last-of-type) {
     border-bottom: 1px solid $black100;
   }
 
   &__avatar {
-    grid-area: avatar;
-    align-self: flex-start;
+    flex-shrink: 0;
   }
-  &__inviter {
+
+  &__left {
     display: flex;
-    gap: 5px;
-    grid-area: inviter;
-    overflow: hidden;
+    flex-grow: 1;
   }
-  &__quest {
-    grid-area: quest;
-    min-width: 400px;
-    width: 100%;
+  &__right {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
   }
-  &__button {
-    grid-area: button;
-    grid-row: 2/4;
+  &__sender {
+    display: flex;
   }
-  &__date {
-    grid-area: date;
-    @include text-simple;
-    font-weight: 400;
-    font-size: 12px;
-    color: $black500;
-  }
+
   &__remove {
-    display: none;
-    grid-column: 3;
-    grid-row: 1;
+    margin-left: auto;
+    height: 12px;
+    margin-bottom: 10px;
     cursor: pointer;
-    align-self: center;
-    justify-self: flex-end;
-    margin-right: 4px;
+    visibility: hidden;
   }
 
   &:hover {
     .notification__remove {
-      display: block;
+      visibility: visible;
+    }
+  }
+}
+
+@mixin hov {
+  &:hover {
+    cursor: pointer;
+    color: $blue;
+  }
+};
+
+.inviter {
+  font-size: 16px;
+  &__name {
+    font-weight: 500;
+
+    &_hov {
+      @include hov;
+    }
+  }
+  &__company {
+    color: $black500;
+  }
+}
+
+.info {
+  &__date {
+    margin-top: 10px;
+    font-weight: 400;
+    font-size: 12px;
+    color: $black500;
+  }
+
+  &__text {
+    margin-top: 10px;
+  }
+
+  &__title {
+    white-space: nowrap;
+    max-width: 60vw;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    &_hov {
+      @include hov;
+      width: fit-content;
+      max-width: 100%;
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      transition: .2s color ease-in-out;
     }
   }
 }
 
 .avatar {
+  margin-right: 15px;
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  object-fit: cover;
   border: 1px solid $black0;
+  object-fit: cover;
   &_hov:hover {
-      cursor: pointer;
-    }
-}
-.inviter {
-  &__name {
-    @include text-simple;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: normal;
-    color: $black800;
-    letter-spacing: 0.02em;
-    transition: .5s;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    &_hov:hover {
-        cursor: pointer;
-        color: $blue;
-      }
-  }
-  &__company {
-    flex: 0 0 15%;
-    @include text-simple;
-    line-height: normal;
-    font-weight: 400;
-    font-size: 16px;
-    color: $black500;
-    letter-spacing: 0.02em;
-    margin-left: 5px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-}
-.quest {
-  &__invitation {
-    @include text-simple;
-    font-weight: 400;
-    font-size: 16px;
-    color: $black800;
-    letter-spacing: 0.03em;
-  }
-  &__title {
-    @include text-simple;
-    font-weight: 500;
-    font-size: 16px;
-    color: $blue;
-    letter-spacing: 0.03em;
-
-    width: 100%;
-    display: inline-block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    transition: .5s;
-    &_hov:hover {
-        cursor: pointer;
-        color: $black300;
-      }
+    cursor: pointer;
   }
 }
 
 @include _1199 {
-  .notifications-page {
-
-    &__main-container {
-      padding: 20px;
-    }
+  .notification {
+    padding: 10px 0;
+  }
+  .info-block {
+    padding: 0;
+    font-size: 14px;
   }
 }
 
-@include _991 {
-  .page {
-    &__container {
-      max-width: 100%;
-      width: auto;
-    }
-  }
-}
 @include _767 {
   .notification {
-    grid-template-columns: 40px 1fr 1fr;
-    grid-template-rows: 40px 1fr;
-    grid-template-areas:
-      "avatar inviter date"
-      "quest quest quest";
-    &__date {
-      align-self: flex-start;
-    }
-    &__button {
-      display: none;
-    }
-
-    &__date {
-      justify-self: flex-end;
-    }
-
-    &__remove {
-      display: block;
-      grid-row: 2;
-      align-self: unset;
-    }
+     &__remove {
+       visibility: visible;
+     }
   }
-  .inviter {
-    align-self: center;
-    &__name {
-      align-self: center;
-    }
-    &__company {
-      display: none;
-    }
-  }
-  .avatar {
-    width: 40px;
-    height: 40px;
-  }
-  .quest {
-    &__invitation {
-      display: block;
-      font-size: 16px;
-      line-height: 21px;
-      color: $black500;
-    }
-  }
-
-  .page {
-    &__title {
-      font-weight: bold;
-      font-size: 30px;
-      line-height: 39px;
-      letter-spacing: 0.03em;
-      margin-bottom: 5px;
-    }
-  }
-}
-
-@include _575 {
-  .notifications-page {
-
-    &__main-container {
-      padding: 10px;
-    }
-  }
-
-  .notification {
-    grid-template-columns: 40px 1fr;
-    grid-template-rows: 40px max-content max-content;
-    grid-template-areas:
-      "avatar inviter"
-      "date date"
-      "quest quest";
-
-    &__date {
-      justify-self: flex-start;
-    }
-
-    &__remove {
-      display: block;
-      grid-row: 1;
-      align-self: center;
-    }
-  }
-  .info-block{
-    &__pager {
-      margin: 20px 0;
-      justify-self: center;
-    }
-  }
-}
-@include _380 {
-  .notification {
-    width: auto;
+  .button__view {
+    display: none;
   }
 }
 
