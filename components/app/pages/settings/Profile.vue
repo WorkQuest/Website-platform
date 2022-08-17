@@ -463,6 +463,9 @@ export default {
     profile() {
       this.secondPhoneNumber = this.profileSecondPhone;
       this.firstPhone = this.profileFirstPhone;
+
+      // correctly address on loadpage
+      this.addressesBuffer = [{ formatted: this.profile.locationFull.locationPlaceName }];
     },
   },
   mounted() {
