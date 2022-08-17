@@ -62,7 +62,7 @@
       }
     },
     "btns": {
-      "markAllRead": "Mark all read",
+      "markAllRead": "Mark all as read",
       "connectSMSVer": "Connect SMS Verification",
       "resendEmail": "Resend email with code",
       "back": "Back",
