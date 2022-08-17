@@ -8,16 +8,18 @@
         class="template__content"
         :class="{'template__content_rows' : isChatOpened}"
       >
-        <Header class="template__header" />
-        <div
-          v-show="isShowBluePanel"
-          class="blue-panel"
-        />
-        <div
-          class="template__main"
-          :class="{'template__main_padding' : isChatOpened, 'template__main_margin': isShowBluePanel, 'template__main_disabled-margin': isDisableMargin, 'template__main_disable-indentation': isDisableIndentation}"
-        >
-          <nuxt />
+        <div class="template__main-wrapper">
+          <Header class="template__header" />
+          <div
+            v-show="isShowBluePanel"
+            class="blue-panel"
+          />
+          <div
+            class="template__main"
+            :class="{'template__main_padding' : isChatOpened, 'template__main_margin': isShowBluePanel, 'template__main_disabled-margin': isDisableMargin, 'template__main_disable-indentation': isDisableIndentation}"
+          >
+            <nuxt />
+          </div>
         </div>
         <Footer
           class="template__footer"
