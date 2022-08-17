@@ -27,7 +27,7 @@
       <form
         class="auth__fields"
         action=""
-        @submit.prevent="handleSubmit(toSignIn)"
+        @submit.prevent="handleSubmit(() => { signIn(model, isRememberMeSelected) })"
       >
         <base-field
           ref="email"
@@ -76,7 +76,7 @@
         </base-field>
         <div class="auth__tools">
           <base-checkbox
-            v-model="remember"
+            v-model="isRememberMeSelected"
             name="remember"
             :label="$tc('signIn.remember')"
           />
@@ -207,7 +207,7 @@ export default {
       userWalletAddress: null,
       step: WalletState.Default,
       model: { email: '', password: '' },
-      remember: false,
+      isRememberMeSelected: false,
       userStatus: '',
       userAddress: '',
       isLoginWithSocial: false,
@@ -373,22 +373,23 @@ export default {
       this.ShowToast(this.$t('registration.emailConfirmNewLetter'), this.$t('registration.emailConfirmTitle'));
       this.startTimer();
     },
-    async toSignIn() {
-      this.model.email = this.model.email.trim();
-      await this.signIn(this.model, this.remember);
-    },
-    async signIn(model, rememberMe) {
+    async signIn({ email, password }, isRemember) {
       if (this.isLoading) return;
+
       this.SetLoader(true);
-      const { ok, result } = await this.$store.dispatch('user/signIn', {
-        params: model,
-        isRemember: rememberMe,
+      const { ok, result: { userStatus, address, totpIsActive } } = await this.$store.dispatch('user/signIn', {
+        params: {
+          email: email.trim(),
+          password,
+        },
+        isRemember,
       });
+
       if (ok) {
-        this.$cookies.set('userStatus', result.userStatus, { path: Path.ROOT, maxAge: accessLifetime });
-        this.userStatus = result.userStatus;
-        this.userAddress = result.address;
-        if (result.totpIsActive) {
+        this.$cookies.set('userStatus', userStatus, { path: Path.ROOT, maxAge: accessLifetime });
+        this.userStatus = userStatus;
+        this.userAddress = address;
+        if (totpIsActive) {
           await this.ShowModal({
             key: modals.securityCheck,
             isForLogin: true,

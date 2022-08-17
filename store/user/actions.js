@@ -216,6 +216,7 @@ export default {
       commit('setUserData', result);
       return success(result);
     } catch (e) {
+      console.error('user/getUserData', e);
       return error();
     }
   },
