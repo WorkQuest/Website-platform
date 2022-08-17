@@ -188,18 +188,8 @@ export default {
 
 <style lang="scss" scoped>
 .mining-page {
-  background: linear-gradient(to bottom, #103D7C 380px, #f6f8fa 380px);
-  display: flex;
-  justify-content: center;
-
   &__container {
-    display: grid;
-    grid-template-rows: 190px max-content;
-    max-width: 1180px;
-    grid-row-gap: 20px;
     width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
   }
 
   &__head-btn {
@@ -227,8 +217,6 @@ export default {
   }
 
   &__content {
-    display: grid;
-    grid-row-gap: 30px;
     width: 100%;
 
     .btn-group {
@@ -273,7 +261,7 @@ export default {
 
       &:hover {
         background-color: #0083C71A;
-        border: 0px;
+        border: 0;
       }
 
       &_bl {
@@ -291,6 +279,10 @@ export default {
     .info-block {
       background-color: #fff;
       border-radius: 6px;
+
+      &:not(:first-of-type) {
+        margin-top: 30px;
+      }
 
       &__square {
         display: grid;
@@ -411,10 +403,10 @@ export default {
   }
 
   &__table {
-
+    overflow: auto;
     .table {
+      min-width: 1180px !important;
       border-radius: 0 !important;
-      margin: 0 0 40px;
 
       &__value {
         font-weight: 400;
@@ -432,15 +424,7 @@ export default {
     }
   }
 
-  @include _991 {
-    &__table {
-      overflow: auto;
-      width: calc(100vw - 20px);
-    }
-  }
-
   @include _767 {
-    background: linear-gradient(to bottom, #103D7C 270px, #f6f8fa 270px);
     &__container {
       grid-template-rows: auto auto;
       gap: 24px;

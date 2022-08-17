@@ -1,4 +1,7 @@
 export default {
+  resetUnreadNotifsCount(state) {
+    state.unreadNotifsCount = 0;
+  },
   setUnreadNotifsCount(state, count) {
     state.unreadNotifsCount += count;
   },
@@ -23,7 +26,7 @@ export default {
     this.commit('notifications/setUnreadNotifsCount', 0 - ids.length);
   },
   addNotification(state, notification) {
-    state.notifications.list.push(notification);
+    state.notifications.list.unshift(notification);
     state.reducedNotifications.unshift(notification);
     state.reducedNotifications.length = state.reducedNotifications.length === 1 ? 1 : 2;
     state.notifications.count += 1;
