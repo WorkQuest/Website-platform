@@ -1,4 +1,7 @@
 export default {
+  resetUnreadNotifsCount(state) {
+    state.unreadNotifsCount = 0;
+  },
   setUnreadNotifsCount(state, count) {
     state.unreadNotifsCount += count;
   },

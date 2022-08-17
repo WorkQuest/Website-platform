@@ -7,7 +7,9 @@
             {{ $t('ui.notifications.title') }}
           </div>
           <base-btn
+            v-if="unreadNotifsCount > 0"
             class="button__read-all"
+            mode="tag"
             @click="handleAllAsRead"
           >
             Mark all as read
@@ -156,8 +158,10 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    handleAllAsRead() {
-      // TODO: отправить запрос на read all
+    async handleAllAsRead() {
+      this.SetLoader(true);
+      await this.$store.dispatch('notifications/markReadAllNotifications');
+      this.SetLoader(false);
     },
     checkLocalOrSystemNotif(notification) {
       return notification?.params?.isLocal || !notification?.sender?.id;
@@ -261,6 +265,13 @@ export default {
 }
 .info-block {
   padding: 10px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   &__title {
     font-weight: 500;
     font-size: 18px;
@@ -279,7 +290,8 @@ export default {
 .button__read-all {
   width: fit-content;
   padding: 0 20px;
-  height: 26px;
+  height: 27px;
+  margin-top: 5px;
 }
 
 .notification {
@@ -364,7 +376,6 @@ export default {
     &_hov {
       @include hov;
       width: fit-content;
-      max-width: 100%;
       display: inline-block;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -407,4 +418,11 @@ export default {
   }
 }
 
+@include _480 {
+  .info-block {
+    &__header {
+      flex-direction: column;
+    }
+  }
+}
 </style>
