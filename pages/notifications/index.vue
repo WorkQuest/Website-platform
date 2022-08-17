@@ -160,6 +160,7 @@ export default {
   methods: {
     async handleAllAsRead() {
       this.SetLoader(true);
+      await this.checkUnseenNotifs(0);
       await this.$store.dispatch('notifications/markReadAllNotifications');
       this.SetLoader(false);
     },
@@ -212,18 +213,18 @@ export default {
       }
       this.SetLoader(false);
     },
-    checkUnseenNotifs() {
+    checkUnseenNotifs(timeout = 3000) {
       const toRead = [];
       // eslint-disable-next-line no-restricted-syntax
       for (const item of this.notifications) {
-        if (!item.seen && !item.params?.isLocal) toRead.push(item.id);
+        if (!item.seen && !item.params?.isLocal && item.id) toRead.push(item.id);
       }
       if (!toRead.length) return;
       setTimeout(async () => {
         await this.$store.dispatch('notifications/readNotifications', {
           notificationIds: toRead,
         });
-      }, 3000);
+      }, timeout);
     },
     async setPage() {
       this.filter.offset = (this.page - 1) * this.filter.limit;
