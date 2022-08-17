@@ -259,11 +259,12 @@ export default {
   },
   async refreshTokens({ commit }) {
     try {
-      const res = await this.$axios.$post('/v1/auth/refresh-tokens');
-      commit('setTokens', res.result);
-      return success(res);
+      const { result } = await this.$axios.$post('/v1/auth/refresh-tokens');
+      commit('setTokens', result);
+      return success(result);
     } catch (e) {
-      return error(e);
+      console.error('user/refreshToken', e);
+      return error(e.code, e.msg);
     }
   },
   async setCurrentPosition({ commit }, payload) {
