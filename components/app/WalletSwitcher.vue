@@ -54,7 +54,7 @@ export default {
             key: modals.status,
             title: 'WorkQuest Wallet',
             img: images.WARNING,
-            text: 'For using WQ Wallet you need to login on platform',
+            text: this.$t('modals.installMetamask'),
             cancel: this.$t('meta.btns.close'),
             button: this.$t('meta.login'),
             callback: () => {

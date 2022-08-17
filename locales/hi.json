@@ -1317,6 +1317,7 @@
     "downWalletOnSmartphone": "Download Work Quest Wallet app on your smartphone",
     "wouldReviewEmployee": "Would you like to add a review to the employee?",
     "wouldReviewEmployer": "Would you like to add a review to the employer?",
+    "installMetamask": "To use WorkQuest Wallet, you need to login into the platform.",
     "successfulMethods": {
       "claim": "Successful claim",
       "refund": "Successful refund",
