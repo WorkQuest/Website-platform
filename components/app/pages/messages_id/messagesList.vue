@@ -34,7 +34,7 @@
             <span
               class="info-message__link"
               :class="{'info-message__link_left' : !message.itsMe}"
-              @click="openProfile( message.sender.userId)"
+              @click="openProfile(message.sender.userId)"
             >
               {{ setFullName(message) }}
             </span>
@@ -69,7 +69,7 @@
               v-if="!message.itsMe && !isPrevMessageSameSender(i, message)"
               class="message__title message__title_name"
             >
-              {{ senderFullNameById(message.sender.userId) }}
+              {{ senderFullName(message) }}
             </div>
             <div
               class="message__bubble"
@@ -234,11 +234,14 @@ export default {
       chats: 'chat/getChats',
       currChatIsUnread: 'chat/currChatIsUnread',
     }),
-    MessageAction() {
-      return MessageAction;
-    },
     MessageType() {
       return MessageType;
+    },
+    chatMembers() {
+      const res = {};
+      if (!this.currChat?.members) return res;
+      this.currChat.members.forEach((item) => res[item.userId] = item);
+      return res;
     },
   },
   watch: {
@@ -369,10 +372,11 @@ export default {
       this.$router.push(`${Path.PROFILE}/${userId}`);
     },
     setFullName({
-      itsMe, infoMessage: { user }, sender, type,
+      itsMe, infoMessage, sender, type,
     }) {
-      if (itsMe || (type === MessageType.INFO && sender?.adminId)) return '';
-      return itsMe
+      const user = infoMessage?.user;
+      if (itsMe || (type === MessageType.INFO && sender?.adminId) || (!itsMe && !sender?.user)) return '';
+      return itsMe && user
         ? this.UserName(user?.firstName, user?.lastName)
         : this.UserName(sender.user?.firstName, sender.user?.lastName);
     },
@@ -434,12 +438,15 @@ export default {
 
       await this.$store.dispatch('chat/setMessageAsRead', payload);
     },
-    getSenderInfoById(userId) {
-      return this.currChat.members.find((el) => el.userId === userId);
-    },
-    senderFullNameById(userId) {
-      const sender = this.getSenderInfoById(userId);
-      if (!sender) return this.$t('profile.defaultName');
+    senderFullName(message) {
+      const { userId } = message?.sender;
+      const sender = this.chatMembers[userId];
+      if (!sender) {
+        if (!message.sender.id) return this.$t('profile.defaultName');
+        if (message.sender.type === UserRoles.USER) {
+          return this.UserName(message.sender.user?.firstName, message.sender.user?.lastName);
+        }
+      }
       if (sender.type === UserRoles.USER) return this.UserName(sender.user?.firstName, sender.user?.lastName);
       return this.$t('chat.workquestAdmin');
     },

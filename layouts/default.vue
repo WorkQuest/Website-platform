@@ -1,7 +1,7 @@
 <template>
   <div
     class="primary"
-    :class="{'stop-scrolling':isShow}"
+    :class="{'stop-scrolling': isShow}"
   >
     <div class="primary__template template">
       <div
@@ -15,7 +15,7 @@
         />
         <div
           class="template__main"
-          :class="{'template__main_padding' : isChatOpened, 'template__main_margin': isShowBluePanel, 'template__main_disabled-margin': isDisableMargin}"
+          :class="{'template__main_padding' : isChatOpened, 'template__main_margin': isShowBluePanel, 'template__main_disabled-margin': isDisableMargin, 'template__main_disable-indentation': isDisableIndentation}"
         >
           <nuxt />
         </div>
@@ -64,6 +64,9 @@ export default {
         RouterNames.WORKERS,
         RouterNames.PROFILE_ID,
       ].includes(this.$route.name);
+    },
+    isDisableIndentation() { // margin & padding to zero
+      return [RouterNames.MESSAGES_ID].includes(this.$route.name);
     },
   },
   created() {
@@ -119,6 +122,9 @@ export default {
 
   &__content {
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   &__main {
@@ -132,29 +138,40 @@ export default {
       padding-bottom: 0;
     }
 
+    &_margin {
+      padding-top: 30px;
+    }
+
     &_disabled-margin {
-      margin: 0 0 20px 0 !important;
+      margin: 0 0 20px 0;
       max-width: none;
     }
 
-    &_margin {
-      padding-top: 30px !important;
+    &_disable-indentation {
+      margin: 0;
+      max-width: none;
+      padding: 0;
     }
   }
 }
-.stop-scrolling{
+.stop-scrolling {
+  position: fixed;
   overflow: hidden;
+  width: 100vw;
   height: 100vh;
 }
 
 @include _1199 {
   .template__main {
     padding: 0 10px;
-    &_disabled-margin {
-      padding: 0 !important;
-    }
     &_margin {
-      padding-top: 30px !important;
+      padding-top: 30px;
+    }
+    &_disabled-margin {
+      padding: 0;
+    }
+    &_disable-indentation {
+      padding: 0;
     }
   }
 }
@@ -162,11 +179,15 @@ export default {
 @include _991 {
   .template__main {
     margin: 0 auto 40px auto;
-    &_disabled-margin {
-      padding: 0 !important;
-    }
     &_margin {
-      padding-top: 30px !important;
+      padding-top: 30px;
+    }
+    &_disabled-margin {
+      padding: 0;
+    }
+    &_disable-indentation {
+      padding: 0;
+      margin: 0;
     }
   }
 }

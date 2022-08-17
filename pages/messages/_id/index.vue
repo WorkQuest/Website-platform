@@ -8,7 +8,7 @@
         <div class="chat-container__header">
           <div
             class="chat-container__arrow-back"
-            @click="goBackToChatsList()"
+            @click="goBackToChatsList"
           >
             <span class="icon-short_left" />
             <span>
@@ -164,9 +164,7 @@
                 class="image-cont__remove"
                 @click="handleRemoveFile(i)"
               >
-                <span
-                  class="icon-close_big"
-                />
+                <span class="icon-close_big" />
               </div>
             </div>
           </div>
@@ -216,16 +214,8 @@ export default {
     isGroupChat() {
       return this.currChat?.type === ChatType.GROUP;
     },
-    isPrivateChat() {
-      return this.currChat?.type === ChatType.PRIVATE;
-    },
     canShowMenu() {
-      const {
-        isCantSendMessages, isGroupChat, amIOwner, isPrivateChat,
-      } = this;
-      if (this.chatId === 'starred') return false;
-      return (!isCantSendMessages ? (!isGroupChat && !isPrivateChat)
-        || (isGroupChat && !amIOwner) : false);
+      return this.chatId !== 'starred';
     },
     isCantSendMessages() {
       const lastMsg = this.messages.list[this.messages.list.length - 1];
@@ -238,7 +228,10 @@ export default {
       );
     },
     canLeave() {
-      return this.isGroupChat && !this.amIOwner;
+      return this.isGroupChat && !this.amIOwner && this.isMeChatMember;
+    },
+    isMeChatMember() {
+      return this.currChat.members.indexOf((item) => item.userId === this.userData.id) >= 0;
     },
     amIOwner() {
       const currMemberData = this.currChat?.members && this.currChat?.members.find((el) => el.userId === this.userData.id);

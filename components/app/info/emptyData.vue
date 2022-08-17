@@ -6,19 +6,19 @@
     <div class="absence__content">
       <img
         class="absence__img"
-        src="~/assets/img/temp/smile_sad.svg"
+        :src="$options.images.SAD_SMILE"
         alt="empty-icon"
         width="110"
         height="110"
       >
       <div
-        v-if="description !== ''"
+        v-if="description"
         class="absence__desc"
       >
         {{ description }}
       </div>
       <base-btn
-        v-if="link !== ''"
+        v-if="link"
         class="absence__button"
         data-selector="CREATE-QUEST"
         @click="toLink"
@@ -30,8 +30,11 @@
 </template>
 
 <script>
+import { images } from '~/utils/images';
+
 export default {
   name: 'EmptyData',
+  images,
   props: {
     description: {
       type: String,
@@ -57,8 +60,7 @@ export default {
 <style lang="scss" scoped>
 .absence {
   width: 100%;
-  background-color: #f6f8fa;
-  margin-top: 60px;
+  margin-top: 20px;
   display: flex;
   justify-content: center;
   &__content {

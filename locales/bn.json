@@ -1532,6 +1532,8 @@
     "noMessages": "No messages",
     "membersNum": "{n} members",
     "workquestAdmin": "WorkQuest Admin",
+    "delete": "Delete chat",
+    "deleteChat": "Do you really want to delete this chat from chat list?",
     "systemMessages": {
       "employerInvitedWorkerToQuest": "invited you to a quest",
       "youInvitedToTheQuest": "You invited to the quest",
