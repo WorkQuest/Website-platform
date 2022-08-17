@@ -160,7 +160,6 @@ export const Path = {
   MESSAGES: '/messages',
   EDIT_QUEST: '/edit-quest',
   COLLATERAL: '/collateral',
-  WIKI: '/wiki',
   RAISED_VIEWS: '/raised-views',
   NOTIFICATIONS: '/notifications',
   RETIREMENT: '/retirement',
@@ -292,12 +291,7 @@ export const ExplorerUrl = {
   develop: 'https://dev-explorer.workquest.co',
 }[process.env.BRANCH];
 
-export const WikiUrl = {
-  master: 'https://dev.workquest.wiki',
-  testnet: 'https://dev.workquest.wiki',
-  stage: 'https://dev.workquest.wiki',
-  develop: 'https://dev.workquest.wiki', // TODO: add prod urls
-}[process.env.BRANCH];
+export const WikiUrl = 'https://workquest.wiki';
 
 export const NetworksData = {
   ETH_MAIN: {
