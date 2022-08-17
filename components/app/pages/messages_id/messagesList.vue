@@ -234,19 +234,14 @@ export default {
       chats: 'chat/getChats',
       currChatIsUnread: 'chat/currChatIsUnread',
     }),
-    MessageAction() {
-      return MessageAction;
-    },
     MessageType() {
       return MessageType;
     },
     chatMembers() {
       const res = {};
       if (!this.currChat?.members) return res;
-      // eslint-disable-next-line no-restricted-syntax
-      for (const item of this.currChat.members) {
-        res[item.userId] = item;
-      }
+      // eslint-disable-next-line no-return-assign
+      this.currChat.members.forEach((item) => res[item.userId] = item);
       return res;
     },
   },
