@@ -2,8 +2,18 @@
   <div class="notifications-page">
     <div class="notifications-page__main-container">
       <div class="info-block info-block__container">
-        <div class="info-block__title">
-          {{ $t('ui.notifications.title') }}
+        <div class="info-block__header">
+          <div class="info-block__title">
+            {{ $t('ui.notifications.title') }}
+          </div>
+          <base-btn
+            v-if="unreadNotifsCount > 0"
+            class="button__read-all"
+            mode="tag"
+            @click="handleAllAsRead"
+          >
+            {{ $t('meta.btns.markAllRead') }}
+          </base-btn>
         </div>
 
         <div
@@ -148,6 +158,12 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    async handleAllAsRead() {
+      this.SetLoader(true);
+      await this.checkUnseenNotifs(0);
+      await this.$store.dispatch('notifications/markReadAllNotifications');
+      this.SetLoader(false);
+    },
     checkLocalOrSystemNotif(notification) {
       return notification?.params?.isLocal || !notification?.sender?.id;
     },
@@ -197,18 +213,18 @@ export default {
       }
       this.SetLoader(false);
     },
-    checkUnseenNotifs() {
+    checkUnseenNotifs(timeout = 3000) {
       const toRead = [];
       // eslint-disable-next-line no-restricted-syntax
       for (const item of this.notifications) {
-        if (!item.seen && !item.params?.isLocal) toRead.push(item.id);
+        if (!item.seen && !item.params?.isLocal && item.id) toRead.push(item.id);
       }
       if (!toRead.length) return;
       setTimeout(async () => {
         await this.$store.dispatch('notifications/readNotifications', {
           notificationIds: toRead,
         });
-      }, 3000);
+      }, timeout);
     },
     async setPage() {
       this.filter.offset = (this.page - 1) * this.filter.limit;
@@ -250,6 +266,14 @@ export default {
 }
 .info-block {
   padding: 10px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
   &__title {
     font-weight: 500;
     font-size: 18px;
@@ -265,11 +289,23 @@ export default {
   width: 150px;
 }
 
+.button__read-all {
+  width: fit-content;
+  padding: 0 20px;
+  height: 27px;
+  margin-top: 5px;
+}
+
 .notification {
   display: flex;
-  padding: 20px 0;
+  padding: 20px 10px;
+
   &:not(:last-of-type) {
     border-bottom: 1px solid $black100;
+  }
+
+  &_gray {
+    background: $black0;
   }
 
   &__avatar {
@@ -347,7 +383,6 @@ export default {
     &_hov {
       @include hov;
       width: fit-content;
-      max-width: 100%;
       display: inline-block;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -390,4 +425,11 @@ export default {
   }
 }
 
+@include _480 {
+  .info-block {
+    &__header {
+      flex-direction: column;
+    }
+  }
+}
 </style>
