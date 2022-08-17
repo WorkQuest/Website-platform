@@ -15,7 +15,7 @@
         />
         <div
           class="template__main"
-          :class="{'template__main_padding' : isChatOpened, 'template__main_margin': isShowBluePanel, 'template__main_disabled-margin': isDisableMargin}"
+          :class="{'template__main_padding' : isChatOpened, 'template__main_margin': isShowBluePanel, 'template__main_disabled-margin': isDisableMargin, 'template__main_disabled-indent': isDisableIndent}"
         >
           <nuxt />
         </div>
@@ -64,6 +64,9 @@ export default {
         RouterNames.WORKERS,
         RouterNames.PROFILE_ID,
       ].includes(this.$route.name);
+    },
+    isDisableIndent() {
+      return [RouterNames.MESSAGES_ID].includes(this.$route.name);
     },
   },
   created() {
@@ -119,6 +122,9 @@ export default {
 
   &__content {
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   &__main {
@@ -135,6 +141,12 @@ export default {
     &_disabled-margin {
       margin: 0 0 20px 0 !important;
       max-width: none;
+    }
+
+    &_disabled-indent {
+      margin: 0 !important;
+      max-width: none;
+      padding: 0 !important;
     }
 
     &_margin {
@@ -155,6 +167,11 @@ export default {
     &_disabled-margin {
       padding: 0 !important;
     }
+    &_disabled-indent {
+      margin: 0 !important;
+      max-width: none;
+      padding: 0 !important;
+    }
     &_margin {
       padding-top: 30px !important;
     }
@@ -165,6 +182,11 @@ export default {
   .template__main {
     margin: 0 auto 40px auto;
     &_disabled-margin {
+      padding: 0 !important;
+    }
+    &_disabled-indent {
+      margin: 0 !important;
+      max-width: none;
       padding: 0 !important;
     }
     &_margin {
