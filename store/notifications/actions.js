@@ -4,7 +4,7 @@ import {
   Path,
   DaoUrl,
   PathDAO,
-  UserRole, ResponsesType,
+  UserRole, ResponsesType, WikiUrl,
 } from '~/utils/enums';
 
 import {
@@ -48,12 +48,7 @@ export default {
     if (notificationList.some((n) => Object.entries(LocalNotificationAction).includes(n.actionNameKey))) return;
 
     const path = {
-      [LocalNotificationAction.GET_REWARD]: Path.REFERRAL,
       [LocalNotificationAction.QUEST_DRAFT]: Path.CREATE_QUEST,
-      [LocalNotificationAction.WIKI]: Path.WIKI,
-      [LocalNotificationAction.KYC]: Path.SUMSUB,
-      [LocalNotificationAction.PROFILE_FILLED]: Path.SETTINGS,
-      [LocalNotificationAction.TWOFA]: `${Path.SETTINGS}#2FA`,
       [LocalNotificationAction.QUESTS_SPECS]: `${Path.QUESTS}?mySpecs=true`,
       [LocalNotificationAction.WALLET_UPDATE]: Path.WALLET,
     }[action];
@@ -153,6 +148,50 @@ export default {
     const wqInfoSender = { avatar: { url: images.WQ_LOGO_ROUNDED }, firstName: $nuxt.$t('ui.notifications.workquestInfo') };
 
     switch (action) {
+      // default notifications after register
+      case NotificationAction.GET_REWARD:
+        notification.sender = wqInfoSender;
+        notification.params = {
+          ...notification.params,
+          title: data.title,
+          path: Path.REFERRAL,
+        };
+        break;
+      case NotificationAction.WIKI:
+        notification.sender = wqInfoSender;
+        notification.params = {
+          ...notification.params,
+          title: data.title,
+          path: '/',
+          isExternalLink: true,
+          externalBase: WikiUrl,
+        };
+        break;
+      case NotificationAction.KYC:
+        notification.sender = wqInfoSender;
+        notification.params = {
+          ...notification.params,
+          title: data.title,
+          path: Path.SUMSUB,
+        };
+        break;
+      case NotificationAction.PROFILE_FILLED:
+        notification.sender = wqInfoSender;
+        notification.params = {
+          ...notification.params,
+          title: data.title,
+          path: Path.SETTINGS,
+        };
+        break;
+      case NotificationAction.TWOFA:
+        notification.sender = wqInfoSender;
+        notification.params = {
+          ...notification.params,
+          title: data.title,
+          path: `${Path.SETTINGS}#2FA`,
+        };
+        break;
+
       case NotificationAction.PAID_REFERRAL:
         notification.sender = wqInfoSender;
         notification.params = {

@@ -26,14 +26,16 @@ export const NotificationAction = {
   UPDATE_RATING_STATISTIC: 'updateRatingStatistic',
   NEW_QUEST_FOR_SPECIALIZATION: 'newQuestForSpecialization',
   PAID_REFERRAL: 'PaidReferral',
+
+  // notifications after registration
+  KYC: 'EnableSumsubKYC',
+  TWOFA: 'EnableDoubleAuthentication',
+  WIKI: 'WorkQuestWikiPage',
+  GET_REWARD: 'InviteFriendsReward',
+  PROFILE_FILLED: 'FillProfileDataOnSettings',
 };
 
 export const LocalNotificationAction = {
-  KYC: 'kyc',
-  TWOFA: '2fa',
-  WIKI: 'wiki',
-  GET_REWARD: 'reward',
-  PROFILE_FILLED: 'filled',
   RATE_THE_QUEST: 'quest',
   QUEST_DRAFT: 'questDraft',
   QUESTS_SPECS: 'questsSpecs',

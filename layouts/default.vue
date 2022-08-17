@@ -39,7 +39,6 @@ import modals from '~/store/modals/modals';
 import {
   DeFiBluePanelPathNames, Path, RouterNames, UserRole,
 } from '~/utils/enums';
-import localNotifications from '~/plugins/mixins/localNotifications';
 
 export default {
   name: 'DefaultLayout',
@@ -47,7 +46,6 @@ export default {
   directives: {
     ClickOutside,
   },
-  mixins: [localNotifications],
   computed: {
     ...mapGetters({
       isLoading: 'main/getIsLoading',
@@ -81,7 +79,6 @@ export default {
       });
     }
     this.GetLocation();
-    this.setLocalNotifications();
   },
   methods: {
     toMain() {
