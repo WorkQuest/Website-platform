@@ -12,7 +12,7 @@
             mode="tag"
             @click="handleAllAsRead"
           >
-            Mark all as read
+            {{ $t('meta.btns.markAllRead') }}
           </base-btn>
         </div>
 
@@ -270,6 +270,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 10px;
   }
 
   &__title {
@@ -296,9 +297,14 @@ export default {
 
 .notification {
   display: flex;
-  padding: 20px 0;
+  padding: 20px 10px;
+
   &:not(:last-of-type) {
     border-bottom: 1px solid $black100;
+  }
+
+  &_gray {
+    background: $black0;
   }
 
   &__avatar {
