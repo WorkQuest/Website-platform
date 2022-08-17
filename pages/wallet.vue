@@ -880,7 +880,7 @@ export default {
 
 .table {
   background: #FFFFFF;
-
+  width: 1180px;
   &__txs {
     margin: 0 !important;
     border-radius: 6px !important;
@@ -910,18 +910,6 @@ export default {
     margin: 0;
     grid-template-columns: 2fr 1fr;
     height: 240px;
-  }
-}
-
-@include _991 {
-  .wallet {
-    &__table {
-      overflow: auto;
-      width: calc(100vw - 40px);
-    }
-  }
-  .table {
-    width: 1180px;
   }
 }
 

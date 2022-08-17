@@ -392,20 +392,6 @@ export default {
 
 <style lang="scss" scoped>
 .crediting-page {
-  background: linear-gradient(to bottom, #103D7C 284px, #f6f8fa 284px);
-  display: flex;
-  justify-content: center;
-
-  &__container {
-    display: grid;
-    grid-template-rows: 195px max-content;
-    max-width: 1180px;
-    grid-row-gap: 30px;
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-  }
-
   &__header {
     align-self: flex-end;
 
@@ -464,12 +450,12 @@ export default {
 
       &_bl {
         @extend .btn;
-        background-color: #0083C7;
+        background-color: $blue;
         border: unset;
-        color: #fff;
+        color: $white;
 
         &:hover {
-          background-color: #103d7c;
+          background-color: $darkblue;
         }
       }
     }
@@ -477,19 +463,19 @@ export default {
     .text {
       font-size: 16px;
       font-weight: 400;
-      color: #8D96A1;
+      color: $black400;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
 
       &__faq {
-        color: #4C5767;
+        color: $black600;
         font-weight: 500;
 
         &_gray {
           font-size: 16px;
           font-weight: 400;
-          color: #8D96A1;
+          color: $black400;
           height: 0;
           transition: height 300ms;
           overflow: hidden;
@@ -499,7 +485,7 @@ export default {
           height: auto;
           font-size: 16px;
           font-weight: 400;
-          color: #8D96A1;
+          color: $black400;
           transition: height 300ms;
           margin-top: 20px;
         }
@@ -509,7 +495,7 @@ export default {
         @extend .text;
         font-weight: 500;
         font-size: 18px;
-        color: #0083C7;
+        color: $blue;
       }
 
       &_small {
@@ -533,7 +519,7 @@ export default {
     }
 
     .info-block {
-      background-color: #fff;
+      background-color: $white;
       border-radius: 6px;
       overflow: hidden;
 
@@ -584,11 +570,11 @@ export default {
       &__title {
         font-size: 20px;
         font-weight: 600;
-        color: #1D2127;
+        color: $black800;
         opacity: 0.5;
 
         &_black {
-          color: #1D2127;
+          color: $black800;
         }
 
         &_big {
@@ -597,14 +583,14 @@ export default {
         }
 
         &_blue {
-          color: #0083C7;
+          color: $blue;
           font-weight: 700;
         }
 
         &_small {
           font-size: 16px;
           font-weight: 400;
-          color: #7C838D;
+          color: $black500;
         }
 
         &_pad {
@@ -616,7 +602,7 @@ export default {
       &__subtitle {
         font-weight: 400;
         font-size: 16px;
-        color: #7C838D;
+        color: $black500;
       }
 
       &__about {
@@ -654,7 +640,7 @@ export default {
         gap: 20px;
 
         .document {
-          border: 1px solid #E1E4ED;
+          border: 1px solid $wheat;
           border-radius: 8px;
           height: 80px;
           padding: 0 20px;
@@ -683,21 +669,21 @@ export default {
           &__size {
             font-weight: 400;
             font-size: 13px;
-            color: #A7AEB9;
+            color: $black300;
           }
         }
       }
 
       &__name {
         font-size: 16px;
-        color: #1D2127;
+        color: $black800;
         padding: 20px 20px 10px 20px;
         font-weight: 400;
 
         &_bold {
           font-weight: 500;
           font-size: 25px;
-          color: #103D7C;
+          color: $darkblue;
           line-height: 1;
           padding: 20px;
         }
@@ -706,7 +692,6 @@ export default {
   }
 
   @include _767 {
-    background: linear-gradient(to bottom, #103D7C 220px, #f6f8fa 220px);
     &__container {
       grid-template-rows: auto auto;
       gap: 15px;

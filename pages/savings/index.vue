@@ -373,10 +373,6 @@ export default {
 
 <style lang="scss" scoped>
 .saving-page {
-  background: linear-gradient(to bottom, #103D7C 374px, #f6f8fa 374px);
-  display: flex;
-  justify-content: center;
-
   &__container {
     display: grid;
     grid-template-rows: 233px max-content;
@@ -742,7 +738,6 @@ export default {
   }
 
   @include _767 {
-    background: linear-gradient(to bottom, #103D7C 250px, #f6f8fa 250px);
     &__container {
       grid-template-rows: auto auto;
       gap: 15px;
