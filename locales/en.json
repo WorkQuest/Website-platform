@@ -1516,6 +1516,9 @@
     }
   },
   "chat": {
+    "video": "video",
+    "image": "image",
+    "application": "application",
     "reason": "Please add reason",
     "starredMessages": "Starred messages",
     "starredChats": "Starred chats",
@@ -2204,7 +2207,7 @@
   "uploader": {
     "uploadFile": "Upload files",
     "errors": {
-      "fileSizeLimit": "File size limit: {n}",
+      "fileSizeLimit": "File size limit: ",
       "filesLimit": "Files limit: {n}"
     }
   },

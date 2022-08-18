@@ -80,7 +80,7 @@
               @click="goToCurrChat(message)"
             >
               <div class="message__title message__title_user-text">
-                {{ message.text }}
+                {{ checkMessageText(message.text) }}
               </div>
               <div
                 v-if="message.medias && message.medias.length"
@@ -275,6 +275,9 @@ export default {
     this.$store.commit('chat/clearMessagesFilter');
   },
   methods: {
+    checkMessageText(text) {
+      return Object.values(FileTypes).includes(text.toLowerCase()) ? '' : text;
+    },
     isNeedToShowInfoMessageMember(message) {
       return message?.infoMessage?.member?.user
         && [MessageAction.GROUP_CHAT_ADD_USERS,

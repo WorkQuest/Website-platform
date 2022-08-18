@@ -6,6 +6,7 @@ export const UserRoles = Object.freeze({
 export const FileTypes = Object.freeze({
   IMAGE: 'image',
   VIDEO: 'video',
+  APPLICATION: 'application',
 });
 
 export const QuestChatStatus = Object.freeze({

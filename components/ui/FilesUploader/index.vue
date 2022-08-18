@@ -187,8 +187,8 @@ export default {
         if (type === 'video' && this.limitBytesVideo && file.size >= this.limitBytesVideo) {
           const kb = Math.ceil(this.limitBytesVideo / 1024);
           const mb = Math.ceil(this.limitBytesVideo / 1024 / 1024);
-          if (mb >= 1) this.showError(this.$t('uploader.errors.fileSizeLimit'), this.$tc('meta.units.mb', { count: mb }));
-          else this.showError(this.$t('uploader.errors.fileSizeLimit'), this.$tc('meta.units.kb', { count: kb }));
+          if (mb >= 1) this.showError((this.$t('uploader.errors.fileSizeLimit') + this.$t('meta.units.mb', { count: mb })));
+          else this.showError((this.$t('uploader.errors.fileSizeLimit'), this.$t('meta.units.kb', { count: kb })));
           // eslint-disable-next-line no-continue
           continue;
         }

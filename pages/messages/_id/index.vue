@@ -401,7 +401,7 @@ export default {
         return;
       }
 
-      const text = messageText;
+      let text = messageText;
 
       this.messageText = '';
 
@@ -415,6 +415,18 @@ export default {
           formData: file,
           type: file.type,
         };
+
+        // if you send media files without caption
+        if (!text) {
+          if (file.type.includes(FileTypes.VIDEO)) {
+            text = this.$t('chat.video');
+          } else if (file.type.includes(FileTypes.IMAGE)) {
+            text = this.$t('chat.image');
+          } else if (file.type.includes(FileTypes.APPLICATION)) {
+            text = this.$t('chat.application');
+          }
+        }
+
         msgFiles.push({
           url, id: i + 1, type,
         });
