@@ -8,7 +8,7 @@
     </div>
     <base-btn
       class="error__btn"
-      :nuxt-link="$options.Path.MY_QUESTS"
+      :nuxt-link="$options.Path.ROOT"
     >
       {{ $t('errorLayout.btn') }}
     </base-btn>

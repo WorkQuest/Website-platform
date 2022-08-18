@@ -2,7 +2,7 @@
   "errorLayout": {
     "title": "Something went wrong",
     "desc": "The page you requested couldn’t be found. But you can come back and try again.",
-    "btn": "Back to my quests"
+    "btn": "Back to main page"
   },
   "walletSwitcher": {
     "wqWallet": "WQWallet",
