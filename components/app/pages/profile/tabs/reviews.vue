@@ -178,6 +178,7 @@ export default {
 }
 .name {
   &__container {
+    display: grid;
     cursor: pointer;
   }
 }
