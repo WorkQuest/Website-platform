@@ -687,6 +687,33 @@ export default {
 }
 @include _767 {
   .show-on-desktop { display: none !important; }
+
+  .chat__body, .chats-container__search {
+    padding: 10px 15px;
+  }
+  .chat-tab-dd {
+    margin: 10px 15px 20px;
+  }
+  .chat {
+    &__ava-cont {
+      display: flex;
+      align-items: center;
+    }
+    &__avas-cont_couple {
+      width: 55px;
+    }
+    &__avatar {
+      width: 30px;
+      height: 30px;
+    }
+    &__title {
+      font-size: 14px;
+    }
+  }
+  .chat__unread-dot {
+    margin-left: 25px;
+    margin-bottom: 35px;
+  }
 }
 @media (min-width: 767px) {
   .show-on-mobile { display: none !important; }
@@ -696,9 +723,13 @@ export default {
     &__unread-dot {
       margin-left: 25px;
     }
+    &__body {
+      gap: 15px
+    }
     &__row {
       gap: 10px;
       width: calc(100vw - 120px);
+      grid-auto-flow: row;
     }
     &__title {
       &_bold {
