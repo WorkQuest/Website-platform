@@ -255,7 +255,7 @@ export default {
       const walletAddress = getWalletAddress();
       const hash = hashText(description);
       cost = new BigNumber(cost).shiftedBy(18).toString();
-      const data = [hash, cost, 0, nonce];
+      const data = [hash, cost, this.$moment().add(1, 'day').unix(), nonce];
       const inst = createInstance(WQFactory, address);
       const sendData = inst.methods.newWorkQuest.apply(null, data).encodeABI();
       const [gasPrice, gasEstimate] = await Promise.all([
