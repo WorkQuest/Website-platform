@@ -407,9 +407,7 @@ export default {
       const key = this.userAddress.toLowerCase();
       // remove decrypted incorrect mnemonic in storage
       if (storageData && storageData[key]) {
-        console.log(storageData);
         delete storageData[key];
-        console.log(storageData);
         localStorage.setItem('wal', JSON.stringify(storageData));
       }
     },
