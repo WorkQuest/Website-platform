@@ -199,6 +199,7 @@ export const RouterNames = {
   WORKERS: 'workers',
   MESSAGES: 'messages',
   MESSAGES_ID: 'messages-id',
+  CREATE_QUEST: 'create-quest',
 };
 
 export const DeFiBluePanelPathNames = [

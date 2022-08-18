@@ -65,6 +65,7 @@ export default {
         RouterNames.QUESTS,
         RouterNames.WORKERS,
         RouterNames.PROFILE_ID,
+        RouterNames.CREATE_QUEST,
       ].includes(this.$route.name);
     },
     isDisableIndentation() { // margin & padding to zero
