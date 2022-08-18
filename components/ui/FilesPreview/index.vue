@@ -21,6 +21,7 @@
         class="preview__item"
         :class="{preview__item_small: small}"
         :src="item.url"
+        preload="auto"
       />
     </div>
   </div>
