@@ -33,4 +33,5 @@ export const images = Object.freeze({
   CREDIT_CARD: require('~/assets/img/ui/creditCard.svg'),
   TELEGRAM: require('~/assets/img/icons/telegram.png'),
   SAD_SMILE: require('assets/img/temp/smile_sad.svg'),
+  PASSWORD_CHANGED: require('~/assets/img/ui/password_changed.svg'),
 });

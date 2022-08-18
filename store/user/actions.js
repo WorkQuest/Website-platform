@@ -11,10 +11,12 @@ import {
 } from '~/utils/wallet';
 
 import {
+  Path,
   UserStatuses,
+  TariffByIndex,
+  ConnectionTypes,
   QuestModeReview,
   RaiseViewTariffPeriods,
-  TariffByIndex, Path, ConnectionTypes,
 } from '~/utils/enums';
 
 import { WQPromotion } from '~/abi/index';
@@ -142,17 +144,20 @@ export default {
       return error(e.code, e.msg);
     }
   },
-  async signIn({ commit, dispatch, state }, payload) {
+  async signIn({ commit, dispatch, state }, { params, isRemember }) {
     try {
-      const { params, isRemember } = payload;
       const response = await this.$axios.$post('/v1/auth/login', params);
+
+      const {
+        access, refresh, userStatus, totpIsActive,
+      } = response.result;
+
       commit('setTokens', {
-        access: response.result.access,
-        refresh: isRemember ? response.result.refresh : null,
+        access,
+        refresh: isRemember ? refresh : null,
       });
-      if (response.result.userStatus === 1 && !response.result.totpIsActive) {
-        await dispatch('getMainData');
-      }
+
+      if (userStatus === UserStatuses.Confirmed && !totpIsActive) await dispatch('getMainData');
       return response;
     } catch (e) {
       return error();
@@ -161,7 +166,7 @@ export default {
   async signUp({ commit }, payload) {
     try {
       const response = await this.$axios.$post('/v1/auth/register', payload);
-      commit('setTokens', response.result);
+      commit('setTokens', { access: response.result.access });
       return response;
     } catch (e) {
       return error();
@@ -183,7 +188,6 @@ export default {
       await dispatch('wallet/unsubscribeWS', null, { root: true });
 
       commit('logOut');
-      commit('setTokens', { access: null, refresh: null });
       commit('web3/setConnectionType', ConnectionTypes.WEB3, { root: true });
       commit('wallet/setIsWalletConnected', false, { root: true });
       disconnect(); // disconnect wq wallet
@@ -217,6 +221,7 @@ export default {
       commit('setUserData', result);
       return success(result);
     } catch (e) {
+      console.error('user/getUserData', e);
       return error();
     }
   },
@@ -259,11 +264,12 @@ export default {
   },
   async refreshTokens({ commit }) {
     try {
-      const res = await this.$axios.$post('/v1/auth/refresh-tokens');
-      commit('setTokens', res.result);
-      return success(res);
+      const { result } = await this.$axios.$post('/v1/auth/refresh-tokens');
+      commit('setTokens', result);
+      return success(result);
     } catch (e) {
-      return error(e);
+      console.error('user/refreshToken', e);
+      return error(e.code, e.msg);
     }
   },
   async setCurrentPosition({ commit }, payload) {

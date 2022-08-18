@@ -107,6 +107,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { images } from '~/utils/images';
 
 export default {
   name: 'ModalChangePassSetting',
@@ -133,22 +134,22 @@ export default {
         this.errorMsg = true;
         return;
       }
-      const payload = {
-        oldPassword: this.currentPasswordInput.trim(),
-        newPassword: this.newPasswordInput.trim(),
-      };
       this.SetLoader(true);
       try {
-        const response = await this.$store.dispatch('user/editUserPassword', payload);
+        const response = await this.$store.dispatch('user/editUserPassword', {
+          oldPassword: this.currentPasswordInput.trim(),
+          newPassword: this.newPasswordInput.trim(),
+        });
         if (response?.ok) {
-          const params = {
-            email: this.email,
-            password: this.confirmNewPasswordInput,
-          };
-          await this.$store.dispatch('user/signIn', { params });
+          await this.$store.dispatch('user/signIn', {
+            params: {
+              email: this.email,
+              password: this.confirmNewPasswordInput,
+            },
+          });
           this.ShowModal({
             key: modals.status,
-            img: require('assets/img/ui/password_changed.svg'),
+            img: images.PASSWORD_CHANGED,
             title: this.$t('restore.modal'),
           });
         }
