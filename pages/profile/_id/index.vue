@@ -661,8 +661,7 @@ export default {
 @include _1199 {
   .section {
     &__container {
-      width: 100vw;
-      //margin: -20px -20px 10px -20px;
+      width: 100%;
       &_white {
         background-color: $white;
       }
