@@ -90,8 +90,8 @@ export default {
   .preview {
     grid-template-columns: 1fr;
     &__item {
-      width: 100vw !important;
-      height: 70vw !important;
+      width: 100% !important;
+      height: 70% !important;
     }
   }
 }
