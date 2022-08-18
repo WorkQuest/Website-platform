@@ -31,7 +31,6 @@ export default {
    */
   async fetchLots({ commit, rootGetters, dispatch }, { lotStatus, params, sort }) {
     try {
-      if (!params.q) delete params.q;
       if (LotsStatuses.BOUGHT === lotStatus) return dispatch('fetchBoughtLots', { params, sort });
 
       const end_point = {
