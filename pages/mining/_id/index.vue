@@ -545,7 +545,7 @@ export default {
     }),
     async connectWallet() {
       if (this.connectionType === ConnectionTypes.WEB3 && !this.isConnected) {
-        await this.connectWeb3Wallet({ isReconnection: this.isConnected });
+        await this.connectWeb3Wallet({ isReconnection: this.isConnected, chain: this.chain });
       } else {
         this.disconnectWallet();
         if (this.connectionType === ConnectionTypes.WQ_WALLET) {
