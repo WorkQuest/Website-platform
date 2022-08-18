@@ -11,10 +11,12 @@ import {
 } from '~/utils/wallet';
 
 import {
+  Path,
   UserStatuses,
+  TariffByIndex,
+  ConnectionTypes,
   QuestModeReview,
   RaiseViewTariffPeriods,
-  TariffByIndex, Path, ConnectionTypes,
 } from '~/utils/enums';
 
 import { WQPromotion } from '~/abi/index';
@@ -155,7 +157,7 @@ export default {
         refresh: isRemember ? refresh : null,
       });
 
-      if (userStatus === 1 && !totpIsActive) await dispatch('getMainData');
+      if (userStatus === UserStatuses.Confirmed && !totpIsActive) await dispatch('getMainData');
       return response;
     } catch (e) {
       return error();
