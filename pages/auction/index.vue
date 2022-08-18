@@ -3,28 +3,6 @@
     class="auction"
     data-selector="PAGE-AUCTION"
   >
-    <div class="search">
-      <div class="search__block">
-        <base-field
-          v-model="searchValue"
-          class="search__block-item"
-          is-search
-          is-hide-error
-          :placeholder="searchPlaceholder"
-          data-selector="INPUT-SEARCH"
-          @input="goSearchDebounce"
-          @enter="goSearch"
-        />
-        <div class="search__block-item">
-          <base-btn
-            data-selector="ACTION-AUCTION-SEARCH"
-            @click="goSearch"
-          >
-            {{ $t('auction.search.button') }}
-          </base-btn>
-        </div>
-      </div>
-    </div>
     <div class="auction__content">
       <h2 class="auction__title">
         {{ $t('auction.title') }}
@@ -131,14 +109,11 @@ export default {
   },
   data() {
     return {
-      searchValue: '',
-      searchTimeout: null,
       currentTab: LotsStatuses.INACTIVE,
 
       params: {
         limit: LIMIT,
         offset: 0,
-        q: '',
       },
       sort: 'desc',
       currentPage: 1,
@@ -154,9 +129,6 @@ export default {
 
       isWalletConnected: 'wallet/getIsWalletConnected',
     }),
-    searchPlaceholder() {
-      return this.$t('auction.search.placeholder');
-    },
     totalPages() {
       return Math.ceil(this.lotsCount / LIMIT) || 0;
     },
@@ -190,17 +162,6 @@ export default {
       clearLots: 'auction/clearLots',
       fetchDuration: 'auction/fetchAuctionsDuration',
     }),
-
-    goSearch() {
-      clearTimeout(this.searchTimeout);
-      // TODO search
-    },
-    goSearchDebounce() {
-      clearTimeout(this.searchTimeout);
-      this.searchTimeout = setTimeout(() => {
-        // TODO search
-      }, 150);
-    },
     async changeTimeSorting() {
       this.sort = this.sort === 'asc' ? 'desc' : 'asc';
       await this.fetchLots({ lotStatus: this.currentTab, params: this.params, sort: this.sort });
@@ -215,26 +176,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.search {
-  max-width: 1180px;
-  margin: 30px auto;
-
-  &__block {
-    display: grid;
-    grid-template-columns: 1fr 260px;
-
-    @include box;
-  }
-
-  &__block-item {
-    padding: 20px;
-    border-right: 1px solid $black0;
-
-    &:last-child {
-      border-right: none;
-    }
-  }
-}
 .auction {
   padding: 0 15px;
 
@@ -332,14 +273,6 @@ export default {
       &-block {
         display: flex;
         justify-content: center;
-      }
-    }
-  }
-  .search {
-    &__block {
-      grid-template-columns: 1fr 140px;
-      &-item {
-        padding: 5px;
       }
     }
   }
