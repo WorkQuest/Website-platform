@@ -590,6 +590,11 @@ export default {
       }
     }
     .links {
+      &__store {
+        background-size: contain;
+        background-repeat: no-repeat;
+        width: 150px;
+      }
       &__block {
         width: 100%;
       }
@@ -610,6 +615,12 @@ export default {
 
 @include _350 {
   .footer {
+    .links {
+      &__big {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
     &__block {
       grid-template-columns: auto;
       grid-gap: 10px;
@@ -623,12 +634,6 @@ export default {
       &_block {
         display: none;
       }
-    }
-  }
-  .links {
-    &__big {
-      flex-direction: column;
-      align-items: flex-start;
     }
   }
 }
