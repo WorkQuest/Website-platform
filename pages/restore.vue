@@ -82,6 +82,7 @@
 <script>
 import modals from '~/store/modals/modals';
 import { Layout, Path } from '~/utils/enums';
+import { images } from '~/utils/images';
 
 export default {
   name: 'Restore',
@@ -103,7 +104,7 @@ export default {
       if (ok) {
         this.ShowModal({
           key: modals.status,
-          img: require('assets/img/ui/password_changed.svg'),
+          img: images.PASSWORD_CHANGED,
           title: this.$t('restore.modal'),
         });
         await this.$router.push(Path.SIGN_IN);

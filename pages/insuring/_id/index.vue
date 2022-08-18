@@ -417,20 +417,6 @@ export default {
 
 <style lang="scss" scoped>
 .insuring-page {
-  background: linear-gradient(to bottom, #103D7C 376px, #f6f8fa 376px);
-  display: flex;
-  justify-content: center;
-
-  &__container {
-    display: grid;
-    grid-template-rows: auto max-content;
-    max-width: 1180px;
-    grid-row-gap: 30px;
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-  }
-
   &__header {
     align-self: flex-end;
 
@@ -981,10 +967,6 @@ export default {
   }
 
   @include _767 {
-    &__container {
-      grid-template-rows: auto auto;
-      gap: 24px;
-    }
     &__header {
       .title {
         font-size: 38px;

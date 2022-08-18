@@ -243,9 +243,8 @@ export default {
 @include _1199 {
   .employees {
     &__content {
-      padding: 0 20px;
+      padding: 0 10px;
     }
-
     &__cards {
       grid-template-columns: repeat(3, 1fr);
     }
@@ -260,11 +259,6 @@ export default {
 
 @include _575 {
   .employees {
-
-    &__content {
-      padding: 0 10px;
-    }
-
     &__cards {
       grid-template-columns: 1fr;
       grid-gap: 10px;

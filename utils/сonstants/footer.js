@@ -1,4 +1,4 @@
-import { DaoUrl } from '~/utils/enums';
+import { DaoUrl, WikiUrl } from '~/utils/enums';
 
 export const URLS = Object.freeze({
   SOCIALS: {
@@ -15,6 +15,7 @@ export const URLS = Object.freeze({
     PLAY_MARKET: 'https://play.google.com/store/apps/details?id=com.company.workquestapp&hl=ru&gl=US',
   },
   DAO: DaoUrl,
+  WIKI: WikiUrl,
 });
 
 export const LEGAL_INFO = Object.freeze({

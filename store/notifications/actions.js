@@ -104,6 +104,15 @@ export default {
       return false;
     }
   },
+  async markReadAllNotifications({ commit }) {
+    try {
+      const { ok } = await this.$axios.$put(`${ENV.NOTIFS_URL}notifications/mark-read-all`);
+      commit('resetUnreadNotifsCount');
+      return ok;
+    } catch (e) {
+      return false;
+    }
+  },
 
   async getNotifications({ commit, dispatch }, config) {
     try {

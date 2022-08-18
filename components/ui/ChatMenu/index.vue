@@ -1,7 +1,6 @@
 <template>
   <div
     class="icon-more chat__button_menu"
-    :class="{'invisible':isInvisible}"
   >
     <button
       v-click-outside="closeChatMenu"
@@ -43,7 +42,7 @@
           </template>
           <template v-else>
             <div
-              v-if="isOpenDispute"
+              v-if="isCanOpenDispute && isOpenDispute"
               class="chat-menu__item"
               @click="showOpenADisputeModal()"
             >
@@ -55,6 +54,13 @@
               @click="tryLeaveChat"
             >
               {{ $t('chat.leaveChat') }}
+            </div>
+            <div
+              v-if="!hideDeleteChat"
+              class="chat-menu__item"
+              @click="deleteChat"
+            >
+              {{ $t('chat.delete') }}
             </div>
           </template>
         </div>
@@ -85,6 +91,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    hideDeleteChat: {
+      type: Boolean,
+      default: false,
+    },
     menuItems: {
       type: Array,
       default: () => ([]),
@@ -99,16 +109,29 @@ export default {
     ...mapGetters({
       currChat: 'chat/getCurrChatInfo',
       chats: 'chat/getChats',
+      userData: 'user/getUserData',
     }),
     isOpenDispute() {
       return !this.canILeave && this.$route.query.type === ChatType.QUEST;
     },
-    isInvisible() {
+    isCanOpenDispute() {
       const { type, status } = this.$route.query;
-      return type === ChatType.QUEST && ![QuestStatuses.WaitWorker, QuestStatuses.Dispute].includes(+status);
+      return type === ChatType.QUEST && [QuestStatuses.WaitEmployerConfirm, QuestStatuses.WaitWorker].includes(+status);
     },
   },
   methods: {
+    deleteChat() {
+      this.ShowModal({
+        key: modals.areYouSureNotification,
+        title: this.$t('chat.deleteChat'),
+        callback: async () => {
+          this.SetLoader(true);
+          await this.$store.dispatch('chat/removeChat', this.currChat.id);
+          await this.$router.push(Path.MESSAGES);
+          this.SetLoader(false);
+        },
+      });
+    },
     getStarredMessages() {
       this.$router.push(`${Path.MESSAGES}/starred`);
     },
@@ -140,10 +163,9 @@ export default {
     },
     async leaveChat() {
       if (await this.$store.dispatch('chat/leaveFromChat', this.currChat.id)) await this.$router.push(`${Path.MESSAGES}`);
-
       this.CloseModal();
     },
-    async showCreateChatModal() {
+    showCreateChatModal() {
       this.closeChatMenu();
       this.ShowModal({
         key: modals.chatCreate,
@@ -224,9 +246,6 @@ export default {
       color: $black800;
     }
   }
-}
-.invisible{
-  opacity: 0;
 }
 @include _1400 {
   .chat-menu {

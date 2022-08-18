@@ -319,6 +319,7 @@ export default {
       const { submit } = this.options;
       this.CloseModal();
       await submit({
+        amountWUSD: this.amountWUSD,
         collateral: this.amountCollateral,
         percent: this.collateralPercent.substr(0, this.collateralPercent.length - 1),
         currency: this.currentCurrency,
