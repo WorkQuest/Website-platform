@@ -402,6 +402,15 @@ export default {
       }
       this.SetLoader(false);
     },
+    removeIncorrectStorage() {
+      const storageData = JSON.parse(localStorage.getItem('wal'));
+      const key = this.userAddress.toLowerCase();
+      // remove decrypted incorrect mnemonic in storage
+      if (storageData && storageData[key]) {
+        delete storageData[key];
+        localStorage.setItem('wal', JSON.stringify(storageData));
+      }
+    },
     async nextStepAction() {
       this.CloseModal(); // for modal sign in
       const confirmToken = sessionStorage.getItem('confirmToken');
@@ -473,8 +482,9 @@ export default {
       }
       if (storageMnemonic) {
         const mnemonic = decryptStringWithKey(storageMnemonic, this.model.password);
+        if (!mnemonic) this.removeIncorrectStorage();
         const wallet = createWallet(mnemonic);
-        if (wallet?.address?.toLowerCase() === this.userWalletAddress) {
+        if (mnemonic && wallet?.address?.toLowerCase() === this.userWalletAddress) {
           this.saveToStorage(wallet);
           await this.redirectUser();
           this.SetLoader(false);
@@ -484,6 +494,7 @@ export default {
 
       // Storage invalid mnemonics
       this.ShowToast(this.$t('messages.mnemonic'), this.$t('toasts.error'));
+      this.removeIncorrectStorage();
       this.step = WalletState.ImportMnemonic;
     },
     async assignWallet(wallet) {

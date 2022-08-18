@@ -108,6 +108,7 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import { images } from '~/utils/images';
+import { decryptStringWithKey, encryptStringWithKey } from '~/utils/wallet';
 
 export default {
   name: 'ModalChangePassSetting',
@@ -126,6 +127,7 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
       email: 'user/getUserEmail',
+      userWalletAddress: 'user/getUserWalletAddress',
     }),
   },
   methods: {
@@ -135,6 +137,7 @@ export default {
         return;
       }
       this.SetLoader(true);
+
       try {
         const response = await this.$store.dispatch('user/editUserPassword', {
           oldPassword: this.currentPasswordInput.trim(),
@@ -147,6 +150,18 @@ export default {
               password: this.confirmNewPasswordInput,
             },
           });
+
+          // updating decrypted wal in storage
+          const storageData = JSON.parse(localStorage.getItem('wal'));
+          const key = this.userWalletAddress.toLowerCase();
+          const m = decryptStringWithKey(storageData[key], this.currentPasswordInput.trim());
+          if (m) {
+            localStorage.setItem('wal', JSON.stringify({
+              ...storageData,
+              [key]: encryptStringWithKey(m, this.newPasswordInput.trim()),
+            }));
+          }
+
           this.ShowModal({
             key: modals.status,
             img: images.PASSWORD_CHANGED,
