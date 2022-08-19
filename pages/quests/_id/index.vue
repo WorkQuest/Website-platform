@@ -387,6 +387,7 @@ export default {
       const {
         Dispute,
         Created,
+        WaitWorker,
         WaitEmployerConfirm,
       } = QuestStatuses;
       let arr = [];
@@ -403,6 +404,14 @@ export default {
             funcKey: 'closeQuest',
             disabled: false,
           }];
+          break;
+        }
+        case WaitWorker: {
+          arr.push({
+            name: this.$t('meta.openDispute'),
+            funcKey: 'openDispute',
+            disabled: false,
+          });
           break;
         }
         case WaitEmployerConfirm: {
@@ -580,15 +589,17 @@ export default {
       }
 
       const currentTime = this.$moment().utc(false).valueOf();
-      const unlockTime = this.$moment(this.quest.startedAt).add(1, 'm').utc(false).valueOf();
-      // TODO: fixme Вернуть, нужно для тестов Роме
-      // const unlockTime = this.$moment(this.quest.startedAt).add(1, 'day').utc(false).valueOf();
+      const amountToAdd = status === QuestStatuses.WaitWorker ? 1 : 3;
+      const unlockTime = this.$moment(this.quest.startedAt).add(amountToAdd, 'day').utc(false).valueOf();
+
       if (currentTime <= unlockTime) {
         this.ShowModal({
           key: modals.status,
           img: images.ERROR,
           title: this.$t('modals.errors.error'),
-          subtitle: this.$t('modals.errors.youCantCreateDispute'),
+          subtitle: status === QuestStatuses.WaitWorker
+            ? this.$t('modals.errors.youCantCreateDispute')
+            : this.$t('modals.errors.youCantCreateDispute3Days'),
           button: this.$t('meta.btns.close'),
         });
         return;

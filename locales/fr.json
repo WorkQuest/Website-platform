@@ -1057,6 +1057,7 @@
       "errorNetwork": "Error, you use not correct network. Switch to {network}",
       "youCan’tDeleteActiveQuest": "You can’t delete active quest",
       "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest",
+      "youCantCreateDispute3Days": "You cannot create a dispute until 3 days have passed from the complete of this quest",
       "dontHavePeople": "You don't have people to chat"
     },
     "chatCreate": {
