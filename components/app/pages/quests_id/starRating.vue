@@ -1,6 +1,21 @@
 <template>
   <fieldset class="rating">
-    <div class="rating__group">
+    <div
+      v-if="isDisabled && starsNumber"
+      class="checked__group"
+    >
+      <img
+        v-for="(star, i) in starsNumber"
+        :key="i + 1"
+        class="checked__star"
+        :src="i + 1 <= rating ? require('assets/img/ui/star.svg') : require('assets/img/ui/star-empty.svg')"
+        alt=""
+      >
+    </div>
+    <div
+      v-else
+      class="rating__group"
+    >
       <input
         v-for="(star, i) in starsNumber"
         :id="`star-${i + 1}`"
@@ -121,6 +136,16 @@ export default {
     &_checked {
       background-image: url('assets/img/ui/star.svg');
     }
+  }
+}
+.checked {
+  &__group {
+    display: flex;
+    height: 1.2em;
+  }
+  &__star {
+    width: 1.2em;
+    height: 1.2em;
   }
 }
 </style>
