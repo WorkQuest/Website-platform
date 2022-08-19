@@ -145,7 +145,7 @@ export default {
     },
     autocomplete: {
       type: String,
-      default: 'on',
+      default: 'off',
     },
     rules: {
       type: [String, Array, Object],
@@ -181,6 +181,13 @@ export default {
     },
   },
   mounted() {
+    if (this.autocomplete === 'off') {
+      const el = this.$refs.input;
+      el.setAttribute('readonly', 'readonly');
+      setTimeout(() => {
+        el.removeAttribute('readonly');
+      }, 500);
+    }
     this.focus();
     this.addMaxMinDate();
   },
