@@ -247,6 +247,12 @@ export default {
     },
   },
   watch: {
+    quest: {
+      deep: true,
+      handler() {
+        if (this.quest) this.setActionBtnsArr();
+      },
+    },
     infoDataMode(newVal, oldVal) {
       if (oldVal === undefined || newVal === oldVal) return;
       this.setActionBtnsArr();
@@ -502,7 +508,17 @@ export default {
           break;
         }
         case WaitWorkerOnAssign: {
-          if (assignedWorkerId !== userData.id) break;
+          if (assignedWorkerId !== userData.id) {
+            if (!this.quest.response) {
+              // not invited user can send request
+              arr = [{
+                name: this.$t('meta.sendARequest'),
+                funcKey: 'sendARequestOnQuest',
+                disabled: false,
+              }];
+            }
+            break;
+          }
           arr = [{
             name: this.$t('meta.btns.agree'),
             funcKey: 'acceptWorkOnQuest',

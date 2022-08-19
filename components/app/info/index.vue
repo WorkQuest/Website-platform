@@ -92,8 +92,8 @@ export default {
           class: 'info_bg-green',
         },
         [QuestStatuses.WaitWorkerOnAssign]: {
-          text: this.isWorker ? this.$t('meta.invited') : '',
-          class: this.isWorker ? 'info_bg-yellow' : 'info_hide',
+          text: this.isWorker && this.questData?.assignedWorkerId === this.userData?.id ? this.$t('meta.invited') : '',
+          class: this.isWorker && this.questData?.assignedWorkerId === this.userData?.id ? 'info_bg-yellow' : 'info_hide',
         },
         [QuestStatuses.WaitEmployerConfirm]: {
           text: this.$t('quests.pendingConsideration'),
