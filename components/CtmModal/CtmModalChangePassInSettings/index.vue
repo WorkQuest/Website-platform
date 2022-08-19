@@ -3,104 +3,46 @@
     class="password"
     :title="$tc('modals.titles.changePass')"
   >
-    <div class="password__content content">
+    <form
+      class="password__content content"
+      @submit.prevent="changePass"
+    >
       <div class="content__error">
         {{ errorMsg ? $t('errors.incorrectPass') : null }}
       </div>
-      <div class="content__field field">
-        <base-field
-          v-model="currentPasswordInput"
-          :is-hide-error="true"
-          placeholder="******"
-          data-selector="CURRENT-PASSWORD"
-          :label="$tc('modals.currentPassword')"
-          mode="icon"
-          :type="isVisibleCurrent ? 'text': 'password'"
-          class="field__input"
-        >
-          <template
-            v-slot:left
-            class="field__template"
-          >
-            <span class="icon-Lock field__picture" />
-          </template>
-          <template
-            v-if="currentPasswordInput"
-            v-slot:right-absolute
-            class="field__block"
-          >
-            <btn-password-visibility
-              :data-selector="`IS-VISIBLE-CURRENT-PASS-${isVisibleCurrent}`"
-              :is-password-visible="isVisibleCurrent"
-              @toggleVisibility="isVisibleCurrent = $event"
-            />
-          </template>
-        </base-field>
-      </div>
       <base-field
-        v-model="newPasswordInput"
-        :is-hide-error="true"
-        placeholder="******"
-        data-selector="NEW-PASSWORD"
-        :label="$tc('modals.newPassword')"
+        v-for="(field, i) in fields"
+        :key="i"
+        v-model="field.pass"
         mode="icon"
-        :type="isVisible ? 'text': 'password'"
-        class="field__input"
-      >
-        <template
-          v-slot:left
-          class="field__template"
-        >
-          <span class="icon-Lock field__picture" />
-        </template>
-        <template
-          v-if="newPasswordInput"
-          v-slot:right-absolute
-          class="field__block"
-        >
-          <btn-password-visibility
-            :data-selector="`IS-VISIBLE-PASS-${isVisible}`"
-            :is-password-visible="isVisible"
-            @toggleVisibility="isVisible = $event"
-          />
-        </template>
-      </base-field>
-      <base-field
-        v-model="confirmNewPasswordInput"
-        :is-hide-error="true"
+        is-hide-error
         placeholder="******"
-        data-selector="CONFIRM-NEW-PASSWORD"
-        :label="$tc('modals.confirmNewPassword')"
-        mode="icon"
-        :type="isVisibleConfirm ? 'text': 'password'"
+        class="content__field"
+        :data-selector="`PASSWORD-${i}`"
+        :label="field.label"
+        :type="field.isVisible ? 'text': 'password'"
       >
         <template v-slot:left>
-          <span class="icon-Lock field__picture" />
+          <span class="content__icon icon-Lock" />
         </template>
         <template
-          v-if="confirmNewPasswordInput"
+          v-if="field.pass"
           v-slot:right-absolute
           class="field__block"
         >
           <btn-password-visibility
-            :data-selector="`IS-VISIBLE-PASS-${isVisibleConfirm}`"
-            :is-password-visible="isVisibleConfirm"
-            @toggleVisibility="isVisibleConfirm = $event"
+            :is-password-visible="field.isVisible"
+            @toggleVisibility="field.isVisible = $event"
           />
         </template>
       </base-field>
-      <div class="content__buttons buttons">
-        <div class="buttons__group">
-          <base-btn
-            class="buttons__button"
-            data-selector="CHANGE"
-            @click="hide()"
-          >
-            {{ $t('meta.btns.change') }}
-          </base-btn>
-        </div>
-      </div>
-    </div>
+      <base-btn
+        class="content__button"
+        data-selector="CHANGE"
+      >
+        {{ $t('meta.btns.change') }}
+      </base-btn>
+    </form>
   </ctm-modal-box>
 </template>
 
@@ -114,12 +56,23 @@ export default {
   name: 'ModalChangePassSetting',
   data() {
     return {
-      isVisible: false,
-      isVisibleCurrent: false,
-      isVisibleConfirm: false,
-      currentPasswordInput: '',
-      newPasswordInput: '',
-      confirmNewPasswordInput: '',
+      fields: {
+        current: {
+          pass: '',
+          isVisible: false,
+          label: this.$t('modals.currentPassword'),
+        },
+        new: {
+          pass: '',
+          isVisible: false,
+          label: this.$t('modals.newPassword'),
+        },
+        confirmNew: {
+          pass: '',
+          isVisible: false,
+          label: this.$t('modals.confirmNewPassword'),
+        },
+      },
       errorMsg: '',
     };
   },
@@ -131,34 +84,38 @@ export default {
     }),
   },
   methods: {
-    async hide() {
-      if (this.newPasswordInput.trim() !== this.confirmNewPasswordInput.trim() || this.newPasswordInput === '') {
+    async changePass() {
+      const currPass = this.fields.current.pass.trim();
+      const newPass = this.fields.new.pass.trim();
+      const confirmNew = this.fields.confirmNew.pass.trim();
+
+      if (newPass !== confirmNew || newPass === '') {
         this.errorMsg = true;
         return;
       }
-      this.SetLoader(true);
 
+      this.SetLoader(true);
       try {
         const response = await this.$store.dispatch('user/editUserPassword', {
-          oldPassword: this.currentPasswordInput.trim(),
-          newPassword: this.newPasswordInput.trim(),
+          oldPassword: currPass,
+          newPassword: newPass,
         });
         if (response?.ok) {
           await this.$store.dispatch('user/signIn', {
             params: {
               email: this.email,
-              password: this.confirmNewPasswordInput,
+              password: confirmNew,
             },
           });
 
           // updating decrypted wal in storage
           const storageData = JSON.parse(localStorage.getItem('wal'));
           const key = this.userWalletAddress.toLowerCase();
-          const m = decryptStringWithKey(storageData[key], this.currentPasswordInput.trim());
+          const m = decryptStringWithKey(storageData[key], currPass);
           if (m) {
             localStorage.setItem('wal', JSON.stringify({
               ...storageData,
-              [key]: encryptStringWithKey(m, this.newPasswordInput.trim()),
+              [key]: encryptStringWithKey(m, newPass),
             }));
           }
 
@@ -181,32 +138,19 @@ export default {
 <style lang="scss" scoped>
 .password {
   max-width: 382px !important;
-  &__content {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 20px;
-    padding: 0 28px 30px 28px;
-  }
-}
-.content {
-  &__error {
-    color:red;
-  }
 }
 
-.buttons {
-    &__group {
-      display: grid;
-      grid-gap: 20px;
-      gap: 20px;
-      margin-top: 25px;
-    }
-}
-.field {
-  &__button {
-    background-color: transparent !important;
+.content {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 20px;
+  padding: 0 28px 30px 28px;
+
+  &__error {
+    color: $errorText;
   }
-  &__picture {
+
+  &__icon {
     color: $blue;
     font-size: 24px;
   }
