@@ -210,8 +210,9 @@ export default {
       this.SetLoader(false);
     });
 
+    console.log(this.userData);
     // modal 2fa next time required
-    if (!this.userData?.neverEditedProfileFlag) {
+    if (this.userData?.neverEditedProfileFlag) {
       this.ShowModal({
         key: modals.status,
         img: images.WARNING,
@@ -336,7 +337,7 @@ export default {
         if (!firstMobileNumber) this.showModalStatus('enterPhoneNumber');
       };
 
-      if (!this.userData?.neverEditedProfileFlag) {
+      if (this.userData?.neverEditedProfileFlag) {
         await editProfile();
         return;
       }
