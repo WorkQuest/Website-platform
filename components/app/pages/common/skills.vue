@@ -85,4 +85,9 @@ export default {
       }
     }
   }
+  @include _575 {
+    .skills__item {
+      font-size: 12px;
+    }
+  }
 </style>

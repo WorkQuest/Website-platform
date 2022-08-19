@@ -1,71 +1,69 @@
 <template>
-  <div
-    class="icon-more chat__button_menu"
-  >
+  <div class="icon-more chat__button_menu">
     <button
       v-click-outside="closeChatMenu"
-      class="chat__button "
+      class="chat__button"
       @click="toggleChatMenu"
     >
       <span class="icon-more_horizontal" />
-    </button>
-    <transition name="fade">
-      <div
-        v-if="isShowChatMenu"
-        class="chat-menu"
-        :class="menuItems.length?'chat-menu-secondary-position':'chat-menu-main-position'"
-      >
-        <div class="chat-menu__items">
-          <template v-if="menuItems.length">
-            <div
-              v-for="(item, index) in menuItems"
-              :key="index"
-              class="chat-menu__item"
-              @click="$emit(item)"
-            >
-              {{ $t(`chat.menu.${item}`) }}
-            </div>
-          </template>
-          <template v-if="$route.name === 'messages'">
-            <div
-              class="chat-menu__item"
-              @click="getStarredMessages"
-            >
-              {{ $t('chat.starredMessages') }}
-            </div>
-            <div
-              class="chat-menu__item"
-              @click="showCreateChatModal"
-            >
-              {{ $t('chat.createGroupChat') }}
-            </div>
-          </template>
-          <template v-else>
-            <div
-              v-if="isCanOpenDispute && isOpenDispute"
-              class="chat-menu__item"
-              @click="showOpenADisputeModal()"
-            >
-              {{ $t('meta.openDispute') }}
-            </div>
-            <div
-              v-if="canILeave"
-              class="chat-menu__item"
-              @click="tryLeaveChat"
-            >
-              {{ $t('chat.leaveChat') }}
-            </div>
-            <div
-              v-if="!hideDeleteChat"
-              class="chat-menu__item"
-              @click="deleteChat"
-            >
-              {{ $t('chat.delete') }}
-            </div>
-          </template>
+      <transition name="fade">
+        <div
+          v-if="isShowChatMenu"
+          class="chat-menu"
+          :class="menuItems.length ? 'chat-menu-secondary-position' : 'chat-menu-main-position'"
+        >
+          <div class="chat-menu__items">
+            <template v-if="menuItems.length">
+              <div
+                v-for="(item, index) in menuItems"
+                :key="index"
+                class="chat-menu__item"
+                @click="$emit(item)"
+              >
+                {{ $t(`chat.menu.${item}`) }}
+              </div>
+            </template>
+            <template v-if="$route.name === 'messages'">
+              <div
+                class="chat-menu__item"
+                @click="getStarredMessages"
+              >
+                {{ $t('chat.starredMessages') }}
+              </div>
+              <div
+                class="chat-menu__item"
+                @click="showCreateChatModal"
+              >
+                {{ $t('chat.createGroupChat') }}
+              </div>
+            </template>
+            <template v-else>
+              <div
+                v-if="isCanOpenDispute && isOpenDispute"
+                class="chat-menu__item"
+                @click="showOpenADisputeModal()"
+              >
+                {{ $t('meta.openDispute') }}
+              </div>
+              <div
+                v-if="canILeave"
+                class="chat-menu__item"
+                @click="tryLeaveChat"
+              >
+                {{ $t('chat.leaveChat') }}
+              </div>
+              <div
+                v-if="!hideDeleteChat"
+                class="chat-menu__item"
+                @click="deleteChat"
+              >
+                {{ $t('chat.delete') }}
+              </div>
+            </template>
+          </div>
         </div>
-      </div>
-    </transition>
+      </transition>
+    </button>
   </div>
 </template>
 

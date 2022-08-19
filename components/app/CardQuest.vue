@@ -1102,6 +1102,10 @@ export default {
       margin-top: 10px;
       padding: 0;
     }
+
+    &__status {
+      flex-wrap: wrap;
+    }
   }
 }
 

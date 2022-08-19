@@ -161,3 +161,15 @@ body {
 #WEB3_CONNECT_MODAL_ID > div {
   z-index: 1000000;
 }
+
+// wallet connect //
+.walletconnect-modal__footer {
+  overflow: auto !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+}
+@include _767 {
+  .walletconnect-connect__button__text {
+    font-size: 12px !important;
+  }
+}

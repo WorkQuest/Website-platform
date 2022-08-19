@@ -250,7 +250,8 @@ export default {
 @include _380 {
   .pager {
     &__cloud {
-      min-width: 37px;
+      min-width: 30px;
+      font-size: 14px;
     }
   }
 }

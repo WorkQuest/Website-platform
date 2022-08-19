@@ -383,6 +383,9 @@
     }
   },
   "quests": {
+    "review": {
+      "selectRating": "Please select a rating"
+    },
     "workersNotInvited": "Workers not invited",
     "employer": {
       "usersNotResponded": "Users not responded"
@@ -2193,6 +2196,7 @@
     },
     "DeFi": {
       "title": "DeFi functionality",
+      "collateral": "Collateral",
       "retirement": "Retirement program",
       "referral": "Referral program",
       "P2P": "P2P insurance",
