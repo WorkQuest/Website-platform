@@ -65,10 +65,10 @@
         class="auction-card__duration"
       >
         {{ $t('auction.card.timeLeft') }}
-        {{ durationTime.days ? $tc('meta.units.days', DeclOfNum(durationTime.days), {count: durationTime.days}) : '' }}
-        {{ durationTime.hours ? $tc('meta.units.hours', DeclOfNum(durationTime.hours), {count: durationTime.hours}) : '' }}
-        {{ durationTime.minutes ? $tc('meta.units.minutes', DeclOfNum(durationTime.minutes), {count: durationTime.minutes}) : '' }}
-        {{ durationTime.seconds ? $tc('meta.units.seconds', DeclOfNum(durationTime.seconds), {count: durationTime.seconds}) : '' }}
+        {{ durationTime.days }}
+        {{ durationTime.hours }}
+        {{ durationTime.minutes }}
+        {{ durationTime.seconds }}
       </p>
       <base-btn
         data-selector="ACTION-AUCTION"
