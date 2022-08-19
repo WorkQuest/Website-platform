@@ -14,7 +14,7 @@
       :disabled="!isAdding"
       class="knowledge__data"
       :placeholder="$t('meta.fromBig')"
-      :rules="`between-date:[${$moment().format('1900/01/01')},${$moment().format('yyyy/MM/DD')}]`"
+      :rules="`from-to:${item.from},${item.to}|between-date:${$moment().add(-100, 'years').format('yyyy/MM/DD')},${item.to}`"
       :validation-mode="validationMode"
       @blur="$emit('blur')"
     />
@@ -30,7 +30,7 @@
       :disabled="!isAdding"
       class="knowledge__data"
       :placeholder="$t('meta.toBig')"
-      :rules="`between-date:[${$moment().format('yyyy/MM/DD')},${$moment().add(10, 'y').format('yyyy/MM/DD')}]`"
+      :rules="`from-to:${item.from},${item.to}|between-date:${item.from},${$moment().add(10, 'years').format('yyyy/MM/DD')}`"
       :validation-mode="validationMode"
       @blur="$emit('blur')"
     />

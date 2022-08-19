@@ -186,11 +186,12 @@ export default {
   }
 
   &__title {
-    margin-top: 73px;
+    margin-top: 30px;
+    margin-bottom: 44px;
+
     font-weight: 500;
     font-size: 25px;
     line-height: 130%;
-    margin-bottom: 44px;
   }
 
   &__topbar {
