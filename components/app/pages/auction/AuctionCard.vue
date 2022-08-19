@@ -28,7 +28,7 @@
         </p>
       </div>
     </template>
-    <template v-else>
+    <template v-else-if="!isStartedLotCompleted">
       <h3 class="auction-card__price">
         {{
           $t('auction.card.lotAmount', {
@@ -76,6 +76,11 @@
       >
         {{ $options.LotsStatuses.INACTIVE === typeOfLot ? $t('meta.btns.init') : $t('meta.btns.buy') }}
       </base-btn>
+    </template>
+    <template v-else>
+      <div class="auction-card_started-lot-completed">
+        {{ $t('meta.completed') }}
+      </div>
     </template>
   </div>
 </template>
@@ -132,6 +137,7 @@ export default {
         minutes: '',
         seconds: '',
       },
+      isStartedLotCompleted: false,
     };
   },
   computed: {
@@ -222,13 +228,10 @@ export default {
     if (this.typeOfLot !== LotsStatuses.STARTED) return;
     const { symbol } = this.lot;
     this.willFinish = this.$moment(this.lot.auctionStarted[0].timestamp * 1000).add(this.duration[symbol], 'seconds');
+
+    this.runCalculating();
     this.intervalId = setInterval(() => {
-      if (this.typeOfLot === LotsStatuses.STARTED) {
-        const { auctionStarted } = this.lot;
-        const { endCost, amount } = auctionStarted[0];
-        this.calcStartedLotPrice(symbol, endCost, amount);
-      }
-      this.calcDurationTime(this.willFinish);
+      this.runCalculating();
     }, 1000);
   },
   beforeDestroy() {
@@ -240,26 +243,39 @@ export default {
       setTokenPrices: 'oracle/setCurrentPriceTokens',
     }),
 
+    runCalculating() {
+      if (this.typeOfLot === LotsStatuses.STARTED) {
+        const { auctionStarted, symbol } = this.lot;
+        const { endCost, amount } = auctionStarted[0];
+        this.calcStartedLotPrice(symbol, endCost, amount);
+      }
+      this.calcDurationTime(this.willFinish);
+    },
+
     calcDurationTime(willFinish) {
       const now = this.$moment();
       let durationInSec = this.$moment(willFinish).diff(now) / 1000;
 
       if (new BigNumber(durationInSec).isGreaterThanOrEqualTo(86400)) {
-        this.durationTime.days = new BigNumber(durationInSec).dividedToIntegerBy(86400).toFixed();
-        durationInSec -= new BigNumber(86400).multipliedBy(this.durationTime.days).toFixed();
+        const days = new BigNumber(durationInSec).dividedToIntegerBy(86400).toFixed();
+        this.durationTime.days = days ? this.$tc('meta.units.days', this.DeclOfNum(days), { count: days }) : '';
+        durationInSec -= new BigNumber(86400).multipliedBy(days).toFixed();
       }
 
       if (new BigNumber(durationInSec).isGreaterThanOrEqualTo(3600)) {
-        this.durationTime.hours = new BigNumber(durationInSec).dividedToIntegerBy(3600).toFixed();
-        durationInSec -= new BigNumber(3600).multipliedBy(this.durationTime.hours).toFixed();
+        const hours = new BigNumber(durationInSec).dividedToIntegerBy(3600).toFixed();
+        this.durationTime.hours = hours ? this.$tc('meta.units.hours', this.DeclOfNum(hours), { count: hours }) : '';
+        durationInSec -= new BigNumber(3600).multipliedBy(hours).toFixed();
       }
 
       if (new BigNumber(durationInSec).isGreaterThanOrEqualTo(60)) {
-        this.durationTime.minutes = new BigNumber(durationInSec).dividedToIntegerBy(60).toFixed();
-        durationInSec -= new BigNumber(60).multipliedBy(this.durationTime.minutes).toFixed();
+        const minutes = new BigNumber(durationInSec).dividedToIntegerBy(3600).toFixed();
+        this.durationTime.minutes = minutes ? this.$tc('meta.units.minutes', this.DeclOfNum(minutes), { count: minutes }) : '';
+        durationInSec -= new BigNumber(60).multipliedBy(minutes).toFixed();
       }
 
-      this.durationTime.seconds = Math.ceil(durationInSec);
+      const seconds = Math.ceil(durationInSec);
+      this.durationTime.seconds = seconds && seconds > 0 ? this.$tc('meta.units.minutes', this.DeclOfNum(seconds), { count: seconds }) : '';
     },
 
     calcStartedLotPrice(symbol, endCost, amount) {
@@ -279,7 +295,13 @@ export default {
       const finalPrice = new BigNumber(a).plus(d);
       const lotDecimals = this.balanceData[symbol].decimals;
       const _amount = new BigNumber(amount).shiftedBy(-lotDecimals).toString();
-      this.startedLotPrice = new BigNumber(finalPrice).multipliedBy(_amount).toFixed(4, 1);
+      const lotPrice = new BigNumber(finalPrice).multipliedBy(_amount).toFixed(4, 1);
+
+      if (new BigNumber(lotPrice).isGreaterThan(0)) this.startedLotPrice = lotPrice;
+      else {
+        this.isStartedLotCompleted = true;
+        clearInterval(this.intervalId);
+      }
     },
 
     async handleLotAction() {
@@ -388,6 +410,15 @@ export default {
 
   &:hover {
     @include shadow;
+  }
+
+  &_started-lot-completed {
+    display: flex;
+    height: 195.69px;
+    align-items: center;
+    justify-content: center;
+    font-size: 35px;
+    color: $black200;
   }
 
   &_completed {
