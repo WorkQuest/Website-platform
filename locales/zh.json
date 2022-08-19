@@ -978,6 +978,7 @@
       "filters": {
         "titleAll": "所有筛选器"
       },
+      "attention": "Attention!",
       "disputePayment": "Dispute payment",
       "saved": "Saved successfully",
       "cardAdd": "Add card",
@@ -1579,6 +1580,7 @@
     }
   },
   "settings": {
+    "2faInfo": "Changing the data will be possible only once, in order to make changes to the profile in the future, you will need to connect 2FA.",
     "additionalPhoneNumber": "Additional phone number",
     "mainPhoneNumber": "Main phone number",
     "whoCouldIInvite": "Who can respond to my quests?",
