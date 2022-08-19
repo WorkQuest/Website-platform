@@ -378,6 +378,9 @@
     }
   },
   "quests": {
+    "review": {
+      "selectRating": "Пожалуйста выберите оценку"
+    },
     "workersNotInvited": "Workers not invited",
     "employer": {
       "usersNotResponded": "Users not responded"

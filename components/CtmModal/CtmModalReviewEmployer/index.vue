@@ -12,6 +12,12 @@
           @input="changeReview($event)"
         />
       </div>
+      <div
+        v-show="isShowRatingError"
+        class="body__error-rating"
+      >
+        {{ $t('quests.review.selectRating') }}
+      </div>
       <validation-observer
         v-slot="{handleSubmit, valid}"
         class="body__content content"
@@ -71,12 +77,18 @@ export default {
     return {
       textArea: '',
       rating: 0,
+      isShowRatingError: false,
     };
   },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
+  },
+  watch: {
+    rating() {
+      this.isShowRatingError = false;
+    },
   },
   mounted() {
     this.rating = this.options.rating;
@@ -86,6 +98,10 @@ export default {
       this.rating = value;
     },
     async sendReview() {
+      if (this.rating === 0) {
+        this.isShowRatingError = true;
+        return;
+      }
       const { callback } = this.options;
       await callback(this.textArea, this.rating);
     },
@@ -139,7 +155,13 @@ export default {
   width: 45%;
 }
 
-.body__rating {
-  padding-bottom: 15px;
+.body {
+  &__rating {
+    padding-bottom: 15px;
+  }
+  &__error-rating {
+    color: $red;
+    font-size: 12px;
+  }
 }
 </style>
