@@ -133,6 +133,9 @@ export default {
     isEmployer() {
       return this.userRole === UserRole.EMPLOYER;
     },
+    isNeed2FAToEdit() {
+      return this.userData?.neverEditedProfileFlag;
+    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -210,9 +213,7 @@ export default {
       this.SetLoader(false);
     });
 
-    console.log(this.userData);
-    // modal 2fa next time required
-    if (this.userData?.neverEditedProfileFlag) {
+    if (this.isNeed2FAToEdit) {
       this.ShowModal({
         key: modals.status,
         img: images.WARNING,
@@ -337,7 +338,7 @@ export default {
         if (!firstMobileNumber) this.showModalStatus('enterPhoneNumber');
       };
 
-      if (this.userData?.neverEditedProfileFlag) {
+      if (this.isNeed2FAToEdit) {
         await editProfile();
         return;
       }
