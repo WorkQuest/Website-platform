@@ -164,7 +164,9 @@ body {
 
 // wallet connect //
 .walletconnect-modal__footer {
-  display: none !important;
+  overflow: auto !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
 }
 @include _767 {
   .walletconnect-connect__button__text {
