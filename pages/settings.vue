@@ -133,7 +133,7 @@ export default {
     isEmployer() {
       return this.userRole === UserRole.EMPLOYER;
     },
-    isNeed2FAToEdit() {
+    isDont2FAToEdit() {
       return this.userData?.neverEditedProfileFlag;
     },
   },
@@ -213,7 +213,7 @@ export default {
       this.SetLoader(false);
     });
 
-    if (this.isNeed2FAToEdit) {
+    if (this.isDont2FAToEdit) {
       this.ShowModal({
         key: modals.status,
         img: images.WARNING,
@@ -338,7 +338,7 @@ export default {
         if (!firstMobileNumber) this.showModalStatus('enterPhoneNumber');
       };
 
-      if (this.isNeed2FAToEdit) {
+      if (this.isDont2FAToEdit) {
         await editProfile();
         return;
       }
