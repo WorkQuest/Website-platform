@@ -248,8 +248,8 @@ export default {
       commit('setUserData', result);
       return success();
     } catch (e) {
-      console.log('user/editEmployerData', e);
-      return error();
+      console.log('user/editEmployerData', e.msg);
+      return error(e.code, e.msg, e);
     }
   },
   async editWorkerData({ commit }, payload) {
@@ -258,8 +258,8 @@ export default {
       commit('setUserData', result);
       return success();
     } catch (e) {
-      console.log('user/editWorkerData', e);
-      return error();
+      console.log('user/editWorkerData', e.msg);
+      return error(e.code, e.msg, e);
     }
   },
   async refreshTokens({ commit }) {

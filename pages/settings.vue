@@ -58,6 +58,7 @@ import {
   PayPeriodsIndex, RatingStatus, UserRole, WorkplaceIndex,
 } from '~/utils/enums';
 import { LocalNotificationAction } from '~/utils/notifications';
+import { images } from '~/utils/images';
 
 export default {
   name: 'Settings',
@@ -129,11 +130,11 @@ export default {
       secondNumber: 'user/getUserSecondMobileNumber',
       localNotifications: 'notifications/getLocalNotifications',
     }),
-    WorkplaceIndex() {
-      return WorkplaceIndex;
-    },
     isEmployer() {
       return this.userRole === UserRole.EMPLOYER;
+    },
+    isDont2FAToEdit() {
+      return this.userData?.neverEditedProfileFlag;
     },
   },
   async mounted() {
@@ -211,6 +212,15 @@ export default {
       await this.$store.dispatch('user/getUserData');
       this.SetLoader(false);
     });
+
+    if (this.isDont2FAToEdit) {
+      this.ShowModal({
+        key: modals.status,
+        img: images.WARNING,
+        title: this.$t('modals.titles.attention'),
+        subtitle: this.$t('settings.2faInfo'),
+      });
+    }
   },
   methods: {
     scrollToId() {
@@ -285,12 +295,12 @@ export default {
     showModalKey(modalKey) {
       this.ShowModal({ key: this.modalsKey(modalKey) });
     },
-    showModalStatus(modalMode) {
+    showModalStatus(modalMode, msg) {
       this.ShowModal({
         key: modals.status,
         img: require(`~/assets/img/ui/${modalMode === 'error' ? 'error' : 'questAgreed'}.svg`),
         title: this.modalsStatusTitle(modalMode),
-        subtitle: this.modalsStatusSubtitles(modalMode),
+        subtitle: msg || this.modalsStatusSubtitles(modalMode),
       });
     },
 
@@ -319,11 +329,28 @@ export default {
         this.validationError = true;
         return;
       }
-      const checkAvatarID = this.avatarChange.data.ok ? this.avatarChange.data.result.mediaId : this.userData.avatarId;
-      const firstMobileNumber = +this.updatedFirstPhone.fullPhone;
-      await this.setAvatar();
-      if (firstMobileNumber) await this.editProfile(checkAvatarID);
-      if (!firstMobileNumber) this.showModalStatus('enterPhoneNumber');
+
+      const editProfile = async (securityCode) => {
+        const checkAvatarID = this.avatarChange.data.ok ? this.avatarChange.data.result.mediaId : this.userData.avatarId;
+        const firstMobileNumber = +this.updatedFirstPhone.fullPhone;
+        await this.setAvatar();
+        if (firstMobileNumber) await this.editProfile(checkAvatarID, securityCode);
+        if (!firstMobileNumber) this.showModalStatus('enterPhoneNumber');
+      };
+
+      if (this.isDont2FAToEdit) {
+        await editProfile();
+        return;
+      }
+      if (!this.userData.totpIsActive) {
+        this.ShowModal({ key: modals.neededToEnable2FA });
+        return;
+      }
+      this.ShowModal({
+        key: modals.securityCheck,
+        isOnlySubmit: true,
+        actionMethod: async (securityCode) => await editProfile(securityCode),
+      });
     },
 
     async updateVisibility({ visibilityUser, restrictionRankingStatus }) {
@@ -365,12 +392,13 @@ export default {
       }
     },
 
-    async editProfile(checkAvatarID) {
+    async editProfile(checkAvatarID, securityCode) {
       const addInfo = this.profile.additionalInfo;
       const {
         instagram, twitter, linkedin, facebook,
       } = addInfo.socialNetwork;
       const payload = {
+        totpCode: undefined,
         avatarId: checkAvatarID,
         firstName: this.profile.firstName,
         lastName: this.profile.lastName,
@@ -403,44 +431,50 @@ export default {
       };
       if (!this.updatedSecondPhone.fullPhone) payload.additionalInfo.secondMobileNumber = null;
 
-      if (this.isEmployer) await this.editEmployerData(payload, addInfo);
-      else await this.editWorkerData(payload, addInfo);
+      if (this.isEmployer) await this.editEmployerData(payload, addInfo, securityCode);
+      else await this.editWorkerData(payload, addInfo, securityCode);
       // TODO del after fixes on back, need to check that all updated info is came
       await this.$store.dispatch('user/getUserData');
     },
 
-    async editEmployerData(payload, addInfo) {
-      const { ok } = await this.$store.dispatch('user/editEmployerData', {
-        ...payload,
-        additionalInfo: {
-          ...payload.additionalInfo,
-          description: addInfo.description || null,
-          company: addInfo.company || null,
-          CEO: addInfo.CEO || null,
-          website: addInfo.website || null,
+    async editEmployerData(payload, addInfo, securityCode) {
+      const { ok, msg } = await this.$store.dispatch('user/editEmployerData', {
+        totpCode: securityCode,
+        profile: {
+          ...payload,
+          additionalInfo: {
+            ...payload.additionalInfo,
+            description: addInfo.description || null,
+            company: addInfo.company || null,
+            CEO: addInfo.CEO || null,
+            website: addInfo.website || null,
+          },
         },
       });
 
-      this.showModalStatus(ok ? 'saved' : 'error');
+      this.showModalStatus(ok ? 'saved' : 'error', msg);
     },
 
-    async editWorkerData(payload, addInfo) {
-      const { ok } = await this.$store.dispatch('user/editWorkerData', {
-        ...payload,
-        additionalInfo: {
-          ...payload.additionalInfo,
-          educations: addInfo.educations,
-          workExperiences: addInfo.workExperiences,
-          description: addInfo.description || null,
+    async editWorkerData(payload, addInfo, securityCode) {
+      const { ok, msg } = await this.$store.dispatch('user/editWorkerData', {
+        totpCode: securityCode,
+        profile: {
+          ...payload,
+          additionalInfo: {
+            ...payload.additionalInfo,
+            educations: addInfo.educations,
+            workExperiences: addInfo.workExperiences,
+            description: addInfo.description || null,
+          },
+          workplace: WorkplaceIndex[this.skills.distantIndex] || null,
+          payPeriod: PayPeriodsIndex[this.skills.payPeriodIndex] || this.userData.payPeriod,
+          priority: this.skills.priorityIndex,
+          costPerHour: this.skills.perHour || this.userData.costPerHour,
+          specializationKeys: this.skills.selectedSpecAndSkills || [],
         },
-        workplace: WorkplaceIndex[this.skills.distantIndex] || null,
-        payPeriod: PayPeriodsIndex[this.skills.payPeriodIndex] || this.userData.payPeriod,
-        priority: this.skills.priorityIndex,
-        costPerHour: this.skills.perHour || this.userData.costPerHour,
-        specializationKeys: this.skills.selectedSpecAndSkills || [],
       });
 
-      this.showModalStatus(ok ? 'saved' : 'error');
+      this.showModalStatus(ok ? 'saved' : 'error', msg);
 
       // Notification: offers by selected new skills
       if (!this.EqualsArrays(this.skills.selectedSpecAndSkills, this.prevSkills)) {

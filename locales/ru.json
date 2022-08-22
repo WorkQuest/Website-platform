@@ -986,6 +986,7 @@
       "filters": {
         "titleAll": "Все фильтры"
       },
+      "attention": "Внимание!",
       "disputePayment": "Оплата Спора",
       "saved": "Saved successfully",
       "cardAdd": "Add card",
@@ -1589,6 +1590,7 @@
     }
   },
   "settings": {
+    "2faInfo": "Изменение данных будет возможно только один раз, чтобы в дальнейшем внести изменения в профиль, Вам нужно будет подключить 2FA.",
     "additionalPhoneNumber": "Дополнительный номер телефона",
     "mainPhoneNumber": "Основной номер телефона",
     "whoCouldIInvite": "Кто может откликаться на мои квесты?",
