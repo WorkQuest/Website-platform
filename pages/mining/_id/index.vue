@@ -255,8 +255,9 @@ import {
   TokenSymbols, ConnectionTypes,
 } from '~/utils/enums';
 import {
+  GetWeb3Provider,
   fetchContractData,
-  getChainIdByChain, GetWeb3Provider, success,
+  getChainIdByChain,
 } from '~/utils/web3';
 import { Pool, PoolURL } from '~/utils/сonstants/mining';
 import { images } from '~/utils/images';
@@ -549,7 +550,10 @@ export default {
       } else {
         this.disconnectWallet();
         if (this.connectionType === ConnectionTypes.WQ_WALLET) {
-          await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+          await this.$store.dispatch('wallet/checkWalletConnected', {
+            nuxt: this.$nuxt,
+            needConfirm: this.isAuth,
+          });
           await this.$store.dispatch('wallet/connectToProvider', this.chain);
           await this.tokensDataUpdate();
         }

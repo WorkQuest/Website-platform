@@ -190,9 +190,9 @@ export const RouterNames = {
   MINING_ID: 'mining-id',
   LENDING: 'lending',
   COLLATERAL: 'collateral',
+  AUCTION: 'auction',
   SAVINGS: 'savings',
   SAVINGS_ID: 'savings-id',
-  WIKI: 'wiki',
   PROFILE_ID: 'profile-id',
   QUESTS: 'quests',
   QUESTS_ID: 'quests-id',
@@ -226,7 +226,7 @@ export const PreventLogoutPathNames = [
   RouterNames.BRIDGE,
   RouterNames.CREDITING,
   RouterNames.COLLATERAL,
-  RouterNames.WIKI,
+  RouterNames.AUCTION,
 ];
 
 export const PathDAO = {

@@ -183,10 +183,10 @@ import { IS_PLUG_PROD } from '~/utils/locker-data';
 export default {
   name: 'Collateral',
   mixins: [walletOperations],
-  layout({ store }) {
+  layout({ app }) {
     // TODO PLUG for release
     if (IS_PLUG_PROD) return Layout.DEFAULT;
-    return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
+    return app.$cookies.get('access') ? Layout.DEFAULT : Layout.GUEST;
   },
   data() {
     return {
@@ -289,7 +289,12 @@ export default {
     },
   },
   async beforeMount() {
-    if (!this.isWalletConnected) await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+    if (!this.isWalletConnected) {
+      await this.$store.dispatch('wallet/checkWalletConnected', {
+        nuxt: this.$nuxt,
+        needConfirm: this.isAuth,
+      });
+    }
   },
   async mounted() {
     await this.$store.dispatch('collateral/fetchCollateralsCommonInfo');
