@@ -486,7 +486,7 @@ export default {
         submit: async ({
           amount, symbol, isNative, decimals,
         }) => {
-          if (this.isWeb3Connection) await this.swapWeb3(from, to, amount, symbol, isNative);
+          if (this.isWeb3Connection) await this.swapWeb3(from, to, amount, symbol, isNative, decimals);
           else await this.swapWQWallet(from, to, amount, symbol, isNative, decimals);
         },
       });
@@ -507,7 +507,7 @@ export default {
           const swap = async () => {
             const provider = this.getProviderByConnection();
             const nonce = await getTransactionCount(this.account.address.toString(), provider);
-            const value = new BigNumber(amount).shiftedBy(symbol === TokenSymbols.USDT ? 6 : 18).toString();
+            const value = new BigNumber(amount).shiftedBy(decimals).toString();
             const data = [nonce, to.index, value, this.account.address, symbol];
             const inst = new provider.eth.Contract(WQBridge, BridgeAddresses[from.chain]);
             const [gasPrice, estimateGas] = await Promise.all([
@@ -534,7 +534,7 @@ export default {
                   symbol: nativeTokenSymbol,
                 },
               },
-              submitMethod: async () => await this.handleSwap(from, to, amount, symbol, isNative),
+              submitMethod: async () => await this.handleSwap(from, to, amount, symbol, isNative, decimals),
             });
           };
 
@@ -551,9 +551,10 @@ export default {
             symbol,
             nativeTokenSymbol,
           }).then(async () => {
-            await swap();
+            await swap(decimals);
           }).catch((err) => {
             console.error(err);
+            this.ShowToast(err.msg, 'Swap error');
           }).finally(() => {
             this.SetLoader(false);
           });
@@ -561,7 +562,7 @@ export default {
       });
     },
     // Swap for metamask
-    async swapWeb3(from, to, amount, symbol, isNative) {
+    async swapWeb3(from, to, amount, symbol, isNative, decimals) {
       this.ShowModal({
         key: modals.swapInfo,
         amount,
@@ -578,20 +579,21 @@ export default {
             this.ShowToast(this.$t('meta.disconnect'));
             return;
           }
-          await this.handleSwap(from, to, amount, symbol, isNative);
+          await this.handleSwap(from, to, amount, symbol, isNative, decimals);
         },
       });
     },
 
     // sending swap transaction
-    async handleSwap(from, to, amount, symbol, isNative) {
+    async handleSwap(from, to, amount, symbol, isNative, decimals) {
       this.SetLoader({
         isLoading: true,
         statusText: this.isWeb3Connection ? LoaderStatusLocales.waitingForTxExternalApp : LoaderStatusLocales.pleaseWaitTx,
       });
-      const { ok, result } = await this.swap({
+      const { ok, result, msg } = await this.swap({
         amount,
         symbol,
+        decimals,
         isNative,
         toChainIndex: to.index,
         tokenAddress: from.tokenAddress[symbol],
@@ -608,6 +610,7 @@ export default {
         img: !ok ? images.WARNING : images.SUCCESS,
         title: !ok ? this.$t('modals.transactionFail') : this.$t('modals.transactionSent'),
         link: !ok ? '' : `${from.explorer}/tx/${result?.transactionHash}`,
+        text: ok ? '' : msg,
       });
     },
   },
