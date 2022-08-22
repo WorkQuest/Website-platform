@@ -55,7 +55,7 @@
           disabled
           vid="remove"
           :value="options.amountToRemoveCollateral"
-          :rules="`have_funds:${balance[options.symbol].fullBalance, options.amountToRemoveCollateral}`"
+          :rules="`have_funds:${balance[options.symbol].fullBalance}, ${options.amountToRemoveCollateral}`"
         />
       </template>
       <template v-else>
