@@ -415,8 +415,6 @@ export default {
           formData: file,
           type: file.type,
         };
-
-        console.log(file.type);
         // if you send media files without caption
         if (!text) {
           if (file.type.includes(FileTypes.VIDEO)) {
