@@ -556,7 +556,7 @@ export default {
             symbol,
             nativeTokenSymbol,
           }).then(async () => {
-            await swap(decimals);
+            await swap();
           }).catch((err) => {
             console.error(err);
             this.ShowToast(err.msg, 'Swap error');
