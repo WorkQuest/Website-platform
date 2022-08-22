@@ -83,12 +83,13 @@ export default {
    * Check wallet is connected
    * @returns boolean
    */
-  checkWalletConnected({ commit, getters }, { nuxt, callbackLayout }) {
+  checkWalletConnected({ commit, getters }, { nuxt, callbackLayout, needConfirm = true }) {
     const connected = getIsWalletConnected();
     commit('setIsOnlyConfirm', false);
     if (!connected) {
       if (callbackLayout) commit('setCallbackLayout', callbackLayout);
-      nuxt.setLayout(Layout.CONFIRM);
+      // need for set confirm layout only if you authorized
+      if (needConfirm) nuxt.setLayout(Layout.CONFIRM);
     } else {
       commit('setIsWalletConnected', true);
     }
