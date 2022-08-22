@@ -458,11 +458,13 @@ export const WalletTokensData = Object.freeze({
     tokenAddresses: [
       ENV.ETHEREUM_WQT_TOKEN,
       ENV.ETHEREUM_USDT_TOKEN,
+      ENV.ETHEREUM_USDC_TOKEN,
     ],
     tokenList: [
       { title: TokenSymbols.ETH, icon: images.ETH_BLACK }, // FIRST IS NATIVE TOKEN!
       { title: TokenSymbols.WQT, icon: images.WQT, tokenAddress: ENV.ETHEREUM_WQT_TOKEN },
       { title: TokenSymbols.USDT, icon: images.USDT, tokenAddress: ENV.ETHEREUM_USDT_TOKEN },
+      { title: TokenSymbols.USDC, icon: images.USDC, tokenAddress: ENV.ETHEREUM_USDC_TOKEN },
     ],
   },
   [Chains.BINANCE]: {
@@ -473,11 +475,13 @@ export const WalletTokensData = Object.freeze({
     tokenAddresses: [
       ENV.BSC_WQT_TOKEN,
       ENV.BSC_USDT_TOKEN,
+      // ENV.BSC_USDC_TOKEN,
     ],
     tokenList: [
       { title: TokenSymbols.BNB, icon: images.BNB }, // FIRST IS NATIVE TOKEN!
       { title: TokenSymbols.WQT, icon: images.WQT, tokenAddress: ENV.BSC_WQT_TOKEN },
       { title: TokenSymbols.USDT, icon: images.USDT, tokenAddress: ENV.BSC_USDT_TOKEN },
+      // { title: TokenSymbols.USDC, icon: images.USDC, tokenAddress: ENV.BSC_USDC_TOKEN }, // TODO: add token
     ],
   },
   [Chains.POLYGON]: {
