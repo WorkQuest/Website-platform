@@ -98,11 +98,10 @@ const LIMIT = 12;
 export default {
   name: 'Auction',
   LotsStatuses,
-  layout({ store }) {
+  layout({ app }) {
     // TODO PLUG for release
     if (IS_PLUG_PROD) return Layout.DEFAULT;
-    // TODO check why isAuth is false after reload page
-    return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
+    return app.$cookies.get('access') ? Layout.DEFAULT : Layout.GUEST;
   },
   components: {
     AuctionCard,
@@ -121,6 +120,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      isAuth: 'user/isAuth',
       userData: 'user/getUserData',
       walletAddress: 'user/getUserWalletAddress',
 
@@ -144,15 +144,18 @@ export default {
     },
   },
   async beforeMount() {
-    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+    if (!this.isWalletConnected) {
+      await this.$store.dispatch('wallet/checkWalletConnected', {
+        nuxt: this.$nuxt,
+        needConfirm: this.isAuth,
+      });
+    }
   },
   async mounted() {
     await this.fetchLots({ lotStatus: LotsStatuses.INACTIVE, params: this.params, sort: this.sort });
+    await this.fetchDuration();
     if (!this.isWalletConnected) return;
-    await Promise.all([
-      this.getBalance(),
-      this.fetchDuration(),
-    ]);
+    await this.getBalance();
   },
   methods: {
     ...mapActions({

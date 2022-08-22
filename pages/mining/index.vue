@@ -98,8 +98,8 @@ import { Layout, Path } from '~/utils/enums';
 
 export default {
   name: 'Pools',
-  layout({ store }) {
-    return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
+  layout({ app }) {
+    return app.$cookies.get('access') ? Layout.DEFAULT : Layout.GUEST;
   },
   data() {
     return {
