@@ -179,16 +179,16 @@ export default {
         if (type === 'image' && this.limitBytes && file.size >= this.limitBytes) {
           const kb = Math.ceil(this.limitBytes / 1024);
           const mb = Math.ceil(this.limitBytes / 1024 / 1024);
-          if (mb >= 1) this.showError(this.$t('uploader.errors.fileSizeLimit', { n: this.$tc('meta.units.mb', mb, { count: mb }) }));
-          else this.showError(this.$t('uploader.errors.fileSizeLimit', { n: this.$tc('meta.units.kb', kb, { count: kb }) }));
+          if (mb >= 1) this.showError(this.$t('uploader.errors.fileSizeLimit', { n: this.$t('meta.units.mb', { count: mb }) }));
+          else this.showError(this.$t('uploader.errors.fileSizeLimit', { n: this.$t('meta.units.kb', { count: kb }) }));
           // eslint-disable-next-line no-continue
           continue;
         }
         if (type === 'video' && this.limitBytesVideo && file.size >= this.limitBytesVideo) {
           const kb = Math.ceil(this.limitBytesVideo / 1024);
           const mb = Math.ceil(this.limitBytesVideo / 1024 / 1024);
-          if (mb >= 1) this.showError(this.$t('uploader.errors.fileSizeLimit', { n: this.$tc('meta.units.mb', mb, { count: mb }) }));
-          else this.showError(this.$t('uploader.errors.fileSizeLimit', { n: this.$tc('meta.units.kb', kb, { count: kb }) }));
+          if (mb >= 1) this.showError(this.$t('uploader.errors.fileSizeLimit', { n: this.$t('meta.units.mb', { count: mb }) }));
+          else this.showError(this.$t('uploader.errors.fileSizeLimit', { n: this.$t('meta.units.kb', { count: kb }) }));
           // eslint-disable-next-line no-continue
           continue;
         }
