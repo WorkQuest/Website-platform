@@ -37,14 +37,19 @@ export const IS_PROD = ['master', 'stage'].includes(process.env.BRANCH);
  * @property WS_NOTIFS_URL
  * @property WS_CHAT_ACTIONS_URL
 
- * @property ETHEREUM_RPC_URL - use process.env on project
  * @property ETHEREUM_BRIDGE
+ * @property ETHEREUM_STABLE_BRIDGE - Bridge for buy WQT
+ * @property ETHEREUM_USDT_TOKEN
  * @property ETHEREUM_USDC_TOKEN
  * @property ETHEREUM_LP_TOKEN
  * @property ETHEREUM_MINING
  * @property ETHEREUM_WQT_TOKEN
+ * @property ETHEREUM_RPC_URL - use process.env on project
 
  * @property BSC_BRIDGE
+ * @property BSC_STABLE_BRIDGE - Bridge for buy WQT
+ * @property BSC_USDT_TOKEN
+ * @property BSC_USDС_TOKEN
  * @property BSC_LP_TOKEN
  * @property BSC_MINING
  * @property BSC_OLD_WQT_TOKEN
@@ -52,17 +57,8 @@ export const IS_PROD = ['master', 'stage'].includes(process.env.BRANCH);
  * @property BSC_WQT_TOKEN
  * @property BSC_RPC_URL
 
- * @property BSC_USDT_TOKEN
- * @property BSC_STABLE_BRIDGE
-
  * @property POLYGON_USDT_TOKEN
  * @property POLYGON_STABLE_BRIDGE
-
- * @property ETHEREUM_USDT_TOKEN
- * @property ETHEREUM_STABLE_BRIDGE
-
- * @property WBNB_TOKEN
- * @property WETH_TOKEN
 
  * @property WORKNET_ETH_AUCTION
  * @property WORKNET_BNB_AUCTION
