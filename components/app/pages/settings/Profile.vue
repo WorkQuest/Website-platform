@@ -493,7 +493,7 @@ export default {
         if (!file) return false;
 
         const fileInput = e.target;
-        await this.OptimizeImage(e.target, file);
+        await this.OptimizeImage(e.target, file, 1024, 1024, 0.9);
         // eslint-disable-next-line prefer-destructuring
         file = fileInput.files[0];
 

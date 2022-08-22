@@ -1,7 +1,7 @@
 export default {
   methods: {
     // eslint-disable-next-line consistent-return
-    async OptimizeImage(fileInput, originalFile, maxWidth = 1024, maxHeight = 1024, quality = 0.9) {
+    async OptimizeImage(fileInput, originalFile, maxWidth = 1024, maxHeight = 1024, quality = 1) {
       await new Promise((resolve) => {
         if (!originalFile) {
           resolve();
@@ -14,6 +14,13 @@ export default {
           return;
         }
         const img = document.createElement('img');
+        if (img.width < maxWidth && img.height < maxHeight) {
+          // Resize not required
+          console.log('returned');
+          console.log(fileInput.files);
+          resolve();
+          return;
+        }
         const canvas = document.createElement('canvas');
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -22,11 +29,6 @@ export default {
           img.onload = () => {
             let ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0);
-            if (img.width < maxWidth && img.height < maxHeight) {
-              // Resize not required
-              resolve();
-              return;
-            }
             const ratio = Math.min(maxWidth / img.width, maxHeight / img.height);
             const width = Math.round(img.width * ratio);
             const height = Math.round(img.height * ratio);

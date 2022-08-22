@@ -195,9 +195,14 @@ export default {
           if (!originalFile) continue;
         }
 
-        if (this.acceptedTypes.indexOf(file.type) === -1) {
+        if (this.acceptedTypes.indexOf(originalFile.type) === -1) {
           // eslint-disable-next-line no-continue
           continue;
+        }
+
+        if (this.limit && this.files.length >= this.limit) {
+          this.showError(this.$t('uploader.errors.filesLimit', { n: this.limit }));
+          return;
         }
 
         const fileInput = e.target;
@@ -206,26 +211,22 @@ export default {
         // eslint-disable-next-line prefer-destructuring
         originalFile = fileInput.files[0];
 
-        console.log(this.id);
-
-        if (this.limit && this.files.length >= this.limit) {
-          this.showError(this.$t('uploader.errors.filesLimit', { n: this.limit }));
-          return;
+        if (!originalFile) {
+          console.log('watafak', file);
+          // eslint-disable-next-line no-continue
+          continue;
         }
-        const type = file.type.split('/')[0];
+
+        const type = originalFile.type.split('/')[0];
         if (type === 'image' && this.limitBytes && file.size >= this.limitBytes) {
-          const kb = Math.ceil(this.limitBytes / 1024);
-          const mb = Math.ceil(this.limitBytes / 1024 / 1024);
-          if (mb >= 1) this.showError(this.$t('uploader.errors.fileSizeLimit', { n: this.$t('meta.units.mb', { count: mb }) }));
-          else this.showError(this.$t('uploader.errors.fileSizeLimit', { n: this.$t('meta.units.kb', { count: kb }) }));
+          if (this.limitSize.image.mb >= 1) this.showError(this.$t('uploader.errors.fileSizeLimit', { n: this.$t('meta.units.mb', { count: this.limitSize.image.mb }) }));
+          else this.showError(this.$t('uploader.errors.fileSizeLimit', { n: this.$t('meta.units.kb', { count: this.limitSize.image.kb }) }));
           // eslint-disable-next-line no-continue
           continue;
         }
         if (type === 'video' && this.limitBytesVideo && file.size >= this.limitBytesVideo) {
-          const kb = Math.ceil(this.limitBytesVideo / 1024);
-          const mb = Math.ceil(this.limitBytesVideo / 1024 / 1024);
-          if (mb >= 1) this.showError(this.$t('uploader.errors.fileSizeLimit', { n: this.$t('meta.units.mb', { count: mb }) }));
-          else this.showError(this.$t('uploader.errors.fileSizeLimit', { n: this.$t('meta.units.kb', { count: kb }) }));
+          if (this.limitSize.video.mb >= 1) this.showError(this.$t('uploader.errors.fileSizeLimit', { n: this.$t('meta.units.mb', { count: this.limitSize.video.mb }) }));
+          else this.showError(this.$t('uploader.errors.fileSizeLimit', { n: this.$t('meta.units.kb', { count: this.limitSize.video.kb }) }));
           // eslint-disable-next-line no-continue
           continue;
         }
