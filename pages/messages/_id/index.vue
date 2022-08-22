@@ -422,7 +422,7 @@ export default {
           } else if (file.type.includes(FileTypes.IMAGE)) {
             text = FileTypes.IMAGE;
           } else if (file.type.includes(FileTypes.APPLICATION)) {
-            text = 'document';
+            text = FileTypes.DOCUMENT;
           }
         }
 
