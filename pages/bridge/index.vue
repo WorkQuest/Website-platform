@@ -90,7 +90,7 @@
             </base-btn>
           </div>
         </div>
-        <div class="info-block">
+        <div class="info-block info-block_overflow">
           <div class="info-block__name">
             {{ $t('bridge.mySwaps') }}
           </div>
@@ -723,10 +723,13 @@ export default {
     }
 
     .info-block {
-      overflow: auto;
       background-color: #fff;
       border-radius: 6px;
       margin-top: 20px;
+
+      &_overflow {
+        overflow: auto;
+      }
 
       &__swap-cont {
         display: grid;
