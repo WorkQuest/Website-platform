@@ -125,6 +125,8 @@ export default {
           mb: null,
         },
       },
+
+      isUploading: false,
     };
   },
   computed: {
@@ -178,10 +180,13 @@ export default {
     drop(e) {
       e.preventDefault();
       this.$refs.input.files = e.dataTransfer.files;
-      this.onChange(e);
+      this.$refs.input.dispatchEvent(new Event('change'));
       e.currentTarget.classList.remove('uploader__message_hover');
     },
     async onChange(e) {
+      if (this.isUploading) return;
+      this.isUploading = true;
+
       this.errorInfo.isShow = false;
       const inputs = this.$refs.input.files;
       if (!inputs.length) return;
@@ -205,14 +210,16 @@ export default {
           return;
         }
 
-        const fileInput = e.target;
-        // eslint-disable-next-line no-await-in-loop
-        await this.OptimizeImage(fileInput, originalFile, 1920, 1080);
-        // eslint-disable-next-line prefer-destructuring
-        originalFile = fileInput.files[0];
+        if (originalFile.type.startsWith('image')) {
+          const fileInput = e.target;
+          // eslint-disable-next-line no-await-in-loop
+          await this.OptimizeImage(fileInput, originalFile, 1920, 1080);
+          // eslint-disable-next-line prefer-destructuring
+          originalFile = fileInput.files[0];
+        }
 
-        if (!originalFile) {
-          console.log('watafak', file);
+        if (!originalFile?.type) {
+          console.error('Error on uploading file', originalFile, file);
           // eslint-disable-next-line no-continue
           continue;
         }
@@ -246,6 +253,8 @@ export default {
       }
       this.$refs.input.value = null;
       this.$emit('change', this.files);
+
+      this.isUploading = false;
     },
     showError(errorText) {
       this.errorInfo.isShow = true;
