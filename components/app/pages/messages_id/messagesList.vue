@@ -276,10 +276,7 @@ export default {
   },
   methods: {
     checkMessageText(text) {
-      return text === 'image'
-      || text === 'video'
-      || text === 'document'
-        ? '' : text;
+      return Object.values(FileTypes).includes(text) ? '' : text;
     },
     isNeedToShowInfoMessageMember(message) {
       return message?.infoMessage?.member?.user
