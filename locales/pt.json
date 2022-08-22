@@ -52,7 +52,7 @@
       "percentsCount": "{count}%",
       "seconds": "{count} second | {count} seconds | {count} seconds",
       "minutes": "{count} minute | {count} minutes | {count} minutes",
-      "hours": "{count} minute | {count} minutes | {count} hours",
+      "hours": "{count} hour | {count} hours | {count} hours",
       "years": "{count} year | {count} years | {count} years",
       "days": "{count} day | {count} days | {count} days",
       "daysLeft": "{count} days left",
