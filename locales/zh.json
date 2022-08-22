@@ -1516,6 +1516,9 @@
     }
   },
   "chat": {
+    "video": "video",
+    "image": "image",
+    "application": "application",
     "reason": "Please add reason",
     "starredMessages": "Starred messages",
     "starredChats": "Starred chats",

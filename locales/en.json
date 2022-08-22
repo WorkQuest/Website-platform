@@ -2207,7 +2207,7 @@
   "uploader": {
     "uploadFile": "Upload files",
     "errors": {
-      "fileSizeLimit": "File size limit: ",
+      "fileSizeLimit": "File size limit: {n}",
       "filesLimit": "Files limit: {n}"
     }
   },
