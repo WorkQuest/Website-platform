@@ -39,6 +39,7 @@ export const IS_PROD = ['master', 'stage'].includes(process.env.BRANCH);
 
  * @property ETHEREUM_RPC_URL - use process.env on project
  * @property ETHEREUM_BRIDGE
+ * @property ETHEREUM_USDC_TOKEN
  * @property ETHEREUM_LP_TOKEN
  * @property ETHEREUM_MINING
  * @property ETHEREUM_WQT_TOKEN
