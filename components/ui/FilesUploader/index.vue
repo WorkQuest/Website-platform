@@ -70,8 +70,11 @@
 </template>
 
 <script>
+import imageOptimization from '~/plugins/mixins/imageOptimization';
+
 export default {
   name: 'FilesUploader',
+  mixins: [imageOptimization],
   props: {
     accept: {
       type: String,
@@ -81,7 +84,10 @@ export default {
       type: Number,
       default: 0,
     },
-    multiple: Boolean,
+    multiple: {
+      type: Boolean,
+      default: false,
+    },
     limitBytes: {
       type: Number,
       default: 0,
@@ -109,6 +115,16 @@ export default {
       },
       acceptedTypes: [],
       selectedFile: '',
+      limitSize: {
+        image: {
+          kb: null,
+          mb: null,
+        },
+        video: {
+          kb: null,
+          mb: null,
+        },
+      },
     };
   },
   computed: {
@@ -129,6 +145,17 @@ export default {
       this.id += 1;
     }
     this.$emit('change', this.files);
+
+    this.limitSize = {
+      image: {
+        kb: Math.ceil(this.limitBytes / 1024),
+        mb: Math.ceil(this.limitBytes / 1024 / 1024),
+      },
+      video: {
+        kb: Math.ceil(this.limitBytesVideo / 1024),
+        mb: Math.ceil(this.limitBytesVideo / 1024 / 1024),
+      },
+    };
   },
   methods: {
     openExplorer() {
@@ -139,38 +166,48 @@ export default {
       this.files = this.files.filter((item) => item.id !== id);
       this.$emit('change', this.files);
     },
-    dragover(event) {
-      event.preventDefault();
-      if (!event.currentTarget.classList.contains('uploader__message_hover')) {
-        event.currentTarget.classList.add('uploader__message_hover');
+    dragover(e) {
+      e.preventDefault();
+      if (!e.currentTarget.classList.contains('uploader__message_hover')) {
+        e.currentTarget.classList.add('uploader__message_hover');
       }
     },
-    dragleave(event) {
-      event.currentTarget.classList.remove('uploader__message_hover');
+    dragleave(e) {
+      e.currentTarget.classList.remove('uploader__message_hover');
     },
-    drop(event) {
-      event.preventDefault();
-      this.$refs.input.files = event.dataTransfer.files;
-      this.onChange();
-      event.currentTarget.classList.remove('uploader__message_hover');
+    drop(e) {
+      e.preventDefault();
+      this.$refs.input.files = e.dataTransfer.files;
+      this.onChange(e);
+      e.currentTarget.classList.remove('uploader__message_hover');
     },
-    async onChange() {
+    async onChange(e) {
       this.errorInfo.isShow = false;
       const inputs = this.$refs.input.files;
       if (!inputs.length) return;
       // eslint-disable-next-line no-restricted-syntax
-      for (let file of inputs) {
-        if (file.type === 'image/heic') {
+      for (const file of inputs) {
+        let originalFile = file;
+        if (originalFile.type === 'image/heic') {
           // eslint-disable-next-line no-await-in-loop
-          file = await this.HEICConvertTo(file);
+          originalFile = await this.HEICConvertTo(originalFile);
           // eslint-disable-next-line no-continue
-          if (!file) continue;
+          if (!originalFile) continue;
         }
 
-        if (!this.checkContentType(file)) {
+        if (this.acceptedTypes.indexOf(file.type) === -1) {
           // eslint-disable-next-line no-continue
           continue;
         }
+
+        const fileInput = e.target;
+        // eslint-disable-next-line no-await-in-loop
+        await this.OptimizeImage(fileInput, originalFile, 1920, 1080);
+        // eslint-disable-next-line prefer-destructuring
+        originalFile = fileInput.files[0];
+
+        console.log(this.id);
+
         if (this.limit && this.files.length >= this.limit) {
           this.showError(this.$t('uploader.errors.filesLimit', { n: this.limit }));
           return;
@@ -201,16 +238,13 @@ export default {
         this.files.push({
           id: this.id,
           src: URL.createObjectURL(file),
-          type: file.type.split('/')[0],
-          file,
+          type: originalFile.type.split('/')[0],
+          file: originalFile,
         });
         this.id += 1;
       }
       this.$refs.input.value = null;
       this.$emit('change', this.files);
-    },
-    checkContentType(file) {
-      return this.acceptedTypes.indexOf(file.type) !== -1;
     },
     showError(errorText) {
       this.errorInfo.isShow = true;
