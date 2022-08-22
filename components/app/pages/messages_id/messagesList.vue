@@ -276,7 +276,10 @@ export default {
   },
   methods: {
     checkMessageText(text) {
-      return Object.values(FileTypes).includes(text.toLowerCase()) ? '' : text;
+      return text === 'image'
+      || text === 'video'
+      || text === 'document'
+        ? '' : text;
     },
     isNeedToShowInfoMessageMember(message) {
       return message?.infoMessage?.member?.user

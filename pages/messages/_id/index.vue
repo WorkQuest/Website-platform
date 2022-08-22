@@ -416,14 +416,15 @@ export default {
           type: file.type,
         };
 
+        console.log(file.type);
         // if you send media files without caption
         if (!text) {
           if (file.type.includes(FileTypes.VIDEO)) {
-            text = this.$t('chat.video');
+            text = FileTypes.VIDEO;
           } else if (file.type.includes(FileTypes.IMAGE)) {
-            text = this.$t('chat.image');
+            text = FileTypes.IMAGE;
           } else if (file.type.includes(FileTypes.APPLICATION)) {
-            text = this.$t('chat.application');
+            text = 'document';
           }
         }
 
