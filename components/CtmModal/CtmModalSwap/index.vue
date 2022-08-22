@@ -89,9 +89,9 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import { Chains, ConnectionTypes, TokenSymbols } from '~/utils/enums';
-import { BridgeAddresses } from '~/utils/сonstants/bridge';
+import { BridgeAddresses, SwapAddresses } from '~/utils/сonstants/bridge';
 import { getChainIdByChain, GetWeb3Provider } from '~/utils/web3';
-import { getProvider, GetWalletProvider } from '~/utils/wallet';
+import { GetWalletProvider } from '~/utils/wallet';
 
 export default {
   name: 'ModalSwap',
@@ -117,13 +117,17 @@ export default {
       return GetWalletProvider;
     },
     tokens() {
-      const availableTokens = [TokenSymbols.WQT];
       const { from, to } = this.options;
-      if (to.chain === Chains.WORKNET || from.chain === Chains.WORKNET) {
-        if (from.chain === Chains.ETHEREUM || to.chain === Chains.ETHEREUM) availableTokens.push(TokenSymbols.ETH, TokenSymbols.USDT);
-        else if (from.chain === Chains.BINANCE || to.chain === Chains.BINANCE) availableTokens.push(TokenSymbols.BNB, TokenSymbols.USDT);
+      if ((from.chain === Chains.BINANCE && to.chain === Chains.ETHEREUM)
+        || (from.chain === Chains.ETHEREUM && to.chain === Chains.BINANCE)) {
+        return [TokenSymbols.WQT];
       }
-      return availableTokens;
+      const toRemoveSymbol = to.chain === Chains.BINANCE ? TokenSymbols.ETH : TokenSymbols.BNB;
+      const swapsData = SwapAddresses.get(from.chain);
+      return [
+        swapsData.nativeSymbol,
+        ...Object.keys(SwapAddresses.get(from.chain).tokenAddress),
+      ].filter((item) => item !== toRemoveSymbol);
     },
     accountAddress() {
       const chain = this.options?.to?.chain;
