@@ -38,6 +38,7 @@ export const SwapAddresses = new Map([
       tokenAddress: {
         [TokenSymbols.WQT]: ENV.ETHEREUM_WQT_TOKEN,
         [TokenSymbols.USDT]: ENV.ETHEREUM_USDT_TOKEN,
+        [TokenSymbols.USDC]: ENV.ETHEREUM_USDC_TOKEN,
       },
       explorer: `https://${IS_PROD ? '' : 'rinkeby.'}etherscan.io`,
     },
@@ -66,10 +67,10 @@ export const SwapAddresses = new Map([
       index: BlockchainIndex.WORKNET,
       nativeSymbol: TokenSymbols.WQT,
       tokenAddress: {
-        // [TokenSymbols.WQT]: ENV.WORKNET_WQT_TOKEN, // TODO fix it, this secret was deleted
         [TokenSymbols.ETH]: ENV.WORKNET_WETH_TOKEN,
         [TokenSymbols.BNB]: ENV.WORKNET_WBNB_TOKEN,
         [TokenSymbols.USDT]: ENV.WORKNET_USDT_TOKEN,
+        [TokenSymbols.USDC]: ENV.WORKNET_USDC_TOKEN,
       },
       explorer: ExplorerUrl,
     },
