@@ -175,6 +175,7 @@
     "redeemed": "Redeemed",
     "pay": "Оплатить",
     "skipAndEnd": "Пропустить и закончить",
+    "skip": "Пропустить",
     "cleanUp": "Clean up",
     "connected": "Подключен",
     "disconnect": "Disconnect wallet",
@@ -979,6 +980,11 @@
     "txIsPending": "Transaction is pending",
     "coming": "Coming soon",
     "stillUnderConstruction": "Still under construction",
+    "defiWalletNote": {
+      "title": "Пожалуйста, обратите внимание",
+      "subtitle": "Попробуйте использовать WorkQuest Wallet для удобного взаимодействия с функциями платформы. Вы можете вносить, снимать и хранить криптовалюту абсолютно бесплатно.",
+      "useWalletWQ": "Использовать WorkQuest Wallet"
+    },
     "titles": {
       "2FA": {
         "disable": "Отключить 2FA",
