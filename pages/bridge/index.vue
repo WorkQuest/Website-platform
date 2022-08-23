@@ -318,6 +318,11 @@ export default {
     },
   },
   async mounted() {
+    const connect = async () => {
+      if ((this.connectionType === ConnectionTypes.WEB3 && !this.isConnected) || !this.swapsCount) {
+        await this.toggleConnection();
+      }
+    };
     if (!this.token) {
       this.ShowModal({
         key: modals.areYouSure,
@@ -325,12 +330,16 @@ export default {
         text: this.$t('modals.defiWalletNote.subtitle'),
         okBtnTitle: this.$t('modals.defiWalletNote.useWalletWQ'),
         closeBtnTitle: this.$t('meta.skip'),
+        cancelBtnFunc: async () => {
+          this.CloseModal();
+          await connect();
+        },
         okBtnFunc: () => {
           this.$router.push(Path.SIGN_UP);
         },
       });
-    } else if ((this.connectionType === ConnectionTypes.WEB3 && !this.isConnected) || !this.swapsCount) {
-      await this.toggleConnection();
+    } else {
+      await connect();
     }
   },
   async beforeDestroy() {
