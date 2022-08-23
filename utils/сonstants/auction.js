@@ -18,3 +18,10 @@ export const UPPER_BOUND_COST = {
   testnet: 1.01,
   master: 1.01,
 }[process.env.BRANCH];
+
+export const CollateralMethods = {
+  claimExtraDebt: 'claimExtraDebt', // Claim WUSD
+  addCollateral: 'addCollateral', // need approve currency
+  disposeDebt: 'disposeDebt', // need approve WUSD
+  removeCollateral: 'removeCollateral', // need approve WUSD
+};
