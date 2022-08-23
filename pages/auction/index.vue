@@ -98,10 +98,10 @@ const LIMIT = 12;
 export default {
   name: 'Auction',
   LotsStatuses,
-  layout({ app }) {
+  layout({ $cookies }) {
     // TODO PLUG for release
     if (IS_PLUG_PROD) return Layout.DEFAULT;
-    return app.$cookies.get('access') ? Layout.DEFAULT : Layout.GUEST;
+    return $cookies.get('access') ? Layout.DEFAULT : Layout.GUEST;
   },
   components: {
     AuctionCard,
