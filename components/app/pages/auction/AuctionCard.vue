@@ -92,25 +92,7 @@ import { ExplorerUrl, TokenSymbols } from '~/utils/enums';
 import { getContractFeeData, sendWalletTransaction } from '~/utils/wallet';
 import { WQAuction } from '~/abi';
 import walletOperations from '~/plugins/mixins/walletOperations';
-
-const LotsStatuses = {
-  INACTIVE: 0,
-  STARTED: 1,
-  BOUGHT: 2,
-  CANCELED: 3,
-};
-
-const LOWER_BOUND_COST = {
-  develop: 0.999,
-  testnet: 0.999,
-  master: 0.999,
-}[process.env.BRANCH];
-
-const UPPER_BOUND_COST = {
-  develop: 1.01,
-  testnet: 1.01,
-  master: 1.01,
-}[process.env.BRANCH];
+import { LotsStatuses, LOWER_BOUND_COST, UPPER_BOUND_COST } from '~/utils/сonstants/auction';
 
 export default {
   name: 'AuctionCard',
@@ -404,7 +386,7 @@ export default {
 
 <style scoped lang="scss">
 .auction-card {
-  background: #FFFFFF;
+  background: $white;
   border-radius: 6px;
   padding: 15px;
 
