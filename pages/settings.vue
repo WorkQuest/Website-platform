@@ -119,6 +119,7 @@ export default {
       profileVisibilitySetting: {},
 
       prevSkills: [],
+      isChanged: false,
     };
   },
   computed: {
@@ -235,16 +236,19 @@ export default {
       return this.valRefs;
     },
     updateFullAddress(address) {
+      this.isChanged = true;
       this.profile.locationFull.location.longitude = +address.lng;
       this.profile.locationFull.location.latitude = +address.lat;
       this.profile.locationFull.locationPlaceName = address.formatted;
     },
     updateSelectedSkills(specAndSkills) {
+      this.isChanged = true;
       this.skills.selectedSpecAndSkills = specAndSkills;
     },
 
     // MODALS METHODS
     addEducation(knowledge, data) {
+      this.isChanged = true;
       const { educations, workExperiences } = this.profile.additionalInfo;
       if (knowledge === 'newEducation') {
         this.newEducation = [];
@@ -293,6 +297,7 @@ export default {
       return keys[modalKey];
     },
     showModalKey(modalKey) {
+      this.isChanged = true;
       this.ShowModal({ key: this.modalsKey(modalKey) });
     },
     showModalStatus(modalMode, msg) {
@@ -330,6 +335,10 @@ export default {
         return;
       }
 
+      // check changed fields
+      this.checkChangedFields();
+      if (!this.isChanged) return;
+
       const editProfile = async (securityCode) => {
         const checkAvatarID = this.avatarChange.data.ok ? this.avatarChange.data.result.mediaId : this.userData.avatarId;
         const firstMobileNumber = +this.updatedFirstPhone.fullPhone;
@@ -353,7 +362,34 @@ export default {
       });
     },
 
+    checkChangedFields() {
+      const {
+        firstName, lastName, additionalInfo,
+      } = this.profile;
+      if (this.userData.firstName !== firstName
+        || this.userData.lastName !== lastName
+        || this.userData.additionalInfo.description !== additionalInfo.description) {
+        this.isChanged = !this.isChanged;
+      }
+
+      if (!this.isChanged) {
+        const r = Object.keys({ ...this.updatedFirstPhone, ...this.userData.tempPhone }).every((key) => this.updatedFirstPhone[key] === this.userData.tempPhone[key]);
+        if (!r) this.isChanged = !this.isChanged;
+      }
+
+      if (!this.isChanged) {
+        const r = Object.keys({ ...this.updatedSecondPhone, ...this.userData.additionalInfo.secondMobileNumber }).every((key) => this.updatedSecondPhone[key] === this.userData.additionalInfo.secondMobileNumber[key]);
+        if (!r) this.isChanged = !this.isChanged;
+      }
+
+      if (!this.isChanged) {
+        const r = Object.keys({ ...this.userData.additionalInfo.socialNetwork, ...this.profile.additionalInfo.socialNetwork }).every((key) => this.userData.additionalInfo.socialNetwork[key] === this.profile.additionalInfo.socialNetwork[key]);
+        if (!r) this.isChanged = !this.isChanged;
+      }
+    },
+
     async updateVisibility({ visibilityUser, restrictionRankingStatus }) {
+      this.isChanged = true;
       const formatWithDefaultVal = (arr) => (arr.length === 0 ? [RatingStatus.AllStatuses] : arr);
       this.profileVisibilitySetting[this.isEmployer
         ? 'ratingStatusCanRespondToQuest'
