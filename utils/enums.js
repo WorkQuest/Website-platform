@@ -294,6 +294,27 @@ export const ExplorerUrl = {
   develop: 'https://dev-explorer.workquest.co',
 }[process.env.BRANCH];
 
+export const EthereumExplorerUrl = {
+  master: 'https://etherscan.io',
+  testnet: 'https://rinkeby.etherscan.io',
+  stage: 'https://etherscan.io',
+  develop: 'https://rinkeby.etherscan.io',
+}[process.env.BRANCH];
+
+export const BscExplorerUrl = {
+  master: 'https://bscscan.com',
+  testnet: 'https://testnet.bscscan.com',
+  stage: 'https://bscscan.com',
+  develop: 'https://testnet.bscscan.com',
+}[process.env.BRANCH];
+
+export const PolygonExplorerUrl = {
+  master: 'https://polygonscan.com',
+  testnet: 'https://mumbai.polygonscan.com',
+  stage: 'https://polygonscan.com',
+  develop: 'https://mumbai.polygonscan.com',
+}[process.env.BRANCH];
+
 export const WikiUrl = 'https://workquest.wiki';
 
 export const NetworksData = {
@@ -453,7 +474,7 @@ export const WalletTokensData = Object.freeze({
   [Chains.ETHEREUM]: {
     WSProvider: ENV.ETH_WS_PROVIDER,
     chain: Chains.ETHEREUM,
-    explorer: `https://${IS_PROD ? '' : 'rinkeby.'}etherscan.io`,
+    explorer: EthereumExplorerUrl,
     explorerIcon: images.ETH,
     tokenAddresses: [
       ENV.ETHEREUM_WQT_TOKEN,
@@ -468,7 +489,7 @@ export const WalletTokensData = Object.freeze({
   [Chains.BINANCE]: {
     WSProvider: ENV.BSC_WS_PROVIDER,
     chain: Chains.BINANCE,
-    explorer: `https://${IS_PROD ? '' : 'testnet.'}bscscan.com`,
+    explorer: BscExplorerUrl,
     explorerIcon: images.BNB,
     tokenAddresses: [
       ENV.BSC_WQT_TOKEN,
@@ -483,7 +504,7 @@ export const WalletTokensData = Object.freeze({
   [Chains.POLYGON]: {
     WSProvider: ENV.POLYGON_WS_PROVIDER,
     chain: Chains.POLYGON,
-    explorer: `https://${IS_PROD ? '' : 'mumbai.'}polygonscan.com`,
+    explorer: PolygonExplorerUrl,
     explorerIcon: images.POLYGON,
     tokenAddresses: [
       ENV.POLYGON_USDT_TOKEN,

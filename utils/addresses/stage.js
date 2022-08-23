@@ -21,8 +21,8 @@ export default {
   WS_CHAT_ACTIONS_URL: 'wss://testnet-app.workquest.co/api/v1/notifications/chat',
 
   ETHERSCAN_API_URL: 'https://api.etherscan.io/api',
-  BSCSCAN_API_URL: 'https://api.bscscan.com',
-  POLYGONSCAN_API_URL: 'https://api.polygonscan.com',
+  BSCSCAN_API_URL: 'https://api.bscscan.com/api',
+  POLYGONSCAN_API_URL: 'https://api.polygonscan.com/api',
 
   ETHEREUM_BRIDGE: '0xd65815dA812C6eAEC0186215E43A12D76F5deCBc',
   ETHEREUM_LP_TOKEN: '0xf1fE852fCA1b5a869ef1FE06a2799E1F38B70B84',
