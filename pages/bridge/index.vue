@@ -552,7 +552,6 @@ export default {
             contractAddress: BridgeAddresses[from.chain],
             tokenAddress: from.tokenAddress[symbol],
             amount,
-            decimals,
             symbol,
             nativeTokenSymbol,
           }).then(async () => {

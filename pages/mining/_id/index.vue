@@ -706,8 +706,6 @@ export default {
           await this.MakeApprove({
             tokenAddress: ENV.BSC_OLD_WQT_TOKEN,
             contractAddress: ENV.BSC_WQT_EXCHANGE,
-            amount,
-            decimals,
             symbol: TokenSymbols.WQT,
             nativeTokenSymbol: this.nativeTokenSymbol,
             isHexUserWalletAddress: true,
