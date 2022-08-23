@@ -134,13 +134,11 @@ export default {
     },
   },
   watch: {
-    currentTab: {
-      async handler(value) {
-        this.currentPage = 1;
-        this.sort = 'desc';
-        await this.clearLots();
-        await this.fetchLots({ lotStatus: value, params: this.params, sort: this.sort });
-      },
+    async currentTab() {
+      this.currentPage = 1;
+      this.sort = 'desc';
+      await this.clearLots();
+      await this.setPage(this.currentPage);
     },
   },
   async beforeMount() {
@@ -152,7 +150,7 @@ export default {
     }
   },
   async mounted() {
-    await this.fetchLots({ lotStatus: LotsStatuses.INACTIVE, params: this.params, sort: this.sort });
+    await this.setPage(this.currentPage);
     await this.fetchDuration();
     if (!this.isWalletConnected) return;
     await this.getBalance();
@@ -167,7 +165,7 @@ export default {
     }),
     async changeTimeSorting() {
       this.sort = this.sort === 'asc' ? 'desc' : 'asc';
-      await this.fetchLots({ lotStatus: this.currentTab, params: this.params, sort: this.sort });
+      await this.setPage(this.currentPage);
     },
     async setPage(value) {
       this.currentPage = value;
