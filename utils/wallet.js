@@ -382,7 +382,7 @@ export const getGasPrice = async (contractAbi, address, method, attr, value = nu
     };
   } catch (e) {
     console.error('wallet/getGasPrice', e);
-    return { gas: false, gasPrice: false };
+    return { gas: false, gasPrice: false, msg: e.message };
   }
 };
 
