@@ -183,10 +183,10 @@ import { IS_PLUG_PROD } from '~/utils/locker-data';
 export default {
   name: 'Collateral',
   mixins: [walletOperations],
-  layout({ app }) {
+  layout({ $cookies }) {
     // TODO PLUG for release
     if (IS_PLUG_PROD) return Layout.DEFAULT;
-    return app.$cookies.get('access') ? Layout.DEFAULT : Layout.GUEST;
+    return $cookies.get('access') ? Layout.DEFAULT : Layout.GUEST;
   },
   data() {
     return {

@@ -20,6 +20,7 @@
       <form
         class="auth__fields"
         action=""
+        autocomplete="off"
         @submit.prevent="handleSubmit(signUp)"
       >
         <base-field
@@ -75,7 +76,7 @@
           :name="$t('signUp.password')"
           :placeholder="$t('signUp.password')"
           rules="required_if|min:8"
-          autocomplete="current-password"
+          autocomplete="new-password"
           :type="isPasswordVisible?'text':'password'"
           vid="confirmation"
           data-selector="PASSWORD"

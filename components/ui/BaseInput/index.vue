@@ -145,7 +145,7 @@ export default {
     },
     autocomplete: {
       type: String,
-      default: 'on',
+      default: 'off',
     },
     rules: {
       type: [String, Array, Object],
