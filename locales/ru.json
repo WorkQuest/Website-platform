@@ -355,7 +355,8 @@
     "importWallet": "Импорт кошелька",
     "createOrImport": "Создать или импортировать кошелек",
     "typeSecretPhrase": "Введите секретную фразу",
-    "secretPhrase": "Секретная фраза"
+    "secretPhrase": "Секретная фраза",
+    "createOrImportNote": "Please note: you can import any other wallet's mnemonic phrase"
   },
   "forgot": {
     "desc": "Мы вышлем вам инструкции по сбросу пароля."

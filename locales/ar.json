@@ -355,7 +355,8 @@
     "importWallet": "Import wallet",
     "createOrImport": "Create or import wallet",
     "typeSecretPhrase": "Type secret phrase",
-    "secretPhrase": "Secret phrase"
+    "secretPhrase": "Secret phrase",
+    "createOrImportNote": "Please note: you can import any other wallet's mnemonic phrase"
   },
   "forgot": {
     "desc": "سنرسل إليك تعليمات إعادة ضبط كلمة المرور."
