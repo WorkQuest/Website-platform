@@ -270,8 +270,8 @@ import ENV from '~/utils/addresses';
 
 export default {
   name: 'Pool',
-  layout({ store }) {
-    return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
+  layout({ $cookies }) {
+    return $cookies.get('access') ? Layout.DEFAULT : Layout.GUEST;
   },
   components: {
     WalletSwitcher,
@@ -482,9 +482,6 @@ export default {
         },
       });
     },
-  },
-  beforeMount() {
-    if (this.isAuth) this.$nuxt.setLayout('default');
   },
   created() {
     const symbol = this.$route.params.id;
