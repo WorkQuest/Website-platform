@@ -211,16 +211,18 @@ export default {
       const not_enough_funds = `not_enough_funds:${currentBalance[currentCurrency].fullBalance}`;
       const max_value = `max_value:${currentBalance[currentCurrency].fullBalance}`;
       const decimal_places = `decimalPlaces:${currentBalance[currentCurrency].decimals}`;
-      return `required|${max_value}|decimal|greaterThanZero|${not_enough_funds}|${decimal_places}`;
+      return `required|${not_enough_funds}|greaterThanZero|${max_value}|decimal|${decimal_places}`;
     },
   },
   watch: {
     selCurrency: {
       async handler() {
+        this.SetLoader(true);
         this.clearForm();
         await this.fetchMinRatio({ currency: this.currentCurrency });
         await this.getCollateralData();
         this.setActualCollateralPercent();
+        this.SetLoader(false);
       },
     },
     currentCurrencyPrice: {
