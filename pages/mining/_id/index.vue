@@ -295,6 +295,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      token: 'user/accessToken',
       claim: 'mining/getClaim',
       staked: 'mining/getStaked',
       profit: 'mining/getProfit',
