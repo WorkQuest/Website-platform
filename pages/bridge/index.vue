@@ -203,8 +203,8 @@ export default {
   components: { WalletSwitcher },
   mixins: [walletOperations],
   ConnectionTypes,
-  layout({ store }) {
-    return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
+  layout({ $cookies }) {
+    return $cookies.get('access') ? Layout.DEFAULT : Layout.GUEST;
   },
   data() {
     return {
