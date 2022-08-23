@@ -64,9 +64,6 @@ export const IS_PROD = ['master', 'stage'].includes(process.env.BRANCH);
  * @property ETHEREUM_USDT_TOKEN
  * @property ETHEREUM_STABLE_BRIDGE
 
- * @property WBNB_TOKEN
- * @property WETH_TOKEN
-
  * @property WORKNET_ETH_AUCTION
  * @property WORKNET_BNB_AUCTION
  * @property WORKNET_USDT_AUCTION
