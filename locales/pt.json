@@ -175,6 +175,7 @@
     "redeemed": "Redeemed",
     "pay": "Pay",
     "skipAndEnd": "Skip and end",
+    "skip": "Skip",
     "cleanUp": "Clean up",
     "connected": "Connected",
     "disconnect": "Disconnect wallet",
@@ -355,7 +356,8 @@
     "importWallet": "Import wallet",
     "createOrImport": "Create or import wallet",
     "typeSecretPhrase": "Type secret phrase",
-    "secretPhrase": "Secret phrase"
+    "secretPhrase": "Secret phrase",
+    "createOrImportNote": "Please note: you can import any other wallet's mnemonic phrase"
   },
   "forgot": {
     "desc": "Iremos enviar-lhe instruções sobre como redefinir a sua palavra-passe."
@@ -978,6 +980,11 @@
     "txIsPending": "Transaction is pending",
     "coming": "Coming soon",
     "stillUnderConstruction": "Still under construction",
+    "defiWalletNote": {
+      "title": "Please note",
+      "subtitle": "Try using WorkQuest Wallet for easy interaction with platform functionality. You can deposit, withdraw, and store your crypto absolutely for free.",
+      "useWalletWQ": "Use WorkQuest Wallet"
+    },
     "titles": {
       "2FA": {
         "disable": "Disable 2FA",

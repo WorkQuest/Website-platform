@@ -138,6 +138,9 @@
           </slot>
         </base-btn>
       </div>
+      <div class="wallet__text_note">
+        {{ $t('createWallet.createOrImportNote') }}
+      </div>
     </div>
     <ValidationObserver
       v-if="step === walletState.ImportMnemonic"
@@ -237,9 +240,6 @@ export default {
     this.generate();
   },
   methods: {
-    showCopySuccess() {
-      this.ShowToast(this.$t('modals.textCopy'), this.$t('createWallet.secretPhrase'));
-    },
     generate() {
       this.mnemonic = generateMnemonic();
       const s = this.mnemonic.split(' ');
@@ -303,16 +303,20 @@ export default {
       color: $black800;
     }
     &_simple {
-      color: #000000;
+      color: $black800;
       font-weight: 300;
       font-size: 16px;
       padding-top: 15px;
+    }
+    &_note {
+      margin-top: 15px;
+      color: $black500;
     }
     &_link {
       padding-left: 5px;
       font-weight: 300;
       font-size: 16px;
-      color: #0083C7;
+      color: $blue;
       text-decoration: underline;
     }
   }

@@ -295,6 +295,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      token: 'user/accessToken',
       claim: 'mining/getClaim',
       staked: 'mining/getStaked',
       profit: 'mining/getProfit',
@@ -507,7 +508,24 @@ export default {
     await this.fetchSwaps({ pool, params: { limit, offset: 0 } });
     this.SetLoader(false);
 
-    await this.connectWallet();
+    if (!this.token) {
+      this.ShowModal({
+        key: modals.areYouSure,
+        title: this.$t('modals.defiWalletNote.title'),
+        text: this.$t('modals.defiWalletNote.subtitle'),
+        okBtnTitle: this.$t('modals.defiWalletNote.useWalletWQ'),
+        closeBtnTitle: this.$t('meta.skip'),
+        cancelBtnFunc: async () => {
+          this.CloseModal();
+          await this.connectWallet();
+        },
+        okBtnFunc: () => {
+          this.$router.push(Path.SIGN_UP);
+        },
+      });
+    } else {
+      await this.connectWallet();
+    }
   },
   async beforeDestroy() {
     const preventDisconnect = sessionStorage.getItem('preventDisconnectWeb3');

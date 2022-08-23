@@ -185,7 +185,7 @@ import { mapGetters, mapActions } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import {
-  Chains, ConnectionTypes, Layout, TokenSymbols,
+  Chains, ConnectionTypes, Layout, Path, TokenSymbols,
 } from '~/utils/enums';
 import { BlockchainByIndex, BridgeAddresses, SwapAddresses } from '~/utils/сonstants/bridge';
 import {
@@ -318,8 +318,28 @@ export default {
     },
   },
   async mounted() {
-    if ((this.connectionType === ConnectionTypes.WEB3 && !this.isConnected) || !this.swapsCount) {
-      await this.toggleConnection();
+    const connect = async () => {
+      if ((this.connectionType === ConnectionTypes.WEB3 && !this.isConnected) || !this.swapsCount) {
+        await this.toggleConnection();
+      }
+    };
+    if (!this.token) {
+      this.ShowModal({
+        key: modals.areYouSure,
+        title: this.$t('modals.defiWalletNote.title'),
+        text: this.$t('modals.defiWalletNote.subtitle'),
+        okBtnTitle: this.$t('modals.defiWalletNote.useWalletWQ'),
+        closeBtnTitle: this.$t('meta.skip'),
+        cancelBtnFunc: async () => {
+          this.CloseModal();
+          await connect();
+        },
+        okBtnFunc: () => {
+          this.$router.push(Path.SIGN_UP);
+        },
+      });
+    } else {
+      await connect();
     }
   },
   async beforeDestroy() {
