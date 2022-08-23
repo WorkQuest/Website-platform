@@ -204,14 +204,14 @@ export default {
     },
     rulesWUSDInput() {
       const decimal_places = `decimalPlaces:${this.currentBalance[TokenSymbols.WUSD].decimals}`;
-      return `required|decimal|greaterThanZero|${decimal_places}`;
+      return `required|decimal|greaterThanZero|${decimal_places}|max_value:1000000000000`;
     },
     rulesCollateralInput() {
       const { currentBalance, currentCurrency } = this;
       const not_enough_funds = `not_enough_funds:${currentBalance[currentCurrency].fullBalance}`;
       const max_value = `max_value:${currentBalance[currentCurrency].fullBalance}`;
       const decimal_places = `decimalPlaces:${currentBalance[currentCurrency].decimals}`;
-      return `required|decimal|greaterThanZero|${not_enough_funds}|${max_value}|${decimal_places}`;
+      return `required|${max_value}|decimal|greaterThanZero|${not_enough_funds}|${decimal_places}`;
     },
   },
   watch: {
