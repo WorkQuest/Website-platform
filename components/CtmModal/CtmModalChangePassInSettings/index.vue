@@ -5,6 +5,7 @@
   >
     <form
       class="password__content content"
+      autocomplete="off"
       @submit.prevent="changePass"
     >
       <div class="content__error">
