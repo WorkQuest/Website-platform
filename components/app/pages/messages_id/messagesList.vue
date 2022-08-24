@@ -88,7 +88,7 @@
               >
                 <div
                   v-for="file in message.medias"
-                  :key="file.id"
+                  :key="file.id + '-' + message.id"
                   class="image-cont image-cont_margin"
                 >
                   <img

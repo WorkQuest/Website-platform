@@ -316,9 +316,22 @@ export default {
     async getFiles(ev, validate) {
       const { files } = ev.target;
       const validFiles = [];
+      let isUnsupportedFound = false;
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < files.length; i++) {
         let file = files[i];
+
+        let largeLimit = null;
+        if (file.type.startsWith('image') && file.size > 10485760) largeLimit = 10;
+        else if (file.type.startsWith('video') && file.size > 52428800) largeLimit = 50;
+        else if (file.size > 10485760) largeLimit = 10;
+
+        if (largeLimit) {
+          this.ShowToast(this.$t('uploader.errors.fileSizeLimit', { n: this.$t('meta.units.mb', { count: largeLimit }) }));
+          // eslint-disable-next-line no-continue
+          continue;
+        }
+
         if (file.type === 'image/heic') {
           // eslint-disable-next-line no-await-in-loop
           file = await this.HEICConvertTo(file);
@@ -327,16 +340,16 @@ export default {
           // eslint-disable-next-line no-await-in-loop
           const isValid = await validate(ev);
           if (isValid.valid) validFiles.push(file);
+          else if (!isUnsupportedFound) {
+            isUnsupportedFound = true;
+            this.ShowModal({
+              key: modals.areYouSureNotification,
+              title: this.$t('modals.titles.noticeTitle'),
+              text: this.$t('modals.youTryToAttachUnsupportedFileFormat'),
+              isFiles: true,
+            });
+          }
         }
-      }
-
-      if (validFiles.length < files.length) {
-        this.ShowModal({
-          key: modals.areYouSureNotification,
-          title: this.$t('modals.titles.noticeTitle'),
-          text: this.$t('modals.youTryToAttachUnsupportedFileFormat'),
-          isFiles: true,
-        });
       }
 
       ev.target.value = null;
