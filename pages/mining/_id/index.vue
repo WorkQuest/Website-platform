@@ -270,8 +270,8 @@ import ENV from '~/utils/addresses';
 
 export default {
   name: 'Pool',
-  layout({ store }) {
-    return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
+  layout({ $cookies }) {
+    return $cookies.get('access') ? Layout.DEFAULT : Layout.GUEST;
   },
   components: {
     WalletSwitcher,
@@ -295,6 +295,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      token: 'user/accessToken',
       claim: 'mining/getClaim',
       staked: 'mining/getStaked',
       profit: 'mining/getProfit',
@@ -482,9 +483,6 @@ export default {
       });
     },
   },
-  beforeMount() {
-    if (this.isAuth) this.$nuxt.setLayout('default');
-  },
   created() {
     const symbol = this.$route.params.id;
     switch (symbol) {
@@ -507,7 +505,24 @@ export default {
     await this.fetchSwaps({ pool, params: { limit, offset: 0 } });
     this.SetLoader(false);
 
-    await this.connectWallet();
+    if (!this.token) {
+      this.ShowModal({
+        key: modals.areYouSure,
+        title: this.$t('modals.defiWalletNote.title'),
+        text: this.$t('modals.defiWalletNote.subtitle'),
+        okBtnTitle: this.$t('modals.defiWalletNote.useWalletWQ'),
+        closeBtnTitle: this.$t('meta.skip'),
+        cancelBtnFunc: async () => {
+          this.CloseModal();
+          await this.connectWallet();
+        },
+        okBtnFunc: () => {
+          this.$router.push(Path.SIGN_UP);
+        },
+      });
+    } else {
+      await this.connectWallet();
+    }
   },
   async beforeDestroy() {
     const preventDisconnect = sessionStorage.getItem('preventDisconnectWeb3');

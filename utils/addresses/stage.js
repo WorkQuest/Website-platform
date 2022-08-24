@@ -16,8 +16,13 @@ export default {
   WQ_EXPLORER: 'https://testnet-explorer-api.workquest.co/api/v1',
   WQ_ORACLE_URL: 'https://testnet-oracle.workquest.co/api/v1',
   NOTIFS_URL: 'https://notifications.workquest.co/api/',
+
   WS_NOTIFS_URL: 'wss://notifications.workquest.co/api/v1/notifications',
   WS_CHAT_ACTIONS_URL: 'wss://testnet-app.workquest.co/api/v1/notifications/chat',
+
+  ETHERSCAN_API_URL: 'https://api.etherscan.io/api',
+  BSCSCAN_API_URL: 'https://api.bscscan.com/api',
+  POLYGONSCAN_API_URL: 'https://api.polygonscan.com/api',
 
   ETHEREUM_BRIDGE: '0xd65815dA812C6eAEC0186215E43A12D76F5deCBc',
   ETHEREUM_STABLE_BRIDGE: '0x9870a749Ae5CdbC4F96E3D0C067eB212779a8FA1',

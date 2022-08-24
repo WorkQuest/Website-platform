@@ -21,6 +21,10 @@ export default {
   WS_NOTIFS_URL: 'wss://mainnet-notification.workquest.co/api/v1/notifications',
   WS_CHAT_ACTIONS_URL: 'wss://app.workquest.co/api/v1/notifications/chat',
 
+  ETHERSCAN_API_URL: 'https://api.etherscan.io/api',
+  BSCSCAN_API_URL: 'https://api.bscscan.com/api',
+  POLYGONSCAN_API_URL: 'https://api.polygonscan.com/api',
+
   ETHEREUM_BRIDGE: '0xd65815dA812C6eAEC0186215E43A12D76F5deCBc',
   ETHEREUM_STABLE_BRIDGE: '0xb29b67Bf5b7675f1ccaCdf49436b38dE337b502B',
   ETHEREUM_USDT_TOKEN: '0xdAC17F958D2ee523a2206206994597C13D831ec7', // decimals 6

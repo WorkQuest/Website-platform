@@ -57,7 +57,7 @@
       "percentsCount": "{count}%",
       "seconds": "{count} second | {count} seconds | {count} seconds",
       "minutes": "{count} minute | {count} minutes | {count} minutes",
-      "hours": "{count} minute | {count} minutes | {count} hours",
+      "hours": "{count} hour | {count} hours | {count} hours",
       "years": "{count} year | {count} years | {count} years",
       "days": "{count} day | {count} days | {count} days",
       "daysLeft": "{count} days left",
@@ -175,6 +175,7 @@
     "redeemed": "Redeemed",
     "pay": "Pay",
     "skipAndEnd": "Skip and end",
+    "skip": "Skip",
     "cleanUp": "Clean up",
     "connected": "Connected",
     "disconnect": "Disconnect wallet",
@@ -355,7 +356,8 @@
     "importWallet": "Import wallet",
     "createOrImport": "Create or import wallet",
     "typeSecretPhrase": "Type secret phrase",
-    "secretPhrase": "Secret phrase"
+    "secretPhrase": "Secret phrase",
+    "createOrImportNote": "Please note: you can import any other wallet's mnemonic phrase"
   },
   "forgot": {
     "desc": "We will send you instructions on how to reset your password."
@@ -978,6 +980,11 @@
     "txIsPending": "Transaction is pending",
     "coming": "Coming soon",
     "stillUnderConstruction": "Still under construction",
+    "defiWalletNote": {
+      "title": "Please note",
+      "subtitle": "Try using WorkQuest Wallet for easy interaction with platform functionality. You can deposit, withdraw, and store your crypto absolutely for free.",
+      "useWalletWQ": "Use WorkQuest Wallet"
+    },
     "titles": {
       "2FA": {
         "disable": "Disable 2FA",
