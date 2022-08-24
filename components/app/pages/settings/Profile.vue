@@ -483,7 +483,6 @@ export default {
     // eslint-disable-next-line consistent-return
     async processFile(e, validate) {
       const isValid = await validate(e);
-      // const reader = new FileReader();
       let file = e.target.files[0];
       if (file.type === 'image/heic') {
         file = await this.HEICConvertTo(file);
