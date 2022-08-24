@@ -165,10 +165,6 @@ export default {
           case (AuctionEvents.LIQUIDATED): {
             if (currentTab !== LotsStatuses.INACTIVE) break;
 
-            console.log('ADDED LOT TO INACTIVE TAB');
-            console.log('LOT: ', lot);
-            console.log('=========================');
-
             const balanceData = rootGetters['wallet/getBalanceData'];
             let symbolDecimals = balanceData[lot.symbol].decimals;
             if (symbolDecimals === 6) symbolDecimals += symbolDecimals;
