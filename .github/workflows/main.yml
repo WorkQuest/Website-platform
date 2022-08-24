@@ -2,7 +2,7 @@ name: Node-CI
 
 on:
   push:
-    branches: [ master, app-ver1, stage, develop, testnet ]
+    branches: [ master, stage, develop, testnet ]
 
 jobs:
   deploy-prod:
@@ -31,44 +31,9 @@ jobs:
 
           echo ETHEREUM_RPC_URL=${{ secrets.ETHEREUM_RPC_URL }} >> .env
 
-      - name: Run generate static task
-        run: npm run generate
-
-      - name: Deploy to Server
-        uses: easingthemes/ssh-deploy@v2.2.11
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-          ARGS: "-rltgoDzvO --delete"
-          SOURCE: "dist/"
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ${{ secrets.REMOTE_TARGET }}
-
-  deploy-app-ver1:
-    if: github.ref == 'refs/heads/app-ver1'
-    environment: app-ver1
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Copy code files to container
-        uses: actions/checkout@v3
-
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '14.x'
-
-      - name: Install npm dependencies
-        run: npm install
-
-      - name: Create .env file
-        run: |
-          echo BRANCH=${{ secrets.BRANCH }} >> .env
-          echo G_ANALYTIC=${{ secrets.G_ANALYTIC }} >> .env
-          echo GMAPKEY=${{ secrets.GMAPKEY }} >> .env
-          echo SECRET_SUMSUB=${{ secrets.SECRET_SUMSUB }} >> .env
-
-          echo ETHEREUM_RPC_URL=${{ secrets.ETHEREUM_RPC_URL }} >> .env
+          echo API_KEY_ETHERSCAN=${{ secrets.API_KEY_ETHERSCAN }} >> .env
+          echo API_KEY_BSCSCAN=${{ secrets.API_KEY_BSCSCAN }} >> .env
+          echo API_KEY_POLYGONSCAN=${{ secrets.API_KEY_POLYGONSCAN }} >> .env
 
       - name: Run generate static task
         run: npm run generate
@@ -109,6 +74,10 @@ jobs:
 
           echo ETHEREUM_RPC_URL=${{ secrets.ETHEREUM_RPC_URL }} >> .env
 
+          echo API_KEY_ETHERSCAN=${{ secrets.API_KEY_ETHERSCAN }} >> .env
+          echo API_KEY_BSCSCAN=${{ secrets.API_KEY_BSCSCAN }} >> .env
+          echo API_KEY_POLYGONSCAN=${{ secrets.API_KEY_POLYGONSCAN }} >> .env
+
       - name: Run generate static task
         run: npm run generate
 
@@ -148,6 +117,10 @@ jobs:
 
           echo ETHEREUM_RPC_URL=${{ secrets.ETHEREUM_RPC_URL }} >> .env
 
+          echo API_KEY_ETHERSCAN=${{ secrets.API_KEY_ETHERSCAN }} >> .env
+          echo API_KEY_BSCSCAN=${{ secrets.API_KEY_BSCSCAN }} >> .env
+          echo API_KEY_POLYGONSCAN=${{ secrets.API_KEY_POLYGONSCAN }} >> .env
+
       - name: Run generate static task
         run: npm run generate
 
@@ -186,6 +159,10 @@ jobs:
           echo SECRET_SUMSUB=${{ secrets.SECRET_SUMSUB }} >> .env
 
           echo ETHEREUM_RPC_URL=${{ secrets.ETHEREUM_RPC_URL }} >> .env
+
+          echo API_KEY_ETHERSCAN=${{ secrets.API_KEY_ETHERSCAN }} >> .env
+          echo API_KEY_BSCSCAN=${{ secrets.API_KEY_BSCSCAN }} >> .env
+          echo API_KEY_POLYGONSCAN=${{ secrets.API_KEY_POLYGONSCAN }} >> .env
 
       - name: Run generate static task
         run: npm run generate

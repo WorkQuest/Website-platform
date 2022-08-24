@@ -103,9 +103,9 @@ export default {
 
   async getEtherscanTransactions({ commit, getters }, { params, currentPage, network }) {
     const api = {
-      [Chains.ETHEREUM]: { url: ENV.ETHERSCAN_API_URL, key: process.env.ETHERSCAN_API_KEY },
-      [Chains.BINANCE]: { url: ENV.BSCSCAN_API_URL, key: process.env.BSCSCAN_API_KEY },
-      [Chains.POLYGON]: { url: ENV.POLYGONSCAN_API_URL, key: process.env.POLYGONSCAN_API_KEY },
+      [Chains.ETHEREUM]: { url: ENV.ETHERSCAN_API_URL, key: process.env.API_KEY_ETHERSCAN },
+      [Chains.BINANCE]: { url: ENV.BSCSCAN_API_URL, key: process.env.API_KEY_BSCSCAN },
+      [Chains.POLYGON]: { url: ENV.POLYGONSCAN_API_URL, key: process.env.API_KEY_POLYGONSCAN },
     }[network];
 
     /**

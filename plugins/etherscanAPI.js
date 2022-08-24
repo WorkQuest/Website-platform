@@ -1,7 +1,7 @@
 import ENV from '~/utils/addresses/index';
 // eslint-disable-next-line
 export default function ({ $axios, store }, inject) {
-  const etherscanAPI = $axios.create({ baseURL: process.env.ETHERSCAN_API_KEY });
+  const etherscanAPI = $axios.create({ baseURL: ENV.ETHERSCAN_API_URL });
 
   etherscanAPI.onError(async (error) => {
     console.error(error);

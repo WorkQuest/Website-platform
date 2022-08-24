@@ -278,7 +278,6 @@ export default {
         contractAddress: bridgeAddress,
         tokenAddress,
         amount,
-        decimals,
         symbol,
         nativeTokenSymbol,
         isHexUserWalletAddress: true,

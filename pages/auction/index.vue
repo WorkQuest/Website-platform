@@ -85,15 +85,7 @@ import { mapActions, mapGetters } from 'vuex';
 import AuctionCard from '~/components/app/pages/auction/AuctionCard';
 import { Layout } from '~/utils/enums';
 import { IS_PLUG_PROD } from '~/utils/locker-data';
-
-const LotsStatuses = {
-  INACTIVE: 0,
-  STARTED: 1,
-  BOUGHT: 2,
-  CANCELED: 3,
-};
-
-const LIMIT = 12;
+import { AUCTION_CARDS_LIMIT, LotsStatuses } from '~/utils/сonstants/auction';
 
 export default {
   name: 'Auction',
@@ -111,7 +103,7 @@ export default {
       currentTab: LotsStatuses.INACTIVE,
 
       params: {
-        limit: LIMIT,
+        limit: AUCTION_CARDS_LIMIT,
         offset: 0,
       },
       sort: 'desc',
@@ -130,17 +122,15 @@ export default {
       isWalletConnected: 'wallet/getIsWalletConnected',
     }),
     totalPages() {
-      return Math.ceil(this.lotsCount / LIMIT) || 0;
+      return Math.ceil(this.lotsCount / AUCTION_CARDS_LIMIT) || 0;
     },
   },
   watch: {
-    currentTab: {
-      async handler(value) {
-        this.currentPage = 1;
-        this.sort = 'desc';
-        await this.clearLots();
-        await this.fetchLots({ lotStatus: value, params: this.params, sort: this.sort });
-      },
+    async currentTab() {
+      this.currentPage = 1;
+      this.sort = 'desc';
+      await this.clearLots();
+      await this.setPage(this.currentPage);
     },
   },
   async beforeMount() {
@@ -152,7 +142,7 @@ export default {
     }
   },
   async mounted() {
-    await this.fetchLots({ lotStatus: LotsStatuses.INACTIVE, params: this.params, sort: this.sort });
+    await this.setPage(this.currentPage);
     await this.fetchDuration();
     if (!this.isWalletConnected) return;
     await this.getBalance();
@@ -167,11 +157,11 @@ export default {
     }),
     async changeTimeSorting() {
       this.sort = this.sort === 'asc' ? 'desc' : 'asc';
-      await this.fetchLots({ lotStatus: this.currentTab, params: this.params, sort: this.sort });
+      await this.setPage(this.currentPage);
     },
     async setPage(value) {
       this.currentPage = value;
-      this.params.offset = LIMIT * (value - 1);
+      this.params.offset = AUCTION_CARDS_LIMIT * (value - 1);
       await this.fetchLots({ lotStatus: this.currentTab, params: this.params, sort: this.sort });
     },
   },
