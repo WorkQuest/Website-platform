@@ -16,7 +16,7 @@ import {
   getContractFeeData,
   getIsWalletConnected,
   sendWalletTransaction,
-  connectWalletToProvider,
+  connectWalletToProvider, getWalletTransactionCount,
 } from '~/utils/wallet';
 
 import {
@@ -24,7 +24,7 @@ import {
   success,
   showToast,
   getEstimateGas,
-  fetchContractData,
+  fetchContractData, getTransactionCount,
 } from '~/utils/web3';
 
 import {
@@ -63,7 +63,6 @@ export default {
       });
 
       const balance = getters.getBalanceData;
-      const feeDecimals = balance[TokenSymbols.WQT].decimals || 18;
       /**
        * @property gas_used
        * @property gas_price
@@ -76,8 +75,13 @@ export default {
         const amount = tx.tokenTransfers?.length ? tx.tokenTransfers[0]?.amount : tx.value;
         const symbol = TokenSymbolByContract[tx.to_address_hash?.hex] || TokenSymbols.WQT;
         const valueDecimals = balance[symbol].decimals || 18;
-        const txFee = tx.transaction_fee || new BigNumber(tx.gas_price).multipliedBy(tx.gas_used).shiftedBy(-18).decimalPlaces(8)
-          .toString();
+        const txFee = tx.transaction_fee
+          || new BigNumber(tx.gas_price)
+            .multipliedBy(tx.gas_used)
+            .shiftedBy(-18)
+            .decimalPlaces(8)
+            .toString();
+
         return {
           tx_hash: tx.hash,
           block: tx.block_number,
@@ -145,7 +149,9 @@ export default {
         to_address: tx.to || '',
         network,
       })));
-      commit('setTransactionsCount', result.length ? 100 : 0);
+
+      const count = await getWalletTransactionCount();
+      commit('setTransactionsCount', count);
     } catch (e) {
       console.error('wallet/getEtherscanTransactions', e);
       commit('setTransactions', []);
