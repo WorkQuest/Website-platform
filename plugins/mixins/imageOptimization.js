@@ -24,30 +24,19 @@ export default {
             let ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0);
 
-            if (img.width <= maxWidth && img.height <= maxHeight) {
-              canvas.width = img.width;
-              canvas.height = img.height;
-              ctx = canvas.getContext('2d');
-              ctx.drawImage(img, 0, 0, img.width, img.height);
-              canvas.toBlob((blob) => {
-                const resizedFile = new File([blob], `resized_${originalFile.name}`, originalFile);
-                const dataTransfer = new DataTransfer();
-                dataTransfer.items.add(resizedFile);
-                // temporary disable event listener, change and restore
-                fileInput.files = dataTransfer.files;
-                resolve();
-              }, 'image/jpeg', quality);
-              return;
+            let w = img.width;
+            let h = img.height;
+
+            if ((w > maxWidth) || (h > maxHeight)) {
+              const ratio = Math.min(maxWidth / w, maxHeight / h);
+              w = Math.round(w * ratio);
+              h = Math.round(h * ratio);
             }
 
-            const ratio = Math.min(maxWidth / img.width, maxHeight / img.height);
-            const width = Math.round(img.width * ratio);
-            const height = Math.round(img.height * ratio);
-            canvas.width = width;
-            canvas.height = height;
-
+            canvas.width = w;
+            canvas.height = h;
             ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, width, height);
+            ctx.drawImage(img, 0, 0, w, h);
             canvas.toBlob((blob) => {
               const resizedFile = new File([blob], `resized_${originalFile.name}`, originalFile);
               const dataTransfer = new DataTransfer();
