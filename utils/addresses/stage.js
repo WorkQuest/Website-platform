@@ -16,8 +16,13 @@ export default {
   WQ_EXPLORER: 'https://testnet-explorer-api.workquest.co/api/v1',
   WQ_ORACLE_URL: 'https://testnet-oracle.workquest.co/api/v1',
   NOTIFS_URL: 'https://notifications.workquest.co/api/',
+
   WS_NOTIFS_URL: 'wss://notifications.workquest.co/api/v1/notifications',
   WS_CHAT_ACTIONS_URL: 'wss://testnet-app.workquest.co/api/v1/notifications/chat',
+
+  ETHERSCAN_API_URL: 'https://api.etherscan.io/api',
+  BSCSCAN_API_URL: 'https://api.bscscan.com/api',
+  POLYGONSCAN_API_URL: 'https://api.polygonscan.com/api',
 
   ETHEREUM_BRIDGE: '0xd65815dA812C6eAEC0186215E43A12D76F5deCBc',
   ETHEREUM_LP_TOKEN: '0xf1fE852fCA1b5a869ef1FE06a2799E1F38B70B84',
@@ -41,9 +46,6 @@ export default {
 
   ETHEREUM_USDT_TOKEN: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
   ETHEREUM_STABLE_BRIDGE: '0x9870a749Ae5CdbC4F96E3D0C067eB212779a8FA1',
-
-  WBNB_TOKEN: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
-  WETH_TOKEN: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
 
   WORKNET_ETH_AUCTION: '0xE2e7518080a0097492087E652E8dEB1f6b96B62b',
   WORKNET_BNB_AUCTION: '0x34808eB7D2BF0B935BDEFB20Ff77Aa77d59f7cc3',

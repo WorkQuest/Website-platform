@@ -32,10 +32,14 @@ export const IS_PROD = ['master', 'stage'].includes(process.env.BRANCH);
  * @property WQ_PROVIDER
  * @property WQ_EXPLORER
  * @property WQ_ORACLE_URL
-
  * @property NOTIFS_URL
+ *
  * @property WS_NOTIFS_URL
  * @property WS_CHAT_ACTIONS_URL
+ *
+ * @property ETHERSCAN_API_URL
+ * @property BSCSCAN_API_URL
+ * @property POLYGONSCAN_API_URL
 
  * @property ETHEREUM_RPC_URL - use process.env on project
  * @property ETHEREUM_BRIDGE
@@ -59,9 +63,6 @@ export const IS_PROD = ['master', 'stage'].includes(process.env.BRANCH);
 
  * @property ETHEREUM_USDT_TOKEN
  * @property ETHEREUM_STABLE_BRIDGE
-
- * @property WBNB_TOKEN
- * @property WETH_TOKEN
 
  * @property WORKNET_ETH_AUCTION
  * @property WORKNET_BNB_AUCTION
