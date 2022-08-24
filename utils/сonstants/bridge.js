@@ -60,6 +60,7 @@ export const SwapAddresses = new Map([
       tokenAddress: {
         [TokenSymbols.WQT]: ENV.BSC_WQT_TOKEN,
         [TokenSymbols.USDT]: ENV.BSC_USDT_TOKEN,
+        [TokenSymbols.USDC]: ENV.BSC_USDC_TOKEN,
       },
       explorer: BscExplorerUrl,
     },
