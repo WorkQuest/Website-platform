@@ -360,31 +360,31 @@ export default {
         isOnlySubmit: true,
         actionMethod: async (securityCode) => await editProfile(securityCode),
       });
+
+      // return to initial value
+      this.isChanged = false;
     },
 
     checkChangedFields() {
       const {
         firstName, lastName, additionalInfo,
       } = this.profile;
-      if (this.userData.firstName !== firstName
+      if (
+        this.userData.firstName !== firstName
         || this.userData.lastName !== lastName
-        || this.userData.additionalInfo.description !== additionalInfo.description) {
+        || this.userData.additionalInfo.description !== additionalInfo.description
+      ) {
         this.isChanged = !this.isChanged;
       }
 
       if (!this.isChanged) {
-        const r = Object.keys({ ...this.updatedFirstPhone, ...this.userData.tempPhone }).every((key) => this.updatedFirstPhone[key] === this.userData.tempPhone[key]);
-        if (!r) this.isChanged = !this.isChanged;
-      }
-
-      if (!this.isChanged) {
-        const r = Object.keys({ ...this.updatedSecondPhone, ...this.userData.additionalInfo.secondMobileNumber }).every((key) => this.updatedSecondPhone[key] === this.userData.additionalInfo.secondMobileNumber[key]);
-        if (!r) this.isChanged = !this.isChanged;
-      }
-
-      if (!this.isChanged) {
-        const r = Object.keys({ ...this.userData.additionalInfo.socialNetwork, ...this.profile.additionalInfo.socialNetwork }).every((key) => this.userData.additionalInfo.socialNetwork[key] === this.profile.additionalInfo.socialNetwork[key]);
-        if (!r) this.isChanged = !this.isChanged;
+        const r = Object.keys({ ...this.updatedFirstPhone, ...this.userData.tempPhone })
+          .some((key) => this.updatedFirstPhone[key] === this.userData.tempPhone[key])
+        || Object.keys({ ...this.updatedSecondPhone, ...this.userData.additionalInfo.secondMobileNumber })
+          .some((key) => this.updatedSecondPhone[key] === this.userData.additionalInfo.secondMobileNumber[key])
+        || Object.keys({ ...this.userData.additionalInfo.socialNetwork, ...this.profile.additionalInfo.socialNetwork })
+          .some((key) => this.userData.additionalInfo.socialNetwork[key] === this.profile.additionalInfo.socialNetwork[key]);
+        if (!r) this.isChanged = true;
       }
     },
 
