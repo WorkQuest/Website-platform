@@ -53,7 +53,6 @@ export default {
    * @property $axiosLiquidator - axios instance for liquidator
    * @returns {Promise<{msg: string, code: number, data: null, ok: boolean}|{result: *, ok: boolean}>}
    */
-
   async fetchCollaterals({ commit, rootGetters }, { address, params }) {
     try {
       const { result: { collateral, count } } = await this.$axiosLiquidator.$get(`/user/collateral/${address}`, { params });
@@ -151,16 +150,6 @@ export default {
 
   async collateralAction({ dispatch }, { payload, method }) {
     try {
-      await dispatch('oracle/setCurrentPriceTokens', null, { root: true });
-
-      if (method === 'removeCollateral') {
-        await dispatch('wallet/approve', {
-          tokenAddress: ENV.WORKNET_WUSD_TOKEN,
-          spenderAddress: ENV.WORKNET_ROUTER,
-          amount: payload[1],
-        }, { root: true });
-      }
-
       const { gasPrice, gas } = await getGasPrice(
         WQRouter,
         ENV.WORKNET_ROUTER,
@@ -174,16 +163,16 @@ export default {
       }
 
       const inst = createInstance(WQRouter, ENV.WORKNET_ROUTER);
-      await inst.methods[method](...payload).send({
+      const res = await inst.methods[method](...payload).send({
         from: getWalletAddress(),
         gasPrice,
         gas,
       });
 
-      return success();
+      return success(res);
     } catch (e) {
       console.error(`collateral/${method}`, e);
-      return error();
+      return error(-1, e.message, e);
     }
   },
 

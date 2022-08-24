@@ -403,7 +403,7 @@ export default {
     .title {
       max-width: 530px;
       font-weight: 500;
-      color: #FFF;
+      color: $white;
       font-size: 45px;
       line-height: 110%;
       margin: 24px 0;
@@ -435,9 +435,9 @@ export default {
       box-sizing: border-box;
       font-weight: 400;
       font-size: 16px;
-      color: #0083C7;
-      background-color: #fff;
-      border: 1px solid #0083C71A;
+      color: $blue;
+      background-color: $white;
+      border: 1px solid $blue100;
       border-radius: 6px !important;
       transition: .3s;
 
@@ -459,18 +459,18 @@ export default {
       }
 
       &:hover {
-        background-color: #0083C71A;
+        background-color: $blue100;
         border: 0;
       }
 
       &_bl {
         @extend .btn;
-        background-color: #0083C7;
+        background-color: $blue;
         border: unset;
-        color: #fff;
+        color: $white;
 
         &:hover {
-          background-color: #103d7c;
+          background-color: $darkblue;
         }
       }
     }
@@ -478,19 +478,19 @@ export default {
     .text {
       font-size: 16px;
       font-weight: 400;
-      color: #8D96A1;
+      color: $black400;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
 
       &__faq {
-        color: #4C5767;
+        color: $black600;
         font-weight: 500;
 
         &_gray {
           font-size: 16px;
           font-weight: 400;
-          color: #8D96A1;
+          color: $black400;
           height: 0;
           transition: height 300ms;
           overflow: hidden;
@@ -500,7 +500,7 @@ export default {
           height: auto;
           font-size: 16px;
           font-weight: 400;
-          color: #8D96A1;
+          color: $black400;
           transition: height 300ms;
           margin-top: 20px;
         }
@@ -510,7 +510,7 @@ export default {
         @extend .text;
         font-weight: 500;
         font-size: 18px;
-        color: #0083C7;
+        color: $blue;
       }
 
       &_small {
@@ -534,7 +534,7 @@ export default {
     }
 
     .info-block {
-      background-color: #fff;
+      background-color: $white;
       border-radius: 6px;
       overflow: hidden;
 
@@ -597,11 +597,11 @@ export default {
       &__title {
         font-size: 20px;
         font-weight: 600;
-        color: #1D2127;
+        color: $black800;
         opacity: 0.5;
 
         &_black {
-          color: #1D2127;
+          color: $black800;
         }
 
         &_big {
@@ -610,14 +610,14 @@ export default {
         }
 
         &_blue {
-          color: #0083C7;
+          color: $blue;
           font-weight: 700;
         }
 
         &_small {
           font-size: 16px;
           font-weight: 400;
-          color: #7C838D;
+          color: $black400;
         }
 
         &_pad {
@@ -629,7 +629,7 @@ export default {
       &__subtitle {
         font-weight: 400;
         font-size: 16px;
-        color: #7C838D;
+        color: $black400;
       }
 
       &__about {
@@ -666,7 +666,7 @@ export default {
         gap: 20px;
 
         .document {
-          border: 1px solid #E1E4ED;
+          border: 1px solid $black100;
           border-radius: 8px;
           height: 80px;
           padding: 0 20px;
@@ -695,21 +695,21 @@ export default {
           &__size {
             font-weight: 400;
             font-size: 13px;
-            color: #A7AEB9;
+            color: $black300;
           }
         }
       }
 
       &__name {
         font-size: 16px;
-        color: #1D2127;
+        color: $black800;
         padding: 20px 20px 10px 20px;
         font-weight: 400;
 
         &_bold {
           font-weight: 500;
           font-size: 25px;
-          color: #103D7C;
+          color: $darkblue;
           line-height: 1;
           padding: 20px;
         }
@@ -719,19 +719,19 @@ export default {
         background-color: $blue;
         .info-block {
           &__name {
-            color: #fff;
+            color: $white;
             &_bold {
-              color: #fff;
+              color: $white;
             }
           }
           &__subtitle {
-            color: #fff;
+            color: $white;
           }
         }
         .btn {
           &:hover {
-            background-color: #103d7c;
-            color: #fff;
+            background-color: $darkblue;
+            color: $white;
           }
         }
       }

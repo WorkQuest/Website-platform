@@ -9,7 +9,7 @@
       class="collateral__content content"
       tag="div"
     >
-      <template v-if="options.mode === 'claimExtraDebt'">
+      <template v-if="options.mode === CollateralMethods.claimExtraDebt">
         <div class="content__header">
           {{ $t('wallet.collateral.generationSubTitle') }}
         </div>
@@ -34,7 +34,7 @@
           :value="options.availableToClaim"
         />
       </template>
-      <template v-else-if="options.mode === 'removeCollateral'">
+      <template v-else-if="options.mode === CollateralMethods.removeCollateral">
         <div class="content__header">
           {{ $t('wallet.collateral.tokenQuantity') }}
         </div>
@@ -55,7 +55,7 @@
           disabled
           vid="remove"
           :value="options.amountToRemoveCollateral"
-          :rules="`have_funds:${balance[options.symbol].fullBalance}, ${options.amountToRemoveCollateral}`"
+          :rules="`have_funds:${balance[$options.TokenSymbols.WUSD].fullBalance}, ${options.amountToRemoveCollateral}`"
         />
       </template>
       <template v-else>
@@ -115,12 +115,14 @@
 import { mapGetters } from 'vuex';
 import { TokenMap, TokenSymbols } from '~/utils/enums';
 import { ERC20 } from '~/abi';
+import { CollateralMethods } from '~/utils/сonstants/auction';
 
 export default {
   name: 'CollateralTransaction',
   TokenSymbols,
   data() {
     return {
+      CollateralMethods,
       selCurrencyID: TokenSymbols.WUSD,
       currentDeposit: null,
       selectedMethod: null,
@@ -140,18 +142,18 @@ export default {
     },
     modalTitle() {
       return {
-        claimExtraDebt: this.$t('meta.btns.generate'),
-        disposeDebt: this.$t('meta.deposit'),
-        addCollateral: this.$t('meta.deposit'),
-        removeCollateral: this.$t('wallet.collateral.removeCollateral'),
+        [CollateralMethods.claimExtraDebt]: this.$t('meta.btns.generate'),
+        [CollateralMethods.disposeDebt]: this.$t('meta.deposit'),
+        [CollateralMethods.addCollateral]: this.$t('meta.deposit'),
+        [CollateralMethods.removeCollateral]: this.$t('wallet.collateral.removeCollateral'),
       }[this.options.mode];
     },
     submitText() {
       return {
-        claimExtraDebt: this.$t('meta.btns.generate'),
-        disposeDebt: this.$t('meta.deposit'),
-        addCollateral: this.$t('meta.deposit'),
-        removeCollateral: this.$t('meta.btns.remove'),
+        [CollateralMethods.claimExtraDebt]: this.$t('meta.btns.generate'),
+        [CollateralMethods.disposeDebt]: this.$t('meta.deposit'),
+        [CollateralMethods.addCollateral]: this.$t('meta.deposit'),
+        [CollateralMethods.removeCollateral]: this.$t('meta.btns.remove'),
       }[this.options.mode];
     },
     availableToDeposit() {
@@ -163,12 +165,15 @@ export default {
   watch: {
     selCurrencyID() {
       if (['disposeDebt', 'addCollateral'].includes(this.options.mode)) {
-        this.selectedMethod = this.selCurrencyID === TokenSymbols.WUSD ? 'disposeDebt' : 'addCollateral';
+        this.selectedMethod = this.selCurrencyID === TokenSymbols.WUSD
+          ? CollateralMethods.disposeDebt
+          : CollateralMethods.addCollateral;
         this.$refs['validation-collateral'].validate();
       }
     },
   },
   async mounted() {
+    this.SetLoader(true);
     this.selectedMethod = this.options.mode;
     this.selCurrencyID = this.options.symbol;
     await Promise.all([
@@ -184,12 +189,12 @@ export default {
         method: 'balanceOf',
         address: this.userWalletAddress,
         abi: ERC20,
-        // TODO use collateral token
-        token: TokenMap[TokenSymbols.USDT],
-        symbol: TokenSymbols.USDT,
+        token: TokenMap[this.selCurrencyID],
+        symbol: this.selCurrencyID,
       }),
     ]);
     this.$refs['validation-collateral'].validate();
+    this.SetLoader(false);
   },
   methods: {
     onSubmit() {
@@ -262,7 +267,7 @@ export default {
     border-radius: 50%;
     width: 25px;
     height: 25px;
-    border: 1px solid #0083C7;
+    border: 1px solid $blue;
     cursor: pointer;
   }
 }
