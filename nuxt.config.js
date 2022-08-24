@@ -134,5 +134,9 @@ export default {
     SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
     ETHEREUM_RPC_URL: process.env.ETHEREUM_RPC_URL,
+
+    API_KEY_ETHERSCAN: process.env.API_KEY_ETHERSCAN,
+    API_KEY_BSCSCAN: process.env.API_KEY_BSCSCAN,
+    API_KEY_POLYGONSCAN: process.env.API_KEY_POLYGONSCAN,
   },
 };
