@@ -76,14 +76,15 @@ export default {
         const amount = tx.tokenTransfers?.length ? tx.tokenTransfers[0]?.amount : tx.value;
         const symbol = TokenSymbolByContract[tx.to_address_hash?.hex] || TokenSymbols.WQT;
         const valueDecimals = balance[symbol].decimals || 18;
-        const txFee = tx.transaction_fee || new BigNumber(tx.gas_price).multipliedBy(tx.gas_used).toString();
+        const txFee = tx.transaction_fee || new BigNumber(tx.gas_price).multipliedBy(tx.gas_used).shiftedBy(-18).decimalPlaces(8)
+          .toString();
         return {
           tx_hash: tx.hash,
           block: tx.block_number,
           timestamp: tx.block.timestamp,
           status: Boolean(tx.status),
           value: `${getStyledAmount(amount, false, valueDecimals)} ${symbol}`,
-          transaction_fee: `${getStyledAmount(txFee, false, feeDecimals)} ${TokenSymbols.WQT}`,
+          transaction_fee: txFee,
           from_address: tx.from_address_hash.hex,
           to_address: tx.to_address_hash?.hex || '',
           network,
@@ -138,7 +139,8 @@ export default {
         timestamp: tx.timeStamp * 1000,
         status: Boolean(+tx.txreceipt_status),
         value: `${getStyledAmount(tx.value, false, decimals)} ${symbol}`,
-        transaction_fee: `${getStyledAmount(tx.cumulativeGasUsed, false, decimals)} ${symbol}`,
+        transaction_fee: new BigNumber(tx.gasPrice).multipliedBy(tx.gasUsed).shiftedBy(-18).decimalPlaces(8)
+          .toString(),
         from_address: tx.from,
         to_address: tx.to || '',
         network,
