@@ -365,7 +365,7 @@ export default {
       }).then(async () => {
         this.SetLoader({ isLoading: true });
 
-        const { ok: isSuccess, msg: errorMsg } = await sendWalletTransaction(method, {
+        const { ok: isSuccess, msg: errorMsg, transactionHash } = await sendWalletTransaction(method, {
           abi: WQAuction,
           address: this.contractAddress,
           value: null,
@@ -373,7 +373,13 @@ export default {
         });
         // TODO need to fix response for sendWalletTransaction
         if (isSuccess === false) this.ShowModalFail({ subtitle: errorMsg });
-        else await this.$store.dispatch('auction/setCallbackWS', () => this.ShowModalSuccess({}));
+        else {
+          await this.setCallback(() => {
+            this.ShowModalSuccess({
+              link: `${this.explorerUrl}/tx/${transactionHash}`,
+            });
+          });
+        }
       }).catch(() => {
         console.log('User rejected method.');
       });
