@@ -373,11 +373,9 @@ export default {
         });
         // TODO need to fix response for sendWalletTransaction
         if (isSuccess === false) this.ShowModalFail({ subtitle: errorMsg });
-        else this.ShowModalSuccess({});
+        else await this.$store.dispatch('auction/setCallbackWS', () => this.ShowModalSuccess({}));
       }).catch(() => {
         console.log('User rejected method.');
-      }).finally(() => {
-        this.SetLoader(false);
       });
     },
   },
