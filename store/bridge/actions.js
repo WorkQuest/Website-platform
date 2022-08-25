@@ -1,8 +1,8 @@
 import BigNumber from 'bignumber.js';
 
-import { Path } from '~/utils/enums';
+import { Chains, Path, TokenSymbols } from '~/utils/enums';
 import {
-  BlockchainByIndex, BridgeAddresses, BridgeEvents, SwapAddresses,
+  BlockchainByIndex, BlockchainIndex, BridgeAddresses, BridgeEvents, SwapAddresses,
 } from '~/utils/сonstants/bridge';
 
 import {
@@ -31,6 +31,17 @@ export default {
       });
       const swaps = result.swaps.map((swap) => {
         const tokenData = rootGetters['wallet/getBalanceData'][swap.symbol];
+
+        let { decimals } = tokenData;
+        if ([TokenSymbols.USDT, TokenSymbols.USDC].includes(swap.symbol)) {
+          const bscChainIdx = BlockchainIndex[Chains.BINANCE];
+          if (swap.chainFrom === bscChainIdx) {
+            decimals = 6;
+          } else if (swap.chainTo === bscChainIdx) {
+            decimals = 18;
+          }
+        }
+
         return {
           ...swap,
           status: swap.canRedeemed,
@@ -39,7 +50,7 @@ export default {
             SwapAddresses.get(BlockchainByIndex[swap.chainFrom]).icon,
             SwapAddresses.get(BlockchainByIndex[swap.chainTo]).icon,
           ],
-          amount: new BigNumber(swap.amount).shiftedBy(-tokenData?.decimals || -18).toString(),
+          amount: new BigNumber(swap.amount).shiftedBy(-decimals || -18).toString(),
           created: swap.timestamp,
         };
       });
@@ -207,10 +218,22 @@ export default {
         } = msg.data;
         if (event === BridgeEvents.SWAP_INITIALIZED) {
           if (swaps.length === 10) swaps.splice(9, 1);
-          const tokenData = rootGetters['wallet/getBalanceData'][msg.data.returnValues.symbol];
+          const { symbol } = msg.data.returnValues;
+          const tokenData = rootGetters['wallet/getBalanceData'][symbol];
+
+          let { decimals } = tokenData;
+          if ([TokenSymbols.USDT, TokenSymbols.USDC].includes(swap.symbol)) {
+            const bscChainIdx = BlockchainIndex[Chains.BINANCE];
+            if (swap.chainFrom === bscChainIdx) {
+              decimals = 6;
+            } else if (swap.chainTo === bscChainIdx) {
+              decimals = 18;
+            }
+          }
+
           swaps.unshift({
             ...msg.data.returnValues,
-            amount: new BigNumber(amount).shiftedBy(-tokenData?.decimals || -18).toString(),
+            amount: new BigNumber(amount).shiftedBy(-decimals || -18).toString(),
             chain: BlockchainByIndex[chainTo],
             created: timestamp,
             direction: [
