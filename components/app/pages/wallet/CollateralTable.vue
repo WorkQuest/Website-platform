@@ -316,7 +316,7 @@ export default {
 
       // for review - make zero allowance on router
       // console.log(await this.$store.dispatch('wallet/approve', {
-      //   tokenAddress: ENV.WORKNET_USDT_TOKEN,
+      //   tokenAddress: ENV.WORKNET_WUSD_TOKEN,
       //   spenderAddress: ENV.WORKNET_ROUTER,
       //   amount: 0,
       // }));

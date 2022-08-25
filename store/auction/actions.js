@@ -23,6 +23,7 @@ const AuctionEvents = {
   STARTED: 'Started',
   CANCELED: 'Canceled',
   LIQUIDATED: 'Liquidated',
+  NOT_LIQUIDATED: 'NotLiquidated',
 };
 
 /**
@@ -99,8 +100,8 @@ export default {
             cost, buyer, amount, timestamp, transactionHash,
           } = lot;
 
-          let symbolDecimals = balanceData[symbol].decimals;
-          if (symbolDecimals === 6) symbolDecimals += symbolDecimals;
+          const symbolDecimals = balanceData[symbol].decimals;
+          // if (+symbolDecimals === 6) symbolDecimals += symbolDecimals;
           return {
             ...item,
             buyer,
@@ -148,36 +149,107 @@ export default {
     }
   },
 
-  async setCallbackWS(_, callback) { callbackWS = callback; },
+  async setCallbackWS(_, callback) {
+    console.log('action set callback', callback);
+    callbackWS = callback;
+  },
 
   async subscribeWS({
     commit, getters, rootGetters, dispatch,
   }) {
     try {
       let timeoutId = null;
+      let isLoadingByWS = false;
+
+      const addLotToArray = (array, lot) => {
+        const balanceData = rootGetters['wallet/getBalanceData'];
+        let symbolDecimals = balanceData[lot.symbol].decimals;
+
+        if (getters.getCurrentTab === LotsStatuses.BOUGHT) {
+          /**
+           * @property lotBuyed - its array of all buy events for current lot, first item is newest event
+           */
+          const {
+            cost, buyer, amount, timestamp, transactionHash,
+          } = lot.lotBuyed[0];
+
+          console.log('bought lot index:', lot.index, ' was added');
+          array.unshift({
+            ...lot,
+            buyer,
+            timestamp,
+            transactionHash,
+            lotAmount: Number(new BigNumber(amount).shiftedBy(-symbolDecimals).toFixed(4, 1)),
+            lotPrice: Number(new BigNumber(cost).shiftedBy(-18).toFixed(4, 1)),
+          });
+        } else {
+          if (symbolDecimals === 6) symbolDecimals += symbolDecimals;
+
+          lot = {
+            ...lot,
+            _collateral: Number(new BigNumber(lot.collateral).shiftedBy(-symbolDecimals)),
+            _liquidityValue: Number(new BigNumber(lot.liquidityValue).shiftedBy(-18).toFixed(4, 1)),
+            _price: Number(new BigNumber(lot.priceValue).shiftedBy(-18).toFixed(4, 1)),
+          };
+
+          // find lot in array and update it
+          const isUpdatedLot = array.some((item, i) => {
+            if (item.index === lot.index && item.symbol === lot.symbol) {
+              array[i] = { ...lot };
+              console.log('lot index:', lot.index, ' was updated');
+              return true;
+            }
+            return false;
+          });
+
+          if (!isUpdatedLot) {
+            console.log('lot index:', lot.index, ' was added');
+            array.unshift(lot);
+            if (array.length > AUCTION_CARDS_LIMIT) array.splice(array.length - 1, 1);
+          }
+        }
+      };
+
+      const removeLotFromArray = (array, lot) => {
+        let indexLot = null;
+        array.some((item, i) => {
+          indexLot = (lot.index === item.index && lot.symbol === item.symbol) ? i : null;
+          return lot.id === item.id;
+        });
+        if (indexLot === null) return false;
+
+        console.log('lot index:', lot.index, ' was removed');
+        array.splice(indexLot, 1);
+        return true;
+      };
+
       await this.$wsNotifs.subscribe(`${Path.NOTIFICATIONS}/loan-auction`, async ({ action, data: lot }) => {
         const currentTab = getters.getCurrentTab;
         const lots = JSON.parse(JSON.stringify(getters.getLots));
         const count = JSON.parse(JSON.stringify(getters.getLotsCount));
 
-        if (!rootGetters['main/getIsLoading']) dispatch('main/setLoading', true, { root: true });
+        // it need for understanding, that loader was initialized by user
+        const loaderText = rootGetters['main/getLoaderStatusText'];
+        if (!loaderText && !timeoutId) {
+          console.log('Loader is', true, ' by ws');
+          isLoadingByWS = true;
+          dispatch('main/setLoading', true, { root: true });
+        }
         switch (action) {
+          case (AuctionEvents.NOT_LIQUIDATED): {
+            if (currentTab !== LotsStatuses.INACTIVE) break;
+            if (!removeLotFromArray(lots, lot)) break;
+
+            commit('setLots', {
+              lots,
+              count: count - 1,
+            });
+
+            break;
+          }
           case (AuctionEvents.LIQUIDATED): {
             if (currentTab !== LotsStatuses.INACTIVE) break;
-
-            const balanceData = rootGetters['wallet/getBalanceData'];
-            let symbolDecimals = balanceData[lot.symbol].decimals;
-            if (symbolDecimals === 6) symbolDecimals += symbolDecimals;
-
-            lot = {
-              ...lot,
-              _collateral: Number(new BigNumber(lot.collateral).shiftedBy(-symbolDecimals)),
-              _liquidityValue: Number(new BigNumber(lot.liquidityValue).shiftedBy(-18).toFixed(4, 1)),
-              _price: Number(new BigNumber(lot.priceValue).shiftedBy(-18).toFixed(4, 1)),
-            };
-
-            lots.unshift(lot);
-            if (lots.length > AUCTION_CARDS_LIMIT) lots.splice(lots.length - 1, 1);
+            addLotToArray(lots, lot);
 
             commit('setLots', {
               count: count + 1,
@@ -188,40 +260,56 @@ export default {
           }
           case (AuctionEvents.STARTED): {
             if (currentTab === LotsStatuses.INACTIVE) {
-              let indexLot = null;
-              lots.some((item, i) => {
-                indexLot = i;
-                return lot.id === item.id;
-              });
-              if (!indexLot) break;
+              if (!removeLotFromArray(lots, lot)) break;
 
-              lots.splice(indexLot, 1);
               commit('setLots', {
                 lots,
                 count: count - 1,
               });
             } else if (currentTab === LotsStatuses.STARTED) {
-              const { id } = lot;
-              const found = lots.find((item) => item.id === id);
-              console.log('another case2 for ', action);
+              addLotToArray(lots, lot);
+
+              commit('setLots', {
+                count: count + 1,
+                lots,
+              });
             }
             break;
           }
           case (AuctionEvents.BOUGHT):
           case (AuctionEvents.CANCELED): {
-            console.log('another case3-4 for ', action);
+            if ([LotsStatuses.BOUGHT, LotsStatuses.CANCELED].includes(currentTab)) {
+              addLotToArray(lots, lot);
+
+              commit('setLots', {
+                count: count + 1,
+                lots,
+              });
+            } else if (currentTab === LotsStatuses.STARTED) {
+              if (!removeLotFromArray(lots, lot)) break;
+
+              commit('setLots', {
+                lots,
+                count: count - 1,
+              });
+            }
+
             break;
           }
           default: {
-            console.log('default');
+            console.log('Unknown event: ', action);
             break;
           }
         }
 
         if (timeoutId) clearTimeout(timeoutId);
         timeoutId = setTimeout(() => {
-          timeoutId = null;
-          dispatch('main/setLoading', Boolean(timeoutId), { root: true });
+          console.log('Timeout data in ws: isLoadingByWS=', isLoadingByWS, ', loaderText=', loaderText);
+          if (isLoadingByWS || !loaderText) {
+            console.log('Set loader: ', false, ' in auction WS');
+            dispatch('main/setLoading', false, { root: true });
+            timeoutId = null;
+          }
 
           if (callbackWS) {
             callbackWS();
@@ -236,6 +324,7 @@ export default {
 
   async unsubscribeWS(_) {
     try {
+      console.log(`unsubscribe from ${Path.NOTIFICATIONS}/loan-auction`);
       await this.$wsNotifs.unsubscribe(`${Path.NOTIFICATIONS}/loan-auction`);
     } catch (err) {
       console.error('auction/unsubscribeWS', err);

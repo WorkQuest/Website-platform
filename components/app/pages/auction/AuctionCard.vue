@@ -375,6 +375,7 @@ export default {
         if (isSuccess === false) this.ShowModalFail({ subtitle: errorMsg });
         else {
           await this.setCallback(() => {
+            this.SetLoader(false);
             this.ShowModalSuccess({
               link: `${ExplorerUrl}/tx/${transactionHash}`,
             });
