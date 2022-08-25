@@ -9,12 +9,22 @@ import { success, error } from '~/utils/web3';
 import { WQRouter } from '~/abi';
 import ENV from '~/utils/addresses';
 import { Path } from '~/utils/enums';
+import { COLLATERAL_CARDS_LIMIT } from '~/utils/сonstants/auction';
+
+let callbackWS = null;
 
 const CollateralEvents = {
   PRICE_UPDATED: 'DeterminationPriceUpdated',
+  MOVED: 'Moved',
+  REMOVED: 'Removed',
+  PRODUCED: 'Produced',
 };
 
 export default {
+  async setCallbackWS({ _ }, callback) {
+    callbackWS = callback;
+  },
+
   async fetchCollateralsCommonInfo({ commit }) {
     try {
       const { result: { pullAmount, ratio, symbols } } = await this.$axiosLiquidator.$get('collateral/information');
@@ -203,6 +213,124 @@ export default {
       await this.$wsNotifs.unsubscribe(`${Path.NOTIFICATIONS}/oracle-prices`);
     } catch (err) {
       console.error('collateral/unsubscribeCollateralCommonInfo', err);
+    }
+  },
+
+  async subscribeCollateralBalance({
+    commit, getters, rootGetters, dispatch,
+  }) {
+    const wallet = rootGetters['user/getUserWalletAddress'];
+    const balanceData = rootGetters['wallet/getBalanceData'];
+    try {
+      await this.$wsNotifs.subscribe(`${Path.NOTIFICATIONS}/loan-collateral/${wallet}`, async ({ action, data }) => {
+        const collaterals = JSON.parse(JSON.stringify(getters.getCollaterals));
+        const count = JSON.parse(JSON.stringify(getters.getCollateralsCount));
+
+        switch (action) {
+          case (CollateralEvents.PRODUCED): {
+            if (getters.getCollateralCurrentPage !== 1) {
+              commit('setCollaterals', {
+                collaterals,
+                count: count + 1,
+              });
+              break;
+            }
+
+            const {
+              debt,
+              price,
+              symbol,
+              deposit,
+              collateral,
+            } = data;
+            const symbolDecimals = balanceData[symbol].decimals;
+
+            collaterals.unshift({
+              ...data,
+              _price: Number(new BigNumber(price).shiftedBy(-18).toFixed(4, 1)),
+              lockedAmount: Number(new BigNumber(collateral).shiftedBy(-symbolDecimals).toFixed(4, 1)),
+              colRatio: Number(new BigNumber(deposit).shiftedBy(-18).multipliedBy(100).toFixed(4, 1)),
+              wusdGenerated: Number(new BigNumber(debt).shiftedBy(-18).toFixed(4, 1)),
+            });
+
+            if (collaterals.length > COLLATERAL_CARDS_LIMIT) collaterals.splice(collaterals.length - 1, 1);
+            commit('setCollaterals', {
+              collaterals,
+              count: count + 1,
+            });
+
+            break;
+          }
+          case (CollateralEvents.REMOVED):
+          case (CollateralEvents.MOVED): {
+            await dispatch('fetchCollateralInfo', {
+              address: wallet,
+              collateralId: data.id,
+              params: {},
+            });
+
+            if (callbackWS !== null) {
+              console.log('call callback in ws');
+              await callbackWS();
+              await dispatch('setCallbackWS', null);
+            }
+            break;
+          }
+          // {
+          //  dispatch('fetchCollateralInfo', {
+          //    address: wallet,
+          //    collateralId: data.id,
+          //    params: {},
+          //  });
+          //  // const isUpdated = collaterals.some((item, i) => {
+          //  //   if (+item.index === +data.index && item.symbol === data.symbol) {
+          //  //     const {
+          //  //       debt,
+          //  //       price,
+          //  //       symbol,
+          //  //       deposit,
+          //  //       collateral,
+          //  //     } = data;
+          //  //     const symbolDecimals = balanceData[symbol].decimals;
+          //  //
+          //  //     collaterals[i] = {
+          //  //       ...item,
+          //  //       price,
+          //  //       _price: Number(new BigNumber(price).shiftedBy(-18).toFixed(4, 1)),
+          //  //       collateral,
+          //  //       lockedAmount: Number(new BigNumber(collateral).shiftedBy(-symbolDecimals).toFixed(4, 1)),
+          //  //       deposit,
+          //  //       colRatio: Number(new BigNumber(deposit).shiftedBy(-18).multipliedBy(100).toFixed(4, 1)),
+          //  //       debt,
+          //  //       wusdGenerated: Number(new BigNumber(debt).shiftedBy(-18).toFixed(4, 1)),
+          //  //     };
+          //  //     console.log('Lot index:', data.index, 'was updated');
+          //  //
+          //  //     return true;
+          //  //   }
+          //  //   return false;
+          //  // });
+          //  //
+          //  // if (isUpdated) commit('updateCollaterals', collaterals);
+          //  break;
+          // }
+          default: {
+            console.log('Unknown action: ', action, 'by subscription "loan-collateral"');
+          }
+        }
+      });
+    } catch (err) {
+      console.error('collateral/subscribeCollateralBalance', err);
+    }
+  },
+
+  async unsubscribeCollateralBalance({ rootGetters }) {
+    try {
+      const wallet = rootGetters['user/getUserWalletAddress'];
+      console.log(`unsubscribe from ${Path.NOTIFICATIONS}/loan-collateral/${wallet}`);
+      await this.$wsNotifs.unsubscribe(`${Path.NOTIFICATIONS}/loan-collateral/${wallet}`);
+    } catch (err) {
+      console.error('collateral/unsubscribeCollateralBalance', err);
     }
   },
 };

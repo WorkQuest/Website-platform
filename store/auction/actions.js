@@ -194,7 +194,7 @@ export default {
 
           // find lot in array and update it
           const isUpdatedLot = array.some((item, i) => {
-            if (item.index === lot.index && item.symbol === lot.symbol) {
+            if (+item.index === +lot.index && item.symbol === lot.symbol) {
               array[i] = { ...lot };
               console.log('lot index:', lot.index, ' was updated');
               return true;

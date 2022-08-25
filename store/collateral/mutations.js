@@ -1,4 +1,8 @@
 export default {
+  setCollateralCurrentPage(state, page) {
+    state.collateralCurrentPage = page;
+  },
+
   setCollaterals(state, { collaterals, count }) {
     state.collaterals = collaterals;
     state.collateralsCount = count;
