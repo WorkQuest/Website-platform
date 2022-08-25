@@ -237,6 +237,7 @@ export default {
     calcDurationTime(willFinish) {
       const now = this.$moment();
       let durationInSec = this.$moment(willFinish).diff(now) / 1000;
+      console.log(durationInSec);
 
       if (new BigNumber(durationInSec).isGreaterThanOrEqualTo(86400)) {
         const days = new BigNumber(durationInSec).dividedToIntegerBy(86400).toFixed();
@@ -251,13 +252,13 @@ export default {
       }
 
       if (new BigNumber(durationInSec).isGreaterThanOrEqualTo(60)) {
-        const minutes = new BigNumber(durationInSec).dividedToIntegerBy(3600).toFixed();
+        const minutes = new BigNumber(durationInSec).dividedToIntegerBy(60).toFixed();
         this.durationTime.minutes = minutes ? this.$tc('meta.units.minutes', this.DeclOfNum(minutes), { count: minutes }) : '';
         durationInSec -= new BigNumber(60).multipliedBy(minutes).toFixed();
       }
 
       const seconds = Math.ceil(durationInSec);
-      this.durationTime.seconds = seconds && seconds > 0 ? this.$tc('meta.units.minutes', this.DeclOfNum(seconds), { count: seconds }) : '';
+      this.durationTime.seconds = seconds && seconds > 0 ? this.$tc('meta.units.seconds', this.DeclOfNum(seconds), { count: seconds }) : '';
     },
 
     calcStartedLotPrice(symbol, endCost, amount) {
