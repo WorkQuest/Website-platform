@@ -8,6 +8,11 @@ import {
 import { success, error } from '~/utils/web3';
 import { WQRouter } from '~/abi';
 import ENV from '~/utils/addresses';
+import { Path } from '~/utils/enums';
+
+const CollateralEvents = {
+  PRICE_UPDATED: 'DeterminationPriceUpdated',
+};
 
 export default {
   async fetchCollateralsCommonInfo({ commit }) {
@@ -176,4 +181,28 @@ export default {
     }
   },
 
+  async subscribeCollateralCommonInfo({ commit }) {
+    try {
+      await this.$wsNotifs.subscribe(`${Path.NOTIFICATIONS}/oracle-prices`, async ({ action, data }) => {
+        if (action === CollateralEvents.PRICE_UPDATED) {
+          console.log('UPDATED COLLATERAL INFO');
+          const { pullAmount, ratio, symbols } = data;
+          commit('setTotalSupply', pullAmount);
+          commit('setMaxRatio', Math.max(...ratio));
+          commit('setAvailableAssets', symbols);
+        }
+      });
+    } catch (err) {
+      console.error('collateral/subscribeCollateralCommonInfo', err);
+    }
+  },
+
+  async unsubscribeCollateralCommonInfo(_) {
+    try {
+      console.log(`unsubscribe from ${Path.NOTIFICATIONS}/oracle-prices`);
+      await this.$wsNotifs.unsubscribe(`${Path.NOTIFICATIONS}/oracle-prices`);
+    } catch (err) {
+      console.error('collateral/unsubscribeCollateralCommonInfo', err);
+    }
+  },
 };
