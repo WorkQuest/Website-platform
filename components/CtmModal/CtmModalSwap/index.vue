@@ -88,8 +88,9 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import { Chains, ConnectionTypes, TokenSymbols } from '~/utils/enums';
-import { BridgeAddresses, SwapAddresses } from '~/utils/сonstants/bridge';
+import { BlockchainIndex, BridgeAddresses, SwapAddresses } from '~/utils/сonstants/bridge';
 import { getChainIdByChain, GetWeb3Provider } from '~/utils/web3';
 import { GetWalletProvider } from '~/utils/wallet';
 
@@ -174,6 +175,14 @@ export default {
         isNative: from.nativeSymbol === symbol,
         provider,
       });
+      // Bridge contract from BSC net for USDT & USDC decimals limit 6
+      if (from.chain === Chains.BINANCE && [TokenSymbols.USDT, TokenSymbols.USDC].includes(this.currentToken.symbol)) {
+        this.$store.commit('bridge/setToken', {
+          ...this.currentToken,
+          decimals: 6,
+          amount: new BigNumber(this.currentToken.amount).decimalPlaces(6).toString(),
+        });
+      }
       this.SetLoader(false);
     },
     setMaxValue() {

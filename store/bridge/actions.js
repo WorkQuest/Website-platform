@@ -150,6 +150,7 @@ export default {
           fetchContractData('balanceOf', ERC20, tokenAddress, [accountAddress], provider),
         ]);
         commit('setToken', {
+          symbol,
           decimals: Number(decimals),
           amount: new BigNumber(+amount).shiftedBy(-decimals).toString(),
         });
