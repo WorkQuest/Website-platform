@@ -1,5 +1,11 @@
-import { Chains, TokenSymbols, ExplorerUrl } from '~/utils/enums';
-import ENV, { IS_PROD } from '~/utils/addresses/index';
+import {
+  Chains,
+  TokenSymbols,
+  ExplorerUrl,
+  BscExplorerUrl,
+  EthereumExplorerUrl,
+} from '~/utils/enums';
+import ENV from '~/utils/addresses/index';
 import { images } from '~/utils/images';
 
 export const BlockchainIndex = Object.freeze({
@@ -39,7 +45,7 @@ export const SwapAddresses = new Map([
         [TokenSymbols.WQT]: ENV.ETHEREUM_WQT_TOKEN,
         [TokenSymbols.USDT]: ENV.ETHEREUM_USDT_TOKEN,
       },
-      explorer: `https://${IS_PROD ? '' : 'rinkeby.'}etherscan.io`,
+      explorer: EthereumExplorerUrl,
     },
   ],
   [
@@ -54,7 +60,7 @@ export const SwapAddresses = new Map([
         [TokenSymbols.WQT]: ENV.BSC_WQT_TOKEN,
         [TokenSymbols.USDT]: ENV.BSC_USDT_TOKEN,
       },
-      explorer: `https://${IS_PROD ? '' : 'testnet.'}bscscan.com`,
+      explorer: BscExplorerUrl,
     },
   ],
   [

@@ -93,13 +93,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import { Layout, Path } from '~/utils/enums';
 
 export default {
   name: 'Pools',
-  layout({ store }) {
-    return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
+  layout({ $cookies }) {
+    return $cookies.get('access') ? Layout.DEFAULT : Layout.GUEST;
   },
   data() {
     return {
@@ -107,9 +106,6 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({
-      isAuth: 'user/isAuth',
-    }),
     pools() {
       return [
         {

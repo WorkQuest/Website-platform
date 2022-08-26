@@ -11,25 +11,25 @@
         <div class="auction__topbar-switcher">
           <base-btn
             data-selector="ACTION-AUCTION-SELECT-INACTIVE"
-            :mode="currentTab === $options.LotsStatuses.INACTIVE ? 'activeTab' : 'light'"
+            :mode="currentTab === LotsStatuses.INACTIVE ? 'activeTab' : 'light'"
             :padding="true"
-            @click="currentTab = $options.LotsStatuses.INACTIVE"
+            @click="$store.commit('auction/setCurrentTab', LotsStatuses.INACTIVE)"
           >
             {{ $t('auction.tabs.inactive') }}
           </base-btn>
           <base-btn
             data-selector="ACTION-AUCTION-SELECT-CURRENT"
-            :mode="currentTab === $options.LotsStatuses.STARTED ? 'activeTab' : 'light'"
+            :mode="currentTab === LotsStatuses.STARTED ? 'activeTab' : 'light'"
             :padding="true"
-            @click="currentTab = $options.LotsStatuses.STARTED"
+            @click="$store.commit('auction/setCurrentTab', LotsStatuses.STARTED)"
           >
             {{ $t('auction.tabs.current') }}
           </base-btn>
           <base-btn
             data-selector="ACTION-AUCTION-SELECT-COMPLETED"
-            :mode="currentTab === $options.LotsStatuses.BOUGHT ? 'activeTab' : 'light'"
+            :mode="currentTab === LotsStatuses.BOUGHT ? 'activeTab' : 'light'"
             :padding="true"
-            @click="currentTab = $options.LotsStatuses.BOUGHT"
+            @click="$store.commit('auction/setCurrentTab', LotsStatuses.BOUGHT)"
           >
             {{ $t('auction.tabs.completed') }}
           </base-btn>
@@ -52,8 +52,8 @@
         v-if="lotsCount"
         class="auction__list"
         :class="[
-          {'auction__list_completed': $options.LotsStatuses.BOUGHT === currentTab},
-          {'auction__list_current': [$options.LotsStatuses.STARTED, $options.LotsStatuses.INACTIVE].includes(currentTab)},
+          {'auction__list_completed': LotsStatuses.BOUGHT === currentTab},
+          {'auction__list_current': [LotsStatuses.STARTED, LotsStatuses.INACTIVE].includes(currentTab)},
         ]"
       >
         <auction-card
@@ -85,34 +85,23 @@ import { mapActions, mapGetters } from 'vuex';
 import AuctionCard from '~/components/app/pages/auction/AuctionCard';
 import { Layout } from '~/utils/enums';
 import { IS_PLUG_PROD } from '~/utils/locker-data';
-
-const LotsStatuses = {
-  INACTIVE: 0,
-  STARTED: 1,
-  BOUGHT: 2,
-  CANCELED: 3,
-};
-
-const LIMIT = 12;
+import { AUCTION_CARDS_LIMIT, LotsStatuses } from '~/utils/сonstants/auction';
 
 export default {
   name: 'Auction',
-  LotsStatuses,
-  layout({ store }) {
+  layout({ $cookies }) {
     // TODO PLUG for release
     if (IS_PLUG_PROD) return Layout.DEFAULT;
-    // TODO check why isAuth is false after reload page
-    return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
+    return $cookies.get('access') ? Layout.DEFAULT : Layout.GUEST;
   },
   components: {
     AuctionCard,
   },
   data() {
     return {
-      currentTab: LotsStatuses.INACTIVE,
-
+      LotsStatuses,
       params: {
-        limit: LIMIT,
+        limit: AUCTION_CARDS_LIMIT,
         offset: 0,
       },
       sort: 'desc',
@@ -121,38 +110,47 @@ export default {
   },
   computed: {
     ...mapGetters({
+      isAuth: 'user/isAuth',
       userData: 'user/getUserData',
       walletAddress: 'user/getUserWalletAddress',
 
+      currentTab: 'auction/getCurrentTab',
       lots: 'auction/getLots',
       lotsCount: 'auction/getLotsCount',
 
       isWalletConnected: 'wallet/getIsWalletConnected',
     }),
     totalPages() {
-      return Math.ceil(this.lotsCount / LIMIT) || 0;
+      return Math.ceil(this.lotsCount / AUCTION_CARDS_LIMIT) || 0;
     },
   },
   watch: {
-    currentTab: {
-      async handler(value) {
-        this.currentPage = 1;
-        this.sort = 'desc';
-        await this.clearLots();
-        await this.fetchLots({ lotStatus: value, params: this.params, sort: this.sort });
-      },
+    async currentTab() {
+      this.currentPage = 1;
+      this.sort = 'desc';
+      await this.clearLots();
+      await this.setPage(this.currentPage);
     },
   },
   async beforeMount() {
-    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+    if (!this.isWalletConnected) {
+      await this.$store.dispatch('wallet/checkWalletConnected', {
+        nuxt: this.$nuxt,
+        needConfirm: this.isAuth,
+      });
+    }
   },
   async mounted() {
-    await this.fetchLots({ lotStatus: LotsStatuses.INACTIVE, params: this.params, sort: this.sort });
-    if (!this.isWalletConnected) return;
     await Promise.all([
-      this.getBalance(),
+      this.setPage(this.currentPage),
       this.fetchDuration(),
+      this.initWS(),
     ]);
+    if (!this.isWalletConnected) return;
+    await this.getBalance();
+  },
+  async beforeDestroy() {
+    await this.destroyWS();
   },
   methods: {
     ...mapActions({
@@ -161,14 +159,17 @@ export default {
       fetchLots: 'auction/fetchLots',
       clearLots: 'auction/clearLots',
       fetchDuration: 'auction/fetchAuctionsDuration',
+
+      initWS: 'auction/subscribeWS',
+      destroyWS: 'auction/unsubscribeWS',
     }),
     async changeTimeSorting() {
       this.sort = this.sort === 'asc' ? 'desc' : 'asc';
-      await this.fetchLots({ lotStatus: this.currentTab, params: this.params, sort: this.sort });
+      await this.setPage(this.currentPage);
     },
     async setPage(value) {
       this.currentPage = value;
-      this.params.offset = LIMIT * (value - 1);
+      this.params.offset = AUCTION_CARDS_LIMIT * (value - 1);
       await this.fetchLots({ lotStatus: this.currentTab, params: this.params, sort: this.sort });
     },
   },

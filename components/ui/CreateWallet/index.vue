@@ -12,13 +12,15 @@
       </div>
       <form
         class="wallet__fields"
+        autocomplete="off"
         @submit.prevent="$emit('goStep', walletState.ConfirmMnemonic)"
       >
         <div class="wallet__mnemonic">
           <input
             v-model="mnemonic"
-            :type="isShowMnemonic?'text':'password'"
+            :type="isShowMnemonic ? 'text' : 'password'"
             disabled
+            autocomplete="off"
             class="wallet__phrase-input"
             :class="{'wallet__phrase-input--icon': isShowMnemonic}"
           >
@@ -39,6 +41,7 @@
             id="savedMnemonic"
             v-model="savedMnemonicValue"
             type="checkbox"
+            autocomplete="off"
             class="wallet__confirm-phrase_box"
           >
           <label
@@ -66,13 +69,14 @@
       </div>
       <form
         class="wallet__fields"
+        autocomplete="off"
         @submit.prevent="submitNewWallet"
       >
         <base-field
           v-model="confirmMnemonic.first"
           :rules="`required|is:${confirmMnemonicData.first}`"
           :placeholder="$t('createWallet.typeSecret', { a: confirmMnemonicData.firstIndex })"
-          :name="$t('createWallet.secret', { a: confirmMnemonicData.firstIndex })"
+          :name="$t('createWallet.secret', { a: confirmMnemonicData.firstIndex }).toLowerCase()"
           :type="isConfirmMnemonicFirst?'text':'password'"
           data-selector="FIRST_MNEMONIC"
         >
@@ -90,7 +94,7 @@
           v-model="confirmMnemonic.second"
           :rules="`required|is:${confirmMnemonicData.second}`"
           :placeholder="$t('createWallet.typeSecret', { a: confirmMnemonicData.secondIndex })"
-          :name="$t('createWallet.secret', { a: confirmMnemonicData.secondIndex })"
+          :name="$t('createWallet.secret', { a: confirmMnemonicData.secondIndex }).toLowerCase()"
           :type="isConfirmMnemonicSecond?'text':'password'"
           data-selector="SECOND_MNEMONIC"
         >
@@ -134,6 +138,9 @@
           </slot>
         </base-btn>
       </div>
+      <div class="wallet__text_note">
+        {{ $t('createWallet.createOrImportNote') }}
+      </div>
     </div>
     <ValidationObserver
       v-if="step === walletState.ImportMnemonic"
@@ -145,13 +152,14 @@
       </div>
       <form
         class="wallet__fields"
+        autocomplete="off"
         @submit.prevent="handleSubmit(importWallet)"
       >
         <base-field
           v-model="mnemonicInput"
           rules="required|mnemonic"
           :placeholder="$t('createWallet.typeSecretPhrase')"
-          :name="$t('createWallet.secretPhrase')"
+          :name="$t('createWallet.secretPhrase').toLowerCase()"
           :type="isShowMnemonic?'text':'password'"
           data-selector="MNEMONIC"
         >
@@ -232,9 +240,6 @@ export default {
     this.generate();
   },
   methods: {
-    showCopySuccess() {
-      this.ShowToast(this.$t('modals.textCopy'), this.$t('createWallet.secretPhrase'));
-    },
     generate() {
       this.mnemonic = generateMnemonic();
       const s = this.mnemonic.split(' ');
@@ -298,16 +303,20 @@ export default {
       color: $black800;
     }
     &_simple {
-      color: #000000;
+      color: $black800;
       font-weight: 300;
       font-size: 16px;
       padding-top: 15px;
+    }
+    &_note {
+      margin-top: 15px;
+      color: $black500;
     }
     &_link {
       padding-left: 5px;
       font-weight: 300;
       font-size: 16px;
-      color: #0083C7;
+      color: $blue;
       text-decoration: underline;
     }
   }

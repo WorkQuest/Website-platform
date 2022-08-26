@@ -255,8 +255,9 @@ import {
   TokenSymbols, ConnectionTypes,
 } from '~/utils/enums';
 import {
+  GetWeb3Provider,
   fetchContractData,
-  getChainIdByChain, GetWeb3Provider, success,
+  getChainIdByChain,
 } from '~/utils/web3';
 import { Pool, PoolURL } from '~/utils/сonstants/mining';
 import { images } from '~/utils/images';
@@ -269,8 +270,8 @@ import ENV from '~/utils/addresses';
 
 export default {
   name: 'Pool',
-  layout({ store }) {
-    return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
+  layout({ $cookies }) {
+    return $cookies.get('access') ? Layout.DEFAULT : Layout.GUEST;
   },
   components: {
     WalletSwitcher,
@@ -294,6 +295,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      token: 'user/accessToken',
       claim: 'mining/getClaim',
       staked: 'mining/getStaked',
       profit: 'mining/getProfit',
@@ -481,9 +483,6 @@ export default {
       });
     },
   },
-  beforeMount() {
-    if (this.isAuth) this.$nuxt.setLayout('default');
-  },
   created() {
     const symbol = this.$route.params.id;
     switch (symbol) {
@@ -506,7 +505,24 @@ export default {
     await this.fetchSwaps({ pool, params: { limit, offset: 0 } });
     this.SetLoader(false);
 
-    await this.connectWallet();
+    if (!this.token) {
+      this.ShowModal({
+        key: modals.areYouSure,
+        title: this.$t('modals.defiWalletNote.title'),
+        text: this.$t('modals.defiWalletNote.subtitle'),
+        okBtnTitle: this.$t('modals.defiWalletNote.useWalletWQ'),
+        closeBtnTitle: this.$t('meta.skip'),
+        cancelBtnFunc: async () => {
+          this.CloseModal();
+          await this.connectWallet();
+        },
+        okBtnFunc: () => {
+          this.$router.push(Path.SIGN_UP);
+        },
+      });
+    } else {
+      await this.connectWallet();
+    }
   },
   async beforeDestroy() {
     const preventDisconnect = sessionStorage.getItem('preventDisconnectWeb3');
@@ -545,11 +561,14 @@ export default {
     }),
     async connectWallet() {
       if (this.connectionType === ConnectionTypes.WEB3 && !this.isConnected) {
-        await this.connectWeb3Wallet({ isReconnection: this.isConnected });
+        await this.connectWeb3Wallet({ isReconnection: this.isConnected, chain: this.chain });
       } else {
         this.disconnectWallet();
         if (this.connectionType === ConnectionTypes.WQ_WALLET) {
-          await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+          await this.$store.dispatch('wallet/checkWalletConnected', {
+            nuxt: this.$nuxt,
+            needConfirm: this.isAuth,
+          });
           await this.$store.dispatch('wallet/connectToProvider', this.chain);
           await this.tokensDataUpdate();
         }
@@ -702,8 +721,6 @@ export default {
           await this.MakeApprove({
             tokenAddress: ENV.BSC_OLD_WQT_TOKEN,
             contractAddress: ENV.BSC_WQT_EXCHANGE,
-            amount,
-            decimals,
             symbol: TokenSymbols.WQT,
             nativeTokenSymbol: this.nativeTokenSymbol,
             isHexUserWalletAddress: true,

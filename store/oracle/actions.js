@@ -93,7 +93,7 @@ export default {
       return success(res);
     } catch (e) {
       console.error('oracle/setCurrentPriceTokens', e);
-      return error();
+      return error(-1, e.message, e);
     }
   },
   async getCurrencyInfo({ commit }, { currency }) {

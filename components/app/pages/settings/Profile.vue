@@ -304,6 +304,7 @@ import AddForm from './AddForm.vue';
 import { UserRole } from '~/utils/enums';
 import { images } from '~/utils/images';
 import debounce from '~/utils/debounce';
+import imageOptimization from '~/plugins/mixins/imageOptimization';
 
 export default {
   name: 'SettingsProfile',
@@ -312,6 +313,7 @@ export default {
   directives: {
     ClickOutside,
   },
+  mixins: [imageOptimization],
   props: {
     avatarChange: {
       type: Object,
@@ -481,7 +483,6 @@ export default {
     // eslint-disable-next-line consistent-return
     async processFile(e, validate) {
       const isValid = await validate(e);
-      const reader = new FileReader();
       let file = e.target.files[0];
       if (file.type === 'image/heic') {
         file = await this.HEICConvertTo(file);
@@ -489,6 +490,13 @@ export default {
       }
       if (isValid.valid) {
         if (!file) return false;
+
+        const fileInput = e.target;
+        await this.OptimizeImage(e.target, file, 1024, 1024, 0.9);
+        // eslint-disable-next-line prefer-destructuring
+        file = fileInput.files[0];
+
+        const reader = new FileReader();
         reader.readAsDataURL(file);
         this.avatarChange.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
         this.avatarChange.file = file;

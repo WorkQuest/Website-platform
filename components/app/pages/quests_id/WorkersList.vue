@@ -240,9 +240,10 @@ export default {
    margin: 0 0 10px 0;
    font-size: 16px;
    color: $black500;
+   word-break: break-word;
  }
 
-  &__container {
+    &__container {
     display: grid;
     grid-template-columns: 1fr max-content;
     gap: 10px;
@@ -282,6 +283,30 @@ export default {
   .user-data {
     display: grid;
     grid-template-columns: 40px 1fr max-content;
+  }
+  .worker__name {
+    font-size: 14px;
+  }
+}
+
+@include _480 {
+  .worker__name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+  }
+}
+
+@include _380 {
+  .worker__name {
+    max-width: 120px;
+    font-size: 12px;
+  }
+}
+
+@include _350 {
+  .worker__name {
+    max-width: 80px;
   }
 }
 </style>

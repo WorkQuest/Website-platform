@@ -92,25 +92,7 @@ import { ExplorerUrl, TokenSymbols } from '~/utils/enums';
 import { getContractFeeData, sendWalletTransaction } from '~/utils/wallet';
 import { WQAuction } from '~/abi';
 import walletOperations from '~/plugins/mixins/walletOperations';
-
-const LotsStatuses = {
-  INACTIVE: 0,
-  STARTED: 1,
-  BOUGHT: 2,
-  CANCELED: 3,
-};
-
-const LOWER_BOUND_COST = {
-  develop: 0.999,
-  testnet: 0.999,
-  master: 0.999,
-}[process.env.BRANCH];
-
-const UPPER_BOUND_COST = {
-  develop: 1.01,
-  testnet: 1.01,
-  master: 1.01,
-}[process.env.BRANCH];
+import { LotsStatuses, LOWER_BOUND_COST, UPPER_BOUND_COST } from '~/utils/сonstants/auction';
 
 export default {
   name: 'AuctionCard',
@@ -209,9 +191,6 @@ export default {
       const lotDecimals = this.balanceData[symbol].decimals;
       return Number(new BigNumber(amount).shiftedBy(-lotDecimals).multipliedBy(1.03).toFixed(4, 1));
     },
-    url() {
-      return `${ExplorerUrl}/address/${this.lot.userWallet}`;
-    },
     contractAddress() {
       return {
         [TokenSymbols.BNB]: this.ENV.WORKNET_BNB_AUCTION,
@@ -241,6 +220,9 @@ export default {
     ...mapActions({
       calcFeeSetTokenPrices: 'oracle/feeSetTokensPrices',
       setTokenPrices: 'oracle/setCurrentPriceTokens',
+
+      setCallback: 'auction/setCallbackWS',
+      getBalance: 'wallet/getBalance',
     }),
 
     runCalculating() {
@@ -269,13 +251,13 @@ export default {
       }
 
       if (new BigNumber(durationInSec).isGreaterThanOrEqualTo(60)) {
-        const minutes = new BigNumber(durationInSec).dividedToIntegerBy(3600).toFixed();
+        const minutes = new BigNumber(durationInSec).dividedToIntegerBy(60).toFixed();
         this.durationTime.minutes = minutes ? this.$tc('meta.units.minutes', this.DeclOfNum(minutes), { count: minutes }) : '';
         durationInSec -= new BigNumber(60).multipliedBy(minutes).toFixed();
       }
 
       const seconds = Math.ceil(durationInSec);
-      this.durationTime.seconds = seconds && seconds > 0 ? this.$tc('meta.units.minutes', this.DeclOfNum(seconds), { count: seconds }) : '';
+      this.durationTime.seconds = seconds && seconds > 0 ? this.$tc('meta.units.seconds', this.DeclOfNum(seconds), { count: seconds }) : '';
     },
 
     calcStartedLotPrice(symbol, endCost, amount) {
@@ -320,7 +302,7 @@ export default {
       if (needToStart) {
         const [setTokensFeeRes] = await Promise.all([
           this.calcFeeSetTokenPrices(),
-          this.$store.dispatch('wallet/getBalance'),
+          this.getBalance(),
         ]);
 
         this.SetLoader(false);
@@ -342,7 +324,7 @@ export default {
           this.SetLoader({ isLoading: true });
           await Promise.all([
             this.setTokenPrices(),
-            this.$store.dispatch('wallet/getBalance'),
+            this.getBalance(),
           ]);
         }).catch(() => {
           isContinue = false;
@@ -383,7 +365,7 @@ export default {
       }).then(async () => {
         this.SetLoader({ isLoading: true });
 
-        const { ok: isSuccess, msg: errorMsg } = await sendWalletTransaction(method, {
+        const { ok: isSuccess, msg: errorMsg, transactionHash } = await sendWalletTransaction(method, {
           abi: WQAuction,
           address: this.contractAddress,
           value: null,
@@ -391,11 +373,16 @@ export default {
         });
         // TODO need to fix response for sendWalletTransaction
         if (isSuccess === false) this.ShowModalFail({ subtitle: errorMsg });
-        else this.ShowModalSuccess({});
+        else {
+          await this.setCallback(() => {
+            this.SetLoader(false);
+            this.ShowModalSuccess({
+              link: `${ExplorerUrl}/tx/${transactionHash}`,
+            });
+          });
+        }
       }).catch(() => {
-        console.log('User rejected method.');
-      }).finally(() => {
-        this.SetLoader(false);
+        // User rejected method
       });
     },
   },
@@ -404,7 +391,7 @@ export default {
 
 <style scoped lang="scss">
 .auction-card {
-  background: #FFFFFF;
+  background: $white;
   border-radius: 6px;
   padding: 15px;
 

@@ -90,7 +90,7 @@
             </base-btn>
           </div>
         </div>
-        <div class="info-block">
+        <div class="info-block info-block_overflow">
           <div class="info-block__name">
             {{ $t('bridge.mySwaps') }}
           </div>
@@ -185,7 +185,7 @@ import { mapGetters, mapActions } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import {
-  Chains, ConnectionTypes, Layout, TokenSymbols,
+  Chains, ConnectionTypes, Layout, Path, TokenSymbols,
 } from '~/utils/enums';
 import { BlockchainByIndex, BridgeAddresses, SwapAddresses } from '~/utils/сonstants/bridge';
 import {
@@ -203,8 +203,8 @@ export default {
   components: { WalletSwitcher },
   mixins: [walletOperations],
   ConnectionTypes,
-  layout({ store }) {
-    return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
+  layout({ $cookies }) {
+    return $cookies.get('access') ? Layout.DEFAULT : Layout.GUEST;
   },
   data() {
     return {
@@ -318,8 +318,28 @@ export default {
     },
   },
   async mounted() {
-    if ((this.connectionType === ConnectionTypes.WEB3 && !this.isConnected) || !this.swapsCount) {
-      await this.toggleConnection();
+    const connect = async () => {
+      if ((this.connectionType === ConnectionTypes.WEB3 && !this.isConnected) || !this.swapsCount) {
+        await this.toggleConnection();
+      }
+    };
+    if (!this.token) {
+      this.ShowModal({
+        key: modals.areYouSure,
+        title: this.$t('modals.defiWalletNote.title'),
+        text: this.$t('modals.defiWalletNote.subtitle'),
+        okBtnTitle: this.$t('modals.defiWalletNote.useWalletWQ'),
+        closeBtnTitle: this.$t('meta.skip'),
+        cancelBtnFunc: async () => {
+          this.CloseModal();
+          await connect();
+        },
+        okBtnFunc: () => {
+          this.$router.push(Path.SIGN_UP);
+        },
+      });
+    } else {
+      await connect();
     }
   },
   async beforeDestroy() {
@@ -359,7 +379,12 @@ export default {
       else {
         const { chain } = addresses[sourceAddressInd];
         if (isWeb3Connection) await this.connectWallet({ chain });
-        else if (this.token) await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+        else if (this.token) {
+          await this.$store.dispatch('wallet/checkWalletConnected', {
+            nuxt: this.$nuxt,
+            needConfirm: this.isAuth,
+          });
+        }
         await Promise.all([
           this.subscribe(this.account.address),
           this.swapsTableData(),
@@ -547,7 +572,6 @@ export default {
             contractAddress: BridgeAddresses[from.chain],
             tokenAddress: from.tokenAddress[symbol],
             amount,
-            decimals,
             symbol,
             nativeTokenSymbol,
           }).then(async () => {
@@ -723,10 +747,13 @@ export default {
     }
 
     .info-block {
-      overflow: auto;
       background-color: #fff;
       border-radius: 6px;
       margin-top: 20px;
+
+      &_overflow {
+        overflow: auto;
+      }
 
       &__swap-cont {
         display: grid;

@@ -10,7 +10,6 @@
       >
         <files-uploader
           class="content__portfolio portfolio"
-          :multiple="false"
           :limit="1"
           :limit-bytes="10485760"
           :accept="'image/png, image/jpg, image/jpeg, image/heic'"

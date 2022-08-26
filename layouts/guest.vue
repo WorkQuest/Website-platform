@@ -185,12 +185,10 @@ export default {
   min-height: 100vh;
   background: $black0;
   &__content {
-    display: grid;
-    grid-template-rows: 72px 1fr auto;
+    position: relative;
     min-height: 100vh;
   }
   &__main {
-    display: grid;
     padding-bottom: 80px;
     transition: 1s;
     width: 100%;
@@ -321,6 +319,9 @@ export default {
 }
 
 @include _1199 {
+  .template__main {
+    padding: 0 10px;
+  }
   .header {
     &__button_menu {
       display: flex;

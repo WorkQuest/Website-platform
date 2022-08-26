@@ -80,7 +80,7 @@
               @click="goToCurrChat(message)"
             >
               <div class="message__title message__title_user-text">
-                {{ message.text }}
+                {{ checkMessageText(message.text) }}
               </div>
               <div
                 v-if="message.medias && message.medias.length"
@@ -88,7 +88,7 @@
               >
                 <div
                   v-for="file in message.medias"
-                  :key="file.id"
+                  :key="file.id + '-' + message.id"
                   class="image-cont image-cont_margin"
                 >
                   <img
@@ -275,6 +275,9 @@ export default {
     this.$store.commit('chat/clearMessagesFilter');
   },
   methods: {
+    checkMessageText(text) {
+      return Object.values(FileTypes).includes(text) ? '' : text;
+    },
     isNeedToShowInfoMessageMember(message) {
       return message?.infoMessage?.member?.user
         && [MessageAction.GROUP_CHAT_ADD_USERS,

@@ -38,7 +38,7 @@
         <span class="table__grey">{{ el.item.block }}</span>
       </template>
       <template #cell(timestamp)="el">
-        <span class="table__grey">{{ el.item.timestamp }}</span>
+        <span class="table__grey">{{ $moment(el.item.timestamp).format('lll') }}</span>
       </template>
       <template #cell(date)="el">
         <span class="table__grey">{{ $moment(el.item.date).format('lll') }}</span>
@@ -49,7 +49,7 @@
           target="_blank"
           class="table__url"
         >
-          {{ CutTxn(convertToBech32('wq', el.item.from_address), 4, 4) }}
+          {{ CutTxn(el.item.network === Chains.WORKNET ? convertToBech32('wq', el.item.from_address) : el.item.from_address, 4, 4) }}
         </a>
       </template>
       <template #cell(to_address)="el">
@@ -58,7 +58,7 @@
           target="_blank"
           class="table__url"
         >
-          {{ CutTxn(convertToBech32('wq', el.item.to_address), 4, 4) }}
+          {{ CutTxn(el.item.network === Chains.WORKNET ? convertToBech32('wq', el.item.to_address) : el.item.to_address, 4, 4) }}
         </a>
       </template>
       <template #cell(transaction_fee)="el">
@@ -69,7 +69,8 @@
 </template>
 
 <script>
-import { ExplorerUrl } from '~/utils/enums';
+import { mapGetters } from 'vuex';
+import { Chains, WalletTokensData } from '~/utils/enums';
 
 export default {
   props: {
@@ -86,12 +87,22 @@ export default {
       default: () => [],
     },
   },
+  data() {
+    return {
+      Chains,
+    };
+  },
+  computed: {
+    ...mapGetters({
+      network: 'wallet/getSelectedNetwork',
+    }),
+  },
   methods: {
     getTransactionUrl(hash) {
-      return `${ExplorerUrl}/tx/${hash}`;
+      return `${WalletTokensData[this.network].explorer}/tx/${hash}`;
     },
     getAddressUrl(address) {
-      return `${ExplorerUrl}/address/${address}`;
+      return `${WalletTokensData[this.network].explorer}/address/${address}`;
     },
   },
 };

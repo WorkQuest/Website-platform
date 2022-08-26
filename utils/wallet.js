@@ -34,7 +34,7 @@ export const encryptStringWithKey = (toEncrypt, key) => {
   try {
     return AES.encrypt(toEncrypt, sha256(key).toString()).toString();
   } catch (e) {
-    console.log('encr', e);
+    console.error('wallet/encryptStringWithKey', e);
     return '';
   }
 };
@@ -42,7 +42,7 @@ export const decryptStringWithKey = (toDecrypt, key) => {
   try {
     return AES.decrypt(toDecrypt, sha256(key).toString()).toString(enc.Utf8);
   } catch (e) {
-    console.log('decr', e);
+    console.error('wallet/decryptStringWithKey', e);
     return '';
   }
 };
@@ -381,8 +381,7 @@ export const getGasPrice = async (contractAbi, address, method, attr, value = nu
       gasPrice: Number(gasPrice),
     };
   } catch (e) {
-    console.error('wallet/getGasPrice', e);
-    return { gas: false, gasPrice: false };
+    return { gas: false, gasPrice: false, msg: e.message };
   }
 };
 

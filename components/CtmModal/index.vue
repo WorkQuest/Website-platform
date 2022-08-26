@@ -29,7 +29,6 @@ export default {
     [modals.downloadApp]: () => import('./CtmModalDownloadApp'),
     [modals.collateralTransaction]: () => import('./CtmModalCollateralTransaction'),
     [modals.getWUSD]: () => import('./CtmModalGetWUSD'),
-    [modals.buyAuction]: () => import('./CtmModalBuyAuction'),
     [modals.stake]: () => import('./CtmModalStake'),
     [modals.transactionReceipt]: () => import('./CtmModalTransactionReceipt'),
     [modals.questFilterFull]: () => import('./CtmModalQuestFilterFull'),

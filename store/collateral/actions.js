@@ -8,8 +8,23 @@ import {
 import { success, error } from '~/utils/web3';
 import { WQRouter } from '~/abi';
 import ENV from '~/utils/addresses';
+import { Path } from '~/utils/enums';
+import { COLLATERAL_CARDS_LIMIT } from '~/utils/сonstants/auction';
+
+let callbackWS = null;
+
+const CollateralEvents = {
+  PRICE_UPDATED: 'DeterminationPriceUpdated',
+  MOVED: 'Moved',
+  REMOVED: 'Removed',
+  PRODUCED: 'Produced',
+};
 
 export default {
+  async setCallbackWS({ _ }, callback) {
+    callbackWS = callback;
+  },
+
   async fetchCollateralsCommonInfo({ commit }) {
     try {
       const { result: { pullAmount, ratio, symbols } } = await this.$axiosLiquidator.$get('collateral/information');
@@ -53,7 +68,6 @@ export default {
    * @property $axiosLiquidator - axios instance for liquidator
    * @returns {Promise<{msg: string, code: number, data: null, ok: boolean}|{result: *, ok: boolean}>}
    */
-
   async fetchCollaterals({ commit, rootGetters }, { address, params }) {
     try {
       const { result: { collateral, count } } = await this.$axiosLiquidator.$get(`/user/collateral/${address}`, { params });
@@ -151,16 +165,6 @@ export default {
 
   async collateralAction({ dispatch }, { payload, method }) {
     try {
-      await dispatch('oracle/setCurrentPriceTokens', null, { root: true });
-
-      if (method === 'removeCollateral') {
-        await dispatch('wallet/approve', {
-          tokenAddress: ENV.WORKNET_WUSD_TOKEN,
-          spenderAddress: ENV.WORKNET_ROUTER,
-          amount: payload[1],
-        }, { root: true });
-      }
-
       const { gasPrice, gas } = await getGasPrice(
         WQRouter,
         ENV.WORKNET_ROUTER,
@@ -174,17 +178,117 @@ export default {
       }
 
       const inst = createInstance(WQRouter, ENV.WORKNET_ROUTER);
-      await inst.methods[method](...payload).send({
+      const res = await inst.methods[method](...payload).send({
         from: getWalletAddress(),
         gasPrice,
         gas,
       });
 
-      return success();
+      return success(res);
     } catch (e) {
       console.error(`collateral/${method}`, e);
-      return error();
+      return error(-1, e.message, e);
     }
   },
 
+  async subscribeCollateralCommonInfo({ commit }) {
+    try {
+      await this.$wsNotifs.subscribe(`${Path.NOTIFICATIONS}/oracle-prices`, async ({ action, data }) => {
+        if (action === CollateralEvents.PRICE_UPDATED) {
+          const { pullAmount, ratio, symbols } = data;
+          commit('setTotalSupply', pullAmount);
+          commit('setMaxRatio', Math.max(...ratio));
+          commit('setAvailableAssets', symbols);
+        }
+      });
+    } catch (err) {
+      console.error('collateral/subscribeCollateralCommonInfo', err);
+    }
+  },
+
+  async unsubscribeCollateralCommonInfo(_) {
+    try {
+      await this.$wsNotifs.unsubscribe(`${Path.NOTIFICATIONS}/oracle-prices`);
+    } catch (err) {
+      console.error('collateral/unsubscribeCollateralCommonInfo', err);
+    }
+  },
+
+  async subscribeCollateralBalance({
+    commit, getters, rootGetters, dispatch,
+  }) {
+    const wallet = rootGetters['user/getUserWalletAddress'];
+    const balanceData = rootGetters['wallet/getBalanceData'];
+    try {
+      await this.$wsNotifs.subscribe(`${Path.NOTIFICATIONS}/loan-collateral/${wallet}`, async ({ action, data }) => {
+        const collaterals = JSON.parse(JSON.stringify(getters.getCollaterals));
+        const count = JSON.parse(JSON.stringify(getters.getCollateralsCount));
+
+        switch (action) {
+          case (CollateralEvents.PRODUCED): {
+            if (getters.getCollateralCurrentPage !== 1) {
+              commit('setCollaterals', {
+                collaterals,
+                count: count + 1,
+              });
+              break;
+            }
+
+            const {
+              debt,
+              price,
+              symbol,
+              deposit,
+              collateral,
+            } = data;
+            const symbolDecimals = balanceData[symbol].decimals;
+
+            collaterals.unshift({
+              ...data,
+              _price: Number(new BigNumber(price).shiftedBy(-18).toFixed(4, 1)),
+              lockedAmount: Number(new BigNumber(collateral).shiftedBy(-symbolDecimals).toFixed(4, 1)),
+              colRatio: Number(new BigNumber(deposit).shiftedBy(-18).multipliedBy(100).toFixed(4, 1)),
+              wusdGenerated: Number(new BigNumber(debt).shiftedBy(-18).toFixed(4, 1)),
+            });
+
+            if (collaterals.length > COLLATERAL_CARDS_LIMIT) collaterals.splice(collaterals.length - 1, 1);
+            commit('setCollaterals', {
+              collaterals,
+              count: count + 1,
+            });
+
+            break;
+          }
+          case (CollateralEvents.REMOVED):
+          case (CollateralEvents.MOVED): {
+            await dispatch('fetchCollateralInfo', {
+              address: wallet,
+              collateralId: data.id,
+              params: {},
+            });
+
+            if (callbackWS !== null) {
+              await callbackWS();
+              await dispatch('setCallbackWS', null);
+            }
+            break;
+          }
+          default: {
+            console.log('Unknown action: ', action, 'by subscription "loan-collateral"');
+          }
+        }
+      });
+    } catch (err) {
+      console.error('collateral/subscribeCollateralBalance', err);
+    }
+  },
+
+  async unsubscribeCollateralBalance({ rootGetters }) {
+    try {
+      const wallet = rootGetters['user/getUserWalletAddress'];
+      await this.$wsNotifs.unsubscribe(`${Path.NOTIFICATIONS}/loan-collateral/${wallet}`);
+    } catch (err) {
+      console.error('collateral/unsubscribeCollateralBalance', err);
+    }
+  },
 };

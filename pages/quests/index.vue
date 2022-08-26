@@ -260,6 +260,12 @@ export default {
   }
 }
 
+@include _1199 {
+  .quests__content {
+    padding: 0 10px;
+  }
+}
+
 @include _575 {
   .quests {
     &__cards {

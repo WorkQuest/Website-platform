@@ -1,4 +1,9 @@
 {
+  "errorLayout": {
+    "title": "Что-то пошло не так",
+    "desc": "Запрошенная вами страница не найдена. Но вы можете вернуться и попробовать еще раз.",
+    "btn": "Вернуться на главную страницу"
+  },
   "walletSwitcher": {
     "wqWallet": "WQWallet",
     "otherWallet": "Другой кошелек"
@@ -170,6 +175,7 @@
     "redeemed": "Redeemed",
     "pay": "Оплатить",
     "skipAndEnd": "Пропустить и закончить",
+    "skip": "Пропустить",
     "cleanUp": "Clean up",
     "connected": "Подключен",
     "disconnect": "Disconnect wallet",
@@ -350,7 +356,8 @@
     "importWallet": "Импорт кошелька",
     "createOrImport": "Создать или импортировать кошелек",
     "typeSecretPhrase": "Введите секретную фразу",
-    "secretPhrase": "Секретная фраза"
+    "secretPhrase": "Секретная фраза",
+    "createOrImportNote": "Please note: you can import any other wallet's mnemonic phrase"
   },
   "forgot": {
     "desc": "Мы вышлем вам инструкции по сбросу пароля."
@@ -378,6 +385,9 @@
     }
   },
   "quests": {
+    "review": {
+      "selectRating": "Пожалуйста выберите оценку"
+    },
     "workersNotInvited": "Workers not invited",
     "employer": {
       "usersNotResponded": "Users not responded"
@@ -970,6 +980,11 @@
     "txIsPending": "Transaction is pending",
     "coming": "Coming soon",
     "stillUnderConstruction": "Still under construction",
+    "defiWalletNote": {
+      "title": "Пожалуйста, обратите внимание",
+      "subtitle": "Попробуйте использовать WorkQuest Wallet для удобного взаимодействия с функциями платформы. Вы можете вносить, снимать и хранить криптовалюту абсолютно бесплатно.",
+      "useWalletWQ": "Использовать WorkQuest Wallet"
+    },
     "titles": {
       "2FA": {
         "disable": "Отключить 2FA",
@@ -978,6 +993,7 @@
       "filters": {
         "titleAll": "Все фильтры"
       },
+      "attention": "Внимание!",
       "disputePayment": "Оплата Спора",
       "saved": "Saved successfully",
       "cardAdd": "Add card",
@@ -1049,6 +1065,7 @@
       "errorNetwork": "Ошибка, Вы используете не правильную сеть. Переключитесь на {network}",
       "youCan’tDeleteActiveQuest": "Вы не можете удалить активный квест",
       "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest",
+      "youCantCreateDispute3Days": "You cannot create a dispute until 3 days have passed from the complete of this quest",
       "dontHavePeople": "У вас нет пользователей для создания группового чата"
     },
     "chatCreate": {
@@ -1580,6 +1597,7 @@
     }
   },
   "settings": {
+    "2faInfo": "Изменение данных будет возможно только один раз, чтобы в дальнейшем внести изменения в профиль, Вам нужно будет подключить 2FA.",
     "additionalPhoneNumber": "Дополнительный номер телефона",
     "mainPhoneNumber": "Основной номер телефона",
     "whoCouldIInvite": "Кто может откликаться на мои квесты?",
@@ -2189,6 +2207,7 @@
     },
     "DeFi": {
       "title": "DeFi functionality",
+      "collateral": "Collateral",
       "retirement": "Retirement program",
       "referral": "Referral program",
       "P2P": "P2P insurance",

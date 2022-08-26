@@ -1,5 +1,9 @@
 export default {
-  setLost(state, { lots, count }) {
+  setCurrentTab(state, value) {
+    state.currentTab = value;
+  },
+
+  setLots(state, { lots, count }) {
     state.lots = lots;
     state.lotsCount = count;
   },

@@ -224,6 +224,7 @@ export default {
           { title: this.$t('meta.liquidityMining'), path: Path.MINING },
           { title: this.$t('footer.DeFi.wqBridge'), path: Path.BRIDGE },
           { title: this.$t('footer.DeFi.staking'), path: Path.STAKING },
+          { title: this.$t('footer.DeFi.collateral'), path: Path.COLLATERAL },
           { title: this.$t('footer.DeFi.wqDAO'), path: URLS.DAO },
         ],
       };
@@ -590,6 +591,11 @@ export default {
       }
     }
     .links {
+      &__store {
+        background-size: contain;
+        background-repeat: no-repeat;
+        width: 150px;
+      }
       &__block {
         width: 100%;
       }
@@ -610,6 +616,12 @@ export default {
 
 @include _350 {
   .footer {
+    .links {
+      &__big {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
     &__block {
       grid-template-columns: auto;
       grid-gap: 10px;
@@ -623,12 +635,6 @@ export default {
       &_block {
         display: none;
       }
-    }
-  }
-  .links {
-    &__big {
-      flex-direction: column;
-      align-items: flex-start;
     }
   }
 }
