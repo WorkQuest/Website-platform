@@ -482,11 +482,7 @@ export default {
         submit: async (method) => {
           // Payload formation
           const payload = [index, symbol];
-          if (method === 'removeCollateral') {
-            payload.splice(1, 0, debt);
-          }
-
-          const amount = new BigNumber(payload[1]).shiftedBy(-18).toString();
+          const amount = new BigNumber(debt).shiftedBy(-18).toString();
           let tokenAddress = ENV.WORKNET_WUSD_TOKEN;
           let amountToApprove = amount;
           if (method === CollateralMethods.addCollateral) {

@@ -41,6 +41,19 @@ const WQRouter = [
     inputs: [
       {
         indexed: false,
+        internalType: 'uint8',
+        name: 'version',
+        type: 'uint8',
+      },
+    ],
+    name: 'Initialized',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
         internalType: 'uint256',
         name: 'collateral',
         type: 'uint256',
@@ -635,11 +648,6 @@ const WQRouter = [
       {
         internalType: 'uint256',
         name: 'index',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'debtPart',
         type: 'uint256',
       },
       {
