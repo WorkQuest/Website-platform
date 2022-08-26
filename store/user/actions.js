@@ -121,7 +121,7 @@ export default {
       if (questMode === QuestModeReview.QUEST_SINGLE) commit('quests/setMarkOnQuestSingle', result, { root: true });
       return ok;
     } catch (e) {
-      console.log('user/sendReviewForUser');
+      console.error('user/sendReviewForUser');
       return false;
     }
   },
@@ -386,7 +386,7 @@ export default {
       const response = await this.$axios.$post('/v1/profile/phone/confirm', payload);
       return response.ok;
     } catch (e) {
-      console.log('user/confirmPhone');
+      console.error('user/confirmPhone');
       return false;
     }
   },
@@ -395,7 +395,7 @@ export default {
       const response = await this.$axios.$post('/v1/auth/session/current/validate-totp', payload);
       return response.result.isValid;
     } catch (e) {
-      console.log('user/validateTOTP');
+      console.error('user/validateTOTP');
       return false;
     }
   },
@@ -404,7 +404,7 @@ export default {
       const response = await this.$axios.$post('/v1/totp/validate', payload);
       return response.result.isValid;
     } catch (e) {
-      console.log('user/validateSessionTOTP');
+      console.error('user/validateSessionTOTP');
       return false;
     }
   },
@@ -442,7 +442,7 @@ export default {
       await Promise.all(toFetch);
       return success(result);
     } catch (e) {
-      console.log('user/fetchRaiseViewPrice', e);
+      console.error('user/fetchRaiseViewPrice', e);
       return error();
     }
   },
@@ -452,7 +452,7 @@ export default {
       const { ok } = await this.$axios.$post('/v1/report/send', payload);
       return success(ok);
     } catch (e) {
-      console.log('user/sendReport');
+      console.error('user/sendReport');
       return error();
     }
   },

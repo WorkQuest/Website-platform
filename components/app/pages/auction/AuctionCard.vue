@@ -191,9 +191,6 @@ export default {
       const lotDecimals = this.balanceData[symbol].decimals;
       return Number(new BigNumber(amount).shiftedBy(-lotDecimals).multipliedBy(1.03).toFixed(4, 1));
     },
-    url() {
-      return `${ExplorerUrl}/address/${this.lot.userWallet}`;
-    },
     contractAddress() {
       return {
         [TokenSymbols.BNB]: this.ENV.WORKNET_BNB_AUCTION,
@@ -223,6 +220,9 @@ export default {
     ...mapActions({
       calcFeeSetTokenPrices: 'oracle/feeSetTokensPrices',
       setTokenPrices: 'oracle/setCurrentPriceTokens',
+
+      setCallback: 'auction/setCallbackWS',
+      getBalance: 'wallet/getBalance',
     }),
 
     runCalculating() {
@@ -237,7 +237,6 @@ export default {
     calcDurationTime(willFinish) {
       const now = this.$moment();
       let durationInSec = this.$moment(willFinish).diff(now) / 1000;
-      console.log(durationInSec);
 
       if (new BigNumber(durationInSec).isGreaterThanOrEqualTo(86400)) {
         const days = new BigNumber(durationInSec).dividedToIntegerBy(86400).toFixed();
@@ -303,7 +302,7 @@ export default {
       if (needToStart) {
         const [setTokensFeeRes] = await Promise.all([
           this.calcFeeSetTokenPrices(),
-          this.$store.dispatch('wallet/getBalance'),
+          this.getBalance(),
         ]);
 
         this.SetLoader(false);
@@ -325,7 +324,7 @@ export default {
           this.SetLoader({ isLoading: true });
           await Promise.all([
             this.setTokenPrices(),
-            this.$store.dispatch('wallet/getBalance'),
+            this.getBalance(),
           ]);
         }).catch(() => {
           isContinue = false;
@@ -366,7 +365,7 @@ export default {
       }).then(async () => {
         this.SetLoader({ isLoading: true });
 
-        const { ok: isSuccess, msg: errorMsg } = await sendWalletTransaction(method, {
+        const { ok: isSuccess, msg: errorMsg, transactionHash } = await sendWalletTransaction(method, {
           abi: WQAuction,
           address: this.contractAddress,
           value: null,
@@ -374,11 +373,16 @@ export default {
         });
         // TODO need to fix response for sendWalletTransaction
         if (isSuccess === false) this.ShowModalFail({ subtitle: errorMsg });
-        else this.ShowModalSuccess({});
+        else {
+          await this.setCallback(() => {
+            this.SetLoader(false);
+            this.ShowModalSuccess({
+              link: `${ExplorerUrl}/tx/${transactionHash}`,
+            });
+          });
+        }
       }).catch(() => {
-        console.log('User rejected method.');
-      }).finally(() => {
-        this.SetLoader(false);
+        // User rejected method
       });
     },
   },

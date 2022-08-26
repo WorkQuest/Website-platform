@@ -1,4 +1,8 @@
+import { LotsStatuses } from '~/utils/сonstants/auction';
+
 export default () => ({
+  currentTab: LotsStatuses.INACTIVE,
+
   lots: [],
   lotsCount: null,
 

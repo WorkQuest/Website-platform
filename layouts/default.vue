@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="primary"
-    :class="{'stop-scrolling': isShow}"
-  >
+  <div class="primary">
     <div class="primary__template template">
       <div
         class="template__content"
@@ -156,12 +153,6 @@ export default {
       padding: 0;
     }
   }
-}
-.stop-scrolling {
-  position: fixed;
-  overflow: hidden;
-  width: 100vw;
-  height: 100vh;
 }
 
 @include _1199 {

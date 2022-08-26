@@ -132,14 +132,11 @@ import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { images } from '~/utils/images';
 import { TokenSymbols, ExplorerUrl, TokenMap } from '~/utils/enums';
-import { ERC20, WQRouter } from '~/abi';
-import { getGasPrice, getStyledAmount } from '~/utils/wallet';
+import { WQRouter } from '~/abi';
+import { getGasPrice } from '~/utils/wallet';
 import ENV from '~/utils/addresses';
 import walletOperations from '~/plugins/mixins/walletOperations';
-import { CollateralMethods } from '~/utils/сonstants/auction';
-
-const LIMIT = 10;
-const HISTORY_LIMIT = 5;
+import { COLLATERAL_CARDS_LIMIT, COLLATERAL_HISTORY_LIMIT, CollateralMethods } from '~/utils/сonstants/auction';
 
 export default {
   name: 'CollateralTable',
@@ -159,7 +156,7 @@ export default {
       isAvailableToRemove: true,
       historyParams: {
         page: 1,
-        limit: HISTORY_LIMIT,
+        limit: COLLATERAL_HISTORY_LIMIT,
         offset: 0,
         count: 5,
       },
@@ -173,6 +170,7 @@ export default {
 
       collaterals: 'collateral/getCollaterals',
       collateralsCount: 'collateral/getCollateralsCount',
+      collateralPage: 'collateral/getCollateralCurrentPage',
       history: 'collateral/getHistoryCollateral',
       historyCount: 'collateral/getHistoryCollateralCount',
 
@@ -189,31 +187,42 @@ export default {
       };
     },
     totalPages() {
-      return Math.ceil(this.collateralsCount / LIMIT) || 0;
+      return Math.ceil(this.collateralsCount / COLLATERAL_CARDS_LIMIT) || 0;
     },
     totalHistoryPages() {
-      return Math.ceil(this.historyCount / HISTORY_LIMIT) || 0;
+      return Math.ceil(this.historyCount / COLLATERAL_HISTORY_LIMIT) || 0;
     },
   },
   watch: {
     async page() {
       this.idxHistory = null;
+      this.$store.commit('collateral/setCollateralCurrentPage', this.page);
       await this.fetchCollaterals({
         address: this.walletAddress,
-        params: { limit: LIMIT, offset: (this.page - 1) * LIMIT },
+        params: { limit: COLLATERAL_CARDS_LIMIT, offset: (this.page - 1) * COLLATERAL_CARDS_LIMIT },
       });
     },
   },
   async mounted() {
-    await this.fetchCollaterals({
-      address: this.walletAddress,
-      params: { limit: LIMIT, offset: 0 },
-    });
+    await Promise.all([
+      this.fetchCollaterals({
+        address: this.walletAddress,
+        params: { limit: COLLATERAL_CARDS_LIMIT, offset: 0 },
+      }),
+      this.initWS(),
+    ]);
+  },
+  async beforeDestroy() {
+    await this.destroyWS();
+    this.$store.commit('collateral/setCollateralCurrentPage', 1);
   },
   methods: {
     ...mapActions({
+      setCallbackWS: 'collateral/setCallbackWS',
       collateralAction: 'collateral/collateralAction',
       fetchCollaterals: 'collateral/fetchCollaterals',
+      initWS: 'collateral/subscribeCollateralBalance',
+      destroyWS: 'collateral/unsubscribeCollateralBalance',
       fetchCollateralInfo: 'collateral/fetchCollateralInfo',
 
       updatePrices: 'oracle/getCurrentTokensPrices',
@@ -227,6 +236,7 @@ export default {
         this.idxHistory = null;
         this.$store.commit('collateral/setHistoryCollateral', { rows: [], count: null });
       } else {
+        this.SetLoader(true);
         await Promise.all([
           this.checkActionsPossibilities(item),
           this.fetchCollateralInfo({
@@ -235,7 +245,11 @@ export default {
             params: {},
           }),
         ]);
-        this.idxHistory = idx;
+
+        setTimeout(() => {
+          this.idxHistory = idx;
+          this.SetLoader(false);
+        }, 300);
       }
     },
 
@@ -314,14 +328,6 @@ export default {
     }, mode) {
       if (!this.isAvailableToRemove) return;
 
-      // for review - make zero allowance on router
-      // console.log(await this.$store.dispatch('wallet/approve', {
-      //   tokenAddress: ENV.WORKNET_USDT_TOKEN,
-      //   spenderAddress: ENV.WORKNET_ROUTER,
-      //   amount: 0,
-      // }));
-      // if (symbol) return;
-
       const updatePrices = async (method, payload) => {
         await new Promise(async (resolve, reject) => {
           this.SetLoader(true);
@@ -368,12 +374,14 @@ export default {
               },
             },
             submitMethod: async () => {
+              this.SetLoader({ isLoading: true });
               const res = await this.$store.dispatch('oracle/setCurrentPriceTokens');
               if (res.ok) resolve();
               else {
                 reject();
                 this.ShowModalFail({ subtitle: res.msg });
               }
+              this.SetLoader(false);
             },
           });
         });
@@ -389,14 +397,13 @@ export default {
             [...payload],
           );
           this.SetLoader(false);
-          console.log('feeTx', gasPrice, gas, msg);
+
           if (!gas || !gasPrice) {
             this.ShowToast(msg.includes('Lot not found') ? 'Lot not found' : msg);
             reject();
             return;
           }
 
-          console.log(payload, method);
           const fields = {
             from: {
               name: this.$t('meta.fromBig'),
@@ -430,17 +437,29 @@ export default {
             key: modals.transactionReceipt,
             title,
             fields,
+            isDontOffLoader: true,
             submitMethod: async () => {
-              const res = await this.collateralAction({ method, payload });
-              if (res.ok) {
-                resolve();
-                this.ShowModalSuccess({
-                  link: `${ExplorerUrl}/tx/${res.result.transactionHash}`,
-                });
-              } else {
+              this.SetLoader({ isLoading: true });
+              const { ok, result } = await this.collateralAction({ method, payload });
+
+              if (!ok) {
                 reject();
+                this.SetLoader(false);
                 this.ShowModalFail({});
+
+                return;
               }
+
+              await this.setCallbackWS(() => {
+                resolve();
+
+                this.isAvailableToClaim = false;
+                this.isAvailableToRemove = false;
+                this.isAvailableToDeposit = false;
+
+                this.SetLoader(false);
+                this.ShowModalSuccess({ link: `${ExplorerUrl}/tx/${result.transactionHash}` });
+              });
             },
           });
         });

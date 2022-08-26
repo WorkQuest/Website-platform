@@ -11,25 +11,25 @@
         <div class="auction__topbar-switcher">
           <base-btn
             data-selector="ACTION-AUCTION-SELECT-INACTIVE"
-            :mode="currentTab === $options.LotsStatuses.INACTIVE ? 'activeTab' : 'light'"
+            :mode="currentTab === LotsStatuses.INACTIVE ? 'activeTab' : 'light'"
             :padding="true"
-            @click="currentTab = $options.LotsStatuses.INACTIVE"
+            @click="$store.commit('auction/setCurrentTab', LotsStatuses.INACTIVE)"
           >
             {{ $t('auction.tabs.inactive') }}
           </base-btn>
           <base-btn
             data-selector="ACTION-AUCTION-SELECT-CURRENT"
-            :mode="currentTab === $options.LotsStatuses.STARTED ? 'activeTab' : 'light'"
+            :mode="currentTab === LotsStatuses.STARTED ? 'activeTab' : 'light'"
             :padding="true"
-            @click="currentTab = $options.LotsStatuses.STARTED"
+            @click="$store.commit('auction/setCurrentTab', LotsStatuses.STARTED)"
           >
             {{ $t('auction.tabs.current') }}
           </base-btn>
           <base-btn
             data-selector="ACTION-AUCTION-SELECT-COMPLETED"
-            :mode="currentTab === $options.LotsStatuses.BOUGHT ? 'activeTab' : 'light'"
+            :mode="currentTab === LotsStatuses.BOUGHT ? 'activeTab' : 'light'"
             :padding="true"
-            @click="currentTab = $options.LotsStatuses.BOUGHT"
+            @click="$store.commit('auction/setCurrentTab', LotsStatuses.BOUGHT)"
           >
             {{ $t('auction.tabs.completed') }}
           </base-btn>
@@ -52,8 +52,8 @@
         v-if="lotsCount"
         class="auction__list"
         :class="[
-          {'auction__list_completed': $options.LotsStatuses.BOUGHT === currentTab},
-          {'auction__list_current': [$options.LotsStatuses.STARTED, $options.LotsStatuses.INACTIVE].includes(currentTab)},
+          {'auction__list_completed': LotsStatuses.BOUGHT === currentTab},
+          {'auction__list_current': [LotsStatuses.STARTED, LotsStatuses.INACTIVE].includes(currentTab)},
         ]"
       >
         <auction-card
@@ -89,7 +89,6 @@ import { AUCTION_CARDS_LIMIT, LotsStatuses } from '~/utils/сonstants/auction';
 
 export default {
   name: 'Auction',
-  LotsStatuses,
   layout({ $cookies }) {
     // TODO PLUG for release
     if (IS_PLUG_PROD) return Layout.DEFAULT;
@@ -100,8 +99,7 @@ export default {
   },
   data() {
     return {
-      currentTab: LotsStatuses.INACTIVE,
-
+      LotsStatuses,
       params: {
         limit: AUCTION_CARDS_LIMIT,
         offset: 0,
@@ -116,6 +114,7 @@ export default {
       userData: 'user/getUserData',
       walletAddress: 'user/getUserWalletAddress',
 
+      currentTab: 'auction/getCurrentTab',
       lots: 'auction/getLots',
       lotsCount: 'auction/getLotsCount',
 
@@ -142,10 +141,16 @@ export default {
     }
   },
   async mounted() {
-    await this.setPage(this.currentPage);
-    await this.fetchDuration();
+    await Promise.all([
+      this.setPage(this.currentPage),
+      this.fetchDuration(),
+      this.initWS(),
+    ]);
     if (!this.isWalletConnected) return;
     await this.getBalance();
+  },
+  async beforeDestroy() {
+    await this.destroyWS();
   },
   methods: {
     ...mapActions({
@@ -154,6 +159,9 @@ export default {
       fetchLots: 'auction/fetchLots',
       clearLots: 'auction/clearLots',
       fetchDuration: 'auction/fetchAuctionsDuration',
+
+      initWS: 'auction/subscribeWS',
+      destroyWS: 'auction/unsubscribeWS',
     }),
     async changeTimeSorting() {
       this.sort = this.sort === 'asc' ? 'desc' : 'asc';

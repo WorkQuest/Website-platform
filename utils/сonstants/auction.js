@@ -1,5 +1,8 @@
 export const AUCTION_CARDS_LIMIT = 12;
 
+export const COLLATERAL_CARDS_LIMIT = 10;
+export const COLLATERAL_HISTORY_LIMIT = 5;
+
 export const LotsStatuses = {
   INACTIVE: 0,
   STARTED: 1,
