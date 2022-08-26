@@ -151,14 +151,17 @@ Vue.mixin({
       });
     },
     Floor: (value, precision = 4) => {
+      const form = 10 ** precision;
+      return Math.floor(value * form) / form || 0;
+    },
+    ToFixedDecimals: (value, precision = 4) => {
       if (!value) return '0';
       const val = new BigNumber(value);
       if (val.isLessThan(0.0001)) {
         return '<0.0001';
       }
       return val.decimalPlaces(precision).toString();
-    }, // const form = 10 ** precision;
-    // return Math.floor(value * form) / form;// || 0;
+    },
 
     Ceil: (value, precision = 4) => {
       const form = 10 ** precision;

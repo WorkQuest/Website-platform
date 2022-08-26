@@ -136,7 +136,7 @@
               </template>
               <template #cell(amount)="el">
                 <div class="table__value">
-                  {{ `${Floor(el.item.amount)} ${el.item.symbol}` }}
+                  {{ `${ToFixedDecimals(el.item.amount)} ${el.item.symbol}` }}
                 </div>
               </template>
               <template #cell(created)="el">
