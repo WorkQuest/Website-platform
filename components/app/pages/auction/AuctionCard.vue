@@ -209,12 +209,10 @@ export default {
     this.willFinish = this.$moment(this.lot.auctionStarted[0].timestamp * 1000).add(this.duration[symbol], 'seconds');
 
     this.runCalculating();
-    this.intervalId = setInterval(() => {
-      this.runCalculating();
-    }, 1000);
+    this.initInterval();
   },
   beforeDestroy() {
-    clearInterval(this.intervalId);
+    this.removeInterval();
   },
   methods: {
     ...mapActions({
@@ -224,6 +222,17 @@ export default {
       setCallback: 'auction/setCallbackWS',
       getBalance: 'wallet/getBalance',
     }),
+
+    removeInterval() {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    },
+    initInterval() {
+      if (this.intervalId !== null) return;
+      this.intervalId = setInterval(() => {
+        this.runCalculating();
+      }, 1000);
+    },
 
     runCalculating() {
       if (this.typeOfLot === LotsStatuses.STARTED) {
@@ -278,7 +287,7 @@ export default {
       if (new BigNumber(lotPrice).isGreaterThan(0)) this.startedLotPrice = lotPrice;
       else {
         this.isStartedLotCompleted = true;
-        clearInterval(this.intervalId);
+        this.removeInterval();
       }
     },
 
@@ -329,22 +338,24 @@ export default {
         });
       } else {
         // if you tap on buy lot, calculating of lot price is stopped
-        clearInterval(this.intervalId);
+        this.removeInterval();
 
         await this.MakeApprove({
           tokenAddress: this.ENV.WORKNET_WUSD_TOKEN,
           contractAddress: this.ENV.WORKNET_ROUTER,
           amount: this.startedLotAmount,
-        }).then(() => { isContinue = true; }).catch(() => {
-          // user can return of approve, we need to continue calculating lot price
-          this.intervalId = setInterval(() => {
-            this.runCalculating();
-          }, 1000);
+        }).then(() => {
+          isContinue = true;
+        }).catch(() => {
+          // user can reject to approve, we need to continue calculating lot price
+          this.initInterval();
+          isContinue = false;
         });
       }
 
       if (!isContinue) {
         this.SetLoader(false);
+        this.initInterval();
         return;
       }
 
@@ -358,6 +369,7 @@ export default {
       this.SetLoader(false);
       if (!ok) {
         this.ShowToast(msg, this.$t('toasts.error'));
+        this.initInterval();
         return;
       }
 
@@ -387,6 +399,7 @@ export default {
         }
       }).catch(() => {
         // User rejected method
+        this.initInterval();
       });
     },
   },
