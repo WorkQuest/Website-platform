@@ -93,7 +93,6 @@ export default {
           spenderAddress: contractAddress,
           decimals: +decimals,
         });
-        console.log('ALLOWANCE', allowance, amount);
 
         if (new BigNumber(allowance).isLessThan(amount)) {
           const needApprove = new BigNumber(allowance).isZero(); // or need increaseAllowance

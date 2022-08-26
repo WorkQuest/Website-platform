@@ -166,7 +166,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import {
@@ -288,31 +288,49 @@ export default {
       ];
     },
   },
-  async beforeMount() {
+  beforeMount() {
     if (!this.isWalletConnected) {
-      await this.$store.dispatch('wallet/checkWalletConnected', {
+      this.checkWalletConnected({
         nuxt: this.$nuxt,
         needConfirm: this.isAuth,
       });
     }
   },
   async mounted() {
-    await this.$store.dispatch('collateral/fetchCollateralsCommonInfo');
+    await Promise.all([
+      this.initWS(),
+      this.fetchCollateralsCommonInfo(),
+    ]);
+  },
+  async beforeDestroy() {
+    await this.destroyWS();
   },
   methods: {
+    ...mapActions({
+      produceWUSD: 'collateral/sendProduceWUSD',
+      initWS: 'collateral/subscribeCollateralCommonInfo',
+      destroyWS: 'collateral/unsubscribeCollateralCommonInfo',
+      fetchCollateralsCommonInfo: 'collateral/fetchCollateralsCommonInfo',
+
+      getBalance: 'wallet/getBalance',
+      checkWalletConnected: 'wallet/checkWalletConnected',
+
+      feeSetTokensPrices: 'oracle/feeSetTokensPrices',
+      setTokensPrices: 'oracle/setCurrentPriceTokens',
+    }),
     async openModalGetWUSD() {
       if (!this.isAuth) {
         this.ShowToast(this.$t('messages.loginToContinue'));
         return;
       }
-      await this.$store.dispatch('wallet/getBalance');
+      await this.getBalance();
       this.ShowModal({
         key: modals.getWUSD,
         submit: async ({
           amountWUSD, collateral, percent, currency,
         }) => {
           this.SetLoader(true);
-          const { result: { gas, gasPrice }, msg } = await this.$store.dispatch('oracle/feeSetTokensPrices');
+          const { result: { gas, gasPrice }, msg } = await this.feeSetTokensPrices();
           this.SetLoader(false);
 
           if (!gas || !gasPrice) {
@@ -326,7 +344,7 @@ export default {
             fee: { gas, gasPrice },
           }).then(async () => {
             this.SetLoader(true);
-            await this.$store.dispatch('oracle/setCurrentPriceTokens');
+            await this.setTokensPrices();
 
             await this.MakeApprove({
               tokenAddress: TokenMap[currency],
@@ -356,7 +374,7 @@ export default {
                 fee,
                 title: this.$t('modals.takeWUSD'),
               }).then(async () => {
-                const res = await this.$store.dispatch('collateral/sendProduceWUSD', {
+                const res = await this.produceWUSD({
                   collateral: collateralBN,
                   ratio: ratioBN,
                   currency,
