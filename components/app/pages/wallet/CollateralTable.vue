@@ -427,9 +427,9 @@ export default {
             symbol: TokenSymbols.WQT,
           };
           const title = {
-            claimExtraDebt: this.$t('meta.btns.generate'),
             disposeDebt: this.$t('meta.deposit'),
             addCollateral: this.$t('meta.deposit'),
+            claimExtraDebt: this.$t('meta.btns.generate'),
             removeCollateral: this.$t('wallet.collateral.removeCollateral'),
           }[method];
 
@@ -453,9 +453,14 @@ export default {
               await this.setCallbackWS(() => {
                 resolve();
 
-                this.isAvailableToClaim = false;
-                this.isAvailableToRemove = false;
-                this.isAvailableToDeposit = false;
+                if (method === CollateralMethods.addCollateral) this.isAvailableToDeposit = false;
+                else if (method === CollateralMethods.disposeDebt) this.isAvailableToDeposit = false;
+                else if (method === CollateralMethods.claimExtraDebt) this.isAvailableToClaim = false;
+                else if (method === CollateralMethods.removeCollateral) {
+                  this.isAvailableToClaim = false;
+                  this.isAvailableToRemove = false;
+                  this.isAvailableToDeposit = false;
+                }
 
                 this.SetLoader(false);
                 this.ShowModalSuccess({ link: `${ExplorerUrl}/tx/${result.transactionHash}` });
