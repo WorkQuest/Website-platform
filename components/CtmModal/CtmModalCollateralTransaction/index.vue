@@ -55,7 +55,7 @@
           disabled
           vid="remove"
           :value="options.amountToRemoveCollateral"
-          :rules="`have_funds:${balance[options.symbol].fullBalance}, ${options.amountToRemoveCollateral}`"
+          :rules="`have_funds:${balance[TokenSymbols.WUSD].fullBalance}, ${options.amountToRemoveCollateral}`"
         />
       </template>
       <template v-else>
@@ -119,9 +119,9 @@ import { CollateralMethods } from '~/utils/сonstants/auction';
 
 export default {
   name: 'CollateralTransaction',
-  TokenSymbols,
   data() {
     return {
+      TokenSymbols,
       CollateralMethods,
       selCurrencyID: TokenSymbols.WUSD,
       currentDeposit: null,
