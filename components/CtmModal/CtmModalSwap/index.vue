@@ -179,8 +179,8 @@ export default {
       if (from.chain === Chains.BINANCE && [TokenSymbols.USDT, TokenSymbols.USDC].includes(this.currentToken.symbol)) {
         this.$store.commit('bridge/setToken', {
           ...this.currentToken,
-          decimals: 6,
           amount: new BigNumber(this.currentToken.amount).decimalPlaces(6).toString(),
+          decimals: 6,
         });
       }
       this.SetLoader(false);
@@ -197,7 +197,7 @@ export default {
         amount: this.amount,
         symbol: this.tokens[this.tokenId],
         isNative: from.nativeSymbol === this.tokens[this.tokenId],
-        decimals: this.currentToken.decimals,
+        decimals: this.currentToken.decimalsForSubmit,
       });
     },
   },

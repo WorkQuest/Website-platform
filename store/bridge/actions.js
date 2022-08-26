@@ -35,9 +35,9 @@ export default {
         let { decimals } = tokenData;
         if ([TokenSymbols.USDT, TokenSymbols.USDC].includes(swap.symbol)) {
           const bscChainIdx = BlockchainIndex[Chains.BINANCE];
-          if (swap.chainFrom === bscChainIdx) {
+          if (+swap.chainFrom === bscChainIdx) {
             decimals = 6;
-          } else if (swap.chainTo === bscChainIdx) {
+          } else if (+swap.chainTo === bscChainIdx) {
             decimals = 18;
           }
         }
@@ -152,6 +152,7 @@ export default {
         commit('setToken', {
           symbol,
           decimals: Number(decimals),
+          decimalsForSubmit: Number(decimals),
           amount: new BigNumber(+amount).shiftedBy(-decimals).toString(),
         });
       }
@@ -221,15 +222,13 @@ export default {
           if (swaps.length === 10) swaps.splice(9, 1);
           const { symbol } = msg.data.returnValues;
           const tokenData = rootGetters['wallet/getBalanceData'][symbol];
-
           let { decimals } = tokenData;
-          if ([TokenSymbols.USDT, TokenSymbols.USDC].includes(swap.symbol)) {
-            const bscChainIdx = BlockchainIndex[Chains.BINANCE];
-            if (swap.chainFrom === bscChainIdx) {
-              decimals = 6;
-            } else if (swap.chainTo === bscChainIdx) {
-              decimals = 18;
-            }
+
+          if (
+            [TokenSymbols.USDT, TokenSymbols.USDC].includes(symbol)
+            && +chainFrom === BlockchainIndex[Chains.BINANCE]
+          ) {
+            decimals = 6;
           }
 
           swaps.unshift({
