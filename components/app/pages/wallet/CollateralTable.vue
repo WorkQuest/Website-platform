@@ -328,14 +328,6 @@ export default {
     }, mode) {
       if (!this.isAvailableToRemove) return;
 
-      // for review - make zero allowance on router
-      // console.log(await this.$store.dispatch('wallet/approve', {
-      //   tokenAddress: ENV.WORKNET_WUSD_TOKEN,
-      //   spenderAddress: ENV.WORKNET_ROUTER,
-      //   amount: 0,
-      // }));
-      // if (symbol) return;
-
       const updatePrices = async (method, payload) => {
         await new Promise(async (resolve, reject) => {
           this.SetLoader(true);
@@ -412,7 +404,6 @@ export default {
             return;
           }
 
-          console.log(payload, method);
           const fields = {
             from: {
               name: this.$t('meta.fromBig'),

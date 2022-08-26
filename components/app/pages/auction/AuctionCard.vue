@@ -382,7 +382,7 @@ export default {
           });
         }
       }).catch(() => {
-        console.log('User rejected method.');
+        // User rejected method
       });
     },
   },

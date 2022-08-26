@@ -34,7 +34,7 @@ export const encryptStringWithKey = (toEncrypt, key) => {
   try {
     return AES.encrypt(toEncrypt, sha256(key).toString()).toString();
   } catch (e) {
-    console.log('encr', e);
+    console.error('wallet/encryptStringWithKey', e);
     return '';
   }
 };
@@ -42,7 +42,7 @@ export const decryptStringWithKey = (toDecrypt, key) => {
   try {
     return AES.decrypt(toDecrypt, sha256(key).toString()).toString(enc.Utf8);
   } catch (e) {
-    console.log('decr', e);
+    console.error('wallet/decryptStringWithKey', e);
     return '';
   }
 };
