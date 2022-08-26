@@ -276,7 +276,7 @@ export default {
             break;
           }
           default: {
-            console.log('Unknown event: ', action, ' by subscription "loan-auction"');
+            console.log(action, ' by subscription "loan-auction"');
             break;
           }
         }

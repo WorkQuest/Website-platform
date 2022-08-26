@@ -274,7 +274,7 @@ export default {
             break;
           }
           default: {
-            console.log('Unknown action: ', action, 'by subscription "loan-collateral"');
+            console.log(action, 'by subscription "loan-collateral"');
           }
         }
       });
