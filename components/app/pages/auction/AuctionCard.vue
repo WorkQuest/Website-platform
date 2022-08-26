@@ -227,9 +227,9 @@ export default {
 
     runCalculating() {
       if (this.typeOfLot === LotsStatuses.STARTED) {
-        const { auctionStarted, symbol } = this.lot;
+        const { auctionStarted, symbol, price } = this.lot;
         const { endCost, amount } = auctionStarted[0];
-        this.calcStartedLotPrice(symbol, endCost, amount);
+        this.calcStartedLotPrice(symbol, endCost, price, amount);
       }
       this.calcDurationTime(this.willFinish);
     },
@@ -260,21 +260,17 @@ export default {
       this.durationTime.seconds = seconds && seconds > 0 ? this.$tc('meta.units.seconds', this.DeclOfNum(seconds), { count: seconds }) : '';
     },
 
-    calcStartedLotPrice(symbol, endCost, amount) {
-      //              a
-      // (lot.endPrice * lowerBoundCost) / 1e18 +
-      //               b                                            c
-      // ((lot.endTime - block.timestamp) * (upperBoundCost - lowerBoundCost) * lot.endPrice) / auctionDuration / 1e18;
-      const a = new BigNumber(endCost).multipliedBy(LOWER_BOUND_COST).shiftedBy(-18).toString();
+    calcStartedLotPrice(symbol, endCost, price, amount) {
+      const a = new BigNumber(price).minus(endCost).toString();
 
       const b = new BigNumber(this.willFinish?.unix()).minus(this.$moment().unix()).toString();
 
-      const c = new BigNumber(UPPER_BOUND_COST).minus(LOWER_BOUND_COST).multipliedBy(endCost).toString();
-
-      const d = new BigNumber(b).multipliedBy(c).dividedBy(this.duration[symbol]).shiftedBy(-18)
+      const finalPrice = new BigNumber(a).multipliedBy(b)
+        .dividedBy(this.duration[symbol])
+        .plus(endCost)
+        .shiftedBy(-18)
         .toString();
 
-      const finalPrice = new BigNumber(a).plus(d);
       const lotDecimals = this.balanceData[symbol].decimals;
       const _amount = new BigNumber(amount).shiftedBy(-lotDecimals).toString();
       const lotPrice = new BigNumber(finalPrice).multipliedBy(_amount).toFixed(4, 1);
@@ -332,11 +328,19 @@ export default {
           this.SetLoader(false);
         });
       } else {
+        // if you tap on buy lot, calculating of lot price is stopped
+        clearInterval(this.intervalId);
+
         await this.MakeApprove({
           tokenAddress: this.ENV.WORKNET_WUSD_TOKEN,
           contractAddress: this.ENV.WORKNET_ROUTER,
           amount: this.startedLotAmount,
-        }).then(() => { isContinue = true; });
+        }).then(() => { isContinue = true; }).catch(() => {
+          // user can return of approve, we need to continue calculating lot price
+          this.intervalId = setInterval(() => {
+            this.runCalculating();
+          }, 1000);
+        });
       }
 
       if (!isContinue) {
