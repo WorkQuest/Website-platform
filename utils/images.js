@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/prefer-default-export
 export const images = Object.freeze({
   // tokens
-  WQT: require('~/assets/img/ui/wqt-logo.svg'),
+  WQT: require('~/assets/img/ui/wqt.svg'),
   ETH: require('~/assets/img/ui/eth_white.svg'),
   ETH_BLACK: require('~/assets/img/ui/ethereum.svg'),
   BNB: require('~/assets/img/ui/bnb_yellow.svg'),
