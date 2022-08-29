@@ -221,14 +221,15 @@ export default {
         if (event === BridgeEvents.SWAP_INITIALIZED) {
           if (swaps.length === 10) swaps.splice(9, 1);
           const { symbol } = msg.data.returnValues;
+
           const tokenData = rootGetters['wallet/getBalanceData'][symbol];
           let { decimals } = tokenData;
-
-          if (
-            [TokenSymbols.USDT, TokenSymbols.USDC].includes(symbol)
-            && +chainFrom === BlockchainIndex[Chains.BINANCE]
-          ) {
-            decimals = 6;
+          if ([TokenSymbols.USDT, TokenSymbols.USDC].includes(symbol)) {
+            if (+chainFrom === BlockchainIndex[Chains.BINANCE]) {
+              decimals = 6;
+            } else if (+chainTo !== BlockchainIndex[Chains.ETHEREUM]) {
+              decimals = 18;
+            }
           }
 
           swaps.unshift({
