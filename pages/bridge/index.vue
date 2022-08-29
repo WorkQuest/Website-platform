@@ -435,7 +435,9 @@ export default {
       }
       return true;
     },
-    async redeemAction({ chain, signData, chainTo }) {
+    async redeemAction({
+      chain, signData, chainFrom, chainTo,
+    }) {
       const makeRedeem = async () => {
         this.SetLoader({
           isLoading: true,
@@ -481,14 +483,16 @@ export default {
       let { decimals } = this.balanceData[tokenSymbol].decimals;
       if ([TokenSymbols.USDT, TokenSymbols.USDC].includes(tokenSymbol)) {
         const bscChainIdx = BlockchainIndex[Chains.BINANCE];
-        if (+chain === bscChainIdx) {
+        if (+chainFrom === bscChainIdx) {
           decimals = 6;
         } else if (+chainTo === bscChainIdx) {
           decimals = 18;
         }
       }
 
-      const toRedeem = new BigNumber(signData[2]).shiftedBy(-decimals).toString();
+      console.log(decimals);
+
+      const toRedeem = new BigNumber(signData[2]).shiftedBy(decimals ? -decimals : -18).toString();
 
       this.ShowModal({
         key: modals.transactionReceipt,
