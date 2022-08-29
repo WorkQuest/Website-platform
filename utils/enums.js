@@ -174,6 +174,7 @@ export const RouterNames = {
   ROOT: 'index',
   SIGN_IN: 'sign-in',
   SIGN_UP: 'sign-up',
+  RESTORE: 'restore',
   ROLE: 'role',
 
   CREDITING: 'crediting',
