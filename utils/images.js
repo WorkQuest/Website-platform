@@ -11,6 +11,7 @@ export const images = Object.freeze({
   WUSD: require('~/assets/img/ui/wusd.svg'),
   EMPTY_LOGO: require('~/assets/img/ui/logo_gray.svg'),
 
+  WORKNET: require('~/assets/img/ui/wqt-logo.svg'),
   WQ_LOGO: require('~/assets/img/app/logo.svg'),
   WQ_LOGO_ROUNDED: require('~/assets/img/app/wq_logo_rounded.svg'),
   WQ_PLATFORM_LOGO: require('~/assets/img/ui/wqt.svg'),
