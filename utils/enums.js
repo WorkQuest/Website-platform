@@ -443,14 +443,6 @@ export const ProviderTypesByChain = {
   [Chains.POLYGON]: 'POLYGON_PROVIDER',
 };
 
-// wallet balance
-export const WorknetTokenAddresses = Object.freeze([
-  ENV.WORKNET_WUSD_TOKEN,
-  ENV.WORKNET_WBNB_TOKEN,
-  ENV.WORKNET_WETH_TOKEN,
-  ENV.WORKNET_USDT_TOKEN,
-]);
-
 export const WalletTokensData = Object.freeze({
   [Chains.WORKNET]: {
     WSProvider: ENV.WQ_WS_PROVIDER,
@@ -479,11 +471,13 @@ export const WalletTokensData = Object.freeze({
     tokenAddresses: [
       ENV.ETHEREUM_WQT_TOKEN,
       ENV.ETHEREUM_USDT_TOKEN,
+      ENV.ETHEREUM_USDC_TOKEN,
     ],
     tokenList: [
       { title: TokenSymbols.ETH, icon: images.ETH_BLACK }, // FIRST IS NATIVE TOKEN!
       { title: TokenSymbols.WQT, icon: images.WQT, tokenAddress: ENV.ETHEREUM_WQT_TOKEN },
       { title: TokenSymbols.USDT, icon: images.USDT, tokenAddress: ENV.ETHEREUM_USDT_TOKEN },
+      { title: TokenSymbols.USDC, icon: images.USDC, tokenAddress: ENV.ETHEREUM_USDC_TOKEN },
     ],
   },
   [Chains.BINANCE]: {
@@ -494,11 +488,13 @@ export const WalletTokensData = Object.freeze({
     tokenAddresses: [
       ENV.BSC_WQT_TOKEN,
       ENV.BSC_USDT_TOKEN,
+      ENV.BSC_USDC_TOKEN,
     ],
     tokenList: [
       { title: TokenSymbols.BNB, icon: images.BNB }, // FIRST IS NATIVE TOKEN!
       { title: TokenSymbols.WQT, icon: images.WQT, tokenAddress: ENV.BSC_WQT_TOKEN },
       { title: TokenSymbols.USDT, icon: images.USDT, tokenAddress: ENV.BSC_USDT_TOKEN },
+      { title: TokenSymbols.USDC, icon: images.USDC, tokenAddress: ENV.BSC_USDC_TOKEN },
     ],
   },
   [Chains.POLYGON]: {

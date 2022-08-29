@@ -226,7 +226,7 @@ import {
 import EmptyData from '~/components/app/info/emptyData';
 import CollateralTable from '~/components/app/pages/wallet/CollateralTable';
 import { error, success } from '~/utils/web3';
-import { BuyWQTTokensData } from '~/utils/сonstants/bridge';
+import { BuyWQTTokensData, SwapAddresses } from '~/utils/сonstants/bridge';
 import { IS_PLUG_PROD } from '~/utils/locker-data';
 
 export default {
@@ -278,7 +278,7 @@ export default {
     },
     networkList() {
       return [
-        BuyWQTTokensData.get(Chains.WORKNET),
+        SwapAddresses.get(Chains.WORKNET),
         BuyWQTTokensData.get(Chains.ETHEREUM),
         BuyWQTTokensData.get(Chains.BINANCE),
         BuyWQTTokensData.get(Chains.POLYGON),

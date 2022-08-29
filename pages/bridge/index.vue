@@ -136,7 +136,7 @@
               </template>
               <template #cell(amount)="el">
                 <div class="table__value">
-                  {{ `${Floor(el.item.amount)} ${el.item.symbol}` }}
+                  {{ `${ToFixedDecimals(el.item.amount)} ${el.item.symbol}` }}
                 </div>
               </template>
               <template #cell(created)="el">
@@ -187,7 +187,9 @@ import modals from '~/store/modals/modals';
 import {
   Chains, ConnectionTypes, Layout, Path, TokenSymbols,
 } from '~/utils/enums';
-import { BlockchainByIndex, BridgeAddresses, SwapAddresses } from '~/utils/сonstants/bridge';
+import {
+  BlockchainByIndex, BlockchainIndex, BridgeAddresses, SwapAddresses,
+} from '~/utils/сonstants/bridge';
 import {
   getChainIdByChain, getEstimateGas, getTransactionCount, GetWeb3Provider,
 } from '~/utils/web3';
@@ -231,6 +233,7 @@ export default {
 
       connections: 'main/notificationsConnectionStatus',
 
+      balanceData: 'wallet/getBalanceData',
       web3Account: 'web3/getAccount',
       userWalletAddress: 'user/getUserWalletAddress',
       connectionType: 'web3/getConnectionType',
@@ -432,7 +435,9 @@ export default {
       }
       return true;
     },
-    async redeemAction({ chain, signData, chainTo }) {
+    async redeemAction({
+      chain, signData, chainTo, transactionHash, nonce,
+    }) {
       const makeRedeem = async () => {
         this.SetLoader({
           isLoading: true,
@@ -443,6 +448,7 @@ export default {
         });
         this.SetLoader(false);
         if (res.ok) {
+          this.$store.commit('bridge/setRedeemed', { transactionHash, nonce });
           const link = `${SwapAddresses.get(chain).explorer}/tx/${res.result.transactionHash}`;
           this.ShowModalSuccess({ title: this.$t('modals.redeem.success'), link });
         } else {
@@ -474,7 +480,17 @@ export default {
       const nativeTokenSymbol = SwapAddresses.get(chain).nativeSymbol;
 
       const tokenSymbol = signData[7];
-      const toRedeem = new BigNumber(signData[2]).shiftedBy(tokenSymbol === TokenSymbols.USDT ? -6 : -18).toString();
+
+      let { decimals } = this.balanceData[tokenSymbol].decimals;
+      if ([TokenSymbols.USDT, TokenSymbols.USDC].includes(tokenSymbol)) {
+        if (+chainTo === BlockchainIndex[Chains.BINANCE]) {
+          decimals = 18;
+        } else {
+          decimals = 6;
+        }
+      }
+
+      const toRedeem = new BigNumber(signData[2]).shiftedBy(-decimals || -18).toString();
 
       this.ShowModal({
         key: modals.transactionReceipt,
@@ -511,7 +527,7 @@ export default {
         submit: async ({
           amount, symbol, isNative, decimals,
         }) => {
-          if (this.isWeb3Connection) await this.swapWeb3(from, to, amount, symbol, isNative);
+          if (this.isWeb3Connection) await this.swapWeb3(from, to, amount, symbol, isNative, decimals);
           else await this.swapWQWallet(from, to, amount, symbol, isNative, decimals);
         },
       });
@@ -532,7 +548,7 @@ export default {
           const swap = async () => {
             const provider = this.getProviderByConnection();
             const nonce = await getTransactionCount(this.account.address.toString(), provider);
-            const value = new BigNumber(amount).shiftedBy(symbol === TokenSymbols.USDT ? 6 : 18).toString();
+            const value = new BigNumber(amount).shiftedBy(decimals).toString();
             const data = [nonce, to.index, value, this.account.address, symbol];
             const inst = new provider.eth.Contract(WQBridge, BridgeAddresses[from.chain]);
             const [gasPrice, estimateGas] = await Promise.all([
@@ -559,7 +575,7 @@ export default {
                   symbol: nativeTokenSymbol,
                 },
               },
-              submitMethod: async () => await this.handleSwap(from, to, amount, symbol, isNative),
+              submitMethod: async () => await this.handleSwap(from, to, amount, symbol, isNative, decimals),
             });
           };
 
@@ -578,6 +594,7 @@ export default {
             await swap();
           }).catch((err) => {
             console.error(err);
+            this.ShowToast(err.msg, 'Swap error');
           }).finally(() => {
             this.SetLoader(false);
           });
@@ -585,7 +602,7 @@ export default {
       });
     },
     // Swap for metamask
-    async swapWeb3(from, to, amount, symbol, isNative) {
+    async swapWeb3(from, to, amount, symbol, isNative, decimals) {
       this.ShowModal({
         key: modals.swapInfo,
         amount,
@@ -602,20 +619,21 @@ export default {
             this.ShowToast(this.$t('meta.disconnect'));
             return;
           }
-          await this.handleSwap(from, to, amount, symbol, isNative);
+          await this.handleSwap(from, to, amount, symbol, isNative, decimals);
         },
       });
     },
 
     // sending swap transaction
-    async handleSwap(from, to, amount, symbol, isNative) {
+    async handleSwap(from, to, amount, symbol, isNative, decimals) {
       this.SetLoader({
         isLoading: true,
         statusText: this.isWeb3Connection ? LoaderStatusLocales.waitingForTxExternalApp : LoaderStatusLocales.pleaseWaitTx,
       });
-      const { ok, result } = await this.swap({
+      const { ok, result, msg } = await this.swap({
         amount,
         symbol,
+        decimals,
         isNative,
         toChainIndex: to.index,
         tokenAddress: from.tokenAddress[symbol],
@@ -632,6 +650,7 @@ export default {
         img: !ok ? images.WARNING : images.SUCCESS,
         title: !ok ? this.$t('modals.transactionFail') : this.$t('modals.transactionSent'),
         link: !ok ? '' : `${from.explorer}/tx/${result?.transactionHash}`,
+        text: ok ? '' : msg,
       });
     },
   },
