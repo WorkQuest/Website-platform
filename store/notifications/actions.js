@@ -352,6 +352,13 @@ export default {
         };
         break;
 
+      case NotificationAction.REPORT_DECIDED:
+        notification.sender = wqInfoSender;
+        break;
+      case NotificationAction.REPORT_SUBMITTED:
+        notification.sender = wqInfoSender;
+        break;
+
       default:
         break;
     }

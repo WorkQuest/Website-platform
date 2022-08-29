@@ -26,6 +26,8 @@ export const NotificationAction = {
   UPDATE_RATING_STATISTIC: 'updateRatingStatistic',
   NEW_QUEST_FOR_SPECIALIZATION: 'newQuestForSpecialization',
   PAID_REFERRAL: 'PaidReferral',
+  REPORT_DECIDED: 'ReportDecided',
+  REPORT_SUBMITTED: 'ReportSubmitted',
 
   // notifications after registration
   KYC: 'EnableSumsubKYC',
