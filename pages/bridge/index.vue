@@ -490,8 +490,6 @@ export default {
         }
       }
 
-      console.log(decimals);
-
       const toRedeem = new BigNumber(signData[2]).shiftedBy(decimals ? -decimals : -18).toString();
 
       this.ShowModal({
