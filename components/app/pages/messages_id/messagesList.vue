@@ -792,4 +792,40 @@ export default {
     }
   }
 }
+
+@include _575 {
+  .message {
+    grid-template-columns: 30px auto max-content;
+    gap: 10px;
+
+    &-list__messages {
+      gap: 15px;
+      padding: 15px 15px 0;
+    }
+
+    &__avatar {
+      width: 30px;
+      height: 30px;
+    }
+
+    &__title_name {
+      font-size: 14px;
+    }
+  }
+
+  .image-cont__image {
+    width: 105px;
+  }
+
+  .info-message {
+    &__link_left {
+      word-break: break-word;
+      white-space: pre-line;
+    }
+  }
+
+  .messages__container {
+    margin: 0;
+  }
+}
 </style>

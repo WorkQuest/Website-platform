@@ -196,4 +196,12 @@ export default {
     }
   }
 }
+
+@include _480 {
+  .gallery-modal__image {
+    width: 100%;
+    height: auto;
+  }
+}
+
 </style>
