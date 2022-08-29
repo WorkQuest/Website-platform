@@ -427,9 +427,9 @@ export default {
             symbol: TokenSymbols.WQT,
           };
           const title = {
-            claimExtraDebt: this.$t('meta.btns.generate'),
             disposeDebt: this.$t('meta.deposit'),
             addCollateral: this.$t('meta.deposit'),
+            claimExtraDebt: this.$t('meta.btns.generate'),
             removeCollateral: this.$t('wallet.collateral.removeCollateral'),
           }[method];
 
@@ -453,9 +453,14 @@ export default {
               await this.setCallbackWS(() => {
                 resolve();
 
-                this.isAvailableToClaim = false;
-                this.isAvailableToRemove = false;
-                this.isAvailableToDeposit = false;
+                if (method === CollateralMethods.addCollateral) this.isAvailableToDeposit = false;
+                else if (method === CollateralMethods.disposeDebt) this.isAvailableToDeposit = false;
+                else if (method === CollateralMethods.claimExtraDebt) this.isAvailableToClaim = false;
+                else if (method === CollateralMethods.removeCollateral) {
+                  this.isAvailableToClaim = false;
+                  this.isAvailableToRemove = false;
+                  this.isAvailableToDeposit = false;
+                }
 
                 this.SetLoader(false);
                 this.ShowModalSuccess({ link: `${ExplorerUrl}/tx/${result.transactionHash}` });
@@ -477,11 +482,7 @@ export default {
         submit: async (method) => {
           // Payload formation
           const payload = [index, symbol];
-          if (method === 'removeCollateral') {
-            payload.splice(1, 0, debt);
-          }
-
-          const amount = new BigNumber(payload[1]).shiftedBy(-18).toString();
+          const amount = new BigNumber(debt).shiftedBy(-18).toString();
           let tokenAddress = ENV.WORKNET_WUSD_TOKEN;
           let amountToApprove = amount;
           if (method === CollateralMethods.addCollateral) {

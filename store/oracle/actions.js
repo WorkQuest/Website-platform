@@ -6,6 +6,7 @@ import {
 } from '~/utils/web3';
 
 import {
+  getBalance,
   getGasPrice,
   createInstance,
   getWalletAddress,
@@ -80,6 +81,10 @@ export default {
         return error();
       }
 
+      const { result: { fullBalance } } = await getBalance();
+      const ctmGasUsed = new BigNumber(500000).multipliedBy(gasPrice).shiftedBy(-18).toNumber();
+      const isEnoughFunds = new BigNumber(fullBalance).isGreaterThan(ctmGasUsed);
+
       /**
        * @property setTokenPricesUSD - method of oracle
        */
@@ -87,7 +92,7 @@ export default {
       const res = await inst.methods.setTokenPricesUSD(nonce, v, r, s, prices, maxRatio, symbols).send({
         from: getWalletAddress(),
         // because sometimes the wrong amount of gas is calculated
-        gas: 500000,
+        gas: isEnoughFunds ? 500000 : gas,
         gasPrice,
       });
       return success(res);

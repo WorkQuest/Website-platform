@@ -141,7 +141,7 @@ export default {
               this.ShowToast('Approving done', 'Approve');
               await resolve(amount);
             },
-            cancel: async () => await reject(new Error('Cancel')),
+            cancelMethod: async () => await reject(new Error('Cancel')),
           });
         } else await resolve(amount);
       });
