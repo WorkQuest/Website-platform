@@ -414,9 +414,7 @@ export default {
           spenderAddress,
         }),
         this.$store.dispatch('wallet/fetchWalletData', {
-          method: 'balanceOf',
           address: this.userWalletAddress,
-          abi: ERC20,
           token: tokenAddress,
           symbol: TokenSymbols.WUSD,
         }),
@@ -481,9 +479,7 @@ export default {
           nonce: '123',
         }),
         this.$store.dispatch('wallet/fetchWalletData', {
-          method: 'balanceOf',
           address: this.userWalletAddress,
-          abi: ERC20,
           token: TokenMap[TokenSymbols.WUSD],
           symbol: TokenSymbols.WUSD,
         }),

@@ -34,7 +34,7 @@ import {
   Path, RaiseViewTariffPeriods, TariffByIndex, TokenSymbols,
 } from '~/utils/enums';
 import { PaidTariff } from '~/utils/сonstants/quests';
-import { ERC20, WQPromotion } from '~/abi';
+import { WQPromotion } from '~/abi';
 import walletOperations from '~/plugins/mixins/walletOperations';
 
 export default {
@@ -120,9 +120,7 @@ export default {
       new Promise(async (resolve, reject) => {
         this.SetLoader(true);
         await this.$store.dispatch('wallet/fetchWalletData', {
-          method: 'balanceOf',
           address: this.userWalletAddress,
-          abi: ERC20,
           token: tokenAddress,
           symbol: TokenSymbols.WUSD,
         });
@@ -154,9 +152,7 @@ export default {
           }),
           this.$store.dispatch('wallet/getBalance'),
           this.$store.dispatch('wallet/fetchWalletData', {
-            method: 'balanceOf',
             address: this.userWalletAddress,
-            abi: ERC20,
             token: tokenAddress,
             symbol: TokenSymbols.WUSD,
           }),
