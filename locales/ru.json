@@ -1480,6 +1480,8 @@
     "questWorkSentForReview": "Работа отправлена на проверку",
     "questCompleted": "Квест завершен",
     "PaidReferral": "Новое реферальное вознаграждение",
+    "ReportDecided":  "Жалоба отклонена",
+    "ReportSubmitted": "Жалоба принята",
 
     "EnableDoubleAuthentication": "Вы можете подключит 2FA в настройках.",
     "InviteFriendsReward": "Пригласи друзей и получи вознагражения!",
