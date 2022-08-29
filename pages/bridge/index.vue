@@ -187,7 +187,9 @@ import modals from '~/store/modals/modals';
 import {
   Chains, ConnectionTypes, Layout, Path, TokenSymbols,
 } from '~/utils/enums';
-import { BlockchainByIndex, BridgeAddresses, SwapAddresses } from '~/utils/сonstants/bridge';
+import {
+  BlockchainByIndex, BlockchainIndex, BridgeAddresses, SwapAddresses,
+} from '~/utils/сonstants/bridge';
 import {
   getChainIdByChain, getEstimateGas, getTransactionCount, GetWeb3Provider,
 } from '~/utils/web3';
@@ -231,6 +233,7 @@ export default {
 
       connections: 'main/notificationsConnectionStatus',
 
+      balanceData: 'wallet/getBalanceData',
       web3Account: 'web3/getAccount',
       userWalletAddress: 'user/getUserWalletAddress',
       connectionType: 'web3/getConnectionType',
@@ -474,7 +477,18 @@ export default {
       const nativeTokenSymbol = SwapAddresses.get(chain).nativeSymbol;
 
       const tokenSymbol = signData[7];
-      const toRedeem = new BigNumber(signData[2]).shiftedBy(tokenSymbol === TokenSymbols.USDT ? -6 : -18).toString();
+
+      let { decimals } = this.balanceData[tokenSymbol].decimals;
+      if ([TokenSymbols.USDT, TokenSymbols.USDC].includes(tokenSymbol)) {
+        const bscChainIdx = BlockchainIndex[Chains.BINANCE];
+        if (+chain === bscChainIdx) {
+          decimals = 6;
+        } else if (+chainTo === bscChainIdx) {
+          decimals = 18;
+        }
+      }
+
+      const toRedeem = new BigNumber(signData[2]).shiftedBy(-decimals).toString();
 
       this.ShowModal({
         key: modals.transactionReceipt,
