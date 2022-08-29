@@ -60,7 +60,7 @@ export default {
           subtitle: this.$t('registration.emailConfirm'),
         });
       } else {
-        await this.$store.dispatch('main/showToast', {
+        this.ShowToast({
           title: this.$t('toasts.error'),
           variant: 'warning',
           text: msg,
