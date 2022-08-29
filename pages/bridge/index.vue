@@ -436,7 +436,7 @@ export default {
       return true;
     },
     async redeemAction({
-      chain, signData, chainFrom, chainTo,
+      chain, signData, chainFrom, chainTo, transactionHash,
     }) {
       const makeRedeem = async () => {
         this.SetLoader({
@@ -448,6 +448,7 @@ export default {
         });
         this.SetLoader(false);
         if (res.ok) {
+          this.$store.commit('bridge/setRedeemed', transactionHash);
           const link = `${SwapAddresses.get(chain).explorer}/tx/${res.result.transactionHash}`;
           this.ShowModalSuccess({ title: this.$t('modals.redeem.success'), link });
         } else {
@@ -482,15 +483,14 @@ export default {
 
       let { decimals } = this.balanceData[tokenSymbol].decimals;
       if ([TokenSymbols.USDT, TokenSymbols.USDC].includes(tokenSymbol)) {
-        const bscChainIdx = BlockchainIndex[Chains.BINANCE];
-        if (+chainFrom === bscChainIdx) {
-          decimals = 6;
-        } else if (+chainTo === bscChainIdx) {
+        if (+chainTo === BlockchainIndex[Chains.BINANCE]) {
           decimals = 18;
+        } else {
+          decimals = 6;
         }
       }
 
-      const toRedeem = new BigNumber(signData[2]).shiftedBy(decimals ? -decimals : -18).toString();
+      const toRedeem = new BigNumber(signData[2]).shiftedBy(-decimals || -18).toString();
 
       this.ShowModal({
         key: modals.transactionReceipt,
