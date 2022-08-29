@@ -130,7 +130,6 @@
 import { mapActions, mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import { TokenMap, TokenSymbols } from '~/utils/enums';
-import { ERC20 } from '~/abi';
 import Slider from '~/components/ui/Slider';
 import { SLIDER_MODE } from '~/components/ui/Slider/model';
 
@@ -236,9 +235,7 @@ export default {
 
     await Promise.all([
       this.fetchWalletData({
-        method: 'balanceOf',
         address: this.userWalletAddress,
-        abi: ERC20,
         token: TokenMap[this.currentCurrency],
         symbol: TokenSymbols[this.currentCurrency],
       }),

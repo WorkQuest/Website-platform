@@ -306,9 +306,7 @@ export default {
         return;
       }
       await this.fetchWalletData({
-        method: 'balanceOf',
         address: getWalletAddress(),
-        abi: ERC20,
         token: TokenMap[TokenSymbols.WUSD],
         symbol: TokenSymbols.WUSD,
       });
