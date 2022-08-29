@@ -67,14 +67,8 @@ export default {
   setCurrentUserPosition(state, data) {
     state.currentUserPosition = data;
   },
-  setUserPassword(state, data) {
-    state.userDataPassword = data;
-  },
   setImageType(state, data) {
     state.imageLink = data;
-  },
-  setSendCode(state, data) {
-    state.userSendCode = data;
   },
   setUserReviews(state, data) {
     state.userReviews = data;
