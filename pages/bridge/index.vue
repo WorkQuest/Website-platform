@@ -436,7 +436,7 @@ export default {
       return true;
     },
     async redeemAction({
-      chain, signData, chainFrom, chainTo, transactionHash,
+      chain, signData, chainTo, transactionHash, nonce,
     }) {
       const makeRedeem = async () => {
         this.SetLoader({
@@ -448,7 +448,7 @@ export default {
         });
         this.SetLoader(false);
         if (res.ok) {
-          this.$store.commit('bridge/setRedeemed', transactionHash);
+          this.$store.commit('bridge/setRedeemed', { transactionHash, nonce });
           const link = `${SwapAddresses.get(chain).explorer}/tx/${res.result.transactionHash}`;
           this.ShowModalSuccess({ title: this.$t('modals.redeem.success'), link });
         } else {

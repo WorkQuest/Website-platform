@@ -249,8 +249,13 @@ export default {
           });
           swapsCount += 1;
         } else if (event === BridgeEvents.SWAP_REDEEMED) {
+          const { returnValues } = msg.data;
           swaps.some((item) => {
-            if (+item.nonce === +msg.data.returnValues.nonce) {
+            if (
+              +item.nonce === +returnValues.nonce
+              && +item.chainFrom === +returnValues.chainFrom
+              && +item.chainTo === +returnValues.chainTo
+            ) {
               item.status = false;
               item.canRedeemed = false;
               return true;
