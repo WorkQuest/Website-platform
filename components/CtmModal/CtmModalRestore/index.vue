@@ -1,32 +1,31 @@
 <template>
-  <ctm-modal-box
-    class="restore"
-    :title="$tc('modals.titles.forgotPass')"
-  >
-    <div class="restore__content content">
-      <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
-        <div class="content__field">
+  <ctm-modal-box :title="$tc('modals.titles.forgotPass')">
+    <ValidationObserver
+      v-slot="{ handleSubmit }"
+      class="ctm-modal__content content"
+      tag="div"
+    >
+      <form
+        class="content__form"
+        action=""
+        @submit.prevent="handleSubmit(restore)"
+      >
+        <div class="content__desc">
           {{ $t('forgot.desc') }}
         </div>
         <base-field
           v-model="emailInput"
-          :name="$tc('meta.placeholders.email')"
+          class="content__field"
           data-selector="EMAIL"
-          :placeholder="$t('meta.placeholders.email')"
           rules="required|email"
-          class="content__input"
-          @enter="handleSubmit(restore)"
+          :name="$tc('meta.placeholders.email').toLowerCase()"
+          :placeholder="$t('meta.placeholders.email').toLowerCase()"
         />
-        <base-btn
-          class="content__action"
-          :disabled="!validated || !passed || invalid"
-          data-selector="SEND"
-          @click="handleSubmit(restore)"
-        >
-          {{ $t('meta.btns.send') }}
+        <base-btn class="content__action">
+          {{ $t('meta.send') }}
         </base-btn>
-      </validation-observer>
-    </div>
+      </form>
+    </ValidationObserver>
   </ctm-modal-box>
 </template>
 
@@ -73,23 +72,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.restore {
-  max-width: 382px !important;
-
-  &__content {
-    padding: 25px 28px 30px 28px !important;
+.ctm-modal {
+  @include modalKit;
+  &__box {
+    max-width: 382px !important;
   }
 }
-.content{
-  &__field{
-    font-size: 16px;
-    line-height: 130%;
-    color: $black600;
-    margin-bottom: 20px;
-  }
-  &__action{
-    margin-top: 3px;
+
+.content {
+  &__form {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
   }
 }
 </style>
