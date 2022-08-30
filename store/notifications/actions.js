@@ -297,6 +297,14 @@ export default {
           path: `${Path.QUESTS}/${quest?.id || id}`,
         };
         break;
+      case NotificationAction.DISPUTE_DECISION_ON_CONTRACT:
+        notification.sender = wqInfoSender;
+        notification.params = {
+          ...notification.params,
+          title: problemDescription,
+          path: `${Path.QUESTS}/${quest?.id || id}`,
+        };
+        break;
 
       case NotificationAction.USER_LEFT_REVIEW_ABOUT_QUEST:
         if (fromUser && !notification.sender) notification.sender = fromUser;
@@ -342,20 +350,13 @@ export default {
         };
         break;
 
-      case [NotificationAction.NEW_COMMENT_IN_DISCUSSION, NotificationAction.NEW_DISCUSSION_LIKE].includes(action):
-        notification.params = {
-          ...notification.params,
-          title: discussion.title,
-          path: `${PathDAO.DISCUSSIONS}/${discussion.id}`,
-          isExternalLink: true,
-          externalBase: DaoUrl,
-        };
-        break;
-
       case NotificationAction.REPORT_DECIDED:
         notification.sender = wqInfoSender;
         break;
       case NotificationAction.REPORT_SUBMITTED:
+        notification.sender = wqInfoSender;
+        break;
+      case NotificationAction.REPORT_REJECTED:
         notification.sender = wqInfoSender;
         break;
 

@@ -1466,6 +1466,7 @@
     "waitWorker": "Квест ожидает",
     "registrationError": "Нет пользователей для  регистрации. Пожалуйста свяжитесь с разработчиками",
     "DisputeDecision": "Решение спора",
+    "DisputeDecisionOnContract": "Решение спора на контракте",
     "newCommentInDiscussion": "Новый комментарий в дискуссии",
     "commentLiked": "Комментарий лайкнут",
     "questEdited": "Квест отредактирован",
@@ -1480,8 +1481,9 @@
     "questWorkSentForReview": "Работа отправлена на проверку",
     "questCompleted": "Квест завершен",
     "PaidReferral": "Новое реферальное вознаграждение",
-    "ReportDecided":  "Жалоба отклонена",
+    "ReportDecided":  "Жалоба решена",
     "ReportSubmitted": "Жалоба принята",
+    "ReportRejected": "Жалоба отклонена",
 
     "EnableDoubleAuthentication": "Вы можете подключит 2FA в настройках.",
     "InviteFriendsReward": "Пригласи друзей и получи вознагражения!",

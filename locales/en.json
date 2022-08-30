@@ -1466,6 +1466,7 @@
     "waitWorker": "The quest is pending",
     "registrationError": "No users found for registration. Please contact to developers",
     "DisputeDecision": "Dispute decision",
+    "DisputeDecisionOnContract": "Dispute decision on contract",
     "newCommentInDiscussion": "New comment in Discussion",
     "commentLiked": "Comment liked",
     "questEdited": "Quest edited",
@@ -1482,6 +1483,7 @@
     "PaidReferral": "New referral reward",
     "ReportDecided":  "Report decided",
     "ReportSubmitted": "Report submitted",
+    "ReportRejected": "Report rejected",
 
     "EnableDoubleAuthentication": "You can enable 2FA in settings.",
     "InviteFriendsReward": "Invite your friends and get rewarded!",

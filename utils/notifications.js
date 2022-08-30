@@ -17,6 +17,7 @@ export const NotificationAction = {
   WAIT_WORKER: 'waitWorker',
   USER_LEFT_REVIEW_ABOUT_QUEST: 'userLeftReviewAboutQuest',
   DISPUTE_DECISION: 'DisputeDecision',
+  DISPUTE_DECISION_ON_CONTRACT: 'DisputeDecisionOnContract',
   QUEST_EDITED: 'questEdited',
   QUEST_END_SOON: 'questEndSoon',
   COMMENT_LIKED: 'commentLiked',
@@ -27,6 +28,7 @@ export const NotificationAction = {
   NEW_QUEST_FOR_SPECIALIZATION: 'newQuestForSpecialization',
   PAID_REFERRAL: 'PaidReferral',
   REPORT_DECIDED: 'ReportDecided',
+  REPORT_REJECTED: 'ReportRejected',
   REPORT_SUBMITTED: 'ReportSubmitted',
 
   // notifications after registration
