@@ -102,13 +102,6 @@ export default {
           newPassword: newPass,
         });
         if (response?.ok) {
-          await this.$store.dispatch('user/signIn', {
-            params: {
-              email: this.email,
-              password: confirmNew,
-            },
-          });
-
           // updating decrypted wal in storage
           const storageData = JSON.parse(localStorage.getItem('wal'));
           const key = this.userWalletAddress.toLowerCase();
