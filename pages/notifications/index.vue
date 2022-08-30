@@ -364,6 +364,8 @@ export default {
 }
 
 .info {
+  display: grid;
+
   &__date {
     margin-top: 10px;
     font-weight: 400;
@@ -380,9 +382,10 @@ export default {
     max-width: 60vw;
     text-overflow: ellipsis;
     overflow: hidden;
+
     &_hov {
       @include hov;
-      width: fit-content;
+      width: 100%;
       display: inline-block;
       overflow: hidden;
       text-overflow: ellipsis;
