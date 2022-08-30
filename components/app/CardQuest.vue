@@ -881,6 +881,7 @@ export default {
 
   &__text {
     @include text-simple;
+    word-break: break-word;
 
     &_details {
       font-size: 16px;

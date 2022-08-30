@@ -366,7 +366,8 @@ export default {
   &__btn {
     height: auto;
     min-height: 46px;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 34px;
     padding: 0 20px;
     align-items: center;
     justify-content: space-between;
