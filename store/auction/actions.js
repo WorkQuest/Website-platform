@@ -91,29 +91,19 @@ export default {
       });
 
       const balanceData = rootGetters['wallet/getBalanceData'];
-
-      const lots = [];
-      auction.forEach((item) => {
-        const { symbol, lotBuyed } = item;
-        lots.push(...lotBuyed.map((lot) => {
-          const {
-            cost, buyer, amount, timestamp, transactionHash,
-          } = lot;
-
-          const symbolDecimals = balanceData[symbol].decimals;
-          // if (+symbolDecimals === 6) symbolDecimals += symbolDecimals;
+      commit('setLots', {
+        count,
+        lots: auction.map((lot) => {
+          const { toLoan, amount, cost } = lot;
+          const symbolDecimals = balanceData[toLoan.symbol].decimals;
           return {
-            ...item,
-            buyer,
-            timestamp,
-            transactionHash,
+            ...lot,
+            ...toLoan,
             lotAmount: Number(new BigNumber(amount).shiftedBy(-symbolDecimals).toFixed(4, 1)),
             lotPrice: Number(new BigNumber(cost).shiftedBy(-18).toFixed(4, 1)),
           };
-        }));
+        }),
       });
-
-      commit('setLots', { count, lots });
 
       return success();
     } catch (e) {
