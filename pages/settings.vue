@@ -139,75 +139,8 @@ export default {
     },
   },
   async mounted() {
-    this.SetLoader(true);
-    if (!this.filters) await this.$store.dispatch('quests/getFilters');
-    if (!this.profile.firstName) await this.$store.dispatch('user/getUserData');
-    const addInfo = this.userData.additionalInfo;
-    const { userData, secondNumber, scrollToId } = this;
-    scrollToId();
-    const { employerProfileVisibilitySetting, workerProfileVisibilitySetting } = userData;
-    this.prevSkills = userData.userSpecializations?.map((item) => item.path) || [];
-    this.profile = {
-      avatarId: userData.avatarId,
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      email: userData.email,
-      firstPhone: {
-        codeRegion: userData.phone?.codeRegion || userData.tempPhone?.codeRegion,
-        phone: userData.phone?.phone || userData.tempPhone?.phone,
-        fullPhone: userData.phone?.fullPhone || userData.tempPhone?.fullPhone,
-      },
-      additionalInfo: {
-        secondMobileNumber: {
-          codeRegion: secondNumber?.codeRegion || null,
-          phone: secondNumber?.phone || null,
-          fullPhone: secondNumber?.fullPhone || null,
-        },
-        socialNetwork: {
-          instagram: addInfo.socialNetwork.instagram,
-          twitter: addInfo.socialNetwork.twitter,
-          linkedin: addInfo.socialNetwork.linkedin,
-          facebook: addInfo.socialNetwork.facebook,
-        },
-        description: addInfo.description,
-        skills: addInfo.skills,
-        educations: addInfo.educations ? addInfo.educations.slice() : [],
-        workExperiences: addInfo.workExperiences ? addInfo.workExperiences.slice() : [],
-        CEO: addInfo.CEO,
-        company: addInfo.company,
-        website: addInfo.website,
-      },
-      locationFull: {
-        location: {
-          longitude: userData.location?.longitude || 0,
-          latitude: userData.location?.latitude || 0,
-        },
-        locationPlaceName: userData.locationPlaceName,
-      },
-    };
-    this.skills = {
-      priorityIndex: userData.priority,
-      distantIndex: WorkplaceIndex.indexOf(userData.workplace),
-      payPeriodIndex: PayPeriodsIndex.indexOf(userData.payPeriod),
-      perHour: userData.costPerHour,
-      selectedSpecAndSkills: userData.userSpecializations || [],
-    };
-
-    if (this.isEmployer && employerProfileVisibilitySetting) {
-      const { arrayRatingStatusCanRespondToQuest, arrayRatingStatusInMySearch } = employerProfileVisibilitySetting;
-      this.profileVisibilitySetting = {
-        ratingStatusCanRespondToQuest: arrayRatingStatusCanRespondToQuest,
-        ratingStatusInMySearch: arrayRatingStatusInMySearch,
-      };
-    } else if (workerProfileVisibilitySetting) {
-      const { arrayRatingStatusCanInviteMeOnQuest, arrayRatingStatusInMySearch } = workerProfileVisibilitySetting;
-      this.profileVisibilitySetting = {
-        ratingStatusCanInviteMeOnQuest: arrayRatingStatusCanInviteMeOnQuest,
-        ratingStatusInMySearch: arrayRatingStatusInMySearch,
-      };
-    }
-    this.SetLoader(false);
-
+    // fill profile
+    await this.fillProfile();
     this.$root.$on('roleChanged', async () => {
       this.SetLoader(true);
       await this.$store.dispatch('user/getUserData');
@@ -224,6 +157,76 @@ export default {
     }
   },
   methods: {
+    async fillProfile() {
+      this.SetLoader(true);
+      if (!this.filters) await this.$store.dispatch('quests/getFilters');
+      if (!this.profile.firstName) await this.$store.dispatch('user/getUserData');
+      const addInfo = this.userData.additionalInfo;
+      const { userData, secondNumber, scrollToId } = this;
+      scrollToId();
+      const { employerProfileVisibilitySetting, workerProfileVisibilitySetting } = userData;
+      this.prevSkills = userData.userSpecializations?.map((item) => item.path) || [];
+      this.profile = {
+        avatarId: userData.avatarId,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        email: userData.email,
+        firstPhone: {
+          codeRegion: userData.phone?.codeRegion || userData.tempPhone?.codeRegion,
+          phone: userData.phone?.phone || userData.tempPhone?.phone,
+          fullPhone: userData.phone?.fullPhone || userData.tempPhone?.fullPhone,
+        },
+        additionalInfo: {
+          secondMobileNumber: {
+            codeRegion: secondNumber?.codeRegion || null,
+            phone: secondNumber?.phone || null,
+            fullPhone: secondNumber?.fullPhone || null,
+          },
+          socialNetwork: {
+            instagram: addInfo.socialNetwork.instagram,
+            twitter: addInfo.socialNetwork.twitter,
+            linkedin: addInfo.socialNetwork.linkedin,
+            facebook: addInfo.socialNetwork.facebook,
+          },
+          description: addInfo.description,
+          skills: addInfo.skills,
+          educations: addInfo.educations ? addInfo.educations.slice() : [],
+          workExperiences: addInfo.workExperiences ? addInfo.workExperiences.slice() : [],
+          CEO: addInfo.CEO,
+          company: addInfo.company,
+          website: addInfo.website,
+        },
+        locationFull: {
+          location: {
+            longitude: userData.location?.longitude || 0,
+            latitude: userData.location?.latitude || 0,
+          },
+          locationPlaceName: userData.locationPlaceName,
+        },
+      };
+      this.skills = {
+        priorityIndex: userData.priority,
+        distantIndex: WorkplaceIndex.indexOf(userData.workplace),
+        payPeriodIndex: PayPeriodsIndex.indexOf(userData.payPeriod),
+        perHour: userData.costPerHour,
+        selectedSpecAndSkills: userData.userSpecializations || [],
+      };
+
+      if (this.isEmployer && employerProfileVisibilitySetting) {
+        const { arrayRatingStatusCanRespondToQuest, arrayRatingStatusInMySearch } = employerProfileVisibilitySetting;
+        this.profileVisibilitySetting = {
+          ratingStatusCanRespondToQuest: arrayRatingStatusCanRespondToQuest,
+          ratingStatusInMySearch: arrayRatingStatusInMySearch,
+        };
+      } else if (workerProfileVisibilitySetting) {
+        const { arrayRatingStatusCanInviteMeOnQuest, arrayRatingStatusInMySearch } = workerProfileVisibilitySetting;
+        this.profileVisibilitySetting = {
+          ratingStatusCanInviteMeOnQuest: arrayRatingStatusCanInviteMeOnQuest,
+          ratingStatusInMySearch: arrayRatingStatusInMySearch,
+        };
+      }
+      this.SetLoader(false);
+    },
     scrollToId() {
       if (this.$route.hash) {
         const id = this.$route.hash.slice(1);
@@ -487,6 +490,11 @@ export default {
       });
 
       this.showModalStatus(ok ? 'saved' : 'error', msg);
+
+      // fill the profile with initial values
+      await this.fillProfile();
+      // return boolean to initial value
+      this.isChanged = false;
     },
 
     async editWorkerData(payload, addInfo, securityCode) {
@@ -509,6 +517,11 @@ export default {
       });
 
       this.showModalStatus(ok ? 'saved' : 'error', msg);
+
+      // fill the profile with initial values
+      await this.fillProfile();
+      // return boolean to initial value
+      this.isChanged = false;
 
       // Notification: offers by selected new skills
       if (!this.EqualsArrays(this.skills.selectedSpecAndSkills, this.prevSkills)) {
