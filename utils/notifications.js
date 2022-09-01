@@ -17,6 +17,8 @@ export const NotificationAction = {
   WAIT_WORKER: 'waitWorker',
   USER_LEFT_REVIEW_ABOUT_QUEST: 'userLeftReviewAboutQuest',
   DISPUTE_DECISION: 'DisputeDecision',
+  DISPUTE_DECISION_REWORK: 'disputeDecision',
+  DISPUTE_DECISION_ON_CONTRACT: 'DisputeDecisionOnContract',
   QUEST_EDITED: 'questEdited',
   QUEST_END_SOON: 'questEndSoon',
   COMMENT_LIKED: 'commentLiked',
