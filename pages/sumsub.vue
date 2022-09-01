@@ -60,7 +60,7 @@ export default {
       try {
         await this.$store.dispatch('sumsub/createAccessTokenBackend', { userId: this.accessToken.userId });
         const accessToken = this.accessToken.token;
-        const snsWebSdkInstance = snsWebSdk.Builder('https://test-api.sumsub.com', 'basic-kyc')
+        const snsWebSdkInstance = snsWebSdk.Builder(this.ENV.SUMSUB_URL, 'basic-kyc')
           .withAccessToken(accessToken, () => {
           })
           .withConf({

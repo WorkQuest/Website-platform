@@ -19,6 +19,7 @@ export const IS_PROD = ['master', 'stage'].includes(process.env.BRANCH);
  * @property G_ANALYTIC - use process.env on project,
  * @property GMAPKEY - use process.env on project,
  * @property SECRET_SUMSUB - use process.env on project
+ * @property SUMSUB_URL - use process.env on project
 
  * @property ETH_PROVIDER
  * @property BSC_PROVIDER

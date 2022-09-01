@@ -1,5 +1,6 @@
 export default {
   BASE_URL: 'https://app.workquest.co/api/',
+  SUMSUB_URL: 'https://cockpit.sumsub.com/',
   // GMAPKEY: process.env.GMAPKEY,
   // SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
