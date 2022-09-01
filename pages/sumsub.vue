@@ -35,9 +35,13 @@ import { SumSubStatuses } from '~/utils/enums';
 export default {
   name: 'KYC',
   SumSubStatuses,
+  data() {
+    return {
+      isInited: false,
+    };
+  },
   computed: {
     ...mapGetters({
-      accessToken: 'sumsub/getSumSubBackendToken',
       userData: 'user/getUserData',
       statusKYC: 'user/getStatusKYC',
       currentLocale: 'user/getCurrentLang',
@@ -45,7 +49,7 @@ export default {
   },
   watch: {
     async currentLocale() {
-      await this.initSumSub();
+      if (this.isInited) await this.initSumSub();
     },
   },
   async mounted() {
@@ -58,21 +62,16 @@ export default {
       if (this.statusKYC === SumSubStatuses.VERIFIED) return;
       const { email } = this.userData;
       try {
-        await this.$store.dispatch('sumsub/createAccessTokenBackend', { userId: this.accessToken.userId });
-        const accessToken = this.accessToken.token;
-        const snsWebSdkInstance = snsWebSdk.Builder('https://test-api.sumsub.com', 'basic-kyc')
-          .withAccessToken(accessToken, () => {
-          })
+        const accessToken = await this.$store.dispatch('sumsub/createAccessTokenBackend');
+        const snsWebSdkInstance = snsWebSdk.init(accessToken, () => {})
+          .withBaseUrl(this.ENV.SUMSUB_URL)
           .withConf({
             lang: this.currentLocale,
             email,
-            onError: (error) => {
-              console.log('WebSDK onError', error);
-            },
           })
           .build();
-
         snsWebSdkInstance.launch('#sumsub-websdk-container');
+        this.isInited = true;
       } catch (e) {
         console.error('Error with snsWebSdkInstance. ', e);
       }
