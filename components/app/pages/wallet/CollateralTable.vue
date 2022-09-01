@@ -13,13 +13,15 @@
         <div>{{ $t('wallet.collateral.generatedAmount') }}</div>
         <div>{{ $t('meta.price') }}</div>
         <div>{{ $t('wallet.collateral.ratio') }}</div>
-        <div>{{ $t('wallet.table.index') }}</div>
       </div>
       <div
         v-for="(item, i) of collaterals"
         :key="i"
         class="collateral__item item"
-        :class="{item_full: i === idxHistory}"
+        :class="[
+          {item_full: i === idxHistory},
+          ...getRiskClass(item),
+        ]"
       >
         <div
           class="item__wrapper table_grid"
@@ -37,7 +39,6 @@
           <div>{{ item.wusdGenerated }}</div>
           <div>{{ item._price }}</div>
           <div>{{ item.colRatio }}</div>
-          <div>{{ item.index }}</div>
           <div
             class="item__caret"
             @click.stop="toggleHistory(i, item)"
@@ -227,6 +228,14 @@ export default {
 
       updatePrices: 'oracle/getCurrentTokensPrices',
     }),
+    getRiskClass({ liquidityValue, depositStatus }) {
+      if (depositStatus === 1 && liquidityValue > 0) return ['risk_high'];
+
+      return [
+        { risk_medium: liquidityValue && depositStatus === 0 },
+        // { risk_low: liquidityValue && depositStatus === 0 },
+      ];
+    },
     getCollateralIcon(symbol) {
       if (TokenSymbols.ETH === symbol) return images.ETH_BLACK;
       return images[symbol] || images.EMPTY_LOGO;
@@ -566,7 +575,7 @@ export default {
     align-content: center;
     align-items: center;
     justify-items: center;
-    grid-template-columns: repeat(6, 1fr) 36px;
+    grid-template-columns: repeat(5, 1fr) 36px;
 
     text-align: center;
 
@@ -578,6 +587,21 @@ export default {
   }
   &__pages {
     margin-top: 20px;
+  }
+}
+
+.risk {
+
+  &_low {
+    box-shadow: inset 0 0 0 1px #e3c221;
+  }
+
+  &_medium {
+    box-shadow: inset 0 0 0 1px #d28904;
+  }
+
+  &_high {
+    box-shadow: inset 0 0 0 1px #dc0606;
   }
 }
 

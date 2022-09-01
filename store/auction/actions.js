@@ -95,7 +95,7 @@ export default {
         count,
         lots: auction.map((lot) => {
           const { toLoan, amount, cost } = lot;
-          const symbolDecimals = balanceData[toLoan.symbol].decimals;
+          const symbolDecimals = balanceData[toLoan?.symbol].decimals;
           return {
             ...lot,
             ...toLoan,
