@@ -19,10 +19,10 @@ const LotsStatuses = {
 };
 
 const AuctionEvents = {
-  BOUGHT: 'Bought', // current, completed
-  STARTED: 'Started', // inactive, current
-  CANCELED: 'Canceled', // current
-  LIQUIDATED: 'Liquidated', // на innactive появляется
+  BOUGHT: 'Bought',
+  STARTED: 'Started',
+  CANCELED: 'Canceled',
+  LIQUIDATED: 'Liquidated',
   NOT_LIQUIDATED: 'NotLiquidated',
 };
 
