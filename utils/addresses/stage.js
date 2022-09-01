@@ -1,8 +1,7 @@
 export default {
   BASE_URL: 'https://testnet-app.workquest.co/api/',
-  SUMSUB_URL: 'https://cockpit.sumsub.com/',
+  SUMSUB_URL: 'https://cockpit.sumsub.com',
   // GMAPKEY: process.env.GMAPKEY,
-  // SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
   WQ_PROVIDER: 'https://mainnet-gate.workquest.co',
   ETH_PROVIDER: 'https://eth-mainnet.public.blastapi.io',

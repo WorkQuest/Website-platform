@@ -131,7 +131,6 @@ export default {
     BRANCH: process.env.BRANCH,
     G_ANALYTIC: process.env.G_ANALYTIC,
     GMAPKEY: process.env.GMAPKEY,
-    SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
     ETHEREUM_RPC_URL: process.env.ETHEREUM_RPC_URL,
 
