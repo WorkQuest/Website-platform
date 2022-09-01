@@ -225,9 +225,10 @@ export default {
           const tokenData = rootGetters['wallet/getBalanceData'][symbol];
           let { decimals } = tokenData;
           if ([TokenSymbols.USDT, TokenSymbols.USDC].includes(symbol)) {
-            if (+chainFrom === BlockchainIndex[Chains.BINANCE]) {
+            const ethId = BlockchainIndex[Chains.ETHEREUM];
+            if (+chainFrom === BlockchainIndex[Chains.BINANCE] || +chainFrom === ethId) {
               decimals = 6;
-            } else if (+chainTo !== BlockchainIndex[Chains.ETHEREUM]) {
+            } else if (+chainTo !== ethId) {
               decimals = 18;
             }
           }
