@@ -30,6 +30,7 @@ export const NotificationAction = {
   PAID_REFERRAL: 'PaidReferral',
   REPORT_DECIDED: 'ReportDecided',
   REPORT_SUBMITTED: 'ReportSubmitted',
+  REPORT_REJECTED: 'ReportRejected',
 
   // notifications after registration
   KYC: 'EnableSumsubKYC',

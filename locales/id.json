@@ -1483,8 +1483,9 @@
     "questWorkSentForReview": "Work sent for review",
     "questCompleted": "Quest completed",
     "PaidReferral": "New referral reward",
-    "ReportDecided":  "Report decided",
-    "ReportSubmitted": "Report submitted",
+    "ReportDecided":  "Complaint accepted",
+    "ReportSubmitted": "Complaint submitted",
+    "ReportRejected": "Complaint rejected",
 
     "EnableDoubleAuthentication": "You can enable 2FA in settings.",
     "InviteFriendsReward": "Invite your friends and get rewarded!",
