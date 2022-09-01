@@ -201,6 +201,8 @@ export const RouterNames = {
   MESSAGES: 'messages',
   MESSAGES_ID: 'messages-id',
   CREATE_QUEST: 'create-quest',
+  DISPUTES: 'disputes',
+  DISPUTES_ID: 'disputes-id',
 };
 
 export const DeFiBluePanelPathNames = [
