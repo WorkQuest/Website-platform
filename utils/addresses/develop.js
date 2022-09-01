@@ -1,7 +1,7 @@
 export default {
   BASE_URL: 'https://dev-app.workquest.co/api/',
+  SUMSUB_URL: 'https://cockpit.sumsub.com',
   // GMAPKEY: process.env.GMAPKEY,
-  // SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
   WQ_PROVIDER: 'https://dev-node-ams3.workquest.co',
   ETH_PROVIDER: 'https://speedy-nodes-nyc.moralis.io/a4b1a749a870bbd413acd4f0/eth/rinkeby',

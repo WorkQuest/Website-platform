@@ -16,7 +16,7 @@
     "@nuxtjs/axios": "^5.13.1",
     "@nuxtjs/google-gtag": "^1.0.4",
     "@nuxtjs/i18n": "^7.2.0",
-    "@sumsub/websdk": "^1.2.1",
+    "@sumsub/websdk": "^1.3.6",
     "@walletconnect/web3-provider": "^1.6.6",
     "@workquest/contract-data-pools": "git+https://github.com/WorkQuest/contract-data-pools.git#devnet",
     "bech32-converting": "^1.0.8",

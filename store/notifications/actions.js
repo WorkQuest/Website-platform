@@ -289,7 +289,21 @@ export default {
         };
         break;
 
+      case NotificationAction.DISPUTE_DECISION_ON_CONTRACT:
+        notification.actionNameKey = `notifications.${NotificationAction.DISPUTE_DECISION}${data.decision}`;
+        notification.action = NotificationAction.DISPUTE_DECISION;
+        notification.sender = wqInfoSender;
+        notification.params = {
+          ...notification.params,
+          title: problemDescription,
+          path: `${Path.QUESTS}/${quest?.id || id}`,
+        };
+        break;
+
+      case NotificationAction.DISPUTE_DECISION_REWORK:
       case NotificationAction.DISPUTE_DECISION:
+        notification.actionNameKey = `notifications.${NotificationAction.DISPUTE_DECISION}`;
+        notification.action = NotificationAction.DISPUTE_DECISION;
         notification.sender = wqInfoSender;
         notification.params = {
           ...notification.params,
@@ -353,8 +367,7 @@ export default {
         break;
 
       case NotificationAction.REPORT_DECIDED:
-        notification.sender = wqInfoSender;
-        break;
+      case NotificationAction.REPORT_REJECTED:
       case NotificationAction.REPORT_SUBMITTED:
         notification.sender = wqInfoSender;
         break;
@@ -412,6 +425,9 @@ export default {
     if ([
       NotificationAction.QUEST_EDITED_ON_CONTRACT,
       NotificationAction.QUEST_STATUS_UPDATED,
+      NotificationAction.OPENED_DISPUTE,
+      NotificationAction.DISPUTE_DECISION,
+      NotificationAction.DISPUTE_DECISION_REWORK,
     ].includes(action)
     && getters.getWaitForUpdateQuest?.id === data?.id) {
       await handleWaitForUpdateQuest();
@@ -422,6 +438,9 @@ export default {
       ...notificationsQuestsActions,
       NotificationAction.QUEST_STATUS_UPDATED,
       NotificationAction.DISPUTE_DECISION,
+      NotificationAction.DISPUTE_DECISION_REWORK,
+      NotificationAction.OPENED_DISPUTE,
+      NotificationAction.DISPUTE_DECISION_ON_CONTRACT,
     ].includes(action)) {
       const questListPathArray = [
         Path.MY_QUESTS,
@@ -449,6 +468,7 @@ export default {
         }
       }
     }
+    commit('addUnreadNotifsCount', 1);
   },
 
   async addNotification({ commit, dispatch }, notification) {

@@ -375,13 +375,15 @@ export default {
         || this.userData.additionalInfo.description !== additionalInfo.description
       ) {
         this.isChanged = true;
+        return;
       }
-
+      Object.values(this.updatedSecondPhone).forEach((item) => {
+        this.isChanged = !!item;
+      });
       if (this.isChanged) return;
+
       this.isChanged = Object.keys({ ...this.updatedFirstPhone, ...this.userData.tempPhone })
         .some((key) => this.updatedFirstPhone[key] !== this.userData.tempPhone[key])
-        || Object.keys({ ...this.updatedSecondPhone, ...this.userData.additionalInfo.secondMobileNumber })
-          .some((key) => this.updatedSecondPhone[key] !== this.userData.additionalInfo.secondMobileNumber[key])
         || Object.keys({ ...this.userData.additionalInfo.socialNetwork, ...this.profile.additionalInfo.socialNetwork })
           .some((key) => this.userData.additionalInfo.socialNetwork[key] !== this.profile.additionalInfo.socialNetwork[key]);
     },
