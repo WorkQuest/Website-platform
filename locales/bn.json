@@ -1485,6 +1485,7 @@
     "PaidReferral": "New referral reward",
     "ReportDecided":  "Report decided",
     "ReportSubmitted": "Report submitted",
+    "ReportRejected": "Report rejected",
 
     "EnableDoubleAuthentication": "You can enable 2FA in settings.",
     "InviteFriendsReward": "Invite your friends and get rewarded!",

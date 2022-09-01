@@ -1482,6 +1482,7 @@
     "PaidReferral": "Новое реферальное вознаграждение",
     "ReportDecided":  "Жалоба отклонена",
     "ReportSubmitted": "Жалоба принята",
+    "ReportRejected": "Report rejected",
 
     "EnableDoubleAuthentication": "Вы можете подключит 2FA в настройках.",
     "InviteFriendsReward": "Пригласи друзей и получи вознагражения!",
