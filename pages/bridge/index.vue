@@ -509,7 +509,7 @@ export default {
         from,
         to,
         submit: async ({
-          amount, symbol, isNative, decimals,
+          amount, symbol, isNative, decimals = 18,
         }) => {
           if (this.isWeb3Connection) await this.swapWeb3(from, to, amount, symbol, isNative);
           else await this.swapWQWallet(from, to, amount, symbol, isNative, decimals);
