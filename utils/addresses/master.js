@@ -4,14 +4,14 @@ export default {
   // GMAPKEY: process.env.GMAPKEY,
 
   WQ_PROVIDER: 'https://mainnet-gate.workquest.co',
-  ETH_PROVIDER: 'https://speedy-nodes-nyc.moralis.io/a4b1a749a870bbd413acd4f0/eth/mainnet',
-  BSC_PROVIDER: 'https://speedy-nodes-nyc.moralis.io/a4b1a749a870bbd413acd4f0/bsc/mainnet',
-  POLYGON_PROVIDER: 'https://speedy-nodes-nyc.moralis.io/a4b1a749a870bbd413acd4f0/polygon/mainnet',
+  ETH_PROVIDER: 'https://clean-maximum-meadow.quiknode.pro/4d90578f8b3b03330a88b58d7060725102f5a328',
+  BSC_PROVIDER: 'https://attentive-icy-arm.bsc.quiknode.pro/caed81fb5c0fdefe552f07da3b2c880129a25edf',
+  POLYGON_PROVIDER: 'https://frosty-chaotic-violet.matic.quiknode.pro/083a2c0dc1dfdab3c26092f6e53005217e7a09ba',
 
   WQ_WS_PROVIDER: 'wss://mainnet-gate.workquest.co/tendermint-rpc/websocket',
-  ETH_WS_PROVIDER: 'wss://speedy-nodes-nyc.moralis.io/a4b1a749a870bbd413acd4f0/eth/mainnet/ws',
-  BSC_WS_PROVIDER: 'wss://speedy-nodes-nyc.moralis.io/a4b1a749a870bbd413acd4f0/bsc/mainnet/ws',
-  POLYGON_WS_PROVIDER: 'wss://speedy-nodes-nyc.moralis.io/a4b1a749a870bbd413acd4f0/polygon/mainnet/ws',
+  ETH_WS_PROVIDER: 'wss://clean-maximum-meadow.quiknode.pro/4d90578f8b3b03330a88b58d7060725102f5a328',
+  BSC_WS_PROVIDER: 'wss://attentive-icy-arm.bsc.quiknode.pro/caed81fb5c0fdefe552f07da3b2c880129a25edf',
+  POLYGON_WS_PROVIDER: 'wss://frosty-chaotic-violet.matic.quiknode.pro/083a2c0dc1dfdab3c26092f6e53005217e7a09ba',
 
   WQ_EXPLORER: 'https://mainnet-explorer-api.workquest.co/api/v1',
   WQ_ORACLE_URL: 'https://mainnet-oracle.workquest.co/api/v1',
