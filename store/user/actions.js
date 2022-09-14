@@ -276,14 +276,11 @@ export default {
     commit('setCurrentUserPosition', payload);
   },
   async editUserPassword({ commit }, payload) {
-    const response = await this.$axios.$put('/v1/profile/change-password', payload);
-    commit('setUserPassword', response.result);
-    return response;
+    return await this.$axios.$put('/v1/profile/change-password', payload);
   },
   async passwordSendCode({ commit }, payload) {
     try {
-      const response = await this.$axios.$post('/v1/restore-password/send-code', payload);
-      commit('setSendCode', response.result);
+      await this.$axios.$post('/v1/restore-password/send-code', payload);
       return success();
     } catch (e) {
       console.error('user/passwordSendCode', e);
@@ -292,8 +289,7 @@ export default {
   },
   async passwordChange({ commit }, payload) {
     try {
-      const response = await this.$axios.$post('/v1/restore-password/set-password', payload);
-      commit('setUserPassword', response.result);
+      await this.$axios.$post('/v1/restore-password/set-password', payload);
       return success();
     } catch (e) {
       console.error('user/passwordChange', e);

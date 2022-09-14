@@ -154,6 +154,8 @@ export default {
       this.page = 1;
       this.selectedTab = id;
       this.requestParams.query.offset = 0;
+      this.requestParams.query['sort[createdAt]'] = 'desc';
+      delete this.requestParams.query['sort[invitedCreatedAt]'];
       delete this.requestParams.query.responded;
       delete this.requestParams.query.starred;
       delete this.requestParams.query.invited;
@@ -179,6 +181,8 @@ export default {
           this.requestParams.query['statuses[2]'] = QuestStatuses.Dispute;
           break;
         case 4:
+          delete this.requestParams.query['sort[createdAt]'];
+          this.requestParams.query['sort[invitedCreatedAt]'] = 'desc';
           this.requestParams.query.invited = true;
           break;
         case 5:

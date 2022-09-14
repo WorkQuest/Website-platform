@@ -206,7 +206,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
-import { ERC20, WQPensionFund } from '~/abi/index';
+import { WQPensionFund } from '~/abi/index';
 import modals from '~/store/modals/modals';
 import { getStyledAmount } from '~/utils/wallet';
 import {
@@ -477,7 +477,7 @@ export default {
         this.loadTablePage(this.page),
       ]);
       await this.fetchWalletData({
-        method: 'balanceOf', address: this.walletAddress, abi: ERC20, token: TokenMap[TokenSymbols.WUSD], symbol: TokenSymbols.WUSD,
+        address: this.walletAddress, token: TokenMap[TokenSymbols.WUSD], symbol: TokenSymbols.WUSD,
       });
       this.checkIsDeadLine();
     },

@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="buy-wqt"
-    :title="$t('modals.titles.swap')"
+    :title="$tc('modals.titles.swap')"
   >
     <validation-observer
       v-slot="{handleSubmit, invalid}"
@@ -214,13 +214,8 @@ export default {
   },
   async beforeMount() {
     await this.updateTokenData();
-    this.focusBlurAmount();
   },
   methods: {
-    focusBlurAmount() {
-      this.$refs.amount.$refs.input.focus();
-      this.$refs.amount.$refs.input.blur();
-    },
     async handleSwitchNetwork(index) {
       if (this.selectedNetworkIndex === index) return;
       this.SetLoader(true);
@@ -236,7 +231,8 @@ export default {
     maxValue() {
       if (!this.tokenData) return;
       this.amount = this.maxUSDTValue;
-      this.focusBlurAmount();
+      this.$refs.amount.$refs.input.focus();
+      this.$refs.amount.$refs.input.blur();
     },
     // Updates balance by current network & token
     async updateTokenData() {

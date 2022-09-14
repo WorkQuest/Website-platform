@@ -1,8 +1,8 @@
 import BigNumber from 'bignumber.js';
 
-import { Path, TokenSymbols } from '~/utils/enums';
+import { Chains, Path, TokenSymbols } from '~/utils/enums';
 import {
-  BlockchainByIndex, BridgeAddresses, BridgeEvents, SwapAddresses,
+  BlockchainByIndex, BlockchainIndex, BridgeAddresses, BridgeEvents, SwapAddresses,
 } from '~/utils/сonstants/bridge';
 
 import {
@@ -24,22 +24,36 @@ import { WQBridge, ERC20 } from '~/abi/index';
  * @property swap.chainFrom {Number}
  */
 export default {
-  async fetchMySwaps({ commit }, { recipientAddress, query }) {
+  async fetchMySwaps({ commit, rootGetters }, { recipientAddress, query }) {
     try {
       const { result } = await this.$axios.$get(`/v1/bridge/recipient/${recipientAddress}/swaps`, {
         params: { ...query },
       });
-      const swaps = result.swaps.map((swap) => ({
-        ...swap,
-        status: swap.canRedeemed,
-        chain: BlockchainByIndex[swap.chainTo],
-        direction: [
-          SwapAddresses.get(BlockchainByIndex[swap.chainFrom]).icon,
-          SwapAddresses.get(BlockchainByIndex[swap.chainTo]).icon,
-        ],
-        amount: new BigNumber(swap.amount).shiftedBy(swap.symbol === TokenSymbols.USDT ? -6 : -18).toString(),
-        created: swap.timestamp,
-      }));
+      const swaps = result.swaps.map((swap) => {
+        const tokenData = rootGetters['wallet/getBalanceData'][swap.symbol];
+
+        let { decimals } = tokenData;
+        if ([TokenSymbols.USDT, TokenSymbols.USDC].includes(swap.symbol)) {
+          const bscChainIdx = BlockchainIndex[Chains.BINANCE];
+          if (+swap.chainFrom === bscChainIdx) {
+            decimals = 6;
+          } else if (+swap.chainTo === bscChainIdx) {
+            decimals = 18;
+          }
+        }
+
+        return {
+          ...swap,
+          status: swap.canRedeemed,
+          chain: BlockchainByIndex[swap.chainTo],
+          direction: [
+            SwapAddresses.get(BlockchainByIndex[swap.chainFrom]).icon,
+            SwapAddresses.get(BlockchainByIndex[swap.chainTo]).icon,
+          ],
+          amount: new BigNumber(swap.amount).shiftedBy(-decimals || -18).toString(),
+          created: swap.timestamp,
+        };
+      });
       commit('setSwapsData', { count: result.count, swaps });
       return success();
     } catch (e) {
@@ -131,13 +145,15 @@ export default {
         const tokenBalance = new BigNumber(balance).shiftedBy(-18).minus(+txFee);
         commit('setToken', { amount: tokenBalance.isLessThan(0) ? 0 : tokenBalance.toNumber() });
       } else {
-        const [decimal, amount] = await Promise.all([
+        const [decimals, amount] = await Promise.all([
           fetchContractData('decimals', ERC20, tokenAddress, [], provider),
           fetchContractData('balanceOf', ERC20, tokenAddress, [accountAddress], provider),
         ]);
         commit('setToken', {
-          decimal,
-          amount: new BigNumber(+amount).shiftedBy(-decimal).toString(),
+          symbol,
+          decimals: Number(decimals),
+          decimalsForSubmit: Number(decimals),
+          amount: new BigNumber(+amount).shiftedBy(-decimals).toString(),
         });
       }
       return success();
@@ -147,7 +163,7 @@ export default {
   },
 
   async swap({ commit, dispatch }, {
-    amount, tokenAddress, bridgeAddress, isNative, symbol, toChainIndex, provider, accountAddress,
+    amount, decimals, tokenAddress, bridgeAddress, isNative, symbol, toChainIndex, provider, accountAddress,
   }) {
     try {
       if (!provider) {
@@ -155,7 +171,7 @@ export default {
       }
 
       const nonce = await getTransactionCount(accountAddress, provider);
-      const value = new BigNumber(amount).shiftedBy(symbol === TokenSymbols.USDT ? 6 : 18).toString();
+      const value = new BigNumber(amount).shiftedBy(decimals).toString();
       const data = [nonce, toChainIndex, value, accountAddress, symbol];
 
       const bridgeInstance = new provider.eth.Contract(WQBridge, bridgeAddress);
@@ -189,10 +205,10 @@ export default {
     } catch (e) {
       console.error('Error in swap:', e);
       showToast('Swapping error', e.message, 'danger');
-      return error(e.code, 'Error in swap action', e.data);
+      return error(e.code, e.message, e.data);
     }
   },
-  async subscribeWS({ commit, getters }, userAddress) {
+  async subscribeWS({ commit, getters, rootGetters }, userAddress) {
     try {
       await this.$wsNotifs.subscribe(`${Path.NOTIFICATIONS}${Path.BRIDGE}/${userAddress}`, async (msg) => {
         const swaps = JSON.parse(JSON.stringify(getters.getSwaps));
@@ -204,9 +220,22 @@ export default {
         } = msg.data;
         if (event === BridgeEvents.SWAP_INITIALIZED) {
           if (swaps.length === 10) swaps.splice(9, 1);
+          const { symbol } = msg.data.returnValues;
+
+          const tokenData = rootGetters['wallet/getBalanceData'][symbol];
+          let { decimals } = tokenData;
+          if ([TokenSymbols.USDT, TokenSymbols.USDC].includes(symbol)) {
+            const ethId = BlockchainIndex[Chains.ETHEREUM];
+            if (+chainFrom === BlockchainIndex[Chains.BINANCE] || +chainFrom === ethId) {
+              decimals = 6;
+            } else if (+chainTo !== ethId) {
+              decimals = 18;
+            }
+          }
+
           swaps.unshift({
             ...msg.data.returnValues,
-            amount: new BigNumber(amount).shiftedBy(msg.data.returnValues.symbol === TokenSymbols.USDT ? -6 : -18).toString(),
+            amount: new BigNumber(amount).shiftedBy(-decimals || -18).toString(),
             chain: BlockchainByIndex[chainTo],
             created: timestamp,
             direction: [
@@ -221,8 +250,13 @@ export default {
           });
           swapsCount += 1;
         } else if (event === BridgeEvents.SWAP_REDEEMED) {
+          const { returnValues } = msg.data;
           swaps.some((item) => {
-            if (+item.nonce === +msg.data.returnValues.nonce) {
+            if (
+              +item.nonce === +returnValues.nonce
+              && +item.chainFrom === +returnValues.chainFrom
+              && +item.chainTo === +returnValues.chainTo
+            ) {
               item.status = false;
               item.canRedeemed = false;
               return true;

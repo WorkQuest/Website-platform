@@ -159,8 +159,7 @@ export default {
         },
         {
           title: this.$t('auction.card.completed.lotAmount'),
-          // TODO Дождаться Васю, я не должен в итоговую сумму лота прибавлять 3%
-          value: `${new BigNumber(lotAmount).multipliedBy(1.03).toFixed(4, 1)} ${symbol}`,
+          value: `${new BigNumber(lotAmount).toFixed(4, 1)} ${symbol}`,
           link: false,
         },
         {

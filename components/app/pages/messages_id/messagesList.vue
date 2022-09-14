@@ -195,7 +195,7 @@
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 import modals from '~/store/modals/modals';
-import { Path } from '~/utils/enums';
+import { Path, RouterNames } from '~/utils/enums';
 import {
   MessageAction, MessageType, UserRoles, FileTypes, GetInfoMessageText, ChatType,
 } from '~/utils/сonstants/chat';
@@ -249,7 +249,9 @@ export default {
       if (!this.isScrollBtnVis && oldVal) this.scrollToBottom();
     },
     currChatIsUnread(newVal) {
-      if (newVal && this.lastMessageId) this.readMessages();
+      if (this.$route.name !== RouterNames.DISPUTES_ID) {
+        if (newVal && this.lastMessageId) this.readMessages();
+      }
     },
   },
 
@@ -297,7 +299,7 @@ export default {
       return prevMessage?.sender?.user?.id === message.sender?.user?.id && prevMessage?.type !== MessageType.INFO;
     },
     setSenderAvatar({ sender }) {
-      if (sender.type === UserRoles.ADMIN) return images.WQ_LOGO_ROUNDED;
+      if (sender?.type === UserRoles.ADMIN) return images.WQ_LOGO_ROUNDED;
       return sender.user?.avatar ? sender.user?.avatar.url : images.EMPTY_AVATAR;
     },
     async getMessages(direction, currBottomOffset) {
@@ -450,7 +452,7 @@ export default {
           return this.UserName(message.sender.user?.firstName, message.sender.user?.lastName);
         }
       }
-      if (sender.type === UserRoles.USER) return this.UserName(sender.user?.firstName, sender.user?.lastName);
+      if (sender?.type === UserRoles.USER) return this.UserName(sender.user?.firstName, sender.user?.lastName);
       return this.$t('chat.workquestAdmin');
     },
   },
@@ -790,6 +792,42 @@ export default {
       text-overflow: ellipsis;
       overflow: hidden;
     }
+  }
+}
+
+@include _575 {
+  .message {
+    grid-template-columns: 30px auto max-content;
+    gap: 10px;
+
+    &-list__messages {
+      gap: 15px;
+      padding: 15px 15px 0;
+    }
+
+    &__avatar {
+      width: 30px;
+      height: 30px;
+    }
+
+    &__title_name {
+      font-size: 14px;
+    }
+  }
+
+  .image-cont__image {
+    width: 105px;
+  }
+
+  .info-message {
+    &__link_left {
+      word-break: break-word;
+      white-space: pre-line;
+    }
+  }
+
+  .messages__container {
+    margin: 0;
   }
 }
 </style>

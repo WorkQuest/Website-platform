@@ -114,7 +114,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import { TokenMap, TokenSymbols } from '~/utils/enums';
-import { ERC20 } from '~/abi';
 import { CollateralMethods } from '~/utils/сonstants/auction';
 
 export default {
@@ -179,16 +178,12 @@ export default {
     await Promise.all([
       this.$store.dispatch('wallet/getBalance'),
       this.$store.dispatch('wallet/fetchWalletData', {
-        method: 'balanceOf',
         address: this.userWalletAddress,
-        abi: ERC20,
         token: TokenMap[TokenSymbols.WUSD],
         symbol: TokenSymbols.WUSD,
       }),
       this.$store.dispatch('wallet/fetchWalletData', {
-        method: 'balanceOf',
         address: this.userWalletAddress,
-        abi: ERC20,
         token: TokenMap[this.selCurrencyID],
         symbol: this.selCurrencyID,
       }),

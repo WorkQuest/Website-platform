@@ -233,7 +233,7 @@ import {
 import {
   QuestMethods, EditQuestState, QuestStatuses, PaidTariff,
 } from '~/utils/сonstants/quests';
-import { ERC20, WorkQuest, WQPromotion } from '~/abi';
+import { WorkQuest, WQPromotion } from '~/abi';
 import { error, success } from '~/utils/web3';
 import { CommissionForCreatingAQuest } from '~/utils/сonstants/commission';
 import { images } from '~/utils/images';
@@ -468,9 +468,7 @@ export default {
 
       new Promise(async (resolve, reject) => {
         await this.$store.dispatch('wallet/fetchWalletData', {
-          method: 'balanceOf',
           address: this.userWalletAddress,
-          abi: ERC20,
           token: tokenAddress,
           symbol: TokenSymbols.WUSD,
         });
@@ -502,9 +500,7 @@ export default {
           }),
           this.$store.dispatch('wallet/getBalance'),
           this.$store.dispatch('wallet/fetchWalletData', {
-            method: 'balanceOf',
             address: this.userWalletAddress,
-            abi: ERC20,
             token: tokenAddress,
             symbol: TokenSymbols.WUSD,
           }),
@@ -590,9 +586,7 @@ export default {
 
           this.SetLoader(true);
           await this.$store.dispatch('wallet/fetchWalletData', {
-            method: 'balanceOf',
             address: this.userWalletAddress,
-            abi: ERC20,
             token: wusdAddress,
             symbol: TokenSymbols.WUSD,
           });

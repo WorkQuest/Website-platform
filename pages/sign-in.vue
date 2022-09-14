@@ -83,7 +83,7 @@
           <div
             class="auth__text auth__text_link"
             data-selector="ACTION-BTN-FORGOT-PASSWORD"
-            @click="showRestoreModal()"
+            @click="showRestoreModal"
           >
             {{ $t('meta.btns.forgot') }}
           </div>
@@ -117,7 +117,7 @@
         <div class="auth__icons">
           <button
             class="auth__btn auth__btn_workQuest"
-            @click="showSignWorkQuest()"
+            @click="showSignWorkQuest"
           >
             <img
               :src="$options.images.WQ_LOGO"

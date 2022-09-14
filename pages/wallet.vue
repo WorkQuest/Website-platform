@@ -226,7 +226,7 @@ import {
 import EmptyData from '~/components/app/info/emptyData';
 import CollateralTable from '~/components/app/pages/wallet/CollateralTable';
 import { error, success } from '~/utils/web3';
-import { BuyWQTTokensData } from '~/utils/сonstants/bridge';
+import { BuyWQTTokensData, SwapAddresses } from '~/utils/сonstants/bridge';
 import { IS_PLUG_PROD } from '~/utils/locker-data';
 
 export default {
@@ -278,7 +278,7 @@ export default {
     },
     networkList() {
       return [
-        BuyWQTTokensData.get(Chains.WORKNET),
+        SwapAddresses.get(Chains.WORKNET),
         BuyWQTTokensData.get(Chains.ETHEREUM),
         BuyWQTTokensData.get(Chains.BINANCE),
         BuyWQTTokensData.get(Chains.POLYGON),
@@ -433,12 +433,11 @@ export default {
         network: this.selectedNetwork,
       });
     },
-    async loadData(isFirstLoading) {
+    async loadData(isShowLoading) {
       if (this.isFetchingBalance) return;
 
-      if (isFirstLoading) this.isFetchingBalance = true;
-
-      const { selectedToken, userWalletAddress } = this;
+      if (isShowLoading) this.isFetchingBalance = true;
+      const { selectedToken, userWalletAddress, selectedTokenAddress } = this;
 
       // 0 token is always native token for current network!
       if (this.nativeTokenSymbol === selectedToken) {
@@ -448,20 +447,16 @@ export default {
         }
         await Promise.all(toFetch);
       } else {
-        const payload = { address: userWalletAddress, abi: ERC20 };
         await this.$store.dispatch('wallet/fetchWalletData', {
-          method: 'balanceOf',
-          ...payload,
-          token: this.selectedTokenAddress,
+          address: userWalletAddress,
+          token: selectedTokenAddress,
           symbol: selectedToken,
         });
       }
 
       this.isFetchingBalance = false;
-      if (isFirstLoading) {
-        await this.getTransactions();
-      } else if (this.prevSelectedTokenBalance !== this.selectedTokenData.fullBalance) {
-        await this.getTransactions();
+      await this.getTransactions();
+      if (!isShowLoading && this.prevSelectedTokenBalance !== this.selectedTokenData.fullBalance) {
         this.ShowToast(`Balance update (${this.selectedToken})`, 'Wallet');
       }
       this.prevSelectedTokenBalance = this.selectedTokenData.fullBalance;

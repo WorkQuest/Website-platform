@@ -23,13 +23,16 @@ export default {
       [symbol]: { decimals },
     };
   },
-  setBalance(state, { symbol, balance, fullBalance }) {
+  setBalance(state, {
+    symbol, balance, fullBalance, decimals,
+  }) {
     state.balance = {
       ...state.balance,
       [symbol]: {
         ...state.balance[symbol],
         balance,
         fullBalance,
+        decimals: decimals || state.balance[symbol].decimals,
       },
     };
   },

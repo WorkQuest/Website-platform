@@ -247,23 +247,34 @@ export default {
     }
   },
   async fetchWalletData({ commit, getters }, {
-    method, address, abi, token, symbol,
+    address, token, symbol,
   }) {
     try {
-      const res = await fetchContractData(
-        method,
-        abi,
-        token,
-        [address],
-        GetWalletProvider(),
-      );
-      const { decimals } = getters.getBalanceData[symbol];
+      const provider = GetWalletProvider();
+      const [balance, decimals] = await Promise.all([
+        fetchContractData(
+          'balanceOf',
+          ERC20,
+          token,
+          [address],
+          provider,
+        ),
+        fetchContractData(
+          'decimals',
+          ERC20,
+          token,
+          [],
+          provider,
+        ),
+      ]);
+
       commit('setBalance', {
         symbol,
-        balance: res ? getStyledAmount(res, false, decimals) : 0,
-        fullBalance: res ? getStyledAmount(res, true, decimals) : 0,
+        balance: balance ? getStyledAmount(balance, false, decimals) : 0,
+        fullBalance: balance ? getStyledAmount(balance, true, decimals) : 0,
+        decimals,
       });
-      return success(res);
+      return success(balance);
     } catch (e) {
       return error(e.message, e);
     }

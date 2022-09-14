@@ -89,7 +89,7 @@
                 @click="tryRemoveNotification($event, notification)"
               >
               <base-btn
-                v-if="notification.params"
+                v-if="notification.params && notification.params.path"
                 mode="outline"
                 :link="notification.params.isExternalLink ? `${notification.params.externalBase}${notification.params.path}` : ''"
                 class="button__view"
@@ -243,7 +243,7 @@ export default {
       this.checkUnseenNotifs();
     },
     goToEvent(notification, isRefBtn) {
-      if (!notification.params || (document.body.offsetWidth > 767 && !isRefBtn)) return;
+      if (!notification.params?.path || (document.body.offsetWidth > 767 && !isRefBtn)) return;
       const { path } = notification.params;
       if (notification.params.isExternalLink) {
         window.open(notification.params.externalBase + path, '_blank');
@@ -364,6 +364,8 @@ export default {
 }
 
 .info {
+  display: grid;
+
   &__date {
     margin-top: 10px;
     font-weight: 400;
@@ -380,9 +382,10 @@ export default {
     max-width: 60vw;
     text-overflow: ellipsis;
     overflow: hidden;
+
     &_hov {
       @include hov;
-      width: fit-content;
+      width: 100%;
       display: inline-block;
       overflow: hidden;
       text-overflow: ellipsis;

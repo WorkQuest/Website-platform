@@ -34,7 +34,7 @@
               class="grid__input"
               data-selector="AMOUNT"
               :name="$tc('modals.amountField')"
-              :rules="`required|decimal|decimalPlaces:18|not_enough_funds:${currentToken.amount}|min_value:0.00001|max_value:${currentToken.amount}`"
+              :rules="`required|decimal|decimalPlaces:${ currentToken.decimals || 18 }|not_enough_funds:${currentToken.amount}|min_value:0.00001|max_value:${currentToken.amount}`"
             >
               <template
                 v-slot:right-absolute
@@ -88,10 +88,11 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import { Chains, ConnectionTypes, TokenSymbols } from '~/utils/enums';
-import { BridgeAddresses } from '~/utils/сonstants/bridge';
+import { BlockchainIndex, BridgeAddresses, SwapAddresses } from '~/utils/сonstants/bridge';
 import { getChainIdByChain, GetWeb3Provider } from '~/utils/web3';
-import { getProvider, GetWalletProvider } from '~/utils/wallet';
+import { GetWalletProvider } from '~/utils/wallet';
 
 export default {
   name: 'ModalSwap',
@@ -117,13 +118,17 @@ export default {
       return GetWalletProvider;
     },
     tokens() {
-      const availableTokens = [TokenSymbols.WQT];
       const { from, to } = this.options;
-      if (to.chain === Chains.WORKNET || from.chain === Chains.WORKNET) {
-        if (from.chain === Chains.ETHEREUM || to.chain === Chains.ETHEREUM) availableTokens.push(TokenSymbols.ETH, TokenSymbols.USDT);
-        else if (from.chain === Chains.BINANCE || to.chain === Chains.BINANCE) availableTokens.push(TokenSymbols.BNB, TokenSymbols.USDT);
+      if ((from.chain === Chains.BINANCE && to.chain === Chains.ETHEREUM)
+        || (from.chain === Chains.ETHEREUM && to.chain === Chains.BINANCE)) {
+        return [TokenSymbols.WQT];
       }
-      return availableTokens;
+      const toRemoveSymbol = to.chain === Chains.BINANCE ? TokenSymbols.ETH : TokenSymbols.BNB;
+      const swapsData = SwapAddresses.get(from.chain);
+      return [
+        swapsData.nativeSymbol,
+        ...Object.keys(SwapAddresses.get(from.chain).tokenAddress),
+      ].filter((item) => item !== toRemoveSymbol);
     },
     accountAddress() {
       const chain = this.options?.to?.chain;
@@ -170,6 +175,14 @@ export default {
         isNative: from.nativeSymbol === symbol,
         provider,
       });
+      // Bridge contract from BSC net for USDT & USDC decimals limit 6
+      if (from.chain === Chains.BINANCE && [TokenSymbols.USDT, TokenSymbols.USDC].includes(this.currentToken.symbol)) {
+        this.$store.commit('bridge/setToken', {
+          ...this.currentToken,
+          amount: new BigNumber(this.currentToken.amount).decimalPlaces(6).toString(),
+          decimals: 6,
+        });
+      }
       this.SetLoader(false);
     },
     setMaxValue() {
@@ -184,7 +197,7 @@ export default {
         amount: this.amount,
         symbol: this.tokens[this.tokenId],
         isNative: from.nativeSymbol === this.tokens[this.tokenId],
-        decimals: this.currentToken.decimals,
+        decimals: this.currentToken.decimalsForSubmit,
       });
     },
   },
