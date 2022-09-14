@@ -15,6 +15,7 @@ export default () => ({
     USDT: { balance: 0, fullBalance: 0, decimals: 6 },
     USDC: { balance: 0, fullBalance: 0, decimals: 6 },
     MATIC: { balance: 0, fullBalance: 0, decimals: 18 },
+    LP: { balance: 0, fullBalance: 0, decimals: 18 },
   },
   frozenBalance: 0,
   pensionWallet: null,
