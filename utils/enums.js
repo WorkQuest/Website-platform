@@ -160,7 +160,6 @@ export const Path = {
   MESSAGES: '/messages',
   EDIT_QUEST: '/edit-quest',
   COLLATERAL: '/collateral',
-  WIKI: '/wiki',
   RAISED_VIEWS: '/raised-views',
   NOTIFICATIONS: '/notifications',
   RETIREMENT: '/retirement',
@@ -175,15 +174,62 @@ export const RouterNames = {
   ROOT: 'index',
   SIGN_IN: 'sign-in',
   SIGN_UP: 'sign-up',
+  RESTORE: 'restore',
   ROLE: 'role',
+
+  CREDITING: 'crediting',
+  REFERRAL: 'referral',
+  REFERRAL_MY: 'referral-my',
+  RETIREMENT: 'retirement',
+  RETIREMENT_MY: 'retirement-my',
+  STAKING: 'staking',
+  STAKING_ID: 'staking-id',
+  INSURING: 'insuring',
+  INSURING_ID: 'insuring-id',
+  BRIDGE: 'bridge',
+  MINING: 'mining',
+  MINING_ID: 'mining-id',
+  LENDING: 'lending',
+  COLLATERAL: 'collateral',
+  AUCTION: 'auction',
+  SAVINGS: 'savings',
+  SAVINGS_ID: 'savings-id',
+  PROFILE_ID: 'profile-id',
+  QUESTS: 'quests',
+  QUESTS_ID: 'quests-id',
+  WORKERS: 'workers',
+  MESSAGES: 'messages',
+  MESSAGES_ID: 'messages-id',
+  CREATE_QUEST: 'create-quest',
+  DISPUTES: 'disputes',
+  DISPUTES_ID: 'disputes-id',
 };
 
+export const DeFiBluePanelPathNames = [
+  RouterNames.BRIDGE,
+  RouterNames.MINING,
+  RouterNames.MINING_ID,
+  RouterNames.INSURING,
+  RouterNames.INSURING_ID,
+  RouterNames.LENDING,
+  RouterNames.REFERRAL,
+  RouterNames.REFERRAL_MY,
+  RouterNames.STAKING,
+  RouterNames.STAKING_ID,
+  RouterNames.COLLATERAL,
+  RouterNames.RETIREMENT,
+  RouterNames.RETIREMENT_MY,
+  RouterNames.SAVINGS,
+  RouterNames.SAVINGS_ID,
+];
+
 export const PreventLogoutPathNames = [
-  'mining',
-  'mining-id',
-  'bridge',
-  'crediting',
-  'collateral',
+  RouterNames.MINING,
+  RouterNames.MINING_ID,
+  RouterNames.BRIDGE,
+  RouterNames.CREDITING,
+  RouterNames.COLLATERAL,
+  RouterNames.AUCTION,
 ];
 
 export const PathDAO = {
@@ -250,6 +296,29 @@ export const ExplorerUrl = {
   stage: 'https://stage-explorer.workquest.co',
   develop: 'https://dev-explorer.workquest.co',
 }[process.env.BRANCH];
+
+export const EthereumExplorerUrl = {
+  master: 'https://etherscan.io',
+  testnet: 'https://rinkeby.etherscan.io',
+  stage: 'https://etherscan.io',
+  develop: 'https://rinkeby.etherscan.io',
+}[process.env.BRANCH];
+
+export const BscExplorerUrl = {
+  master: 'https://bscscan.com',
+  testnet: 'https://testnet.bscscan.com',
+  stage: 'https://bscscan.com',
+  develop: 'https://testnet.bscscan.com',
+}[process.env.BRANCH];
+
+export const PolygonExplorerUrl = {
+  master: 'https://polygonscan.com',
+  testnet: 'https://mumbai.polygonscan.com',
+  stage: 'https://polygonscan.com',
+  develop: 'https://mumbai.polygonscan.com',
+}[process.env.BRANCH];
+
+export const WikiUrl = 'https://workquest.wiki';
 
 export const NetworksData = {
   ETH_MAIN: {
@@ -377,14 +446,6 @@ export const ProviderTypesByChain = {
   [Chains.POLYGON]: 'POLYGON_PROVIDER',
 };
 
-// wallet balance
-export const WorknetTokenAddresses = Object.freeze([
-  ENV.WORKNET_WUSD_TOKEN,
-  ENV.WORKNET_WBNB_TOKEN,
-  ENV.WORKNET_WETH_TOKEN,
-  ENV.WORKNET_USDT_TOKEN,
-]);
-
 export const WalletTokensData = Object.freeze({
   [Chains.WORKNET]: {
     WSProvider: ENV.WQ_WS_PROVIDER,
@@ -408,37 +469,41 @@ export const WalletTokensData = Object.freeze({
   [Chains.ETHEREUM]: {
     WSProvider: ENV.ETH_WS_PROVIDER,
     chain: Chains.ETHEREUM,
-    explorer: `https://${IS_PROD ? '' : 'rinkeby.'}etherscan.io`,
+    explorer: EthereumExplorerUrl,
     explorerIcon: images.ETH,
     tokenAddresses: [
       ENV.ETHEREUM_WQT_TOKEN,
       ENV.ETHEREUM_USDT_TOKEN,
+      ENV.ETHEREUM_USDC_TOKEN,
     ],
     tokenList: [
       { title: TokenSymbols.ETH, icon: images.ETH_BLACK }, // FIRST IS NATIVE TOKEN!
       { title: TokenSymbols.WQT, icon: images.WQT, tokenAddress: ENV.ETHEREUM_WQT_TOKEN },
       { title: TokenSymbols.USDT, icon: images.USDT, tokenAddress: ENV.ETHEREUM_USDT_TOKEN },
+      { title: TokenSymbols.USDC, icon: images.USDC, tokenAddress: ENV.ETHEREUM_USDC_TOKEN },
     ],
   },
   [Chains.BINANCE]: {
     WSProvider: ENV.BSC_WS_PROVIDER,
     chain: Chains.BINANCE,
-    explorer: `https://${IS_PROD ? '' : 'testnet.'}bscscan.com`,
+    explorer: BscExplorerUrl,
     explorerIcon: images.BNB,
     tokenAddresses: [
       ENV.BSC_WQT_TOKEN,
       ENV.BSC_USDT_TOKEN,
+      ENV.BSC_USDC_TOKEN,
     ],
     tokenList: [
       { title: TokenSymbols.BNB, icon: images.BNB }, // FIRST IS NATIVE TOKEN!
       { title: TokenSymbols.WQT, icon: images.WQT, tokenAddress: ENV.BSC_WQT_TOKEN },
       { title: TokenSymbols.USDT, icon: images.USDT, tokenAddress: ENV.BSC_USDT_TOKEN },
+      { title: TokenSymbols.USDC, icon: images.USDC, tokenAddress: ENV.BSC_USDC_TOKEN },
     ],
   },
   [Chains.POLYGON]: {
     WSProvider: ENV.POLYGON_WS_PROVIDER,
     chain: Chains.POLYGON,
-    explorer: `https://${IS_PROD ? '' : 'mumbai.'}polygonscan.com`,
+    explorer: PolygonExplorerUrl,
     explorerIcon: images.POLYGON,
     tokenAddresses: [
       ENV.POLYGON_USDT_TOKEN,

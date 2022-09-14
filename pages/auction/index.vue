@@ -3,28 +3,6 @@
     class="auction"
     data-selector="PAGE-AUCTION"
   >
-    <div class="search">
-      <div class="search__block">
-        <base-field
-          v-model="searchValue"
-          class="search__block-item"
-          is-search
-          is-hide-error
-          :placeholder="searchPlaceholder"
-          data-selector="INPUT-SEARCH"
-          @input="goSearchDebounce"
-          @enter="goSearch"
-        />
-        <div class="search__block-item">
-          <base-btn
-            data-selector="ACTION-AUCTION-SEARCH"
-            @click="goSearch"
-          >
-            {{ $t('auction.search.button') }}
-          </base-btn>
-        </div>
-      </div>
-    </div>
     <div class="auction__content">
       <h2 class="auction__title">
         {{ $t('auction.title') }}
@@ -33,25 +11,25 @@
         <div class="auction__topbar-switcher">
           <base-btn
             data-selector="ACTION-AUCTION-SELECT-INACTIVE"
-            :mode="currentTab === $options.LotsStatuses.INACTIVE ? 'activeTab' : 'light'"
+            :mode="currentTab === LotsStatuses.INACTIVE ? 'activeTab' : 'light'"
             :padding="true"
-            @click="currentTab = $options.LotsStatuses.INACTIVE"
+            @click="$store.commit('auction/setCurrentTab', LotsStatuses.INACTIVE)"
           >
             {{ $t('auction.tabs.inactive') }}
           </base-btn>
           <base-btn
             data-selector="ACTION-AUCTION-SELECT-CURRENT"
-            :mode="currentTab === $options.LotsStatuses.STARTED ? 'activeTab' : 'light'"
+            :mode="currentTab === LotsStatuses.STARTED ? 'activeTab' : 'light'"
             :padding="true"
-            @click="currentTab = $options.LotsStatuses.STARTED"
+            @click="$store.commit('auction/setCurrentTab', LotsStatuses.STARTED)"
           >
             {{ $t('auction.tabs.current') }}
           </base-btn>
           <base-btn
             data-selector="ACTION-AUCTION-SELECT-COMPLETED"
-            :mode="currentTab === $options.LotsStatuses.BOUGHT ? 'activeTab' : 'light'"
+            :mode="currentTab === LotsStatuses.BOUGHT ? 'activeTab' : 'light'"
             :padding="true"
-            @click="currentTab = $options.LotsStatuses.BOUGHT"
+            @click="$store.commit('auction/setCurrentTab', LotsStatuses.BOUGHT)"
           >
             {{ $t('auction.tabs.completed') }}
           </base-btn>
@@ -66,7 +44,7 @@
             <span class="item-btn__text">
               {{ $t('auction.time') }}
             </span>
-            <span :class="`item-btn__icon icon icon-Sorting_${params['sort[createdAt]'] === 'desc' ? 'descending' : 'ascending'}`" />
+            <span :class="`item-btn__icon icon icon-Sorting_${sort === 'desc' ? 'descending' : 'ascending'}`" />
           </base-btn>
         </div>
       </div>
@@ -74,13 +52,13 @@
         v-if="lotsCount"
         class="auction__list"
         :class="[
-          {'auction__list_completed': $options.LotsStatuses.BOUGHT === currentTab},
-          {'auction__list_current': [$options.LotsStatuses.STARTED, $options.LotsStatuses.INACTIVE].includes(currentTab)},
+          {'auction__list_completed': LotsStatuses.BOUGHT === currentTab},
+          {'auction__list_current': [LotsStatuses.STARTED, LotsStatuses.INACTIVE].includes(currentTab)},
         ]"
       >
         <auction-card
-          v-for="lot in lots"
-          :key="lot.id"
+          v-for="(lot,i) in lots"
+          :key="lot.id + i"
           :lot="lot"
           :type-of-lot="currentTab"
         />
@@ -107,122 +85,98 @@ import { mapActions, mapGetters } from 'vuex';
 import AuctionCard from '~/components/app/pages/auction/AuctionCard';
 import { Layout } from '~/utils/enums';
 import { IS_PLUG_PROD } from '~/utils/locker-data';
-
-const LotsStatuses = {
-  INACTIVE: 0,
-  STARTED: 1,
-  BOUGHT: 2,
-  CANCELED: 3,
-};
-
-const LIMIT = 12;
+import { AUCTION_CARDS_LIMIT, LotsStatuses } from '~/utils/сonstants/auction';
 
 export default {
   name: 'Auction',
-  LotsStatuses,
-  layout({ store }) {
+  layout({ $cookies }) {
     // TODO PLUG for release
     if (IS_PLUG_PROD) return Layout.DEFAULT;
-    return store.getters['user/isAuth'] ? Layout.DEFAULT : Layout.GUEST;
+    return $cookies.get('access') ? Layout.DEFAULT : Layout.GUEST;
   },
   components: {
     AuctionCard,
   },
   data() {
     return {
-      searchValue: '',
-      searchTimeout: null,
-      currentTab: LotsStatuses.INACTIVE,
-
+      LotsStatuses,
       params: {
-        'sort[createdAt]': 'desc',
-        status: LotsStatuses.INACTIVE,
-        limit: LIMIT,
+        limit: AUCTION_CARDS_LIMIT,
         offset: 0,
-        q: '',
       },
+      sort: 'desc',
       currentPage: 1,
     };
   },
   computed: {
     ...mapGetters({
+      isAuth: 'user/isAuth',
       userData: 'user/getUserData',
       walletAddress: 'user/getUserWalletAddress',
+
+      currentTab: 'auction/getCurrentTab',
       lots: 'auction/getLots',
       lotsCount: 'auction/getLotsCount',
+
+      isWalletConnected: 'wallet/getIsWalletConnected',
     }),
-    searchPlaceholder() {
-      return this.$t('auction.search.placeholder');
-    },
     totalPages() {
-      return Math.ceil(this.lotsCount / LIMIT) || 0;
+      return Math.ceil(this.lotsCount / AUCTION_CARDS_LIMIT) || 0;
     },
   },
   watch: {
-    currentTab: {
-      async handler(value) {
-        this.currentPage = 1;
-        this.params.status = value;
-        this.params['sort[createdAt]'] = 'desc';
-        this.$store.commit('auction/setLost', { lots: [], count: 0 });
-        await this.fetchLots({ params: this.params });
-      },
+    async currentTab() {
+      this.currentPage = 1;
+      this.sort = 'desc';
+      await this.clearLots();
+      await this.setPage(this.currentPage);
     },
   },
-  mounted() {
-    this.fetchLots({
-      params: this.params,
-    });
+  async beforeMount() {
+    if (!this.isWalletConnected) {
+      await this.$store.dispatch('wallet/checkWalletConnected', {
+        nuxt: this.$nuxt,
+        needConfirm: this.isAuth,
+      });
+    }
+  },
+  async mounted() {
+    await Promise.all([
+      this.setPage(this.currentPage),
+      this.fetchDuration(),
+      this.initWS(),
+    ]);
+    if (!this.isWalletConnected) return;
+    await this.getBalance();
+  },
+  async beforeDestroy() {
+    await this.destroyWS();
   },
   methods: {
     ...mapActions({
-      fetchLots: 'auction/fetchLots',
-    }),
+      getBalance: 'wallet/getBalance',
 
-    goSearch() {
-      clearTimeout(this.searchTimeout);
-      // TODO search
-    },
-    goSearchDebounce() {
-      clearTimeout(this.searchTimeout);
-      this.searchTimeout = setTimeout(() => {
-        // TODO search
-      }, 600);
-    },
+      fetchLots: 'auction/fetchLots',
+      clearLots: 'auction/clearLots',
+      fetchDuration: 'auction/fetchAuctionsDuration',
+
+      initWS: 'auction/subscribeWS',
+      destroyWS: 'auction/unsubscribeWS',
+    }),
     async changeTimeSorting() {
-      this.params['sort[createdAt]'] = this.params['sort[createdAt]'] === 'asc' ? 'desc' : 'asc';
-      await this.fetchLots({ params: this.params });
+      this.sort = this.sort === 'asc' ? 'desc' : 'asc';
+      await this.setPage(this.currentPage);
     },
     async setPage(value) {
       this.currentPage = value;
-      this.params.offset = LIMIT * (value - 1);
-      await this.fetchLots({ params: this.params });
+      this.params.offset = AUCTION_CARDS_LIMIT * (value - 1);
+      await this.fetchLots({ lotStatus: this.currentTab, params: this.params, sort: this.sort });
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.search {
-  max-width: 1180px;
-  margin: 30px auto;
-
-  &__block {
-    display: grid;
-    grid-template-columns: 1fr 260px;
-
-    @include box;
-  }
-
-  &__block-item {
-    padding: 20px;
-    border-right: 1px solid $black0;
-
-    &:last-child {
-      border-right: none;
-    }
-  }
-}
 .auction {
   padding: 0 15px;
 
@@ -233,11 +187,12 @@ export default {
   }
 
   &__title {
-    margin-top: 73px;
+    margin-top: 30px;
+    margin-bottom: 44px;
+
     font-weight: 500;
     font-size: 25px;
     line-height: 130%;
-    margin-bottom: 44px;
   }
 
   &__topbar {
@@ -320,14 +275,6 @@ export default {
       &-block {
         display: flex;
         justify-content: center;
-      }
-    }
-  }
-  .search {
-    &__block {
-      grid-template-columns: 1fr 140px;
-      &-item {
-        padding: 5px;
       }
     }
   }

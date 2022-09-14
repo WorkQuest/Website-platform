@@ -95,9 +95,9 @@
           data-selector="ADDRESS-FIELD"
           mode="icon"
           :selector="true"
-          rules="required"
+          :rules="{required: true, geo_is_address: { addresses: addressesBuffer } }"
           :name="$tc('quests.address')"
-          @selector="getAddressInfo(address)"
+          @selector="debouncedAddressSearch(address)"
         >
           <template v-slot:left>
             <span class="icon-map" />
@@ -202,6 +202,7 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
+import debounce from '~/utils/debounce';
 import {
   PriorityFilter, TokenMap, TokenSymbols, TypeOfEmployments, PayPeriodsIndex, WorkplaceIndex,
 } from '~/utils/enums';
@@ -228,10 +229,12 @@ export default {
       price: '',
       coordinates: {},
       addresses: [],
+      addressesBuffer: [], // for vee validate
       files: [],
       geoCode: null,
       isClearData: false,
       isCheckedEditAfter: false,
+      debouncedAddressSearch: null,
     };
   },
   computed: {
@@ -290,10 +293,15 @@ export default {
       key: process.env.GMAPKEY,
       lang: this.$i18n?.localeProperties?.code || 'en-US',
     });
+    this.debouncedAddressSearch = debounce(this.getAddressInfo, 300);
     this.SetLoader(false);
+
+    // correctly address on loadpage
+    this.addressesBuffer = [{ formatted: this.address }];
   },
   async beforeDestroy() {
     await this.setQuestDraft();
+    this.debouncedAddressSearch = null;
   },
   methods: {
     async clearData() {
@@ -381,10 +389,12 @@ export default {
       try {
         if (address.length) {
           this.addresses = await this.geoCode.geolookup(address);
+          this.addressesBuffer = this.addresses;
           this.coordinates = { lng: this.addresses[0].lng, lat: this.addresses[0].lat };
         } else this.addresses = [];
       } catch (e) {
         this.addresses = [];
+        this.addressesBuffer = [];
         console.error('Geo look up is failed', e);
       }
     },
@@ -404,9 +414,7 @@ export default {
           spenderAddress,
         }),
         this.$store.dispatch('wallet/fetchWalletData', {
-          method: 'balanceOf',
           address: this.userWalletAddress,
-          abi: ERC20,
           token: tokenAddress,
           symbol: TokenSymbols.WUSD,
         }),
@@ -471,9 +479,7 @@ export default {
           nonce: '123',
         }),
         this.$store.dispatch('wallet/fetchWalletData', {
-          method: 'balanceOf',
           address: this.userWalletAddress,
-          abi: ERC20,
           token: TokenMap[TokenSymbols.WUSD],
           symbol: TokenSymbols.WUSD,
         }),

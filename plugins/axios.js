@@ -73,9 +73,9 @@ export default ({
         isRefreshing = true;
         originalRequest._retry = true;
         const responseRefresh = await store.dispatch('user/refreshTokens');
-        if (responseRefresh?.ok) {
-          return $axios(originalRequest);
-        }
+
+        if (responseRefresh?.ok) return $axios(originalRequest);
+
         return null;
       }
 

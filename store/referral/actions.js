@@ -209,14 +209,14 @@ export default {
         }
       });
     } catch (err) {
-      console.log('subscribeToReferralEvents err', err);
+      console.log('referral/subscribeToReferralEvents', err);
     }
   },
   async unsubscribeToReferralEvents({ _ }) {
     try {
       await this.$wsNotifs.unsubscribe('/notifications/referral');
     } catch (err) {
-      console.log('unsubscribeToReferralEvents err', err);
+      console.log('referral/unsubscribeToReferralEvents', err);
     }
   },
   updateCurrentPage({ commit }, page) {

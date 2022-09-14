@@ -1,5 +1,11 @@
 export default {
+  resetUnreadNotifsCount(state) {
+    state.unreadNotifsCount = 0;
+  },
   setUnreadNotifsCount(state, count) {
+    state.unreadNotifsCount = count;
+  },
+  addUnreadNotifsCount(state, count) {
     state.unreadNotifsCount += count;
   },
   setReducedNotifications(state, notifications) {
@@ -20,14 +26,14 @@ export default {
     state.notifications.list.forEach((notif) => {
       if (ids.indexOf(notif.id) >= 0) notif.seen = true;
     });
-    this.commit('notifications/setUnreadNotifsCount', 0 - ids.length);
+    state.unreadNotifsCount -= ids.length;
   },
   addNotification(state, notification) {
-    state.notifications.list.push(notification);
+    state.notifications.list.unshift(notification);
     state.reducedNotifications.unshift(notification);
     state.reducedNotifications.length = state.reducedNotifications.length === 1 ? 1 : 2;
     state.notifications.count += 1;
-    this.commit('notifications/setUnreadNotifsCount', 1);
+    state.unreadNotifsCount += 1;
   },
   addLocalNotification(state, notification) {
     if (state.notifications.list.length < state.limitInNotificationPage
@@ -37,7 +43,7 @@ export default {
     }
     if (state.notifications.count < 2) state.reducedNotifications.unshift(notification);
     state.reducedNotifications.length = state.reducedNotifications.length === 1 ? 1 : 2;
-    this.commit('notifications/setUnreadNotifsCount', 1);
+    state.unreadNotifsCount += 1;
   },
   setWaitForUpdateQuest(state, data) {
     state.waitForUpdateQuest = data;

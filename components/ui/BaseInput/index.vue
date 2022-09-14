@@ -145,7 +145,7 @@ export default {
     },
     autocomplete: {
       type: String,
-      default: 'on',
+      default: 'off',
     },
     rules: {
       type: [String, Array, Object],
@@ -182,8 +182,18 @@ export default {
   },
   mounted() {
     this.focus();
+    this.addMaxMinDate();
   },
   methods: {
+    addMaxMinDate() {
+      if (this.type === 'date' && this.name === this.$t('meta.fromBig')) {
+        this.$refs.input.setAttribute('max', this.$moment().format('yyyy-MM-DD'));
+        this.$refs.input.setAttribute('min', this.$moment().add(-100, 'y').format('yyyy-MM-DD'));
+      } else if (this.type === 'date' && this.name === this.$t('meta.toBig')) {
+        this.$refs.input.setAttribute('max', this.$moment().add(10, 'y').format('yyyy-MM-DD'));
+        this.$refs.input.setAttribute('min', this.$moment().format('yyyy-MM-DD'));
+      }
+    },
     focus() {
       if (this.autoFocus) this.$refs.input.focus();
     },

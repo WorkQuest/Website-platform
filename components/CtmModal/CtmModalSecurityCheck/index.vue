@@ -5,7 +5,7 @@
   >
     <div class="check__content">
       <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
+        v-slot="{handleSubmit, validated, invalid}"
         class="content__validator"
       >
         <div class="content__msg">
@@ -33,7 +33,7 @@
         <div class="content__buttons buttons">
           <base-btn
             class="buttons__button"
-            :disabled="!validated || !passed || invalid || inProgress"
+            :disabled="!validated || invalid || inProgress"
             data-selector="SEND"
             @click="handleSubmit(submit)"
           >
@@ -47,9 +47,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
-import { lifetime2FA } from '~/utils/сonstants/cookiesLifetime';
-import { Path } from '~/utils/enums';
 
 export default {
   name: 'ModalSecurityCheck',
@@ -68,11 +65,17 @@ export default {
   methods: {
     async submit() {
       if (this.inProgress) return;
-      const { actionMethod, isForLogin } = this.options;
+
+      const { actionMethod, isForLogin, isOnlySubmit } = this.options;
+      if (isOnlySubmit) {
+        await actionMethod(this.securityCode);
+        return;
+      }
       this.inProgress = true;
-      const result = await this.$store.dispatch(`user/${isForLogin ? 'validateTOTP' : 'validateSessionTOTP'}`,
-        { token: this.securityCode });
+      const method = isForLogin ? 'validateTOTP' : 'validateSessionTOTP';
+      const result = await this.$store.dispatch(`user/${method}`, { token: this.securityCode });
       this.inProgress = false;
+
       if (result) {
         if (isForLogin) await this.$store.dispatch('user/getMainData');
         else this.$store.commit('user/setTwoFAPassed', true);

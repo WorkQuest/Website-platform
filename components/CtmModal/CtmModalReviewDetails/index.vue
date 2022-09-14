@@ -235,11 +235,13 @@ export default {
     &_dark {
       font-weight: 500;
       color: #4C5767;
+      flex-shrink: 0;
     }
     &_grey {
-      margin: 0 0 0 10px;
+      margin: 0 10px 0 10px;
       font-weight: 400;
       color: #7C838D;
+      word-break: break-word;
     }
   }
 }

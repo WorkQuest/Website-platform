@@ -8,7 +8,7 @@
         <div class="chat-container__header">
           <div
             class="chat-container__arrow-back"
-            @click="goBackToChatsList()"
+            @click="goBackToChatsList"
           >
             <span class="icon-short_left" />
             <span>
@@ -164,9 +164,7 @@
                 class="image-cont__remove"
                 @click="handleRemoveFile(i)"
               >
-                <span
-                  class="icon-close_big"
-                />
+                <span class="icon-close_big" />
               </div>
             </div>
           </div>
@@ -216,16 +214,8 @@ export default {
     isGroupChat() {
       return this.currChat?.type === ChatType.GROUP;
     },
-    isPrivateChat() {
-      return this.currChat?.type === ChatType.PRIVATE;
-    },
     canShowMenu() {
-      const {
-        isCantSendMessages, isGroupChat, amIOwner, isPrivateChat,
-      } = this;
-      if (this.chatId === 'starred') return false;
-      return (!isCantSendMessages ? (!isGroupChat && !isPrivateChat)
-        || (isGroupChat && !amIOwner) : false);
+      return this.chatId !== 'starred';
     },
     isCantSendMessages() {
       const lastMsg = this.messages.list[this.messages.list.length - 1];
@@ -238,7 +228,10 @@ export default {
       );
     },
     canLeave() {
-      return this.isGroupChat && !this.amIOwner;
+      return this.isGroupChat && !this.amIOwner && this.isMeChatMember;
+    },
+    isMeChatMember() {
+      return this.currChat.members.indexOf((item) => item.userId === this.userData.id) >= 0;
     },
     amIOwner() {
       const currMemberData = this.currChat?.members && this.currChat?.members.find((el) => el.userId === this.userData.id);
@@ -323,9 +316,22 @@ export default {
     async getFiles(ev, validate) {
       const { files } = ev.target;
       const validFiles = [];
+      let isUnsupportedFound = false;
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < files.length; i++) {
         let file = files[i];
+
+        let largeLimit = null;
+        if (file.type.startsWith('image') && file.size > 10485760) largeLimit = 10;
+        else if (file.type.startsWith('video') && file.size > 52428800) largeLimit = 50;
+        else if (file.size > 10485760) largeLimit = 10;
+
+        if (largeLimit) {
+          this.ShowToast(this.$t('uploader.errors.fileSizeLimit', { n: this.$t('meta.units.mb', { count: largeLimit }) }));
+          // eslint-disable-next-line no-continue
+          continue;
+        }
+
         if (file.type === 'image/heic') {
           // eslint-disable-next-line no-await-in-loop
           file = await this.HEICConvertTo(file);
@@ -334,16 +340,16 @@ export default {
           // eslint-disable-next-line no-await-in-loop
           const isValid = await validate(ev);
           if (isValid.valid) validFiles.push(file);
+          else if (!isUnsupportedFound) {
+            isUnsupportedFound = true;
+            this.ShowModal({
+              key: modals.areYouSureNotification,
+              title: this.$t('modals.titles.noticeTitle'),
+              text: this.$t('modals.youTryToAttachUnsupportedFileFormat'),
+              isFiles: true,
+            });
+          }
         }
-      }
-
-      if (validFiles.length < files.length) {
-        this.ShowModal({
-          key: modals.areYouSureNotification,
-          title: this.$t('modals.titles.noticeTitle'),
-          text: this.$t('modals.youTryToAttachUnsupportedFileFormat'),
-          isFiles: true,
-        });
       }
 
       ev.target.value = null;
@@ -408,7 +414,7 @@ export default {
         return;
       }
 
-      const text = messageText;
+      let text = messageText;
 
       this.messageText = '';
 
@@ -422,6 +428,17 @@ export default {
           formData: file,
           type: file.type,
         };
+        // if you send media files without caption
+        if (!text) {
+          if (file.type.includes(FileTypes.VIDEO)) {
+            text = FileTypes.VIDEO;
+          } else if (file.type.includes(FileTypes.IMAGE)) {
+            text = FileTypes.IMAGE;
+          } else if (file.type.includes(FileTypes.APPLICATION)) {
+            text = FileTypes.DOCUMENT;
+          }
+        }
+
         msgFiles.push({
           url, id: i + 1, type,
         });

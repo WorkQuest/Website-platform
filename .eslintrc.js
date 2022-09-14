@@ -31,5 +31,6 @@ module.exports = {
     'no-restricted-globals': 'off',
     'global-require': 'off',
     'no-undef': 'off',
+    'no-return-assign': 'off',
   },
 };

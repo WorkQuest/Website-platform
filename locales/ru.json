@@ -1,4 +1,9 @@
 {
+  "errorLayout": {
+    "title": "Что-то пошло не так",
+    "desc": "Запрошенная вами страница не найдена. Но вы можете вернуться и попробовать еще раз.",
+    "btn": "Вернуться на главную страницу"
+  },
   "walletSwitcher": {
     "wqWallet": "WQWallet",
     "otherWallet": "Другой кошелек"
@@ -62,6 +67,7 @@
       }
     },
     "btns": {
+      "markAllRead": "Пометить все прочитанным",
       "connectSMSVer": "Подключить СМС Верификацию",
       "resendEmail": "Переотправить письмо с кодом",
       "back": "Назад",
@@ -169,6 +175,7 @@
     "redeemed": "Redeemed",
     "pay": "Оплатить",
     "skipAndEnd": "Пропустить и закончить",
+    "skip": "Пропустить",
     "cleanUp": "Clean up",
     "connected": "Подключен",
     "disconnect": "Disconnect wallet",
@@ -283,7 +290,8 @@
     "have_funds": "Не достаточно {symbol} что бы завершить транзакцию",
     "min_buy_wqt" : "To avoid unnecessary fees and network slippage, the minimum amount for this pair is ${min} {symbol}",
     "max_buy_wqt": "To avoid unnecessary fees and network slippage, the maximum amount for this pair is ${max} {symbol}",
-    "min_tokens_amount": "Insufficient tokens, min amount {min} {symbol}."
+    "min_tokens_amount": "Insufficient tokens, min amount {min} {symbol}.",
+    "geo_is_address": "Введите корректный адрес"
   },
   "about": {
     "text": "Work Quest — это социальный проект на основе технологии блокчейн для поиска работы и решения любых задач со стороны работодателя в режиме квеста. Вы ищете работу? Work Quest поможет найти квест рядом с вами и вашим городом. Нужны ли вам рабочие для выполнения целей? Просто создайте квест на сайте Work Quest. Сервис берет на себя гарантийные обязательства по выполнению квестов. Средства работодателя хранятся у нас, если работник дает подтверждение о выполнении работы, он получает задаток денежных средств на свой счет. Система рейтингов, обзоров и список выполненных квестов помогут легко найти честных людей и лучших специалистов.\n Наша цель – упростить коммуникацию между работодателем и работником, помочь трудоустроить миллионы людей, улучшить их материальное положение, решить проблему поиска надежных профессионалов во всех отраслях, создать прогрессивную цифровую экономику, построенную на принципах доверия, взаимного уважения и благополучия всех его участников."
@@ -348,7 +356,8 @@
     "importWallet": "Импорт кошелька",
     "createOrImport": "Создать или импортировать кошелек",
     "typeSecretPhrase": "Введите секретную фразу",
-    "secretPhrase": "Секретная фраза"
+    "secretPhrase": "Секретная фраза",
+    "createOrImportNote": "Please note: you can import any other wallet's mnemonic phrase"
   },
   "forgot": {
     "desc": "Мы вышлем вам инструкции по сбросу пароля."
@@ -376,6 +385,9 @@
     }
   },
   "quests": {
+    "review": {
+      "selectRating": "Пожалуйста выберите оценку"
+    },
     "workersNotInvited": "Workers not invited",
     "employer": {
       "usersNotResponded": "Users not responded"
@@ -968,6 +980,11 @@
     "txIsPending": "Transaction is pending",
     "coming": "Coming soon",
     "stillUnderConstruction": "Still under construction",
+    "defiWalletNote": {
+      "title": "Пожалуйста, обратите внимание",
+      "subtitle": "Попробуйте использовать WorkQuest Wallet для удобного взаимодействия с функциями платформы. Вы можете вносить, снимать и хранить криптовалюту абсолютно бесплатно.",
+      "useWalletWQ": "Использовать WorkQuest Wallet"
+    },
     "titles": {
       "2FA": {
         "disable": "Отключить 2FA",
@@ -976,6 +993,7 @@
       "filters": {
         "titleAll": "Все фильтры"
       },
+      "attention": "Внимание!",
       "disputePayment": "Оплата Спора",
       "saved": "Saved successfully",
       "cardAdd": "Add card",
@@ -1047,6 +1065,7 @@
       "errorNetwork": "Ошибка, Вы используете не правильную сеть. Переключитесь на {network}",
       "youCan’tDeleteActiveQuest": "Вы не можете удалить активный квест",
       "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest",
+      "youCantCreateDispute3Days": "You cannot create a dispute until 3 days have passed from the complete of this quest",
       "dontHavePeople": "У вас нет пользователей для создания группового чата"
     },
     "chatCreate": {
@@ -1315,6 +1334,7 @@
     "downWalletOnSmartphone": "Download Work Quest Wallet app on your smartphone",
     "wouldReviewEmployee": "Добавить отзыв о сотруднике?",
     "wouldReviewEmployer": "Добавить отзыв о работодателе?",
+    "installMetamask": "To use WorkQuest Wallet, you need to login into the platform.",
     "successfulMethods": {
       "claim": "Successful claim",
       "refund": "Successful refund",
@@ -1411,21 +1431,12 @@
   },
   "localNotifications": {
     "messages": {
-      "inviteFriends": "Пригласите ваших друзей и получите награду!",
-      "wiki": "Ознакомиться со всем функционалом платформы можно на странице WorkQuest Wiki!",
-      "kyc": "Вы можете включить KYC на странице Sumsub.",
-      "twoFA": "Вы можете включить 2FA в настройках.",
-      "fillSettingsData": "Вы можете информацию о себе в настройках.",
       "questDraft": "У вас есть сохраненный черновик квеста.",
       "rateTheQuest": "Пожалуйста, оцените завершенную работу по квесту!",
       "reviewEmp": "Пожалуйста, оцените своего Работодателя!",
       "reviewWorker": "Пожалуйста, оцените своего Работника!"
     },
     "btns": {
-      "inviteFriends": "Получить награду",
-      "wiki": "Перейти в Wiki",
-      "kyc": "Включить KYC",
-      "toSettings": "Перейти в Настройки",
       "questDraft": "Перейти на Создание квеста",
       "rateTheQuest": "Перейти на Квест",
       "reviewEmp": "Перейти в профиль Работодателя",
@@ -1468,7 +1479,16 @@
     "questWorkInProgress": "Квест стартовал",
     "questWorkSentForReview": "Работа отправлена на проверку",
     "questCompleted": "Квест завершен",
-    "PaidReferral": "Новое реферальное вознаграждение"
+    "PaidReferral": "Новое реферальное вознаграждение",
+    "ReportDecided":  "Жалоба принята",
+    "ReportSubmitted": "Жалоба отправлена",
+    "ReportRejected": "Жалоба отклонена",
+
+    "EnableDoubleAuthentication": "Вы можете подключит 2FA в настройках.",
+    "InviteFriendsReward": "Пригласи друзей и получи вознагражения!",
+    "WorkQuestWikiPage": "Ознакомиться со всем функционалом платформы можно на странице WorkQuest Wiki!",
+    "EnableSumsubKYC": "Вы можете активировать KYC на странице Sumsub",
+    "FillProfileDataOnSettings": "Вы можете заполнить свой профиль в настройках."
   },
   "wallet": {
     "frozen": "Замороженный баланс",
@@ -1534,6 +1554,8 @@
     "noMessages": "Нет сообщений",
     "membersNum": "{n} участников",
     "workquestAdmin": "Workquest Админ",
+    "delete": "Удалить чат",
+    "deleteChat": "Вы действительно хотите удалить этот чат из списка чатов?",
     "systemMessages": {
       "employerInvitedWorkerToQuest": "Пригласил вас на квест",
       "youInvitedToTheQuest": "You invited to the quest",
@@ -1578,6 +1600,7 @@
     }
   },
   "settings": {
+    "2faInfo": "Изменение данных будет возможно только один раз, чтобы в дальнейшем внести изменения в профиль, Вам нужно будет подключить 2FA.",
     "additionalPhoneNumber": "Дополнительный номер телефона",
     "mainPhoneNumber": "Основной номер телефона",
     "whoCouldIInvite": "Кто может откликаться на мои квесты?",
@@ -1918,7 +1941,7 @@
     "card": {
       "lotAmount": "Lot amount: {amount} {symbol}",
       "lotPrice": "Lot price: {price} WUSD",
-      "feeIncluded": "including liquidation fees ({feePercent}%)",
+      "rewardIncluded": "including liquidation rewards ({rewardPercent}%)",
       "timeLeft": "Auction time left:",
       "completed": {
         "lotAmount": "Lot amount:",
@@ -2187,6 +2210,7 @@
     },
     "DeFi": {
       "title": "DeFi functionality",
+      "collateral": "Collateral",
       "retirement": "Retirement program",
       "referral": "Referral program",
       "P2P": "P2P insurance",
@@ -2195,290 +2219,6 @@
       "wqBridge": "WorkQuest bridge",
       "staking": "WorkQuest Staking",
       "wqDAO": "WorkQuest DAO"
-    }
-  },
-  "wiki": {
-    "title": "WorkQuest Вики",
-    "searchPlaceholder": "Type the word",
-    "search": "Поиск",
-    "navigation": {
-      "header": {
-        "title": "Header menu",
-        "subtitle": "There are two types of header: for employer and for employee.",
-        "cards": {
-          "employer": {
-            "title": "Header for employer"
-          },
-          "employee": {
-            "title": "Header for employee"
-          },
-          "quests": {
-            "title": "Quests",
-            "subtitle": "General list of job offers published on the platform."
-          },
-          "employees": {
-            "title": "Employees",
-            "subtitle": "General list of employees registered on the platform."
-          },
-          "myQuests": {
-            "title": "My quests",
-            "subtitle": "All job offers you interact with."
-          },
-          "wallet": {
-            "title": "Wallet",
-            "subtitle": "Your WorkQuest wallet, where WQT token and WUSD stablecoin transactions are available. It can also be used to work with platform instruments."
-          },
-          "instruments": {
-            "title": "Instruments",
-            "subtitle": "DeFi functionality that includes referral program, 2P2 insurance, retirement savings, savings product, liquidity mining, and landing."
-          },
-          "language": {
-            "title": "Language",
-            "subtitle": "Choose your language."
-          },
-          "chats": {
-            "title": "Chats",
-            "subtitle": "Communication between employee and employer, group communication and saving important chats."
-          },
-          "notifications": {
-            "title": "Notifications",
-            "subtitle": "All important notifications related to your profile and platform updates.",
-            "noNotifications": "No notifications"
-          },
-          "menu": {
-            "title": "Menu",
-            "subtitle": "Main menu of the platform."
-          }
-        }
-      },
-      "profile": {
-        "title": "Profile menu",
-        "cards": {
-          "profile": {
-            "title": "My profile",
-            "subtitle": "Access to the profile page of an employee or employer with basic information about them."
-          },
-          "settings": {
-            "title": "Settings",
-            "subtitle": "Change profile information, social network, change password and security settings."
-          },
-          "disputes": {
-            "title": "Disputes",
-            "subtitle": "Disputes on your quests, decisions, status and other information."
-          },
-          "logout": {
-            "title": "Logout",
-            "subtitle": "Logout from your profile to the main page of the platform."
-          }
-        }
-      },
-      "instruments": {
-        "title": "Instruments",
-        "cards": {
-          "retirement": {
-            "title": "Retirement program",
-            "subtitle": "That will generate an annual percentage of profit on the amount of savings."
-          },
-          "referral": {
-            "title": "Referral program",
-            "subtitle": "Is a program to expand the user base of the platform, where everyone receives a reward for inviting new users"
-          },
-          "P2P": {
-            "title": "P2P insurance",
-            "subtitle": "Decentralized insurance where fund members manage the insurance fund themselves by voting for important decisions."
-          },
-          "savings": {
-            "title": "Savings product",
-            "subtitle": "Brings additional income in the form of annual interest."
-          },
-          "lending": {
-            "title": "Lending",
-            "subtitle": "The ability to take out a loan or issue a loan for a specific period and interest rate."
-          },
-          "liquidity": {
-            "title": "Liquidity mining",
-            "subtitle": "Providing liquidity to pools to receive rewards based on your amount of liquidity in the pool."
-          },
-          "bridge": {
-            "title": "Мост",
-            "subtitle": "Самый безопасный и быстрый способ переноса активов между сетями WorkNet, ETH and BSC."
-          },
-          "staking": {
-            "title": "Staking",
-            "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
-          }
-        }
-      },
-      "statuses": {
-        "title": "Statuses",
-        "cards": {
-          "delivery": {
-            "title": "Fixed delivery",
-            "subtitle": "After the employee has determined the optimal job offer and consented to the execution of the quest, an agreement is concluded between the employee and the employer."
-          },
-          "short": {
-            "title": "Short-term",
-            "subtitle": "A quest that needs to be completed over the coming days. To indicate short-term delivery (from 24 to 72 hours), you need to start the quest as soon as possible."
-          },
-          "urgent": {
-            "title": "Urgent",
-            "subtitle": "A quest that needs to be completed urgently. To indicate urgent delivery (from 1 to 24 hours), you need to start the quest almost immediately"
-          },
-          "top": {
-            "title": "Top Ranked EMP.",
-            "subtitle": "Top ranked employee/employer — this means that there has been a large number of successfully completed quests, with an average score from user reviews of over 4.5 points. Requires passing KYC (verified account), phone number verification, three social media verification, and filling out employment information."
-          },
-          "reliable": {
-            "title": "Reliable EMP.",
-            "subtitle": "Reliable employee/employer a large number of successfully completed quests, with the average score from user reviews of at least 4 points. Requires passing KYC (verified account), phone number verification and verification in two social networks."
-          },
-          "verified": {
-            "title": "Verified EMP.",
-            "subtitle": "Verified employee/employer is a validated user with a small number of successfully completed quests, and an average user score of at least 3.5 points. Requires passing KYC (verified account) and verification of one of the social networks."
-          }
-        }
-      },
-      "buttons": {
-        "title": "Buttons",
-        "cards": {
-          "create": {
-            "title": "Create a quest",
-            "subtitle": "Create a work proposal with a detailed description of the task, requirements for candidates and a technical description."
-          },
-          "results": {
-            "title": "Search Results",
-            "subtitle": "Search for a job offer by selected search categories."
-          },
-          "workers": {
-            "title": "Search Workers",
-            "subtitle": "Search for workers by selected search categories."
-          },
-          "details": {
-            "title": "View details",
-            "subtitle": "Each work proposal (quest) is displayed with basic brief information, the user can use the \"View details\" button and view all detailed information related to this quest."
-          },
-          "map": {
-            "title": "Show map",
-            "subtitle": "Enable or Disable the map to search for employees or employers."
-          },
-          "button": {
-            "title": "Share button",
-            "subtitle": "Share your profile or created quest on social networks"
-          },
-          "raise": {
-            "title": "Raise views",
-            "subtitle": "Promoting a quest or profile of an employee and employer in the search."
-          }
-        }
-      },
-      "employer": {
-        "title": "Employer's office",
-        "cards": {
-          "specialization": {
-            "title": "Specialization",
-            "subtitle": "List of industries requiring specialized skill sets."
-          },
-          "rating": {
-            "title": "Rating",
-            "subtitle": "Employee rating: Verified employee/Reliable employee/Higher level of trust employee."
-          },
-          "priority": {
-            "title": "All priority",
-            "subtitle": "Priority for delivery: Urgent, Short-term, Fixed Delivery."
-          },
-          "distant": {
-            "title": "Distant work",
-            "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
-          },
-          "price": {
-            "title": "Price",
-            "subtitle": "Filter for finding employees by cost per hour of work, sorted from lowest to highest."
-          },
-          "time": {
-            "title": "Added time",
-            "subtitle": "Filter for searching employees by registration date, from new users to early users or vice versa."
-          }
-        }
-      },
-      "employee": {
-        "title": "Employee’s office",
-        "cards": {
-          "specialization": {
-            "title": "Specialization",
-            "subtitle": "List of industries requiring special skills."
-          },
-          "quests": {
-            "title": "Quests",
-            "subtitle": "Select a job offer: Quests (all type of work), Specialized quests (task that require specialized skills), permanent job (job search by categories)."
-          },
-          "delivery": {
-            "title": "Quest delivery time",
-            "subtitle": "Quest delivery time: Urgent, Short term, Fixed delivery."
-          },
-          "job": {
-            "title": "Type of employment",
-            "subtitle": "Select the type of employment: Full-time, Part-time, Fixed term, Contract."
-          },
-          "distant": {
-            "title": "Distant work",
-            "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
-          },
-          "price": {
-            "title": "Price",
-            "subtitle": "A filter to search for quests, ordered from the lowest price to the highest."
-          },
-          "time": {
-            "title": "Added time",
-            "subtitle": "Filter to search for quests by publication date, from the newest to the latest created, or vice versa."
-          }
-        }
-      },
-      "user": {
-        "title": "User profile",
-        "cards": {
-          "reviews": {
-            "title": "Reviews",
-            "subtitle": "Comments and reviews that users leave about each other after completing the quest."
-          },
-          "quests": {
-            "title": "All quests",
-            "subtitle": "List of all published quests."
-          },
-          "active": {
-            "title": "Active quests",
-            "subtitle": "The quest in which you are currently active."
-          },
-          "invited": {
-            "title": "Invited quests",
-            "subtitle": "List of quests that you have been invited to complete."
-          },
-          "favorite": {
-            "title": "Favorite",
-            "subtitle": "A quest that is added to favorites for frequent interaction."
-          }
-        }
-      },
-      "quest": {
-        "title": "Boosting quest",
-        "cards": {
-          "goldPlus": {
-            "title": "Gold Plus Package",
-            "subtitle": "Notifications for employees who were looking for quests, via an offer to review the quest that has been promoted by the employer. The employee will be invited to complete the quest in based on the most recent search categories of the employee. Plus the ability to choose any category and any location to promote the quest."
-          },
-          "gold": {
-            "title": "Gold package",
-            "subtitle": "Notifications for employees who were looking for quests with a direct offer to review the promoted quest based on the most recent search categories of the employee. Plus the ability to choose three categories and three locations to promote the quest."
-          },
-          "silver": {
-            "title": "Silver package",
-            "subtitle": "Pin quest on the main page for three hours, with the ability to choose two categories and two locations for promotion the quest."
-          },
-          "bronze": {
-            "title": "Bronze package",
-            "subtitle": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
-          }
-        }
-      }
     }
   },
   "gallery": {

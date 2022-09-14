@@ -37,6 +37,7 @@ export default {
     { src: '@plugins/axios.js' },
     { src: '@plugins/axiosOracle.js' },
     { src: '@plugins/axiosLiquidator.js' },
+    { src: '@plugins/etherscanAPI.js' },
     { src: '@plugins/main.js' },
     { src: '@plugins/vee-validate.js' },
     { src: '@plugins/clipboard.js' },
@@ -87,6 +88,7 @@ export default {
     babel: {
       compact: false,
     },
+    postcss: null,
   },
   axios: {
     baseURL: ENV.BASE_URL,
@@ -129,8 +131,11 @@ export default {
     BRANCH: process.env.BRANCH,
     G_ANALYTIC: process.env.G_ANALYTIC,
     GMAPKEY: process.env.GMAPKEY,
-    SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
     ETHEREUM_RPC_URL: process.env.ETHEREUM_RPC_URL,
+
+    API_KEY_ETHERSCAN: process.env.API_KEY_ETHERSCAN,
+    API_KEY_BSCSCAN: process.env.API_KEY_BSCSCAN,
+    API_KEY_POLYGONSCAN: process.env.API_KEY_POLYGONSCAN,
   },
 };

@@ -114,7 +114,7 @@
             </div>
           </div>
         </template>
-        <div class="pension-page__info-block">
+        <div class="pension-page__history">
           <div class="info-block">
             <div class="info-block__table-title">
               {{ $t('pension.transactionHistory') }}
@@ -206,7 +206,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
-import { ERC20, WQPensionFund } from '~/abi/index';
+import { WQPensionFund } from '~/abi/index';
 import modals from '~/store/modals/modals';
 import { getStyledAmount } from '~/utils/wallet';
 import {
@@ -477,7 +477,7 @@ export default {
         this.loadTablePage(this.page),
       ]);
       await this.fetchWalletData({
-        method: 'balanceOf', address: this.walletAddress, abi: ERC20, token: TokenMap[TokenSymbols.WUSD], symbol: TokenSymbols.WUSD,
+        address: this.walletAddress, token: TokenMap[TokenSymbols.WUSD], symbol: TokenSymbols.WUSD,
       });
       this.checkIsDeadLine();
     },
@@ -681,19 +681,8 @@ export default {
 
 <style lang="scss" scoped>
 .pension-page {
-  background: linear-gradient(to bottom, #103D7C 320px, #f6f8fa 320px);
-  display: flex;
-  justify-content: center;
-
   &__container {
-    display: grid;
-    grid-template-rows: 195px max-content;
-    max-width: 1180px;
-    grid-row-gap: 50px;
     width: 100%;
-    gap: 20px;
-    padding: 10px;
-    box-sizing: border-box;
 
     &_expired {
       @extend .pension-page__container;
@@ -701,12 +690,16 @@ export default {
     }
   }
 
+  &__history {
+    margin-top: 20px;
+  }
+
   &__header {
     align-self: flex-end;
 
     .title {
       font-weight: 500;
-      color: #FFF;
+      color: $white;
       width: 530px;
       font-size: 45px;
       line-height: 110%;
@@ -722,10 +715,7 @@ export default {
   }
 
   &__content {
-    display: grid;
-    grid-row-gap: 30px;
     width: 100%;
-    grid-template-rows: 196px max-content;
 
     .btn-group {
       display: grid;
@@ -744,8 +734,8 @@ export default {
       box-sizing: border-box;
       font-weight: 400;
       font-size: 16px;
-      color: #0083C7;
-      border: 1px solid #0083C71A;
+      color: $blue;
+      border: 1px solid $blue100;
       border-radius: 6px;
       transition: .3s;
 
@@ -755,7 +745,7 @@ export default {
         top: 130px;
         right: 15px;
         width: 20px;
-        color: #fff;
+        color: $white;
         font-size: 0;
 
         &:hover {
@@ -765,43 +755,43 @@ export default {
       }
 
       &:hover {
-        background-color: #0083C71A;
+        background-color: $blue100;
         border: 0;
       }
 
       &_bl {
         @extend .btn;
-        background-color: #0083C7;
+        background-color: $blue;
         border: unset;
-        color: #fff;
+        color: $white;
 
         &:hover {
-          background-color: #103d7c;
+          background-color: $darkblue;
         }
       }
 
       &_red {
         @extend .btn_bl;
-        background-color: #DF3333;
+        background-color: $red;
       }
     }
 
     .text {
       font-size: 16px;
       font-weight: 400;
-      color: #8D96A1;
+      color: $black500;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
 
       &__faq {
-        color: #4C5767;
+        color: $black600;
         font-weight: 500;
 
         &_gray {
           font-size: 16px;
           font-weight: 400;
-          color: #8D96A1;
+          color: $black400;
           height: 0;
           transition: height 300ms;
           overflow: hidden;
@@ -811,7 +801,7 @@ export default {
           height: auto;
           font-size: 16px;
           font-weight: 400;
-          color: #8D96A1;
+          color: $black400;
           transition: height 300ms;
           margin-top: 20px;
         }
@@ -821,7 +811,7 @@ export default {
         @extend .text;
         font-weight: 500;
         font-size: 18px;
-        color: #0083C7;
+        color: $blue;
       }
 
       &_small {
@@ -845,8 +835,14 @@ export default {
     }
 
     .info-block {
-      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      background-color: $white;
       border-radius: 6px;
+
+      &:not(:first-of-type) {
+        margin-top: 20px;
+      }
 
       &__select-table {
         display: grid;
@@ -907,14 +903,14 @@ export default {
       &__perc {
         font-weight: 700;
         font-size: 20px;
-        color: #0083C7;
+        color: $blue;
         align-self: flex-end;
       }
 
       &__period {
         font-weight: 400;
         font-size: 16px;
-        color: #0083C7;
+        color: $blue;
         align-self: flex-start;
       }
 
@@ -926,6 +922,7 @@ export default {
 
       &__third {
         @extend .info-block;
+        margin-top: 0 !important;
         display: grid;
         grid-template-rows: min-content min-content auto;
 
@@ -943,12 +940,12 @@ export default {
       }
 
       &__title {
-        color: #0083C7;
+        color: $blue;
         font-weight: 700;
         font-size: 25px;
 
         &_gray {
-          color: #7C838D;
+          color: $black500;
           font-weight: 400;
           font-size: 16px;
           margin-left: 20px;
@@ -958,17 +955,17 @@ export default {
       &__subtitle {
         font-weight: 400;
         font-size: 16px;
-        color: #7C838D;
+        color: $black500;
 
         &_black {
           @extend .info-block__title_gray;
           margin-bottom: 20px;
-          color: #1D2127;
+          color: $black800;
         }
 
         &_red {
           @extend .info-block__subtitle_black;
-          color: #DF3333;
+          color: $red;
         }
       }
 
@@ -1009,8 +1006,9 @@ export default {
   .ava {
     height: 33px;
     width: 33px;
+    object-fit: cover;
     border-radius: 50%;
-    background-color: #fff;
+    background-color: $white;
     flex: none;
   }
 
@@ -1045,12 +1043,12 @@ export default {
 
       &_green {
         @extend .user__value;
-        color: #00AA5B;
+        color: $green;
       }
 
       &_gray {
         @extend .user__value;
-        color: #7C838D;
+        color: $black500;
         font-weight: 400;
       }
     }
@@ -1058,11 +1056,10 @@ export default {
 
   &__table {
     border-radius: 6px !important;
-    overflow: hidden;
+    overflow: auto;
 
     .table {
       margin: 20px 0 0 0;
-
       &:first-child {
         border-radius: 0 !important;
       }
@@ -1080,7 +1077,6 @@ export default {
   }
 
   @include _991 {
-    background: linear-gradient(to bottom, #103D7C 245px, #f6f8fa 245px);
     &__content {
       .info-block {
         &__grid {
@@ -1089,12 +1085,8 @@ export default {
       }
     }
     &__table {
-      overflow: auto;
-      width: calc(100vw - 20px);
-
       .table {
         width: 1024px;
-
         & > .table {
           border-radius: 0 !important;
         }
@@ -1102,12 +1094,7 @@ export default {
     }
   }
 
-  @include _767 {
-    background: linear-gradient(to bottom, #103D7C 220px, #f6f8fa 220px);
-    &__container {
-      grid-template-rows: auto auto;
-      gap: 15px;
-    }
+  @include _991 {
     &__table {
       &__empty {
         .absence {
@@ -1128,8 +1115,6 @@ export default {
       }
     }
     &__content {
-      grid-template-rows: max-content max-content max-content;
-
       .info-block {
         &__triple {
           grid-template-rows: repeat(2, 1fr);

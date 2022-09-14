@@ -56,13 +56,13 @@
             v-click-outside="hideSearchDD"
             :placeholder="$t('settings.addressInput')"
             data-selector="ADDRESS"
-            rules="max:100|required"
+            :rules="{required: true, geo_is_address: { addresses: addressesBuffer } }"
             mode="icon"
             :selector="isSearchDDStatus"
             :name="$t('meta.addressSmall')"
             @focus="isSearchDDStatus = true"
             @blur="checkValidate"
-            @selector="getAddressInfo(profile.locationFull.locationPlaceName)"
+            @selector="debouncedAddressSearch(profile.locationFull.locationPlaceName)"
           >
             <template v-slot:left>
               <span class="icon icon-location" />
@@ -303,6 +303,8 @@ import StatusKYC from './StatusKYC.vue';
 import AddForm from './AddForm.vue';
 import { UserRole } from '~/utils/enums';
 import { images } from '~/utils/images';
+import debounce from '~/utils/debounce';
+import imageOptimization from '~/plugins/mixins/imageOptimization';
 
 export default {
   name: 'SettingsProfile',
@@ -311,6 +313,7 @@ export default {
   directives: {
     ClickOutside,
   },
+  mixins: [imageOptimization],
   props: {
     avatarChange: {
       type: Object,
@@ -337,12 +340,13 @@ export default {
     return {
       selectedAddressIndex: null,
       geoCode: null,
-      firstPhone: { codeRegion: 'RU', phone: null, fullPhone: null },
-      secondPhoneNumber: { codeRegion: 'RU', phone: null, fullPhone: null },
+      firstPhone: { codeRegion: 'US', phone: null, fullPhone: null },
+      secondPhoneNumber: { codeRegion: 'US', phone: null, fullPhone: null },
       newEducation: { from: '', to: '', place: '' },
       newWorkExp: { from: '', to: '', place: '' },
       isSearchDDStatus: false,
       addresses: [],
+      addressesBuffer: [],
       coordinates: { lng: '', lat: '', address: '' },
       mainInputs: [
         {
@@ -423,6 +427,7 @@ export default {
           icon: 'icon-facebook',
         },
       ],
+      debouncedAddressSearch: null,
     };
   },
   computed: {
@@ -460,6 +465,9 @@ export default {
     profile() {
       this.secondPhoneNumber = this.profileSecondPhone;
       this.firstPhone = this.profileFirstPhone;
+
+      // correctly address on loadpage
+      this.addressesBuffer = [{ formatted: this.profile.locationFull.locationPlaceName }];
     },
   },
   mounted() {
@@ -467,6 +475,7 @@ export default {
       key: process.env.GMAPKEY,
       lang: this.$i18n?.localeProperties?.code || 'en-US',
     });
+    this.debouncedAddressSearch = debounce(this.getAddressInfo, 300);
     this.validationRefs();
   },
   methods: {
@@ -474,7 +483,6 @@ export default {
     // eslint-disable-next-line consistent-return
     async processFile(e, validate) {
       const isValid = await validate(e);
-      const reader = new FileReader();
       let file = e.target.files[0];
       if (file.type === 'image/heic') {
         file = await this.HEICConvertTo(file);
@@ -482,6 +490,13 @@ export default {
       }
       if (isValid.valid) {
         if (!file) return false;
+
+        const fileInput = e.target;
+        await this.OptimizeImage(e.target, file, 1024, 1024, 0.9);
+        // eslint-disable-next-line prefer-destructuring
+        file = fileInput.files[0];
+
+        const reader = new FileReader();
         reader.readAsDataURL(file);
         this.avatarChange.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
         this.avatarChange.file = file;
@@ -517,9 +532,11 @@ export default {
       try {
         if (keyword.length) {
           this.addresses = await this.geoCode.geolookup(keyword);
+          this.addressesBuffer = this.addresses;
         } else this.addresses = [];
       } catch (e) {
         this.addresses = [];
+        this.addressesBuffer = [];
         console.error('Geo look up is failed', e);
       }
     },

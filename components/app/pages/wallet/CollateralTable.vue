@@ -13,13 +13,15 @@
         <div>{{ $t('wallet.collateral.generatedAmount') }}</div>
         <div>{{ $t('meta.price') }}</div>
         <div>{{ $t('wallet.collateral.ratio') }}</div>
-        <div>{{ $t('wallet.table.index') }}</div>
       </div>
       <div
         v-for="(item, i) of collaterals"
         :key="i"
         class="collateral__item item"
-        :class="{item_full: i === idxHistory}"
+        :class="[
+          {item_full: i === idxHistory},
+          ...getRiskClass(item),
+        ]"
       >
         <div
           class="item__wrapper table_grid"
@@ -37,7 +39,6 @@
           <div>{{ item.wusdGenerated }}</div>
           <div>{{ item._price }}</div>
           <div>{{ item.colRatio }}</div>
-          <div>{{ item.index }}</div>
           <div
             class="item__caret"
             @click.stop="toggleHistory(i, item)"
@@ -70,7 +71,7 @@
               class="item__btn"
               data-selector="REVERT"
               :disabled="!isAvailableToRemove"
-              @click.stop="handleCollateralAction(item, 'removeCollateral')"
+              @click.stop="handleCollateralAction(item, CollateralMethods.removeCollateral)"
             >
               {{ $t('meta.btns.remove') }}
             </base-btn>
@@ -131,17 +132,21 @@ import { mapActions, mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { images } from '~/utils/images';
-import { TokenSymbols, ExplorerUrl } from '~/utils/enums';
-
-const LIMIT = 10;
-const HISTORY_LIMIT = 5;
+import { TokenSymbols, ExplorerUrl, TokenMap } from '~/utils/enums';
+import { WQRouter } from '~/abi';
+import { getGasPrice } from '~/utils/wallet';
+import ENV from '~/utils/addresses';
+import walletOperations from '~/plugins/mixins/walletOperations';
+import { COLLATERAL_CARDS_LIMIT, COLLATERAL_HISTORY_LIMIT, CollateralMethods } from '~/utils/сonstants/auction';
 
 export default {
   name: 'CollateralTable',
   images,
   ExplorerUrl,
+  mixins: [walletOperations],
   data() {
     return {
+      CollateralMethods,
       idxHistory: null,
       availableToClaim: null,
       isAvailableToClaim: false,
@@ -152,7 +157,7 @@ export default {
       isAvailableToRemove: true,
       historyParams: {
         page: 1,
-        limit: HISTORY_LIMIT,
+        limit: COLLATERAL_HISTORY_LIMIT,
         offset: 0,
         count: 5,
       },
@@ -166,6 +171,7 @@ export default {
 
       collaterals: 'collateral/getCollaterals',
       collateralsCount: 'collateral/getCollateralsCount',
+      collateralPage: 'collateral/getCollateralCurrentPage',
       history: 'collateral/getHistoryCollateral',
       historyCount: 'collateral/getHistoryCollateralCount',
 
@@ -182,35 +188,54 @@ export default {
       };
     },
     totalPages() {
-      return Math.ceil(this.collateralsCount / LIMIT) || 0;
+      return Math.ceil(this.collateralsCount / COLLATERAL_CARDS_LIMIT) || 0;
     },
     totalHistoryPages() {
-      return Math.ceil(this.historyCount / HISTORY_LIMIT) || 0;
+      return Math.ceil(this.historyCount / COLLATERAL_HISTORY_LIMIT) || 0;
     },
   },
   watch: {
     async page() {
       this.idxHistory = null;
+      this.$store.commit('collateral/setCollateralCurrentPage', this.page);
       await this.fetchCollaterals({
         address: this.walletAddress,
-        params: { limit: LIMIT, offset: (this.page - 1) * LIMIT },
+        params: { limit: COLLATERAL_CARDS_LIMIT, offset: (this.page - 1) * COLLATERAL_CARDS_LIMIT },
       });
     },
   },
   async mounted() {
-    await this.fetchCollaterals({
-      address: this.walletAddress,
-      params: { limit: LIMIT, offset: 0 },
-    });
+    await Promise.all([
+      this.fetchCollaterals({
+        address: this.walletAddress,
+        params: { limit: COLLATERAL_CARDS_LIMIT, offset: 0 },
+      }),
+      this.initWS(),
+    ]);
+  },
+  async beforeDestroy() {
+    await this.destroyWS();
+    this.$store.commit('collateral/setCollateralCurrentPage', 1);
   },
   methods: {
     ...mapActions({
+      setCallbackWS: 'collateral/setCallbackWS',
       collateralAction: 'collateral/collateralAction',
       fetchCollaterals: 'collateral/fetchCollaterals',
+      initWS: 'collateral/subscribeCollateralBalance',
+      destroyWS: 'collateral/unsubscribeCollateralBalance',
       fetchCollateralInfo: 'collateral/fetchCollateralInfo',
 
       updatePrices: 'oracle/getCurrentTokensPrices',
     }),
+    getRiskClass({ liquidityValue, depositStatus }) {
+      if (depositStatus === 1 && liquidityValue > 0) return ['risk_high'];
+
+      return [
+        { risk_medium: liquidityValue && depositStatus === 0 },
+        // { risk_low: liquidityValue && depositStatus === 0 },
+      ];
+    },
     getCollateralIcon(symbol) {
       if (TokenSymbols.ETH === symbol) return images.ETH_BLACK;
       return images[symbol] || images.EMPTY_LOGO;
@@ -220,13 +245,20 @@ export default {
         this.idxHistory = null;
         this.$store.commit('collateral/setHistoryCollateral', { rows: [], count: null });
       } else {
-        this.idxHistory = idx;
-        await this.checkActionsPossibilities(item);
-        await this.fetchCollateralInfo({
-          address: this.walletAddress,
-          collateralId: item.id,
-          params: {},
-        });
+        this.SetLoader(true);
+        await Promise.all([
+          this.checkActionsPossibilities(item),
+          this.fetchCollateralInfo({
+            address: this.walletAddress,
+            collateralId: item.id,
+            params: {},
+          }),
+        ]);
+
+        setTimeout(() => {
+          this.idxHistory = idx;
+          this.SetLoader(false);
+        }, 300);
       }
     },
 
@@ -283,13 +315,13 @@ export default {
         title: this.$t('meta.btns.generate'),
         subtitle: this.$t('wallet.collateral.attentionInfoRise'),
         isNotClose: true,
-        submitMethod: async () => await this.handleCollateralAction(item, 'claimExtraDebt'),
+        submitMethod: async () => await this.handleCollateralAction(item, CollateralMethods.claimExtraDebt),
       });
     },
 
     async handleDeposit(item) {
       if (!this.isAvailableToDeposit) return;
-      const mode = this.isAvailableToDepositWUSD ? 'disposeDebt' : 'addCollateral';
+      const mode = this.isAvailableToDepositWUSD ? CollateralMethods.disposeDebt : CollateralMethods.addCollateral;
 
       this.ShowModal({
         key: modals.status,
@@ -305,6 +337,148 @@ export default {
     }, mode) {
       if (!this.isAvailableToRemove) return;
 
+      const updatePrices = async (method, payload) => {
+        await new Promise(async (resolve, reject) => {
+          this.SetLoader(true);
+          const [feeSetPricesRes, needUpdateRes] = await Promise.all([
+            this.$store.dispatch('oracle/feeSetTokensPrices'),
+            getGasPrice(
+              WQRouter,
+              ENV.WORKNET_ROUTER,
+              method,
+              [...payload],
+            ),
+          ]);
+          this.SetLoader(false);
+
+          // Check if no need to update oracle prices
+          if (needUpdateRes.gasPrice) {
+            resolve();
+            return;
+          }
+
+          if (!feeSetPricesRes.ok) {
+            this.ShowToast(feeSetPricesRes.msg);
+            reject();
+            return;
+          }
+
+          const { gas, gasPrice } = feeSetPricesRes.result;
+          this.ShowModal({
+            key: modals.transactionReceipt,
+            title: 'Update oracle prices',
+            fields: {
+              from: {
+                name: this.$t('meta.fromBig'),
+                value: this.convertToBech32('wq', this.walletAddress),
+              },
+              to: {
+                name: this.$t('meta.toBig'),
+                value: ENV.WORKNET_ORACLE,
+              },
+              fee: {
+                name: this.$t('wallet.table.trxFee'),
+                value: new BigNumber(gas).multipliedBy(gasPrice).shiftedBy(-18).toString(),
+                symbol: TokenSymbols.WQT,
+              },
+            },
+            submitMethod: async () => {
+              this.SetLoader({ isLoading: true });
+              const res = await this.$store.dispatch('oracle/setCurrentPriceTokens');
+              if (res.ok) resolve();
+              else {
+                reject();
+                this.ShowModalFail({ subtitle: res.msg });
+              }
+              this.SetLoader(false);
+            },
+          });
+        });
+      };
+
+      const sendTx = async (method, payload, amount) => {
+        await new Promise(async (resolve, reject) => {
+          this.SetLoader(true);
+          const { gasPrice, gas, msg } = await getGasPrice(
+            WQRouter,
+            ENV.WORKNET_ROUTER,
+            method,
+            [...payload],
+          );
+          this.SetLoader(false);
+
+          if (!gas || !gasPrice) {
+            this.ShowToast(msg.includes('Lot not found') ? 'Lot not found' : msg);
+            reject();
+            return;
+          }
+
+          const fields = {
+            from: {
+              name: this.$t('meta.fromBig'),
+              value: this.convertToBech32('wq', this.walletAddress),
+            },
+            to: {
+              name: this.$t('meta.toBig'),
+              value: ENV.WORKNET_ROUTER,
+            },
+          };
+          if (method !== CollateralMethods.claimExtraDebt) {
+            fields.amount = {
+              name: this.$t('modals.amount'),
+              value: amount,
+              symbol: method === CollateralMethods.addCollateral ? symbol : TokenSymbols.WUSD,
+            };
+          }
+          fields.fee = {
+            name: this.$t('wallet.table.trxFee'),
+            value: new BigNumber(gas).multipliedBy(gasPrice).shiftedBy(-18).toString(),
+            symbol: TokenSymbols.WQT,
+          };
+          const title = {
+            disposeDebt: this.$t('meta.deposit'),
+            addCollateral: this.$t('meta.deposit'),
+            claimExtraDebt: this.$t('meta.btns.generate'),
+            removeCollateral: this.$t('wallet.collateral.removeCollateral'),
+          }[method];
+
+          this.ShowModal({
+            key: modals.transactionReceipt,
+            title,
+            fields,
+            isDontOffLoader: true,
+            submitMethod: async () => {
+              this.SetLoader({ isLoading: true });
+              const { ok, result } = await this.collateralAction({ method, payload });
+
+              if (!ok) {
+                reject();
+                this.SetLoader(false);
+                this.ShowModalFail({});
+
+                return;
+              }
+
+              await this.setCallbackWS(() => {
+                resolve();
+
+                if (method === CollateralMethods.addCollateral) this.isAvailableToDeposit = false;
+                else if (method === CollateralMethods.disposeDebt) this.isAvailableToDeposit = false;
+                else if (method === CollateralMethods.claimExtraDebt) this.isAvailableToClaim = false;
+                else if (method === CollateralMethods.removeCollateral) {
+                  this.isAvailableToClaim = false;
+                  this.isAvailableToRemove = false;
+                  this.isAvailableToDeposit = false;
+                }
+
+                this.SetLoader(false);
+                this.ShowModalSuccess({ link: `${ExplorerUrl}/tx/${result.transactionHash}` });
+              });
+            },
+          });
+        });
+      };
+
       this.ShowModal({
         key: modals.collateralTransaction,
         mode,
@@ -314,19 +488,55 @@ export default {
         availableToDepositWUSD: this.availableToDepositWUSD,
         availableToDepositCollateral: this.availableToAddCollateral,
         amountToRemoveCollateral: new BigNumber(debt).shiftedBy(-18).toString(),
-        submit: async (method, currency) => {
-          this.SetLoader(true);
-
-          const payload = [index, currency];
-          if (method === 'removeCollateral') {
-            payload.splice(1, 0, debt);
+        submit: async (method) => {
+          // Payload formation
+          const payload = [index, symbol];
+          const amount = new BigNumber(debt).shiftedBy(-18).toString();
+          let tokenAddress = ENV.WORKNET_WUSD_TOKEN;
+          let amountToApprove = amount;
+          if (method === CollateralMethods.addCollateral) {
+            tokenAddress = TokenMap[symbol];
+            amountToApprove = this.availableToAddCollateral;
+          } else if (method === CollateralMethods.disposeDebt) {
+            amountToApprove = this.availableToDepositWUSD;
           }
 
-          const { ok } = await this.collateralAction({ method, payload });
-          this.SetLoader(false);
+          const makeTx = async () => {
+            // Update token prices if it needs then check allowance & send tx
+            await updatePrices(method, payload).then(async () => {
+              if (method === CollateralMethods.claimExtraDebt) {
+                await sendTx(method, payload, amount);
+                return;
+              }
 
-          if (ok) this.ShowModalSuccess({});
-          else this.ShowModalFail({});
+              await this.MakeApprove({
+                contractAddress: ENV.WORKNET_ROUTER,
+                tokenAddress,
+                amount: amountToApprove,
+                symbol: method === CollateralMethods.addCollateral ? symbol : TokenSymbols.WUSD,
+              }).then(async () => await sendTx(method, payload, amountToApprove));
+            });
+          };
+
+          // Firstly check allowance then approve
+          const needApproveBeforeRes = await getGasPrice(
+            WQRouter,
+            ENV.WORKNET_ROUTER,
+            method,
+            [...payload],
+          );
+          if (
+            !needApproveBeforeRes.gasPrice
+            && method !== CollateralMethods.claimExtraDebt
+            && needApproveBeforeRes.msg.includes('insufficient allowance')
+          ) {
+            await this.MakeApprove({
+              contractAddress: ENV.WORKNET_ROUTER,
+              tokenAddress,
+              amount: amountToApprove,
+              symbol: method === CollateralMethods.addCollateral ? symbol : TokenSymbols.WUSD,
+            }).then(async () => await makeTx());
+          } else await makeTx();
         },
       });
     },
@@ -365,7 +575,7 @@ export default {
     align-content: center;
     align-items: center;
     justify-items: center;
-    grid-template-columns: repeat(6, 1fr) 36px;
+    grid-template-columns: repeat(5, 1fr) 36px;
 
     text-align: center;
 
@@ -377,6 +587,21 @@ export default {
   }
   &__pages {
     margin-top: 20px;
+  }
+}
+
+.risk {
+
+  &_low {
+    box-shadow: inset 0 0 0 1px #e3c221;
+  }
+
+  &_medium {
+    box-shadow: inset 0 0 0 1px #d28904;
+  }
+
+  &_high {
+    box-shadow: inset 0 0 0 1px #dc0606;
   }
 }
 

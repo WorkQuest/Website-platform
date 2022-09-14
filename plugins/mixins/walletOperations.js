@@ -1,10 +1,18 @@
 import BigNumber from 'bignumber.js';
+import { mapGetters } from 'vuex';
 import { QuestMethods, QuestStatuses } from '~/utils/сonstants/quests';
 import { ERC20, WorkQuest } from '~/abi';
 import modals from '~/store/modals/modals';
 import { TokenSymbols } from '~/utils/enums';
+import { fetchContractData } from '~/utils/web3';
+import { GetWalletProvider } from '~/utils/wallet';
 
 export default {
+  computed: {
+    ...mapGetters({
+      userWalletAddress: 'user/getUserWalletAddress',
+    }),
+  },
   methods: {
     async DeleteQuest(questData) {
       const { status, contractAddress } = questData;
@@ -74,12 +82,12 @@ export default {
     async MakeApprove({
       tokenAddress, contractAddress, amount,
       approveTitle = this.$t('meta.approve'),
-      decimals = 18,
       symbol = TokenSymbols.WUSD,
       nativeTokenSymbol = TokenSymbols.WQT,
       isHexUserWalletAddress,
     }) {
       return new Promise(async (resolve, reject) => {
+        const decimals = await fetchContractData('decimals', ERC20, tokenAddress, [], GetWalletProvider());
         const allowance = await this.$store.dispatch('wallet/getAllowance', {
           tokenAddress,
           spenderAddress: contractAddress,
@@ -133,7 +141,7 @@ export default {
               this.ShowToast('Approving done', 'Approve');
               await resolve(amount);
             },
-            cancel: async () => await reject(new Error('Cancel')),
+            cancelMethod: async () => await reject(new Error('Cancel')),
           });
         } else await resolve(amount);
       });

@@ -292,9 +292,9 @@ export default {
           class: 'card-quest__state_green',
         },
         [QuestStatuses.WaitWorkerOnAssign]: {
-          title: this.isWorker ? this.$t('meta.invited') : '',
+          title: this.isWorker && this.quest?.assignedWorkerId === this.userData?.id ? this.$t('meta.invited') : '',
           progressText: this.$t('quests.questWaitConfirm'),
-          class: this.isWorker ? 'card-quest__state_yellow' : '',
+          class: this.isWorker && this.quest?.assignedWorkerId === this.userData?.id ? 'card-quest__state_yellow' : '',
         },
         [QuestStatuses.WaitEmployerConfirm]: {
           title: this.$t('quests.pendingConsideration'),
@@ -881,6 +881,7 @@ export default {
 
   &__text {
     @include text-simple;
+    word-break: break-word;
 
     &_details {
       font-size: 16px;
@@ -1101,6 +1102,10 @@ export default {
     &__btn {
       margin-top: 10px;
       padding: 0;
+    }
+
+    &__status {
+      flex-wrap: wrap;
     }
   }
 }

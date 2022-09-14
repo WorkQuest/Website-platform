@@ -4,7 +4,7 @@ import {
   Path,
   DaoUrl,
   PathDAO,
-  UserRole, ResponsesType,
+  UserRole, ResponsesType, WikiUrl,
 } from '~/utils/enums';
 
 import {
@@ -48,12 +48,7 @@ export default {
     if (notificationList.some((n) => Object.entries(LocalNotificationAction).includes(n.actionNameKey))) return;
 
     const path = {
-      [LocalNotificationAction.GET_REWARD]: Path.REFERRAL,
       [LocalNotificationAction.QUEST_DRAFT]: Path.CREATE_QUEST,
-      [LocalNotificationAction.WIKI]: Path.WIKI,
-      [LocalNotificationAction.KYC]: Path.SUMSUB,
-      [LocalNotificationAction.PROFILE_FILLED]: Path.SETTINGS,
-      [LocalNotificationAction.TWOFA]: `${Path.SETTINGS}#2FA`,
       [LocalNotificationAction.QUESTS_SPECS]: `${Path.QUESTS}?mySpecs=true`,
       [LocalNotificationAction.WALLET_UPDATE]: Path.WALLET,
     }[action];
@@ -109,6 +104,15 @@ export default {
       return false;
     }
   },
+  async markReadAllNotifications({ commit }) {
+    try {
+      const { ok } = await this.$axios.$put(`${ENV.NOTIFS_URL}notifications/mark-read-all`);
+      commit('resetUnreadNotifsCount');
+      return ok;
+    } catch (e) {
+      return false;
+    }
+  },
 
   async getNotifications({ commit, dispatch }, config) {
     try {
@@ -153,6 +157,50 @@ export default {
     const wqInfoSender = { avatar: { url: images.WQ_LOGO_ROUNDED }, firstName: $nuxt.$t('ui.notifications.workquestInfo') };
 
     switch (action) {
+      // default notifications after register
+      case NotificationAction.GET_REWARD:
+        notification.sender = wqInfoSender;
+        notification.params = {
+          ...notification.params,
+          title: data.title,
+          path: Path.REFERRAL,
+        };
+        break;
+      case NotificationAction.WIKI:
+        notification.sender = wqInfoSender;
+        notification.params = {
+          ...notification.params,
+          title: data.title,
+          path: '/',
+          isExternalLink: true,
+          externalBase: WikiUrl,
+        };
+        break;
+      case NotificationAction.KYC:
+        notification.sender = wqInfoSender;
+        notification.params = {
+          ...notification.params,
+          title: data.title,
+          path: Path.SUMSUB,
+        };
+        break;
+      case NotificationAction.PROFILE_FILLED:
+        notification.sender = wqInfoSender;
+        notification.params = {
+          ...notification.params,
+          title: data.title,
+          path: Path.SETTINGS,
+        };
+        break;
+      case NotificationAction.TWOFA:
+        notification.sender = wqInfoSender;
+        notification.params = {
+          ...notification.params,
+          title: data.title,
+          path: `${Path.SETTINGS}#2FA`,
+        };
+        break;
+
       case NotificationAction.PAID_REFERRAL:
         notification.sender = wqInfoSender;
         notification.params = {
@@ -241,7 +289,21 @@ export default {
         };
         break;
 
+      case NotificationAction.DISPUTE_DECISION_ON_CONTRACT:
+        notification.actionNameKey = `notifications.${NotificationAction.DISPUTE_DECISION}${data.decision}`;
+        notification.action = NotificationAction.DISPUTE_DECISION;
+        notification.sender = wqInfoSender;
+        notification.params = {
+          ...notification.params,
+          title: problemDescription,
+          path: `${Path.QUESTS}/${quest?.id || id}`,
+        };
+        break;
+
+      case NotificationAction.DISPUTE_DECISION_REWORK:
       case NotificationAction.DISPUTE_DECISION:
+        notification.actionNameKey = `notifications.${NotificationAction.DISPUTE_DECISION}`;
+        notification.action = NotificationAction.DISPUTE_DECISION;
         notification.sender = wqInfoSender;
         notification.params = {
           ...notification.params,
@@ -304,6 +366,12 @@ export default {
         };
         break;
 
+      case NotificationAction.REPORT_DECIDED:
+      case NotificationAction.REPORT_REJECTED:
+      case NotificationAction.REPORT_SUBMITTED:
+        notification.sender = wqInfoSender;
+        break;
+
       default:
         break;
     }
@@ -357,6 +425,9 @@ export default {
     if ([
       NotificationAction.QUEST_EDITED_ON_CONTRACT,
       NotificationAction.QUEST_STATUS_UPDATED,
+      NotificationAction.OPENED_DISPUTE,
+      NotificationAction.DISPUTE_DECISION,
+      NotificationAction.DISPUTE_DECISION_REWORK,
     ].includes(action)
     && getters.getWaitForUpdateQuest?.id === data?.id) {
       await handleWaitForUpdateQuest();
@@ -367,6 +438,9 @@ export default {
       ...notificationsQuestsActions,
       NotificationAction.QUEST_STATUS_UPDATED,
       NotificationAction.DISPUTE_DECISION,
+      NotificationAction.DISPUTE_DECISION_REWORK,
+      NotificationAction.OPENED_DISPUTE,
+      NotificationAction.DISPUTE_DECISION_ON_CONTRACT,
     ].includes(action)) {
       const questListPathArray = [
         Path.MY_QUESTS,
@@ -394,6 +468,7 @@ export default {
         }
       }
     }
+    commit('addUnreadNotifsCount', 1);
   },
 
   async addNotification({ commit, dispatch }, notification) {

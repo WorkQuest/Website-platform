@@ -3,8 +3,13 @@
     class="collateral"
     :title="modalTitle"
   >
-    <div class="collateral__content content">
-      <template v-if="options.mode === 'claimExtraDebt'">
+    <validation-observer
+      ref="validation-collateral"
+      v-slot="{ handleSubmit, validated, invalid }"
+      class="collateral__content content"
+      tag="div"
+    >
+      <template v-if="options.mode === CollateralMethods.claimExtraDebt">
         <div class="content__header">
           {{ $t('wallet.collateral.generationSubTitle') }}
         </div>
@@ -29,7 +34,7 @@
           :value="options.availableToClaim"
         />
       </template>
-      <template v-else-if="options.mode === 'removeCollateral'">
+      <template v-else-if="options.mode === CollateralMethods.removeCollateral">
         <div class="content__header">
           {{ $t('wallet.collateral.tokenQuantity') }}
         </div>
@@ -48,7 +53,9 @@
           data-selector="WUSD"
           placeholder="10"
           disabled
+          vid="remove"
           :value="options.amountToRemoveCollateral"
+          :rules="`have_funds:${balance[TokenSymbols.WUSD].fullBalance}, ${options.amountToRemoveCollateral}`"
         />
       </template>
       <template v-else>
@@ -84,72 +91,111 @@
             </div>
           </div>
           <base-field
-            data-selector="WUSD"
+            data-selector="DEPOSIT"
             placeholder="10"
             disabled
-            :value="selCurrencyID === $options.TokenSymbols.WUSD ? options.availableToDepositWUSD : options.availableToDepositCollateral"
+            :vid="`deposit-${selCurrencyID}`"
+            :value="availableToDeposit"
+            :rules="`have_funds:${balance[selCurrencyID].fullBalance}, ${availableToDeposit}`"
           />
         </div>
       </template>
       <base-btn
         class="content__actions"
-        @click="handleSubmit"
+        :disabled="validated && invalid"
+        @click="handleSubmit(onSubmit)"
       >
         {{ submitText }}
       </base-btn>
-    </div>
+    </validation-observer>
   </ctm-modal-box>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import { TokenMap, TokenSymbols } from '~/utils/enums';
+import { CollateralMethods } from '~/utils/сonstants/auction';
 
 export default {
   name: 'CollateralTransaction',
-  TokenSymbols,
   data() {
     return {
+      TokenSymbols,
+      CollateralMethods,
       selCurrencyID: TokenSymbols.WUSD,
       currentDeposit: null,
-    // selectedMethod: null,
+      selectedMethod: null,
     };
   },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      balance: 'wallet/getBalanceData',
+      userWalletAddress: 'user/getUserWalletAddress',
     }),
     checkpoints() {
       return [
-        { name: TokenSymbols.WUSD, address: TokenMap.WUSD },
-        { name: TokenSymbols[this.options.symbol], address: TokenMap[this.options.symbol] },
+        { name: TokenSymbols.WUSD },
+        { name: TokenSymbols[this.options.symbol] },
       ];
     },
     modalTitle() {
       return {
-        claimExtraDebt: this.$t('meta.btns.generate'),
-        disposeDebt: this.$t('meta.deposit'),
-        addCollateral: this.$t('meta.deposit'),
-        removeCollateral: this.$t('wallet.collateral.removeCollateral'),
+        [CollateralMethods.claimExtraDebt]: this.$t('meta.btns.generate'),
+        [CollateralMethods.disposeDebt]: this.$t('meta.deposit'),
+        [CollateralMethods.addCollateral]: this.$t('meta.deposit'),
+        [CollateralMethods.removeCollateral]: this.$t('wallet.collateral.removeCollateral'),
       }[this.options.mode];
     },
     submitText() {
       return {
-        claimExtraDebt: this.$t('meta.btns.generate'),
-        disposeDebt: this.$t('meta.deposit'),
-        addCollateral: this.$t('meta.deposit'),
-        removeCollateral: this.$t('meta.btns.remove'),
+        [CollateralMethods.claimExtraDebt]: this.$t('meta.btns.generate'),
+        [CollateralMethods.disposeDebt]: this.$t('meta.deposit'),
+        [CollateralMethods.addCollateral]: this.$t('meta.deposit'),
+        [CollateralMethods.removeCollateral]: this.$t('meta.btns.remove'),
       }[this.options.mode];
     },
+    availableToDeposit() {
+      const { availableToDepositWUSD, availableToDepositCollateral } = this.options;
+      const isWUSD = this.selCurrencyID === TokenSymbols.WUSD;
+      return isWUSD ? availableToDepositWUSD : availableToDepositCollateral;
+    },
   },
-  mounted() {
-    this.selCurrencyID = this.options.selCurrencyID || this.options.symbol;
+  watch: {
+    selCurrencyID() {
+      if (['disposeDebt', 'addCollateral'].includes(this.options.mode)) {
+        this.selectedMethod = this.selCurrencyID === TokenSymbols.WUSD
+          ? CollateralMethods.disposeDebt
+          : CollateralMethods.addCollateral;
+        this.$refs['validation-collateral'].validate();
+      }
+    },
+  },
+  async mounted() {
+    this.SetLoader(true);
+    this.selectedMethod = this.options.mode;
+    this.selCurrencyID = this.options.symbol;
+    await Promise.all([
+      this.$store.dispatch('wallet/getBalance'),
+      this.$store.dispatch('wallet/fetchWalletData', {
+        address: this.userWalletAddress,
+        token: TokenMap[TokenSymbols.WUSD],
+        symbol: TokenSymbols.WUSD,
+      }),
+      this.$store.dispatch('wallet/fetchWalletData', {
+        address: this.userWalletAddress,
+        token: TokenMap[this.selCurrencyID],
+        symbol: this.selCurrencyID,
+      }),
+    ]);
+    this.$refs['validation-collateral'].validate();
+    this.SetLoader(false);
   },
   methods: {
-    handleSubmit() {
-      const { submit, mode } = this.options;
+    onSubmit() {
+      const { submit } = this.options;
       this.CloseModal();
-      submit(mode, this.selCurrencyID);
+      submit(this.selectedMethod);
     },
   },
 };
@@ -216,7 +262,7 @@ export default {
     border-radius: 50%;
     width: 25px;
     height: 25px;
-    border: 1px solid #0083C7;
+    border: 1px solid $blue;
     cursor: pointer;
   }
 }

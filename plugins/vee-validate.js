@@ -313,6 +313,21 @@ extend('have_funds', {
   params: ['balance', 'amount', 'symbol'],
 });
 
+extend('geo_is_address', {
+  params: ['addresses'],
+  validate: async (value, { addresses }) => {
+    try {
+      if (!value) return false;
+      for (let i = 0; i < addresses?.length; i += 1) {
+        if (value?.toLowerCase() === addresses[i].formatted.toLowerCase()) return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  },
+});
+
 export default ({ app }) => {
   configure({
     defaultMessage: (_field_, values) => app.i18n.t(`messages.${values._rule_}`, values),

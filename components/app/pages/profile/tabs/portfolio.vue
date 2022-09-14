@@ -94,23 +94,14 @@ export default {
     openImage(src, {
       title, description, id, medias,
     }) {
-      if (window.innerWidth >= 761) {
-        this.ShowModal({
-          key: modals.showImage,
-          portfolio: true,
-          url: src,
-          title,
-          description,
-          id,
-          medias,
-        });
-      }
-    },
-    showToastError(e) {
-      return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.error'),
-        variant: 'warning',
-        text: e.response?.data?.msg,
+      this.ShowModal({
+        key: modals.showImage,
+        portfolio: true,
+        url: src,
+        title,
+        description,
+        id,
+        medias,
       });
     },
     showDeleteCaseModal(id) {

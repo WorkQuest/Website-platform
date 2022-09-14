@@ -15,14 +15,17 @@
       <div class="content__desc">
         {{ options.text }}
       </div>
-      <div class="content__action action">
+      <div
+        class="content__action action"
+        :class="{ 'action_column': options.okBtnTitle && options.okBtnTitle.length > 10 }"
+      >
         <base-btn
           class="action__button"
           mode="outline"
           data-selector="CANCEL"
           @click="handleCancel"
         >
-          {{ $t('meta.btns.cancel') }}
+          {{ options.closeBtnTitle || $t('meta.btns.cancel') }}
         </base-btn>
         <base-btn
           class="action__button"
@@ -97,7 +100,14 @@ export default {
   margin-top: 30px;
   grid-auto-flow: column;
   &__button{
-    max-width: 129px!important;
+    max-width: 129px !important;
+  }
+  &_column {
+    display: flex;
+    flex-direction: column-reverse;
+    .action__button {
+      max-width: 100% !important;
+    }
   }
 }
 </style>

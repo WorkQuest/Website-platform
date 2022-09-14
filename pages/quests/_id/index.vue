@@ -247,6 +247,12 @@ export default {
     },
   },
   watch: {
+    quest: {
+      deep: true,
+      handler() {
+        if (this.quest) this.setActionBtnsArr();
+      },
+    },
     infoDataMode(newVal, oldVal) {
       if (oldVal === undefined || newVal === oldVal) return;
       this.setActionBtnsArr();
@@ -381,6 +387,7 @@ export default {
       const {
         Dispute,
         Created,
+        WaitWorker,
         WaitEmployerConfirm,
       } = QuestStatuses;
       let arr = [];
@@ -397,6 +404,14 @@ export default {
             funcKey: 'closeQuest',
             disabled: false,
           }];
+          break;
+        }
+        case WaitWorker: {
+          arr.push({
+            name: this.$t('meta.openDispute'),
+            funcKey: 'openDispute',
+            disabled: false,
+          });
           break;
         }
         case WaitEmployerConfirm: {
@@ -502,7 +517,17 @@ export default {
           break;
         }
         case WaitWorkerOnAssign: {
-          if (assignedWorkerId !== userData.id) break;
+          if (assignedWorkerId !== userData.id) {
+            if (!this.quest.response) {
+              // not invited user can send request
+              arr = [{
+                name: this.$t('meta.sendARequest'),
+                funcKey: 'sendARequestOnQuest',
+                disabled: false,
+              }];
+            }
+            break;
+          }
           arr = [{
             name: this.$t('meta.btns.agree'),
             funcKey: 'acceptWorkOnQuest',
@@ -564,15 +589,17 @@ export default {
       }
 
       const currentTime = this.$moment().utc(false).valueOf();
-      const unlockTime = this.$moment(this.quest.startedAt).add(1, 'm').utc(false).valueOf();
-      // TODO: fixme Вернуть, нужно для тестов Роме
-      // const unlockTime = this.$moment(this.quest.startedAt).add(1, 'day').utc(false).valueOf();
+      const amountToAdd = status === QuestStatuses.WaitWorker ? 1 : 3;
+      const unlockTime = this.$moment(this.quest.startedAt).add(amountToAdd, 'day').utc(false).valueOf();
+
       if (currentTime <= unlockTime) {
         this.ShowModal({
           key: modals.status,
           img: images.ERROR,
           title: this.$t('modals.errors.error'),
-          subtitle: this.$t('modals.errors.youCantCreateDispute'),
+          subtitle: status === QuestStatuses.WaitWorker
+            ? this.$t('modals.errors.youCantCreateDispute')
+            : this.$t('modals.errors.youCantCreateDispute3Days'),
           button: this.$t('meta.btns.close'),
         });
         return;
@@ -921,7 +948,7 @@ export default {
     font-weight: normal;
     font-size: 16px;
     line-height: 130%;
-    color: #8D96A2;
+    color: $black400;
   }
 }
 
@@ -1003,6 +1030,7 @@ export default {
     width: 40px;
     height: 40px;
     cursor: pointer;
+    border: 1px solid $black0;
   }
 
   &__more-data {
@@ -1042,17 +1070,17 @@ export default {
 
     &_low {
       background: rgba(34, 204, 20, 0.1);
-      color: #22CC14;
+      color: $green;
     }
 
     &_urgent {
       background: rgba(223, 51, 51, 0.1);
-      color: #DF3333;
+      color: $red;
     }
 
     &_normal {
       background: rgba(232, 210, 13, 0.1);
-      color: #E8D20D;
+      color: $yellow
     }
   }
   &__payPeriod {
@@ -1124,19 +1152,19 @@ export default {
   &-chat_green:before {
     @extend .icon;
     content: "\e9ba";
-    color: #00AA5B;
+    color: $green;
   }
 
   &-caret_down_blue:before {
     @extend .icon;
     content: "\ea48";
-    color: #0083C7;
+    color: $blue;
   }
 
   &-chevron_big_left:before {
     @extend .icon;
     content: "\ea4d";
-    color: #0083C7;
+    color: $blue;
   }
 
   &-location:before {

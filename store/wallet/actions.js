@@ -4,9 +4,11 @@ import Web3 from 'web3';
 import {
   stake,
   transfer,
+  ethBoost,
   disconnect,
   getBalance,
   connectWallet,
+  setIsEthNetWork,
   getStyledAmount,
   getWalletAddress,
   GetWalletProvider,
@@ -14,8 +16,7 @@ import {
   getContractFeeData,
   getIsWalletConnected,
   sendWalletTransaction,
-  connectWalletToProvider,
-  ethBoost, setIsEthNetWork,
+  connectWalletToProvider, getWalletTransactionCount,
 } from '~/utils/wallet';
 
 import {
@@ -23,7 +24,7 @@ import {
   success,
   showToast,
   getEstimateGas,
-  fetchContractData, fetchContractAction,
+  fetchContractData, getTransactionCount,
 } from '~/utils/web3';
 
 import {
@@ -34,38 +35,130 @@ import {
 } from '~/abi/index';
 
 import {
+  Path,
   Chains,
   Layout,
   TokenMap,
+  ExplorerUrl,
   StakingTypes,
   TokenSymbols,
   WalletTokensData,
   ProviderTypesByChain,
-  TokenSymbolByContract, Path, ExplorerUrl,
+  TokenSymbolByContract,
 } from '~/utils/enums';
 
 import ENV from '~/utils/addresses/index';
-import { LocalNotificationAction } from '~/utils/notifications';
 
 let connectionWS = null;
 let callbackWS = null;
 let web3Listener = null;
 
 export default {
-  async getTransactions({ commit }, params) {
+  async getWorknetTransactions({ commit, getters }, { params, network }) {
     try {
       const { data } = await this.$axios({
         url: `/account/${getWalletAddress()}/transactions`,
         baseURL: ENV.WQ_EXPLORER,
         params,
       });
-      commit('setTransactions', data.result.transactions);
+
+      const balance = getters.getBalanceData;
+      /**
+       * @property gas_used
+       * @property gas_price
+       * @property block_number
+       * @property tokenTransfers
+       * @property to_address_hash
+       * @property from_address_hash
+       */
+      commit('setTransactions', data.result.transactions.map((tx) => {
+        const amount = tx.tokenTransfers?.length ? tx.tokenTransfers[0]?.amount : tx.value;
+        const symbol = TokenSymbolByContract[tx.to_address_hash?.hex] || TokenSymbols.WQT;
+        const valueDecimals = balance[symbol].decimals || 18;
+        const txFee = tx.transaction_fee
+          || new BigNumber(tx.gas_price)
+            .multipliedBy(tx.gas_used)
+            .shiftedBy(-18)
+            .decimalPlaces(8)
+            .toString();
+
+        return {
+          tx_hash: tx.hash,
+          block: tx.block_number,
+          timestamp: tx.block.timestamp,
+          status: Boolean(tx.status),
+          value: `${getStyledAmount(amount, false, valueDecimals)} ${symbol}`,
+          transaction_fee: txFee,
+          from_address: tx.from_address_hash.hex,
+          to_address: tx.to_address_hash?.hex || '',
+          network,
+        };
+      }));
       commit('setTransactionsCount', data.result.count);
     } catch (e) {
       commit('setTransactions', []);
       commit('setTransactionsCount', 0);
     }
   },
+
+  async getEtherscanTransactions({ commit, getters }, { params, currentPage, network }) {
+    const api = {
+      [Chains.ETHEREUM]: { url: ENV.ETHERSCAN_API_URL, key: process.env.API_KEY_ETHERSCAN },
+      [Chains.BINANCE]: { url: ENV.BSCSCAN_API_URL, key: process.env.API_KEY_BSCSCAN },
+      [Chains.POLYGON]: { url: ENV.POLYGONSCAN_API_URL, key: process.env.API_KEY_POLYGONSCAN },
+    }[network];
+
+    /**
+     * @property $etherscanAPI - instance of API for get transactions from another networks
+     */
+    try {
+      const { result } = await this.$etherscanAPI.$get(api.url, {
+        params: {
+          module: 'account',
+          action: 'txList',
+          address: getWalletAddress(),
+          startblock: 0,
+          endblock: 99999999,
+          page: currentPage,
+          offset: params.limit,
+          sort: 'desc',
+          apiKey: api.key,
+        },
+      });
+
+      const balance = getters.getBalanceData;
+      const symbol = {
+        [Chains.ETHEREUM]: TokenSymbols.ETH,
+        [Chains.BINANCE]: TokenSymbols.BNB,
+        [Chains.POLYGON]: TokenSymbols.MATIC,
+      }[network];
+      const decimals = balance[symbol].decimals || 18;
+
+      /**
+       * @property txreceipt_status
+       */
+      commit('setTransactions', result.map((tx) => ({
+        tx_hash: tx.hash,
+        block: tx.blockNumber,
+        timestamp: tx.timeStamp * 1000,
+        status: Boolean(+tx.txreceipt_status),
+        value: `${getStyledAmount(tx.value, false, decimals)} ${symbol}`,
+        transaction_fee: new BigNumber(tx.gasPrice).multipliedBy(tx.gasUsed).shiftedBy(-18).decimalPlaces(8)
+          .toString(),
+        from_address: tx.from,
+        to_address: tx.to || '',
+        network,
+      })));
+
+      const count = await getWalletTransactionCount();
+      commit('setTransactionsCount', count);
+    } catch (e) {
+      console.error('wallet/getEtherscanTransactions', e);
+      commit('setTransactions', []);
+      commit('setTransactionsCount', 0);
+    }
+  },
+
   async checkPassword({ commit }, password) {
     try {
       const res = await this.$axios.$post('/v1/auth/validate-password', { password });
@@ -83,12 +176,13 @@ export default {
    * Check wallet is connected
    * @returns boolean
    */
-  checkWalletConnected({ commit, getters }, { nuxt, callbackLayout }) {
+  checkWalletConnected({ commit, getters }, { nuxt, callbackLayout, needConfirm = true }) {
     const connected = getIsWalletConnected();
     commit('setIsOnlyConfirm', false);
     if (!connected) {
       if (callbackLayout) commit('setCallbackLayout', callbackLayout);
-      nuxt.setLayout(Layout.CONFIRM);
+      // need for set confirm layout only if you authorized
+      if (needConfirm) nuxt.setLayout(Layout.CONFIRM);
     } else {
       commit('setIsWalletConnected', true);
     }
@@ -153,23 +247,34 @@ export default {
     }
   },
   async fetchWalletData({ commit, getters }, {
-    method, address, abi, token, symbol,
+    address, token, symbol,
   }) {
     try {
-      const res = await fetchContractData(
-        method,
-        abi,
-        token,
-        [address],
-        GetWalletProvider(),
-      );
-      const { decimals } = getters.getBalanceData[symbol];
+      const provider = GetWalletProvider();
+      const [balance, decimals] = await Promise.all([
+        fetchContractData(
+          'balanceOf',
+          ERC20,
+          token,
+          [address],
+          provider,
+        ),
+        fetchContractData(
+          'decimals',
+          ERC20,
+          token,
+          [],
+          provider,
+        ),
+      ]);
+
       commit('setBalance', {
         symbol,
-        balance: res ? getStyledAmount(res, false, decimals) : 0,
-        fullBalance: res ? getStyledAmount(res, true, decimals) : 0,
+        balance: balance ? getStyledAmount(balance, false, decimals) : 0,
+        fullBalance: balance ? getStyledAmount(balance, true, decimals) : 0,
+        decimals,
       });
-      return success(res);
+      return success(balance);
     } catch (e) {
       return error(e.message, e);
     }

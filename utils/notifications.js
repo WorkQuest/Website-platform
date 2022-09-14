@@ -17,6 +17,8 @@ export const NotificationAction = {
   WAIT_WORKER: 'waitWorker',
   USER_LEFT_REVIEW_ABOUT_QUEST: 'userLeftReviewAboutQuest',
   DISPUTE_DECISION: 'DisputeDecision',
+  DISPUTE_DECISION_REWORK: 'disputeDecision',
+  DISPUTE_DECISION_ON_CONTRACT: 'DisputeDecisionOnContract',
   QUEST_EDITED: 'questEdited',
   QUEST_END_SOON: 'questEndSoon',
   COMMENT_LIKED: 'commentLiked',
@@ -26,14 +28,19 @@ export const NotificationAction = {
   UPDATE_RATING_STATISTIC: 'updateRatingStatistic',
   NEW_QUEST_FOR_SPECIALIZATION: 'newQuestForSpecialization',
   PAID_REFERRAL: 'PaidReferral',
+  REPORT_DECIDED: 'ReportDecided',
+  REPORT_SUBMITTED: 'ReportSubmitted',
+  REPORT_REJECTED: 'ReportRejected',
+
+  // notifications after registration
+  KYC: 'EnableSumsubKYC',
+  TWOFA: 'EnableDoubleAuthentication',
+  WIKI: 'WorkQuestWikiPage',
+  GET_REWARD: 'InviteFriendsReward',
+  PROFILE_FILLED: 'FillProfileDataOnSettings',
 };
 
 export const LocalNotificationAction = {
-  KYC: 'kyc',
-  TWOFA: '2fa',
-  WIKI: 'wiki',
-  GET_REWARD: 'reward',
-  PROFILE_FILLED: 'filled',
   RATE_THE_QUEST: 'quest',
   QUEST_DRAFT: 'questDraft',
   QUESTS_SPECS: 'questsSpecs',

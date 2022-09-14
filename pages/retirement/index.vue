@@ -306,9 +306,7 @@ export default {
         return;
       }
       await this.fetchWalletData({
-        method: 'balanceOf',
         address: getWalletAddress(),
-        abi: ERC20,
         token: TokenMap[TokenSymbols.WUSD],
         symbol: TokenSymbols.WUSD,
       });
@@ -430,18 +428,8 @@ export default {
 
 <style lang="scss" scoped>
 .pension-page {
-  background: linear-gradient(to bottom, #103D7C 320px, #f6f8fa 320px);
-  display: flex;
-  justify-content: center;
-
   &__container {
-    display: grid;
-    grid-template-rows: 195px max-content;
-    max-width: 1180px;
-    grid-row-gap: 50px;
     width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
   }
 
   &__header {
@@ -465,11 +453,6 @@ export default {
   }
 
   &__content {
-    display: grid;
-    grid-row-gap: 30px;
-    grid-template-rows: 140px max-content max-content;
-    width: 100%;
-
     .btn-group {
       display: grid;
       grid-template-columns: repeat(2, calc(50% - 10px));
@@ -717,15 +700,12 @@ export default {
   }
 
   @include _991 {
-    background: linear-gradient(to bottom, #103D7C 245px, #f6f8fa 245px);
     &__container {
       gap: 15px;
-      //grid-template-rows: 150px auto;
     }
   }
 
   @include _767 {
-    background: linear-gradient(to bottom, #103D7C 220px, #f6f8fa 220px);
     &__container {
       grid-template-rows: auto auto;
       gap: 24px;

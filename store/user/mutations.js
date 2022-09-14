@@ -26,16 +26,17 @@ export default {
   setCaseData(state, data) {
     state.portfolio = data;
   },
-  setTokens(state, payload) {
-    state.tokens.access = payload.access;
-    state.tokens.refresh = payload.refresh;
+  setTokens(state, {
+    access, refresh, social, userStatus,
+  }) {
+    state.tokens.access = access;
+    state.tokens.refresh = refresh;
 
-    this.$cookies.set('access', payload.access, { path: Path.ROOT, maxAge: accessLifetime });
-    this.$cookies.set('refresh', payload.refresh, { path: Path.ROOT, maxAge: refreshLifetime });
-    if (payload.userStatus) {
-      this.$cookies.set('userStatus', payload.userStatus, { path: Path.ROOT, maxAge: accessLifetime });
-    }
-    this.$cookies.set('socialNetwork', payload.social, { path: Path.ROOT, maxAge: accessLifetime });
+    this.$cookies.set('access', access, { path: Path.ROOT, maxAge: accessLifetime });
+    this.$cookies.set('refresh', refresh, { path: Path.ROOT, maxAge: refreshLifetime });
+    this.$cookies.set('socialNetwork', social, { path: Path.ROOT, maxAge: accessLifetime });
+    if (!userStatus) return;
+    this.$cookies.set('userStatus', userStatus, { path: Path.ROOT, maxAge: accessLifetime });
   },
   setUserData(state, data) {
     state.userData = { ...state.userData, ...data };
@@ -66,14 +67,8 @@ export default {
   setCurrentUserPosition(state, data) {
     state.currentUserPosition = data;
   },
-  setUserPassword(state, data) {
-    state.userDataPassword = data;
-  },
   setImageType(state, data) {
     state.imageLink = data;
-  },
-  setSendCode(state, data) {
-    state.userSendCode = data;
   },
   setUserReviews(state, data) {
     state.userReviews = data;

@@ -7,14 +7,16 @@ import {
 
 import {
   GetWalletProvider,
-  connectWithMnemonic, disconnect,
+  disconnect,
 } from '~/utils/wallet';
 
 import {
+  Path,
   UserStatuses,
+  TariffByIndex,
+  ConnectionTypes,
   QuestModeReview,
   RaiseViewTariffPeriods,
-  TariffByIndex, Path, ConnectionTypes,
 } from '~/utils/enums';
 
 import { WQPromotion } from '~/abi/index';
@@ -119,7 +121,7 @@ export default {
       if (questMode === QuestModeReview.QUEST_SINGLE) commit('quests/setMarkOnQuestSingle', result, { root: true });
       return ok;
     } catch (e) {
-      console.log('user/sendReviewForUser');
+      console.error('user/sendReviewForUser');
       return false;
     }
   },
@@ -131,27 +133,31 @@ export default {
       return success(ok);
     } catch (e) {
       console.error('user/sendReviewDispute', e);
-      return error(e.response.data.code, e.response.data.msg);
+      return error(e.code, e.msg);
     }
   },
   async registerWallet({ commit }, payload) {
     try {
       return await this.$axios.$post('/v1/auth/register/wallet', payload);
     } catch (e) {
-      return error(e.response.data.code, e.response.data.msg);
+      console.error('user/registerWallet', e);
+      return error(e.code, e.msg);
     }
   },
-  async signIn({ commit, dispatch, state }, payload) {
+  async signIn({ commit, dispatch, state }, { params, isRemember }) {
     try {
-      const { params, isRemember } = payload;
       const response = await this.$axios.$post('/v1/auth/login', params);
+
+      const {
+        access, refresh, userStatus, totpIsActive,
+      } = response.result;
+
       commit('setTokens', {
-        access: response.result.access,
-        refresh: isRemember ? response.result.refresh : null,
+        access,
+        refresh: isRemember ? refresh : null,
       });
-      if (response.result.userStatus === 1 && !response.result.totpIsActive) {
-        await dispatch('getMainData');
-      }
+
+      if (userStatus === UserStatuses.Confirmed && !totpIsActive) await dispatch('getMainData');
       return response;
     } catch (e) {
       return error();
@@ -160,7 +166,7 @@ export default {
   async signUp({ commit }, payload) {
     try {
       const response = await this.$axios.$post('/v1/auth/register', payload);
-      commit('setTokens', response.result);
+      commit('setTokens', { access: response.result.access });
       return response;
     } catch (e) {
       return error();
@@ -182,7 +188,6 @@ export default {
       await dispatch('wallet/unsubscribeWS', null, { root: true });
 
       commit('logOut');
-      commit('setTokens', { access: null, refresh: null });
       commit('web3/setConnectionType', ConnectionTypes.WEB3, { root: true });
       commit('wallet/setIsWalletConnected', false, { root: true });
       disconnect(); // disconnect wq wallet
@@ -214,9 +219,9 @@ export default {
     try {
       const { result } = await this.$axios.$get('/v1/profile/me');
       commit('setUserData', result);
-      if (result.wallet?.address) connectWithMnemonic(result.wallet.address);
       return success(result);
     } catch (e) {
+      console.error('user/getUserData', e);
       return error();
     }
   },
@@ -243,8 +248,8 @@ export default {
       commit('setUserData', result);
       return success();
     } catch (e) {
-      console.log('user/editEmployerData', e);
-      return error();
+      console.log('user/editEmployerData', e.msg);
+      return error(e.code, e.msg, e);
     }
   },
   async editWorkerData({ commit }, payload) {
@@ -253,36 +258,43 @@ export default {
       commit('setUserData', result);
       return success();
     } catch (e) {
-      console.log('user/editWorkerData', e);
-      return error();
+      console.log('user/editWorkerData', e.msg);
+      return error(e.code, e.msg, e);
     }
   },
   async refreshTokens({ commit }) {
     try {
-      const res = await this.$axios.$post('/v1/auth/refresh-tokens');
-      commit('setTokens', res.result);
-      return success(res);
+      const { result } = await this.$axios.$post('/v1/auth/refresh-tokens');
+      commit('setTokens', result);
+      return success(result);
     } catch (e) {
-      return error(e);
+      console.error('user/refreshToken', e);
+      return error(e.code, e.msg);
     }
   },
   async setCurrentPosition({ commit }, payload) {
     commit('setCurrentUserPosition', payload);
   },
   async editUserPassword({ commit }, payload) {
-    const response = await this.$axios.$put('/v1/profile/change-password', payload);
-    commit('setUserPassword', response.result);
-    return response;
+    return await this.$axios.$put('/v1/profile/change-password', payload);
   },
   async passwordSendCode({ commit }, payload) {
-    const response = await this.$axios.$post('/v1/restore-password/send-code', payload);
-    commit('setSendCode', response.result);
-    return response;
+    try {
+      await this.$axios.$post('/v1/restore-password/send-code', payload);
+      return success();
+    } catch (e) {
+      console.error('user/passwordSendCode', e);
+      return error(e.code, e.msg);
+    }
   },
   async passwordChange({ commit }, payload) {
-    const response = await this.$axios.$post('/v1/restore-password/set-password', payload);
-    commit('setUserPassword', response.result);
-    return response;
+    try {
+      await this.$axios.$post('/v1/restore-password/set-password', payload);
+      return success();
+    } catch (e) {
+      console.error('user/passwordChange', e);
+      return error(e.code, e.msg);
+    }
   },
 
   async imageType({ commit }, payload) {
@@ -330,8 +342,8 @@ export default {
       commit('setTwoFAStatus', false);
       return response;
     } catch (e) {
-      const { data } = e.response;
-      return error(data.code, data.msg, data);
+      console.error('user/disable2FA', e);
+      return error(e.code, e.msg, e);
     }
   },
   async enable2FA({ commit }, payload) {
@@ -340,8 +352,8 @@ export default {
       commit('setTwoFACode', response.result);
       return response;
     } catch (e) {
-      const { data } = e.response;
-      return error(data.code, data.msg, data);
+      console.error('user/enable2FA', e);
+      return error(e.code, e.msg, e);
     }
   },
   async confirmEnable2FA({ commit }, payload) {
@@ -370,7 +382,7 @@ export default {
       const response = await this.$axios.$post('/v1/profile/phone/confirm', payload);
       return response.ok;
     } catch (e) {
-      console.log('user/confirmPhone');
+      console.error('user/confirmPhone');
       return false;
     }
   },
@@ -379,7 +391,7 @@ export default {
       const response = await this.$axios.$post('/v1/auth/session/current/validate-totp', payload);
       return response.result.isValid;
     } catch (e) {
-      console.log('user/validateTOTP');
+      console.error('user/validateTOTP');
       return false;
     }
   },
@@ -388,7 +400,7 @@ export default {
       const response = await this.$axios.$post('/v1/totp/validate', payload);
       return response.result.isValid;
     } catch (e) {
-      console.log('user/validateSessionTOTP');
+      console.error('user/validateSessionTOTP');
       return false;
     }
   },
@@ -426,7 +438,7 @@ export default {
       await Promise.all(toFetch);
       return success(result);
     } catch (e) {
-      console.log('user/fetchRaiseViewPrice', e);
+      console.error('user/fetchRaiseViewPrice', e);
       return error();
     }
   },
@@ -436,7 +448,7 @@ export default {
       const { ok } = await this.$axios.$post('/v1/report/send', payload);
       return success(ok);
     } catch (e) {
-      console.log('user/sendReport');
+      console.error('user/sendReport');
       return error();
     }
   },

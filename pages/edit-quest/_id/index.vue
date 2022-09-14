@@ -7,7 +7,7 @@
   >
     <div class="main__body page">
       <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
+        v-slot="{handleSubmit, invalid}"
         tag="div"
       >
         <div
@@ -43,7 +43,7 @@
                 :label="$tc('meta.price')"
                 data-selector="PRICE-FIELD"
                 placeholder="0 WUSD"
-                rules="required|decimal|decimalPlaces:16|min_value:1"
+                rules="required|decimal|decimalPlaces:18|min_value:1"
                 :name="$tc('meta.price')"
               />
             </div>
@@ -94,9 +94,9 @@
               :placeholder="$t('quests.address')"
               mode="icon"
               :selector="true"
-              rules="required"
+              :rules="{required: true, geo_is_address: { addresses: addressesBuffer } }"
               :name="$tc('quests.address')"
-              @selector="getAddressInfo(address)"
+              @selector="debouncedAddressSearch(address)"
             >
               <template v-slot:left>
                 <span class="icon-map" />
@@ -233,11 +233,12 @@ import {
 import {
   QuestMethods, EditQuestState, QuestStatuses, PaidTariff,
 } from '~/utils/сonstants/quests';
-import { ERC20, WorkQuest, WQPromotion } from '~/abi';
+import { WorkQuest, WQPromotion } from '~/abi';
 import { error, success } from '~/utils/web3';
 import { CommissionForCreatingAQuest } from '~/utils/сonstants/commission';
 import { images } from '~/utils/images';
 import walletOperations from '~/plugins/mixins/walletOperations';
+import debounce from '~/utils/debounce';
 
 const { GeoCode } = require('geo-coder');
 
@@ -264,10 +265,12 @@ export default {
       price: '',
       coordinates: {},
       addresses: [],
+      addressesBuffer: [],
       files: [],
       mode: this.$route.query?.mode || '',
       geoCode: null,
       prevPrice: null,
+      debouncedAddressSearch: null,
     };
   },
   computed: {
@@ -420,6 +423,10 @@ export default {
     this.coordinates.lat = location.latitude;
 
     this.prevPrice = this.price;
+    this.debouncedAddressSearch = debounce(this.getAddressInfo, 300);
+
+    // correctly address on loadpage
+    this.addressesBuffer = [{ formatted: locationPlaceName }];
     this.SetLoader(false);
   },
   methods: {
@@ -461,9 +468,7 @@ export default {
 
       new Promise(async (resolve, reject) => {
         await this.$store.dispatch('wallet/fetchWalletData', {
-          method: 'balanceOf',
           address: this.userWalletAddress,
-          abi: ERC20,
           token: tokenAddress,
           symbol: TokenSymbols.WUSD,
         });
@@ -495,9 +500,7 @@ export default {
           }),
           this.$store.dispatch('wallet/getBalance'),
           this.$store.dispatch('wallet/fetchWalletData', {
-            method: 'balanceOf',
             address: this.userWalletAddress,
-            abi: ERC20,
             token: tokenAddress,
             symbol: TokenSymbols.WUSD,
           }),
@@ -551,6 +554,7 @@ export default {
       try {
         if (address.length) {
           this.addresses = await this.geoCode.geolookup(address);
+          this.addressesBuffer = this.addresses;
           this.coordinates = {
             lng: this.addresses[0].lng,
             lat: this.addresses[0].lat,
@@ -558,6 +562,7 @@ export default {
         } else this.addresses = [];
       } catch (e) {
         this.addresses = [];
+        this.addressesBuffer = [];
         console.error('Geo look up is failed', e);
       }
     },
@@ -581,9 +586,7 @@ export default {
 
           this.SetLoader(true);
           await this.$store.dispatch('wallet/fetchWalletData', {
-            method: 'balanceOf',
             address: this.userWalletAddress,
-            abi: ERC20,
             token: wusdAddress,
             symbol: TokenSymbols.WUSD,
           });

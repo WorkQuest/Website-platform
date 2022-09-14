@@ -41,6 +41,19 @@ const WQRouter = [
     inputs: [
       {
         indexed: false,
+        internalType: 'uint8',
+        name: 'version',
+        type: 'uint8',
+      },
+    ],
+    name: 'Initialized',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
         internalType: 'uint256',
         name: 'collateral',
         type: 'uint256',
@@ -342,19 +355,6 @@ const WQRouter = [
     type: 'function',
   },
   {
-    inputs: [],
-    name: 'annualInterestRate',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
     inputs: [
       {
         internalType: 'address',
@@ -374,11 +374,6 @@ const WQRouter = [
       {
         internalType: 'uint256',
         name: 'collateralAmount',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'comission',
         type: 'uint256',
       },
       {
@@ -430,57 +425,6 @@ const WQRouter = [
   },
   {
     inputs: [],
-    name: 'fixedRate',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'string',
-        name: 'symbol',
-        type: 'string',
-      },
-    ],
-    name: 'getCollateral',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'string',
-        name: 'symbol',
-        type: 'string',
-      },
-    ],
-    name: 'getDebt',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
     name: 'getParams',
     outputs: [
       {
@@ -494,24 +438,9 @@ const WQRouter = [
         type: 'address',
       },
       {
-        internalType: 'contract WQSurplusAuction',
+        internalType: 'address payable',
         name: '',
         type: 'address',
-      },
-      {
-        internalType: 'contract WQDebtAuction',
-        name: '',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
       },
     ],
     stateMutability: 'view',
@@ -625,14 +554,9 @@ const WQRouter = [
         type: 'address',
       },
       {
-        internalType: 'uint256',
-        name: '_fixedRate',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: '_annualInterestRate',
-        type: 'uint256',
+        internalType: 'address payable',
+        name: '_feeReceiver',
+        type: 'address',
       },
     ],
     name: 'initialize',
@@ -727,11 +651,6 @@ const WQRouter = [
         type: 'uint256',
       },
       {
-        internalType: 'uint256',
-        name: 'debtPart',
-        type: 'uint256',
-      },
-      {
         internalType: 'string',
         name: 'symbol',
         type: 'string',
@@ -787,34 +706,16 @@ const WQRouter = [
       },
       {
         internalType: 'address',
-        name: '_debtAuction',
+        name: '_wusd',
         type: 'address',
       },
       {
-        internalType: 'address',
-        name: '_surplusAuction',
+        internalType: 'address payable',
+        name: '_feeReeiver',
         type: 'address',
       },
     ],
     name: 'setContracts',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_fixedRate',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: '_annualInterestRate',
-        type: 'uint256',
-      },
-    ],
-    name: 'setRate',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -874,29 +775,6 @@ const WQRouter = [
   {
     inputs: [
       {
-        internalType: 'address',
-        name: 'user',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'index',
-        type: 'uint256',
-      },
-      {
-        internalType: 'string',
-        name: 'symbol',
-        type: 'string',
-      },
-    ],
-    name: 'syncState',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
         internalType: 'string',
         name: '',
         type: 'string',
@@ -904,16 +782,6 @@ const WQRouter = [
     ],
     name: 'tokens',
     outputs: [
-      {
-        internalType: 'uint256',
-        name: 'totalCollateral',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'totalDebt',
-        type: 'uint256',
-      },
       {
         internalType: 'address',
         name: 'token',
@@ -936,57 +804,6 @@ const WQRouter = [
       },
     ],
     stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'user',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'cost',
-        type: 'uint256',
-      },
-      {
-        internalType: 'string',
-        name: 'symbol',
-        type: 'string',
-      },
-    ],
-    name: 'transferDebt',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'user',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
-      {
-        internalType: 'string',
-        name: 'symbol',
-        type: 'string',
-      },
-    ],
-    name: 'transferSurplus',
-    outputs: [],
-    stateMutability: 'payable',
     type: 'function',
   },
   {

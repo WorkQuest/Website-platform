@@ -27,7 +27,7 @@
       <form
         class="auth__fields"
         action=""
-        @submit.prevent="handleSubmit(signIn)"
+        @submit.prevent="handleSubmit(() => { signIn(model, isRememberMeSelected) })"
       >
         <base-field
           ref="email"
@@ -76,14 +76,14 @@
         </base-field>
         <div class="auth__tools">
           <base-checkbox
-            v-model="remember"
+            v-model="isRememberMeSelected"
             name="remember"
             :label="$tc('signIn.remember')"
           />
           <div
             class="auth__text auth__text_link"
             data-selector="ACTION-BTN-FORGOT-PASSWORD"
-            @click="showRestoreModal()"
+            @click="showRestoreModal"
           >
             {{ $t('meta.btns.forgot') }}
           </div>
@@ -117,7 +117,7 @@
         <div class="auth__icons">
           <button
             class="auth__btn auth__btn_workQuest"
-            @click="showSignWorkQuest()"
+            @click="showSignWorkQuest"
           >
             <img
               :src="$options.images.WQ_LOGO"
@@ -174,7 +174,7 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import {
-  createWallet, decryptStringWitheKey, encryptStringWithKey, initWallet, setCipherKey,
+  createWallet, decryptStringWithKey, encryptStringWithKey, initWallet, setCipherKey,
 } from '~/utils/wallet';
 import CreateWallet from '~/components/ui/CreateWallet';
 import {
@@ -206,8 +206,8 @@ export default {
       addressAssigned: false,
       userWalletAddress: null,
       step: WalletState.Default,
-      model: { email: '', password: '', totp: '' },
-      remember: false,
+      model: { email: '', password: '' },
+      isRememberMeSelected: false,
       userStatus: '',
       userAddress: '',
       isLoginWithSocial: false,
@@ -226,6 +226,10 @@ export default {
     },
   },
   created() {
+    // TODO: delete 12.10 | for old cipher
+    localStorage.removeItem('mnemonic');
+    sessionStorage.removeItem('mnemonic');
+
     window.addEventListener('beforeunload', this.beforeunload);
     const { token } = this.$route.query;
     if (token) sessionStorage.setItem('confirmToken', String(token));
@@ -314,10 +318,10 @@ export default {
       this.disableResend = true;
     },
     clearCookies() {
-      const mnemonicInLocalStorage = JSON.parse(localStorage.getItem('mnemonic'));
+      const mnemonicInLocalStorage = JSON.parse(localStorage.getItem('wal'));
       const isWalletInMnemonicList = mnemonicInLocalStorage && mnemonicInLocalStorage[this.userWalletAddress];
       if (this.isLoginWithSocial
-        || (this.userData.id && (isWalletInMnemonicList || localStorage.getItem('mnemonic')))) {
+        || (this.userData.id && (isWalletInMnemonicList || localStorage.getItem('wal')))) {
         return;
       }
       this.$cookies.remove('access');
@@ -354,41 +358,39 @@ export default {
     async resendLetter() {
       this.model.email = this.model.email.trim();
       const { email, password } = this.model;
-      if (!email.trim() || !password) {
-        this.ShowToast(this.$tc('signIn.enterEmail'));
+
+      if (!email || !password) {
+        this.ShowToast(this.$t('signIn.enterEmail'));
         return;
       }
+
       if (!this.$cookies.get('access')) {
-        const payload = {
-          email,
-          password,
-        };
-        await this.$store.dispatch('user/signIn', { payload });
+        await this.$store.dispatch('user/signIn', { email, password });
+        return;
       }
-      if (this.$cookies.get('access')) {
-        await this.$store.dispatch('user/resendEmail', { email });
-        this.ShowToast(this.$t('registration.emailConfirmNewLetter'), this.$t('registration.emailConfirmTitle'));
-        this.startTimer();
-      }
+
+      await this.$store.dispatch('user/resendEmail', { email });
+      this.ShowToast(this.$t('registration.emailConfirmNewLetter'), this.$t('registration.emailConfirmTitle'));
+      this.startTimer();
     },
-    async signIn() {
+    async signIn({ email, password }, isRemember) {
       if (this.isLoading) return;
+
       this.SetLoader(true);
-      this.model.email = this.model.email.trim();
-      const { email, password } = this.model;
-      const payload = {
-        email,
-        password,
-      };
       const { ok, result } = await this.$store.dispatch('user/signIn', {
-        params: payload,
-        isRemember: this.remember,
+        params: {
+          email: email.trim(),
+          password,
+        },
+        isRemember,
       });
+
       if (ok) {
-        this.$cookies.set('userStatus', result.userStatus, { path: Path.ROOT, maxAge: accessLifetime });
-        this.userStatus = result.userStatus;
-        this.userAddress = result.address;
-        if (result.totpIsActive) {
+        const { userStatus, address, totpIsActive } = result;
+        this.$cookies.set('userStatus', userStatus, { path: Path.ROOT, maxAge: accessLifetime });
+        this.userStatus = userStatus;
+        this.userAddress = address;
+        if (totpIsActive) {
           await this.ShowModal({
             key: modals.securityCheck,
             isForLogin: true,
@@ -400,7 +402,17 @@ export default {
       }
       this.SetLoader(false);
     },
+    removeIncorrectStorage() {
+      const storageData = JSON.parse(localStorage.getItem('wal'));
+      const key = this.userAddress.toLowerCase();
+      // remove decrypted incorrect mnemonic in storage
+      if (storageData && storageData[key]) {
+        delete storageData[key];
+        localStorage.setItem('wal', JSON.stringify(storageData));
+      }
+    },
     async nextStepAction() {
+      this.CloseModal(); // for modal sign in
       const confirmToken = sessionStorage.getItem('confirmToken');
       // Unconfirmed account w/o confirm token
       if (this.userStatus === UserStatuses.Unconfirmed && !confirmToken) {
@@ -453,39 +465,26 @@ export default {
       }
       this.userWalletAddress = this.userAddress.toLowerCase();
 
-      // Wallet assigned, checking storage
-      const sessionData = JSON.parse(sessionStorage.getItem('mnemonic'));
-      const storageData = JSON.parse(localStorage.getItem('mnemonic'));
-      if (!sessionData && !storageData) {
+      // Wallet assigned
+      const storageData = JSON.parse(localStorage.getItem('wal'));
+      if (!storageData) {
         this.step = WalletState.ImportMnemonic;
         this.SetLoader(false);
         return;
       }
 
-      const sessionMnemonic = sessionData ? sessionData[this.userAddress.toLowerCase()] : null;
-      const storageMnemonic = storageData ? storageData[this.userAddress.toLowerCase()] : null;
-      if (!sessionMnemonic && !storageMnemonic) {
+      const key = this.userAddress.toLowerCase();
+      const storageMnemonic = storageData ? storageData[key] : null;
+      if (!storageMnemonic) {
         this.step = WalletState.ImportMnemonic;
         this.SetLoader(false);
         return;
       }
-
-      // Check in session if exists
-      if (sessionMnemonic) {
-        const wallet = createWallet(sessionMnemonic);
-        if (wallet && wallet.address.toLowerCase() === this.userWalletAddress) {
-          this.saveToStorage(wallet);
-          await this.redirectUser();
-          this.SetLoader(false);
-          return;
-        }
-      }
-
-      // Check in storage
       if (storageMnemonic) {
-        const mnemonic = decryptStringWitheKey(storageMnemonic, this.model.password);
+        const mnemonic = decryptStringWithKey(storageMnemonic, this.model.password);
+        if (!mnemonic) this.removeIncorrectStorage();
         const wallet = createWallet(mnemonic);
-        if (wallet && wallet.address.toLowerCase() === this.userWalletAddress) {
+        if (mnemonic && wallet?.address?.toLowerCase() === this.userWalletAddress) {
           this.saveToStorage(wallet);
           await this.redirectUser();
           this.SetLoader(false);
@@ -493,8 +492,9 @@ export default {
         }
       }
 
-      // Session & Storage invalid mnemonics
+      // Storage invalid mnemonics
       this.ShowToast(this.$t('messages.mnemonic'), this.$t('toasts.error'));
+      this.removeIncorrectStorage();
       this.step = WalletState.ImportMnemonic;
     },
     async assignWallet(wallet) {
@@ -529,17 +529,14 @@ export default {
       this.ShowToast(this.$t('messages.mnemonic'), this.$t('toasts.error'));
     },
     saveToStorage(wallet) {
-      initWallet(wallet.address, wallet.privateKey);
+      initWallet(wallet);
+      const key = wallet?.address?.toLowerCase();
       if (!this.isLoginWithSocial) {
-        localStorage.setItem('mnemonic', JSON.stringify({
-          ...JSON.parse(localStorage.getItem('mnemonic')),
-          [wallet.address.toLowerCase()]: encryptStringWithKey(wallet.mnemonic.phrase, this.model.password),
+        localStorage.setItem('wal', JSON.stringify({
+          ...JSON.parse(localStorage.getItem('wal')),
+          [key]: encryptStringWithKey(wallet?.mnemonic?.phrase, this.model.password),
         }));
       }
-      sessionStorage.setItem('mnemonic', JSON.stringify({
-        ...JSON.parse(sessionStorage.getItem('mnemonic')),
-        [wallet.address.toLowerCase()]: wallet.mnemonic.phrase,
-      }));
       this.$store.dispatch('wallet/connectWallet', { userWalletAddress: wallet.address, userPassword: this.model.password });
     },
     async redirectUser() {
@@ -557,7 +554,7 @@ export default {
       // this is necessary for the case when the user was in the guest layout and then decided to log in
       // $wsNotifs was connected on guest layout without token, it will be reconnect in header with token
       if (this.connections.notifsConnection) await this.$wsNotifs.disconnect();
-      const mnemonicInLocalStorage = JSON.parse(localStorage.getItem('mnemonic'));
+      const mnemonicInLocalStorage = JSON.parse(localStorage.getItem('wal'));
       const isWalletInMnemonicList = mnemonicInLocalStorage && mnemonicInLocalStorage[this.userData.wallet.address];
       if (!isWalletInMnemonicList && !this.isLoginWithSocial) return;
       const redirectTo = sessionStorage.getItem('redirectTo');
@@ -585,6 +582,7 @@ export default {
     showSignWorkQuest() {
       this.ShowModal({
         key: modals.signWorkQuest,
+        submitMethod: async (model, isRememberMe) => await this.signIn(model, isRememberMe),
       });
     },
   },

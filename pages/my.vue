@@ -3,55 +3,53 @@
     class="quests"
     data-selector="PAGE-MY-QUESTS"
   >
-    <div class="quests__container">
-      <div class="quests__body">
-        <div class="quests__title">
-          {{ $t('meta.myQuests') }}
-        </div>
-        <div
-          class="quests__content"
-          :class="{'quests__content-wide': userRole === $options.UserRole.WORKER }"
+    <div class="quests__body">
+      <div class="quests__title">
+        {{ $t('meta.myQuests') }}
+      </div>
+      <div
+        class="quests__content"
+        :class="{'quests__content-wide': userRole === $options.UserRole.WORKER }"
+      >
+        <base-btn
+          v-for="(item, i) in filterTabs"
+          :key="i"
+          :data-selector="`${item.name}`"
+          :mode="selectedTab === item.id ? '' : 'light'"
+          class="quests__btn"
+          @click="filterByStatus(item.id)"
         >
-          <base-btn
-            v-for="(item, i) in filterTabs"
-            :key="i"
-            :data-selector="`${item.name}`"
-            :mode="selectedTab === item.id ? '' : 'light'"
-            class="quests__btn"
-            @click="filterByStatus(item.id)"
-          >
-            {{ item.name }}
-          </base-btn>
-        </div>
-        <div class="quests__cards">
-          <card-quest
-            v-for="i of $options.QuestsLimit"
-            v-show="isFetching"
-            :key="i + 'skeleton'"
-            is-skeleton
-          />
-          <card-quest
-            v-for="(quest,i) in quests"
-            v-show="!isFetching"
-            :key="i"
-            :quest="quest"
-            :quest-index="i"
-            @clickFavoriteStar="updateQuests(quest)"
-          />
-        </div>
-        <empty-data
-          v-if="!questsCount"
-          :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
-          :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
-          :link="getEmptyLink"
+          {{ item.name }}
+        </base-btn>
+      </div>
+      <div class="quests__cards">
+        <card-quest
+          v-for="i of $options.QuestsLimit"
+          v-show="isFetching"
+          :key="i + 'skeleton'"
+          is-skeleton
         />
-        <div class="quests__pager">
-          <base-pager
-            v-if="totalPages > 1"
-            v-model="page"
-            :total-pages="totalPages"
-          />
-        </div>
+        <card-quest
+          v-for="(quest,i) in quests"
+          v-show="!isFetching"
+          :key="i"
+          :quest="quest"
+          :quest-index="i"
+          @clickFavoriteStar="updateQuests(quest)"
+        />
+      </div>
+      <empty-data
+        v-if="!questsCount"
+        :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
+        :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
+        :link="getEmptyLink"
+      />
+      <div class="quests__pager">
+        <base-pager
+          v-if="totalPages > 1"
+          v-model="page"
+          :total-pages="totalPages"
+        />
       </div>
     </div>
   </div>
@@ -156,6 +154,8 @@ export default {
       this.page = 1;
       this.selectedTab = id;
       this.requestParams.query.offset = 0;
+      this.requestParams.query['sort[createdAt]'] = 'desc';
+      delete this.requestParams.query['sort[invitedCreatedAt]'];
       delete this.requestParams.query.responded;
       delete this.requestParams.query.starred;
       delete this.requestParams.query.invited;
@@ -181,6 +181,8 @@ export default {
           this.requestParams.query['statuses[2]'] = QuestStatuses.Dispute;
           break;
         case 4:
+          delete this.requestParams.query['sort[createdAt]'];
+          this.requestParams.query['sort[invitedCreatedAt]'] = 'desc';
           this.requestParams.query.invited = true;
           break;
         case 5:
@@ -201,11 +203,6 @@ export default {
 .quests {
   width: 100%;
   background-color: #f6f8fa;
-
-  &__container {
-    display: flex;
-    justify-content: center;
-  }
 
   &__cards {
     display: grid;
@@ -242,12 +239,6 @@ export default {
 
   &__pager {
     margin-top: 25px;
-  }
-}
-
-@include _1199 {
-  .quests__body {
-    padding: 0 10px;
   }
 }
 

@@ -1,5 +1,11 @@
-import { Chains, TokenSymbols, ExplorerUrl } from '~/utils/enums';
-import ENV, { IS_PROD } from '~/utils/addresses/index';
+import {
+  Chains,
+  TokenSymbols,
+  ExplorerUrl,
+  BscExplorerUrl,
+  EthereumExplorerUrl,
+} from '~/utils/enums';
+import ENV from '~/utils/addresses/index';
 import { images } from '~/utils/images';
 
 export const BlockchainIndex = Object.freeze({
@@ -38,8 +44,9 @@ export const SwapAddresses = new Map([
       tokenAddress: {
         [TokenSymbols.WQT]: ENV.ETHEREUM_WQT_TOKEN,
         [TokenSymbols.USDT]: ENV.ETHEREUM_USDT_TOKEN,
+        [TokenSymbols.USDC]: ENV.ETHEREUM_USDC_TOKEN,
       },
-      explorer: `https://${IS_PROD ? '' : 'rinkeby.'}etherscan.io`,
+      explorer: EthereumExplorerUrl,
     },
   ],
   [
@@ -53,23 +60,24 @@ export const SwapAddresses = new Map([
       tokenAddress: {
         [TokenSymbols.WQT]: ENV.BSC_WQT_TOKEN,
         [TokenSymbols.USDT]: ENV.BSC_USDT_TOKEN,
+        [TokenSymbols.USDC]: ENV.BSC_USDC_TOKEN,
       },
-      explorer: `https://${IS_PROD ? '' : 'testnet.'}bscscan.com`,
+      explorer: BscExplorerUrl,
     },
   ],
   [
     Chains.WORKNET,
     {
-      icon: images.WQ_PLATFORM_LOGO,
+      icon: images.WORKNET,
       title: Chains.WORKNET,
       chain: Chains.WORKNET,
       index: BlockchainIndex.WORKNET,
       nativeSymbol: TokenSymbols.WQT,
       tokenAddress: {
-        // [TokenSymbols.WQT]: ENV.WORKNET_WQT_TOKEN, // TODO fix it, this secret was deleted
         [TokenSymbols.ETH]: ENV.WORKNET_WETH_TOKEN,
         [TokenSymbols.BNB]: ENV.WORKNET_WBNB_TOKEN,
         [TokenSymbols.USDT]: ENV.WORKNET_USDT_TOKEN,
+        [TokenSymbols.USDC]: ENV.WORKNET_USDC_TOKEN,
       },
       explorer: ExplorerUrl,
     },

@@ -76,6 +76,7 @@ export default {
         offset: 0,
         'sort[createdAt]': 'desc',
         'statuses[0]': 1,
+        'statuses[1]': 2,
       },
       specFilter: {},
       isShowMap: true,
@@ -262,17 +263,12 @@ export default {
 
 @include _1199 {
   .quests__content {
-    padding: 0 20px;
+    padding: 0 10px;
   }
 }
 
 @include _575 {
   .quests {
-
-    &__content {
-      padding: 0 10px;
-    }
-
     &__cards {
       grid-gap: 10px;
     }

@@ -82,6 +82,7 @@
 <script>
 import modals from '~/store/modals/modals';
 import { Layout, Path } from '~/utils/enums';
+import { images } from '~/utils/images';
 
 export default {
   name: 'Restore',
@@ -94,32 +95,26 @@ export default {
       isPasswordConfirmVisible: false,
     };
   },
-  async mounted() {
-    this.SetLoader(true);
-    this.SetLoader(false);
-  },
   methods: {
     async resetPassword() {
-      const payload = {
+      const { ok, msg } = await this.$store.dispatch('user/passwordChange', {
         newPassword: this.password,
         token: this.$route.query.token,
-      };
-      try {
-        const response = await this.$store.dispatch('user/passwordChange', payload);
-        if (response?.ok) {
-          this.showChangeModal();
-          await this.$router.push(Path.SIGN_IN);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    showChangeModal() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('assets/img/ui/password_changed.svg'),
-        title: this.$t('restore.modal'),
       });
+      if (ok) {
+        this.ShowModal({
+          key: modals.status,
+          img: images.PASSWORD_CHANGED,
+          title: this.$t('restore.modal'),
+        });
+        await this.$router.push(Path.SIGN_IN);
+      } else {
+        await this.$store.dispatch('main/showToast', {
+          title: this.$t('toasts.error'),
+          variant: 'warning',
+          text: msg,
+        });
+      }
     },
   },
 };
