@@ -10,6 +10,7 @@ export const images = Object.freeze({
   USDC: require('~/assets/img/ui/USD-Coin-icon.svg'),
   WUSD: require('~/assets/img/ui/wusd.svg'),
   EMPTY_LOGO: require('~/assets/img/ui/logo_gray.svg'),
+  LP: require('~/assets/img/ui/lp.svg'),
 
   WORKNET: require('~/assets/img/ui/wqt-logo.svg'),
   WQ_LOGO: require('~/assets/img/app/logo.svg'),
