@@ -261,7 +261,8 @@ export const TokenSymbols = Object.freeze({
   USDT: 'USDT',
   USDC: 'USDC',
   MATIC: 'MATIC',
-  LP: 'LP',
+  CAKE_LP: 'CAKE-LP',
+  UNI_V2: 'UNI-V2',
 });
 
 export const TokenSymbolByContract = Object.freeze({
@@ -483,7 +484,7 @@ export const WalletTokensData = Object.freeze({
       { title: TokenSymbols.WQT, icon: images.WQT, tokenAddress: ENV.ETHEREUM_WQT_TOKEN },
       { title: TokenSymbols.USDT, icon: images.USDT, tokenAddress: ENV.ETHEREUM_USDT_TOKEN },
       { title: TokenSymbols.USDC, icon: images.USDC, tokenAddress: ENV.ETHEREUM_USDC_TOKEN },
-      { title: TokenSymbols.LP, icon: images.BNB, tokenAddress: ENV.ETHEREUM_LP_TOKEN },
+      { title: TokenSymbols.UNI_V2, icon: images.LP, tokenAddress: ENV.ETHEREUM_LP_TOKEN },
     ],
   },
   [Chains.BINANCE]: {
@@ -502,7 +503,7 @@ export const WalletTokensData = Object.freeze({
       { title: TokenSymbols.WQT, icon: images.WQT, tokenAddress: ENV.BSC_WQT_TOKEN },
       { title: TokenSymbols.USDT, icon: images.USDT, tokenAddress: ENV.BSC_USDT_TOKEN },
       { title: TokenSymbols.USDC, icon: images.USDC, tokenAddress: ENV.BSC_USDC_TOKEN },
-      { title: TokenSymbols.LP, icon: images.BNB, tokenAddress: ENV.BSC_LP_TOKEN },
+      { title: TokenSymbols.CAKE_LP, icon: images.LP, tokenAddress: ENV.BSC_LP_TOKEN },
     ],
   },
   [Chains.POLYGON]: {
