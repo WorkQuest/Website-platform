@@ -94,11 +94,13 @@ export default {
       commit('setLots', {
         count,
         lots: auction.map((lot) => {
-          const { toLoan, amount, cost } = lot;
-          const symbolDecimals = balanceData[toLoan?.symbol].decimals;
+          const [lotBuyed] = lot.lotBuyed;
+          const { auctionSymbol, amount, cost } = lotBuyed;
+          const symbolDecimals = balanceData[auctionSymbol].decimals;
+
           return {
             ...lot,
-            ...toLoan,
+            ...lotBuyed,
             lotAmount: Number(new BigNumber(amount).shiftedBy(-symbolDecimals).toFixed(4, 1)),
             lotPrice: Number(new BigNumber(cost).shiftedBy(-18).toFixed(4, 1)),
           };
