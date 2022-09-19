@@ -94,11 +94,13 @@ export default {
       commit('setLots', {
         count,
         lots: auction.map((lot) => {
-          const { toLoan, amount, cost } = lot;
-          const symbolDecimals = balanceData[toLoan?.symbol].decimals;
+          const [lotBuyed] = lot.lotBuyed;
+          const { auctionSymbol, amount, cost } = lotBuyed;
+          const symbolDecimals = balanceData[auctionSymbol].decimals;
+
           return {
             ...lot,
-            ...toLoan,
+            ...lotBuyed,
             lotAmount: Number(new BigNumber(amount).shiftedBy(-symbolDecimals).toFixed(4, 1)),
             lotPrice: Number(new BigNumber(cost).shiftedBy(-18).toFixed(4, 1)),
           };
@@ -151,8 +153,8 @@ export default {
       let isLoadingByWS = false;
 
       const addLotToArray = (lot) => {
-        const array = JSON.parse(JSON.stringify(getters.getLots));
-        const count = JSON.parse(JSON.stringify(getters.getLotsCount));
+        const lots = JSON.parse(JSON.stringify(getters.getLots));
+        const lotsCount = JSON.parse(JSON.stringify(getters.getLotsCount));
         const balanceData = rootGetters['wallet/getBalanceData'];
         let symbolDecimals = balanceData[lot.symbol].decimals;
 
@@ -164,7 +166,7 @@ export default {
             cost, buyer, amount, timestamp, transactionHash,
           } = lot.lotBuyed[0];
 
-          array.unshift({
+          lots.unshift({
             ...lot,
             buyer,
             timestamp,
@@ -172,11 +174,11 @@ export default {
             lotAmount: Number(new BigNumber(amount).shiftedBy(-symbolDecimals).toFixed(4, 1)),
             lotPrice: Number(new BigNumber(cost).shiftedBy(-18).toFixed(4, 1)),
           });
-          if (array.length > AUCTION_CARDS_LIMIT) array.splice(array.length - 1, 1);
+          if (lots.length > AUCTION_CARDS_LIMIT) lots.splice(lots.length - 1, 1);
 
           commit('setLots', {
-            count: count + 1,
-            lots: array,
+            count: lotsCount + 1,
+            lots,
           });
         } else {
           if (symbolDecimals === 6) symbolDecimals += symbolDecimals;
@@ -189,21 +191,21 @@ export default {
           };
 
           // find lot in array and update it
-          const isUpdatedLot = array.some((item, i) => {
+          const isUpdatedLot = lots.some((item, i) => {
             if (+item.index === +lot.index && item.symbol === lot.symbol) {
-              array[i] = { ...lot };
+              lots[i] = { ...lot };
               return true;
             }
             return false;
           });
 
           if (!isUpdatedLot) {
-            array.unshift(lot);
-            if (array.length > AUCTION_CARDS_LIMIT) array.splice(array.length - 1, 1);
+            lots.unshift(lot);
+            if (lots.length > AUCTION_CARDS_LIMIT) lots.splice(lots.length - 1, 1);
 
             commit('setLots', {
-              count: count + 1,
-              lots: array,
+              count: lotsCount + 1,
+              lots,
             });
           }
         }
