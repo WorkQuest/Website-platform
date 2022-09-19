@@ -92,7 +92,7 @@ import { ExplorerUrl, TokenSymbols } from '~/utils/enums';
 import { getContractFeeData, sendWalletTransaction } from '~/utils/wallet';
 import { WQAuction } from '~/abi';
 import walletOperations from '~/plugins/mixins/walletOperations';
-import { LotsStatuses, LOWER_BOUND_COST, UPPER_BOUND_COST } from '~/utils/сonstants/auction';
+import { LotsStatuses } from '~/utils/сonstants/auction';
 
 export default {
   name: 'AuctionCard',
@@ -101,8 +101,7 @@ export default {
   props: {
     lot: {
       type: Object,
-      default: () => {
-      },
+      default: () => {},
     },
     typeOfLot: {
       type: Number,
@@ -262,10 +261,16 @@ export default {
         const minutes = new BigNumber(durationInSec).dividedToIntegerBy(60).toFixed();
         this.durationTime.minutes = minutes ? this.$tc('meta.units.minutes', this.DeclOfNum(minutes), { count: minutes }) : '';
         durationInSec -= new BigNumber(60).multipliedBy(minutes).toFixed();
+      } else {
+        this.durationTime.minutes = '';
       }
 
       const seconds = Math.ceil(durationInSec);
       this.durationTime.seconds = seconds && seconds > 0 ? this.$tc('meta.units.seconds', this.DeclOfNum(seconds), { count: seconds }) : '';
+
+      if (seconds < 1) {
+        this.isStartedLotCompleted = true;
+      }
     },
 
     calcStartedLotPrice(symbol, endCost, price, amount) {
