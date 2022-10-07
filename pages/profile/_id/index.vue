@@ -561,7 +561,6 @@ export default {
 }
 .statistic {
   &__card {
-    display: grid;
     border-radius: 6px;
     background-color: #fff;
     padding: 20px;
