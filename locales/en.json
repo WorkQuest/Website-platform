@@ -193,7 +193,7 @@
     "signIn": "Sign In",
     "account": "Haven’t account?",
     "raiseViews": "Raise views",
-    "educations": "Educations",
+    "educations": "Education",
     "login": "Login",
     "wrongToken": "Wrong confirmation token. Please check the last letter on your email",
     "signUp": "Sign Up",
@@ -1100,7 +1100,7 @@
       "withdrawInfo": "Withdrawal info"
     },
     "draft": {
-      "youHaveAQuestDraft": "You have a quest draft. Cleat it?",
+      "youHaveAQuestDraft": "You have a quest draft. Clear it?",
       "saveQuestDraft": "Save quest draft?"
     },
     "token": "Token",
@@ -1677,7 +1677,7 @@
       "bothVariant": "Hybrid workplace"
     },
     "selectPayPeriod": "Select pay period",
-    "visabilitySettings": "Visability settings",
+    "visibilitySettings": "Visibility settings",
     "securitySettings": "Security settings"
   },
   "raising-views": {
@@ -2092,17 +2092,17 @@
       "employer": {
         "myQuests": {
           "desc": "You haven't done quests yet",
-          "btnText": "Create quest !"
+          "btnText": "Create quest!"
         },
         "allQuests": {
           "desc": "You haven't done quests yet",
-          "btnText": "Create quest !"
+          "btnText": "Create quest!"
         }
       },
       "worker": {
         "myQuests": {
           "desc": "You haven't done the quests yet",
-          "btnText": "Create quest !"
+          "btnText": "Create quest!"
         },
         "allQuests": {
           "desc": "You have not responded to quests yet",

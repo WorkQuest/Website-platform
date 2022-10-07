@@ -1100,7 +1100,7 @@
       "withdrawInfo": "Withdrawal info"
     },
     "draft": {
-      "youHaveAQuestDraft": "You have a quest draft. Cleat it?",
+      "youHaveAQuestDraft": "You have a quest draft. Clear it?",
       "saveQuestDraft": "Save quest draft?"
     },
     "token": "Token",
@@ -1677,7 +1677,7 @@
       "bothVariant": "Hybrid workplace"
     },
     "selectPayPeriod": "Select pay period",
-    "visabilitySettings": "Visability settings",
+    "visibilitySettings": "Visibility settings",
     "securitySettings": "Security settings"
   },
   "raising-views": {

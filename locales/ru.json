@@ -1675,7 +1675,7 @@
       "bothVariant": "Hybrid workplace"
     },
     "selectPayPeriod": "Выберите период оплаты",
-    "visabilitySettings": "Настройки видимости",
+    "visibilitySettings": "Настройки видимости",
     "securitySettings": "Настройки безопасности"
   },
   "raising-views": {
@@ -2090,17 +2090,17 @@
       "employer": {
         "myQuests": {
           "desc": "You haven't done quests yet",
-          "btnText": "Create quest !"
+          "btnText": "Create quest!"
         },
         "allQuests": {
           "desc": "You haven't done quests yet",
-          "btnText": "Create quest !"
+          "btnText": "Create quest!"
         }
       },
       "worker": {
         "myQuests": {
           "desc": "You haven't done the quests yet",
-          "btnText": "Create quest !"
+          "btnText": "Create quest!"
         },
         "allQuests": {
           "desc": "You have not responded to quests yet",
