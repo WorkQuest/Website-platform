@@ -85,6 +85,15 @@ export default {
   @include main;
   @include text-simple;
 
+  #sumsub-websdk-container {
+    width: 100%;
+    .content-wrapper {
+      .content {
+        max-width: 100%;
+      }
+    }
+  }
+
   &__body {
     max-width: 1180px;
     height: 100%;
