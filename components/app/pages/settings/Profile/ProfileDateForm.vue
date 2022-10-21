@@ -14,7 +14,7 @@
         class="profile-date-form__date-picker"
         input-class="data-picker-field"
         format="DD.MM.YYYY"
-        placeholder="dd.mm.yyy"
+        :placeholder="getPlaceholder(item.from)"
         :disabled-date="disabledAfterToday"
         :disabled="action === 'Delete'"
         @select="onSelectStartDate"
@@ -24,7 +24,7 @@
       </span>
       <date-picker
         v-model="item.to"
-        placeholder="dd.mm.yyy"
+        :placeholder="getPlaceholder(item.to)"
         class="profile-date-form__date-picker"
         input-class="data-picker-field"
         format="DD.MM.YYYY"
@@ -61,7 +61,7 @@
 import 'vue2-datepicker/index.css';
 import DatePicker from 'vue2-datepicker';
 import { images } from '~/utils/images';
-import getToday from './utils';
+import { getToday, getFormattedDate } from './utils';
 
 export default {
   name: 'ProfileDateForm',
@@ -92,12 +92,15 @@ export default {
     },
   },
   methods: {
+    getPlaceholder(date) {
+      return date ? getFormattedDate(date) : 'dd.mm.yyy';
+    },
     onSelectStartDate(date) {
-      this.item.from = date;
+      this.item.from = getFormattedDate(date);
       this.item.to = null;
     },
     onSelectEndDate(date) {
-      this.item.to = date;
+      this.item.to = getFormattedDate(date);
     },
     disabledAfterToday(date) {
       const today = getToday();
