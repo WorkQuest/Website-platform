@@ -22,7 +22,7 @@
           :placeholder="$t('meta.placeholders.email').toLowerCase()"
         />
         <base-btn class="content__action">
-          {{ $t('meta.send') }}
+          {{ $t('meta.btns.send') }}
         </base-btn>
       </form>
     </ValidationObserver>
