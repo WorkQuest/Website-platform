@@ -85,7 +85,7 @@
               class="knowledge__item"
             >
               <span class="knowledge__place">{{ item.place }}</span>
-              <span class="knowledge__term">{{ `${item.from} - ${item.to}` }}</span>
+              <span class="knowledge__term">{{ `${moment(item.from).format('DD.MM.YYYY')} - ${moment(item.to).format('DD.MM.YYYY')}` }}</span>
             </div>
           </div>
         </div>
@@ -104,7 +104,7 @@
               class="work-exp__item"
             >
               <span class="work-exp__place">{{ item.place }}</span>
-              <span class="work-exp__term">{{ `${item.from} - ${item.to}` }}</span>
+              <span class="work-exp__term">{{ `${moment(item.from).format('DD.MM.YYYY')} - ${moment(item.to).format('DD.MM.YYYY')}` }}</span>
             </div>
           </div>
         </div>
@@ -343,6 +343,9 @@ export default {
     },
   },
   methods: {
+    moment() {
+      return moment();
+    },
     ratingStatistic(ratingStatistic) {
       return UserRating[ratingStatistic.status];
     },
