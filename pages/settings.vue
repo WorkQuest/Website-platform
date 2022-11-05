@@ -59,6 +59,8 @@ import {
 } from '~/utils/enums';
 import { LocalNotificationAction } from '~/utils/notifications';
 import { images } from '~/utils/images';
+import { prepareProfileData, getProfileSkills, checkIfFieldsChanged } from './settings/utils';
+import { initialProfileState } from './settings/constants';
 
 export default {
   name: 'Settings',
@@ -67,60 +69,7 @@ export default {
     VerificationCard, Profile, Skills, Advanced,
   },
   data() {
-    return {
-      profile: {
-        avatarId: null,
-        firstName: null,
-        lastName: null,
-        skillFilters: null,
-        firstPhone: { codeRegion: null, phone: null, fullPhone: null },
-        tempPhone: { codeRegion: null, phone: null, fullPhone: null },
-        additionalInfo: {
-          secondMobileNumber: { codeRegion: null, phone: null, fullPhone: null },
-          address: null,
-          socialNetwork: {
-            instagram: null,
-            twitter: null,
-            linkedin: null,
-            facebook: null,
-          },
-          description: null,
-          skills: [],
-          educations: [],
-          workExperiences: [],
-          CEO: null,
-          company: null,
-          website: null,
-        },
-        locationFull: {
-          location: {
-            longitude: 0,
-            latitude: 0,
-          },
-          locationPlaceName: '',
-        },
-      },
-      skills: {
-        perHour: 0,
-        priorityIndex: -1,
-        distantIndex: -1,
-        payPeriodIndex: -1,
-        selectedSpecAndSkills: null,
-      },
-      avatarChange: { data: {}, file: {} },
-      updatedSecondPhone: { codeRegion: null, phone: null, fullPhone: null },
-      updatedFirstPhone: { codeRegion: null, phone: null, fullPhone: null },
-      validationError: false,
-      isValidPhoneNumber: true,
-      isValidSecondPhoneNumber: true,
-      newEducation: [],
-      newWorkExp: [],
-      valRefs: {},
-      profileVisibilitySetting: {},
-
-      prevSkills: [],
-      isChanged: false,
-    };
+    return initialProfileState;
   },
   computed: {
     ...mapGetters({
@@ -147,51 +96,9 @@ export default {
     scrollToId();
     const { employerProfileVisibilitySetting, workerProfileVisibilitySetting } = userData;
     this.prevSkills = userData.userSpecializations?.map((item) => item.path) || [];
-    this.profile = {
-      avatarId: userData.avatarId,
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      email: userData.email,
-      firstPhone: {
-        codeRegion: userData.phone?.codeRegion || userData.tempPhone?.codeRegion,
-        phone: userData.phone?.phone || userData.tempPhone?.phone,
-        fullPhone: userData.phone?.fullPhone || userData.tempPhone?.fullPhone,
-      },
-      additionalInfo: {
-        secondMobileNumber: {
-          codeRegion: secondNumber?.codeRegion || null,
-          phone: secondNumber?.phone || null,
-          fullPhone: secondNumber?.fullPhone || null,
-        },
-        socialNetwork: {
-          instagram: addInfo.socialNetwork.instagram,
-          twitter: addInfo.socialNetwork.twitter,
-          linkedin: addInfo.socialNetwork.linkedin,
-          facebook: addInfo.socialNetwork.facebook,
-        },
-        description: addInfo.description,
-        skills: addInfo.skills,
-        educations: addInfo.educations ? addInfo.educations.slice() : [],
-        workExperiences: addInfo.workExperiences ? addInfo.workExperiences.slice() : [],
-        CEO: addInfo.CEO,
-        company: addInfo.company,
-        website: addInfo.website,
-      },
-      locationFull: {
-        location: {
-          longitude: userData.location?.longitude || 0,
-          latitude: userData.location?.latitude || 0,
-        },
-        locationPlaceName: userData.locationPlaceName,
-      },
-    };
-    this.skills = {
-      priorityIndex: userData.priority,
-      distantIndex: WorkplaceIndex.indexOf(userData.workplace),
-      payPeriodIndex: PayPeriodsIndex.indexOf(userData.payPeriod),
-      perHour: userData.costPerHour,
-      selectedSpecAndSkills: userData.userSpecializations || [],
-    };
+    this.profile = prepareProfileData(userData, secondNumber, addInfo);
+
+    this.skills = getProfileSkills(userData);
 
     if (this.isEmployer && employerProfileVisibilitySetting) {
       const { arrayRatingStatusCanRespondToQuest, arrayRatingStatusInMySearch } = employerProfileVisibilitySetting;
@@ -366,20 +273,17 @@ export default {
     },
 
     checkChangedFields() {
-      const {
-        firstName, lastName, additionalInfo,
-      } = this.profile;
-      if (
-        this.userData.firstName !== firstName
-        || this.userData.lastName !== lastName
-        || this.userData.additionalInfo.description !== additionalInfo.description
-      ) {
+      const isMainFieldsChanged = checkIfFieldsChanged(this.userData, this.profile, this.skills);
+
+      if (isMainFieldsChanged) {
         this.isChanged = true;
         return;
       }
+
       Object.values(this.updatedSecondPhone).forEach((item) => {
         this.isChanged = !!item;
       });
+
       if (this.isChanged) return;
 
       this.isChanged = Object.keys({ ...this.updatedFirstPhone, ...this.userData.tempPhone })
