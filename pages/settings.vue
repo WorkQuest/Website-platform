@@ -287,7 +287,7 @@ export default {
       if (this.isChanged) return;
 
       this.isChanged = Object.keys({ ...this.updatedFirstPhone, ...this.userData.tempPhone })
-        .some((key) => this.updatedFirstPhone[key] !== this.userData.phone[key])
+        .some((key) => this.updatedFirstPhone?.[key] !== this.userData.phone?.[key])
         || Object.keys({ ...this.userData.additionalInfo.socialNetwork, ...this.profile.additionalInfo.socialNetwork })
           .some((key) => this.userData.additionalInfo.socialNetwork[key] !== this.profile.additionalInfo.socialNetwork[key]);
     },
