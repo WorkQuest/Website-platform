@@ -47,21 +47,19 @@ export const prepareProfileData = (userData, secondNumber, addInfo) => ({
   },
 });
 
-export const checkIfFieldsChanged = (userData, profile, skills) => {
-  return userData.firstName !== profile.firstName
-    || userData.lastName !== profile.lastName
-    || userData.additionalInfo.description !== profile.additionalInfo.description
-    || userData.locationPlaceName !== profile.locationFull.locationPlaceName
-    || userData.additionalInfo.educations?.length !== profile.additionalInfo.educations?.length
-    || userData.additionalInfo.workExperiences?.length !== profile.additionalInfo.workExperiences?.length
-    || skills.distantIndex !== profile.additionalInfo.skills.distantIndex
-    || skills.payPeriodIndex !== profile.additionalInfo.skills.payPeriodIndex
-    || skills.priorityIndex !== profile.additionalInfo.skills.priorityIndex
-    || skills.perHour !== profile.additionalInfo.skills.perHour
-    || skills.selectedSpecAndSkills?.length !== profile.additionalInfo.skills?.selectedSpecAndSkills?.length
-    || userData.additionalInfo.company !== profile.additionalInfo.company
-    || userData.additionalInfo.CEO !== profile.additionalInfo.CEO
-    || userData.additionalInfo.website !== profile.additionalInfo.website;
-};
+export const checkIfFieldsChanged = (userData, profile, skills) => userData.firstName !== profile.firstName
+  || userData.lastName !== profile.lastName
+  || userData.additionalInfo.description !== profile.additionalInfo.description
+  || userData.locationPlaceName !== profile.locationFull.locationPlaceName
+  || userData.additionalInfo.educations?.length !== profile.additionalInfo.educations?.length
+  || userData.additionalInfo.workExperiences?.length !== profile.additionalInfo.workExperiences?.length
+  || skills.distantIndex !== profile.additionalInfo.skills.distantIndex
+  || skills.payPeriodIndex !== profile.additionalInfo.skills.payPeriodIndex
+  || skills.priorityIndex !== profile.additionalInfo.skills.priorityIndex
+  || skills.perHour !== profile.additionalInfo.skills.perHour
+  || skills.selectedSpecAndSkills?.length !== profile.additionalInfo.skills?.selectedSpecAndSkills?.length
+  || userData.additionalInfo.company !== profile.additionalInfo.company
+  || userData.additionalInfo.CEO !== profile.additionalInfo.CEO
+  || userData.additionalInfo.website !== profile.additionalInfo.website;
 
 export default { prepareProfileData, getProfileSkills, checkIfFieldsChanged };
