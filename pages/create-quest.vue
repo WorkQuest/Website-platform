@@ -1050,7 +1050,6 @@ export default {
   @include main;
 
   &-white {
-    border: 1px solid $black0;
     @include main-white;
   }
 }
