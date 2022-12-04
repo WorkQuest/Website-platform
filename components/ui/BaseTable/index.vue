@@ -10,7 +10,7 @@
       thead-class="table__header"
       caption-top
       :responsive="true"
-      tbody-tr-class="table__row"
+      tbody-tr-class="table__row table__body"
     >
       <template
         v-if="$props.title"
@@ -116,8 +116,12 @@ export default {
   background: #FFFFFF;
   border-radius: 6px;
 
+  .table__body td:first-child {
+    padding-left: 20px;
+  }
+
   &__title {
-    margin: 10px;
+    margin: 10px 10px 10px 20px;
     color: $black800;
   }
 
@@ -146,6 +150,10 @@ export default {
     font-style: normal;
     font-size: 12px;
     word-break: break-word;
+
+    tr th:first-child {
+      padding-left: 20px;
+    }
   }
 
   &__row {
