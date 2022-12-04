@@ -111,7 +111,7 @@ export default {
           this.ShowModal({
             key: modals.status,
             img: require('~/assets/img/ui/error.svg'),
-            title: this.$t('modals.warning'),
+            title: this.$t('modals.titles.warning'),
             subtitle: this.$t('modals.waitRoleCooldown', { date: date.toLocaleDateString(this.$i18n.locale), time: date.toLocaleTimeString(this.$i18n.locale) }),
             button: this.$t('meta.btns.close'),
           });

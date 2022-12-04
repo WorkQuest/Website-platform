@@ -9,7 +9,7 @@
       @submit.prevent="changePass"
     >
       <div class="content__error">
-        {{ errorMsg ? $t('errors.incorrectPass') : null }}
+        {{ errorMsg || null }}
       </div>
       <base-field
         v-for="(field, i) in fields"
@@ -91,7 +91,17 @@ export default {
       const confirmNew = this.fields.confirmNew.pass.trim();
 
       if (newPass !== confirmNew || newPass === '') {
-        this.errorMsg = true;
+        this.errorMsg = 'Error! Passwords do not match.';
+        return;
+      }
+
+      if (currPass === newPass) {
+        this.errorMsg = 'Error! The password cannot be the same as the previous one.';
+        return;
+      }
+
+      if (newPass.length <= 7) {
+        this.errorMsg = 'Error! New password should contain at least 8 characters.';
         return;
       }
 

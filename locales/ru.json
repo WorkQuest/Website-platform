@@ -993,8 +993,7 @@
       "filters": {
         "titleAll": "Все фильтры"
       },
-      "attention": "Внимание!",
-      "disputePayment": "Оплата Спора",
+      "attention": "Внимание.",
       "saved": "Saved successfully",
       "cardAdd": "Add card",
       "addCase": "Add Case",
@@ -2080,7 +2079,7 @@
       "notEnoughFunds": "Not enough funds"
     },
     "selectSpec": "Пожалуйста, выберите специализацию",
-    "incorrectPass": "Oops, something went wrong. Check the data and try again.",
+    "incorrectPass": "Error! New password should contain at least 8 characters.",
     "emptyData": {
       "emptyQuests": "Oops, there's no quests here yet",
       "emptyDisputes": "Oops, there are no disputes here yet",
