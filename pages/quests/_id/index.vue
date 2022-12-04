@@ -671,7 +671,7 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: images.WARNING,
-        title: this.$t('modals.titles.disputePayment'),
+        title: this.$t('modals.titles.attention'),
         text: this.$t('modals.payForDispute'),
         isNotClose: true,
         submitMethod: async () => {

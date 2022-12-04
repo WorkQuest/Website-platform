@@ -993,8 +993,7 @@
       "filters": {
         "titleAll": "সমস্ত ফিল্টার"
       },
-      "attention": "Attention!",
-      "disputePayment": "Dispute payment",
+      "attention": "Attention.",
       "saved": "Saved successfully",
       "cardAdd": "Add card",
       "addCase": "Add Case",
@@ -1105,7 +1104,7 @@
     },
     "token": "Token",
     "network": "Network",
-    "payForDispute": "You need to pay to open a dispute",
+    "payForDispute": "Creating a dispute will require additional payment",
     "tryLater": "Please, try later...",
     "checkExplorer": "You can check a transaction status on Explorer",
     "transactionError": "Transaction error",
