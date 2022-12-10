@@ -179,11 +179,11 @@ export default {
       if (!isNative) {
         const allowance = await fetchContractData('allowance', ERC20, tokenAddress, [accountAddress, bridgeAddress], provider);
         if (new BigNumber(value).isGreaterThan(+allowance)) {
-          showToast('Swapping', 'Approving...', 'success');
+          showToast('Swapping', 'In progress…', 'success');
           const tokenInstance = createInstance(ERC20, tokenAddress);
           const { status } = await tokenInstance.methods.approve(bridgeAddress, value).send({ from: accountAddress });
           if (!status) return error(500, 'Approve was failed');
-          showToast('Swapping', 'Approving done', 'success');
+          showToast('Swapping', 'Success!', 'success');
         }
       }
 
