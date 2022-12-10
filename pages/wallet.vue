@@ -652,6 +652,7 @@ export default {
     grid-template-columns: repeat(2, 210px);
     grid-gap: 10px;
     margin-bottom: 20px;
+    padding: 0 20px;
   }
 
   &__table {
