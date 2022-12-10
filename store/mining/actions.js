@@ -256,9 +256,9 @@ export default {
 
       const allowance = await getAllowance(accountAddress, ENV.BSC_WQT_EXCHANGE, tokenInstance);
       if (new BigNumber(allowance).isLessThan(weiAmount)) {
-        showToast('Swapping', 'Approving...', 'success');
+        showToast('Swapping', 'In progress…', 'success');
         await makeApprove(ENV.BSC_WQT_EXCHANGE, weiAmount, tokenInstance);
-        showToast('Swapping', 'Approving done', 'success');
+        showToast('Swapping', 'Success!', 'success');
       }
 
       showToast('Swapping', 'Swapping...', 'success');
@@ -294,9 +294,9 @@ export default {
       const value = new BigNumber(amount).shiftedBy(18).toString();
       const allowance = await getAllowance(accountAddress, stakingAddress, instanceToken);
       if (new BigNumber(allowance).isLessThan(value)) {
-        showToast('Swapping', 'Approving...', 'success');
+        showToast('Swapping', 'In progress…', 'success');
         await makeApprove(stakingAddress, value, instanceToken);
-        showToast('Swapping', 'Approving done', 'success');
+        showToast('Swapping', 'Success!', 'success');
       }
 
       showToast('Staking', 'Staking...', 'success');

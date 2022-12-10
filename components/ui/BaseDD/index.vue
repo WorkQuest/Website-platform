@@ -51,14 +51,14 @@
           v-else-if="items[value]"
           class="dd__title"
           :data-selector="`BASE-DD-${dataSelector.toUpperCase()}-${items[value]}`"
-          :class="[{'dd__title_white': type === 'blue' }, { 'dd__title_black': mode === 'blackFont' }]"
+          :class="[{'dd__title_white': type === 'blue' }, { 'dd__title_black': mode === 'blackFont' }, { 'dd__full-text': isShown }]"
         >
           {{ dataType === 'array' ? items[value] : items[value].title }}
         </span>
         <span
           v-else-if="!items[value] && placeholder"
           class="dd__title"
-          :class="[{'dd__title_white': type === 'blue' }, { 'dd__title_black': mode === 'blackFont' }]"
+          :class="[{'dd__title_white': type === 'blue' }, { 'dd__title_black': mode === 'blackFont' }, { 'dd__full-text': isShown }]"
         >
           {{ placeholder }}
         </span>
@@ -316,6 +316,9 @@ export default {
     &_black {
       color: $black800 !important;
     }
+  }
+  &__full-text {
+    overflow: visible;
   }
   &__top {
     align-items: flex-start;
