@@ -449,7 +449,7 @@ export default {
             fee: { name: this.$t('wallet.table.trxFee'), value: approveFee.result.fee, symbol: TokenSymbols.WQT },
           },
           submitMethod: async () => {
-            this.ShowToast('Approving...', 'Approve');
+            this.ShowToast('In progress…', 'Confirmation');
             const approveOk = await this.$store.dispatch('wallet/approve', {
               tokenAddress,
               spenderAddress,
@@ -460,7 +460,7 @@ export default {
               this.SetLoader(false);
               return;
             }
-            this.ShowToast('Approving done', 'Approve');
+            this.ShowToast('Success!', 'Confirmation');
             await this.createQuest();
           },
         });

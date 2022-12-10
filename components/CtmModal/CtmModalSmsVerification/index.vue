@@ -69,9 +69,6 @@
         <div class="content__subtitle">
           {{ $t('modals.enterSMSCode') }}
         </div>
-        <span class="content__top">
-          {{ $t('meta.codeFromSMS') }}
-        </span>
         <base-field
           ref="confirmCodeField"
           v-model="confirmCode"
@@ -292,13 +289,13 @@ export default {
   }
   &__action {
     width: 100%;
+    margin-top: 10px;
   }
   &__icon:before {
     font-size: 25px;
     color: $blue;
   }
   &__bottom {
-    margin-top: 15px;
     font-weight: 400;
     font-size: 14px;
     margin-bottom: 23px;

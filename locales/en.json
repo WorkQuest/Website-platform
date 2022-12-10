@@ -1162,7 +1162,7 @@
     "cardHolder": "Cardholder name",
     "SMSVerConnected": "SMS Verification connected",
     "enterPhone": "Enter your phone number to confirm SMS verification",
-    "enterSMSCode": "We have sent verification code to your phone number. Enter this code",
+    "enterSMSCode": "Verification code has been sent to your phone number. Please enter it to the input box below:",
     "userDataHasBeenSaved": "User data has been saved",
     "workExpAddSuccessful": "Work experience history added successfully",
     "educationAddSuccessful": "Education history added successfully",
@@ -1729,7 +1729,7 @@
   "referral": {
     "inviteFriendsHead": "Invite friends.",
     "earnCryptoTogether": "Earn crypto together",
-    "headerSubtitle": "Earn up to 20$ in WQT every time your friends register and make first Quest on Work Quest platform.",
+    "headerSubtitle": "Receive up to 20$ in WQT every time your friend earns 1000$.",
     "referralReward": "Referral reward",
     "lastRefReward": "Last ref reward",
     "yourRefers": "Your referrals",
@@ -1740,7 +1740,7 @@
     "inviteFriends": "Invite Friends",
     "inviteYourFriends": "Invite your friends to register through the referral link and get rewards when they complete first Quest.",
     "earnCrypto": "Earn Crypto",
-    "everyTimeYourFriends": "Every time your friends make a first Quest, you'll get up to $20 in WQT commission in real time!",
+    "everyTimeYourFriends": "Every time your friend earns his first 1000$, you'll get up to $20 in WQT commission!",
     "historyOfRewards": "History of rewards",
     "alreadyRegistered": "Address is already registered",
     "tableHead": {
@@ -2226,7 +2226,9 @@
     "counter": "{n} of {c}"
   },
   "uploader": {
-    "uploadFile": "Upload files",
+    "uploadFile": "Drag files to upload or Browse Filess",
+    "maxFileSize": "Max file size: {n} Mb",
+    "supportedFileTypes": "Supported file types: {n}",
     "errors": {
       "fileSizeLimit": "File size limit: {n}",
       "filesLimit": "Files limit: {n}"
