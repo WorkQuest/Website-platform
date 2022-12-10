@@ -1162,7 +1162,7 @@
     "cardHolder": "Cardholder name",
     "SMSVerConnected": "SMS Verification connected",
     "enterPhone": "Enter your phone number to confirm SMS verification",
-    "enterSMSCode": "We have sent verification code to your phone number. Enter this code",
+    "enterSMSCode": "Verification code has been sent to your phone number. Please enter it to the input box below:",
     "userDataHasBeenSaved": "User data has been saved",
     "workExpAddSuccessful": "Work experience history added successfuly",
     "educationAddSuccessful": "Education history added successfully",
@@ -1727,7 +1727,7 @@
   "referral": {
     "inviteFriendsHead": "Invite friends.",
     "earnCryptoTogether": "Earn crypto together",
-    "headerSubtitle": "Earn up to 20$ in WQT every time your friends register and make first Quest on Work Quest platform.",
+    "headerSubtitle": "Receive up to 20$ in WQT every time your friend earns 1000$.",
     "referralReward": "Referral reward",
     "lastRefReward": "Last ref reward",
     "yourRefers": "Your referrals",

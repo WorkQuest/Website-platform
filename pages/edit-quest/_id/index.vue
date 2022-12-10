@@ -132,6 +132,7 @@
               :name="$tc('quests.questTitle')"
               :placeholder="$t('quests.questTitle')"
               disabled
+              tooltip="This field cannot be edited"
             />
           </div>
           <div class="page__input">
@@ -143,6 +144,7 @@
               data-selector="QUEST-DESC-TEXTAREA"
               class="page__textarea"
               :placeholder="$t('quests.questDesc')"
+              tooltip="This field cannot be edited"
             />
           </div>
           <div class="page upload__container">

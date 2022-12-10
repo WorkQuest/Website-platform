@@ -13,7 +13,15 @@
       class="uploader__message_container"
     >
       <div class="uploader__message">
-        {{ $t('uploader.uploadFile') }}
+        <span>
+          {{ $t('uploader.uploadFile') }}
+        </span>
+        <span>
+          {{ $t('uploader.maxFileSize', { n: this.limitSize.image.mb }) }}
+        </span>
+        <span>
+          {{ $t('uploader.supportedFileTypes', { n: this.accept }) }}
+        </span>
       </div>
       <div class="icon-add_to_queue" />
     </div>
@@ -283,6 +291,10 @@ export default {
     align-items: center;
   }
   &__message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
     margin-bottom: 5px;
     user-select: none;
     &_container {
