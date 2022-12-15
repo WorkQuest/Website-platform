@@ -37,7 +37,7 @@ export default {
           fields: {
             from: { name: this.$t('meta.fromBig'), value: this.$store.getters['user/getUserWalletAddress'] },
             to: { name: this.$t('meta.toBig'), value: contractAddress },
-            fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
+            fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WQT },
           },
           submitMethod: async () => {
             this.SetLoader(true);
@@ -126,7 +126,7 @@ export default {
               fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: nativeTokenSymbol },
             },
             submitMethod: async () => {
-              this.ShowToast('Approving...', 'Approve');
+              this.ShowToast('In progress…', 'Confirmation');
               const approveOk = await this.$store.dispatch('wallet/approve', {
                 tokenAddress,
                 spenderAddress: contractAddress,
@@ -138,7 +138,7 @@ export default {
                 reject();
                 return;
               }
-              this.ShowToast('Approving done', 'Approve');
+              this.ShowToast('Success!', 'Confirmation');
               await resolve(amount);
             },
             cancelMethod: async () => await reject(new Error('Cancel')),

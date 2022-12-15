@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="questData"
-    class="main"
+    class="main container-edit-quest"
     data-selector="PAGE-MY-QUESTS"
     :class="{'main-white': step === $options.EditQuestState.EDITING}"
   >
@@ -30,6 +30,7 @@
                     :placeholder="runtime[0]"
                     data-selector="RUNTIME"
                     :name="$t('quests.runtime')"
+                    tooltip="This field cannot be edited"
                     rules="required"
                     disabled
                   />
@@ -78,6 +79,7 @@
                 rules="required"
                 :name="$t('quests.payPeriods.title')"
                 data-selector="PAY_PERIOD"
+                tooltip="This field cannot be edited"
                 disabled
               />
             </div>
@@ -130,6 +132,7 @@
               :name="$tc('quests.questTitle')"
               :placeholder="$t('quests.questTitle')"
               disabled
+              tooltip="This field cannot be edited"
             />
           </div>
           <div class="page__input">
@@ -141,6 +144,7 @@
               data-selector="QUEST-DESC-TEXTAREA"
               class="page__textarea"
               :placeholder="$t('quests.questDesc')"
+              tooltip="This field cannot be edited"
             />
           </div>
           <div class="page upload__container">
@@ -701,7 +705,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.container-edit-quest {
+  padding: 0 24px;
+}
 .btn-container {
   display: flex;
   flex-direction: row;
@@ -1146,7 +1152,6 @@ export default {
 .main {
   @include main;
   &-white {
-    border: 1px solid $black0;
     @include main-white;
   }
 }

@@ -5,7 +5,7 @@
   >
     <div class="advanced__left">
       <div class="advanced__title">
-        {{ $t('settings.visabilitySettings') }}
+        {{ $t('settings.visibilitySettings') }}
       </div>
       <div
         v-for="(checkBox) in checkBoxButtons"

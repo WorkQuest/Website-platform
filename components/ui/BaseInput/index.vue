@@ -25,6 +25,12 @@
     >
       {{ label }}
     </div>
+    <span
+      v-if="tooltip"
+      class="ctm-field__tooltip"
+    >
+      {{ tooltip }}
+    </span>
     <div
       v-if="tip"
       class="ctm-field__header ctm-field__header_sub"
@@ -174,6 +180,10 @@ export default {
       default: 'NON_SELECTOR',
       required: true,
     },
+    tooltip: {
+      type: String,
+      default: '',
+    },
   },
   computed: {
     customType() {
@@ -262,6 +272,35 @@ export default {
 </script>
 <style lang="scss" scoped>
 .ctm-field {
+  position: relative;
+
+  &__tooltip {
+    visibility: hidden;
+    width: initial;
+    background-color: #7c838d;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    top: -43px;
+    z-index: 1;
+    font-size: 14px;
+    padding: 7px;
+    &::after {
+      content: " ";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: rgba(124, 131, 141, 1) transparent transparent transparent;
+    }
+  }
+  &:hover .ctm-field__tooltip {
+    visibility: visible;
+  }
   &__selector {
     position: absolute;
     width: 100%;
@@ -290,8 +329,7 @@ export default {
   }
   &__left {
     position: absolute;
-    left: 12px;
-    padding-left: 5px;
+    left: 20px;
   }
   &__body {
     display: flex;
@@ -337,7 +375,7 @@ export default {
     height: 46px;
     border-radius: 6px;
     border: 2px solid transparent;
-    padding: 0 10px 0 10px;
+    padding: 0 10px 0 20px;
     transition: width .3s;
     width: 100%;
     &_error {

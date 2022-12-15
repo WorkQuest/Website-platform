@@ -993,8 +993,7 @@
       "filters": {
         "titleAll": "جميع عوامل التصفية"
       },
-      "attention": "Attention!",
-      "disputePayment": "Dispute payment",
+      "attention": "Attention.",
       "saved": "Saved successfully",
       "cardAdd": "Add card",
       "addCase": "Add Case",
@@ -1065,7 +1064,7 @@
       "errorNetwork": "Error, you use not correct network. Switch to {network}",
       "youCan’tDeleteActiveQuest": "You can’t delete active quest",
       "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest",
-      "youCantCreateDispute3Days": "You cannot create a dispute until 3 days have passed from the complete of this quest",
+      "youCantCreateDispute3Days": "You cannot open a dispute within a period of 1 day after the completion of the quest",
       "dontHavePeople": "You don't have people to chat"
     },
     "chatCreate": {
@@ -1100,12 +1099,12 @@
       "withdrawInfo": "Withdrawal info"
     },
     "draft": {
-      "youHaveAQuestDraft": "You have a quest draft. Cleat it?",
+      "youHaveAQuestDraft": "You have a quest draft. Clear it?",
       "saveQuestDraft": "Save quest draft?"
     },
     "token": "Token",
     "network": "Network",
-    "payForDispute": "You need to pay to open a dispute",
+    "payForDispute": "Creating a dispute will require additional payment",
     "tryLater": "Please, try later...",
     "checkExplorer": "You can check a transaction status on Explorer",
     "transactionError": "Transaction error",
@@ -1131,7 +1130,7 @@
     "fieldCountOf": "{countOf} amount",
     "countOfCollateral": "How much collateral to leave?",
     "percentageConversion": "Percentage conversion",
-    "conversionAdditionalInfo": "Information about {min_percent}% + {risks} risks",
+    "conversionAdditionalInfo": "{min_percent}% + {risks} risks",
     "highRisk": "High",
     "mediumRisk": "Medium",
     "lowRisk": "Low",
@@ -1326,7 +1325,7 @@
     "incorrectChain": "You choose incorrect chain !",
     "chooseToken": "Choose token",
     "txInfo": "Transaction info",
-    "registration": "Are you sure to registration this users?",
+    "registration": "Are you sure you want to register following users?",
     "claimConfirm": "Are you confirm the action of the claim?",
     "until": "Until",
     "scanQrCode": "You just need to scan the QR-code",
@@ -1677,7 +1676,7 @@
       "bothVariant": "Hybrid workplace"
     },
     "selectPayPeriod": "Select pay period",
-    "visabilitySettings": "Visability settings",
+    "visibilitySettings": "Visibility settings",
     "securitySettings": "Security settings"
   },
   "raising-views": {
@@ -1906,7 +1905,7 @@
     "wantToGetWUSDTitle": "Want to get $WUSD quickly?",
     "howToGetWUSD": "You must select the collateral currency you want to deposit to purchase the stablecoin and the amount of collateral asset you are willing to keep. Follow a few simple steps to enjoy the WorkQuest platform's benefits.",
     "getWUSD": "Get WUSD",
-    "wantToGoAuctionTitle": "Liquidation auction.",
+    "wantToGoAuctionTitle": "Liquidation auction",
     "auctionDescription": "The secure and easiest way to buy the crypto-assets is with a discount. Platform users have the opportunity to purchase lots from collateral at a discount on the market value. Buy discounted $ETH, $BNB, $WQT, $USDT, or $USDC using $WUSD stablecoin",
     "goAuction": "Go to the auction",
     "faq1": "When can I return my collateral asset?",
@@ -2226,7 +2225,9 @@
     "counter": "{n} of {c}"
   },
   "uploader": {
-    "uploadFile": "Upload files",
+    "uploadFile": "Drag files to upload or Browse Filess",
+    "maxFileSize": "Max file size: {n} Mb",
+    "supportedFileTypes": "Supported file types: {n}",
     "errors": {
       "fileSizeLimit": "File size limit: {n}",
       "filesLimit": "Files limit: {n}"

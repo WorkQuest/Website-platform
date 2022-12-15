@@ -1,5 +1,8 @@
 <template>
-  <div data-selector="COMPONENT-BASE-DD">
+  <div
+    class="dd-container"
+    data-selector="COMPONENT-BASE-DD"
+  >
     <div
       v-if="label !== ''"
       :class="[{'ctm-field__header' : !tip}, {'ctm-field__header ctm-field__header_mar5' : tip}]"
@@ -11,6 +14,12 @@
       class="dd"
       :class="[{'dd__top': mode === 'top' }, {'dd_small' : isDotsView}, { 'dd_min-width': type !== 'underline' }]"
     >
+      <span
+        v-if="tooltip"
+        class="dd__tooltip"
+      >
+        {{ tooltip }}
+      </span>
       <slot name="card" />
       <button
         class="dd__btn"
@@ -42,14 +51,14 @@
           v-else-if="items[value]"
           class="dd__title"
           :data-selector="`BASE-DD-${dataSelector.toUpperCase()}-${items[value]}`"
-          :class="[{'dd__title_white': type === 'blue' }, { 'dd__title_black': mode === 'blackFont' }]"
+          :class="[{'dd__title_white': type === 'blue' }, { 'dd__title_black': mode === 'blackFont' }, { 'dd__full-text': isShown }]"
         >
           {{ dataType === 'array' ? items[value] : items[value].title }}
         </span>
         <span
           v-else-if="!items[value] && placeholder"
           class="dd__title"
-          :class="[{'dd__title_white': type === 'blue' }, { 'dd__title_black': mode === 'blackFont' }]"
+          :class="[{'dd__title_white': type === 'blue' }, { 'dd__title_black': mode === 'blackFont' }, { 'dd__full-text': isShown }]"
         >
           {{ placeholder }}
         </span>
@@ -192,6 +201,10 @@ export default {
       type: String,
       default: '',
     },
+    tooltip: {
+      type: String,
+      default: '',
+    },
   },
   data: () => ({
     isShown: false,
@@ -235,6 +248,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.dd-container {
+  position: relative;
+}
 .ctm-field__header {
   letter-spacing: -0.025em;
   margin-bottom: 13px;
@@ -250,8 +266,36 @@ export default {
   font-size: 16px;
   line-height: 130%;
   color: $black500;
-  position: relative;
   text-align: left;
+
+  &__tooltip {
+    visibility: hidden;
+    width: 100%;
+    background-color: rgba(124, 131, 141, 1);
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    font-size: 14px;
+
+    &::after {
+      content: " ";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: rgba(124, 131, 141, 1) transparent transparent transparent;
+    }
+  }
+
+  &:hover .dd__tooltip {
+    visibility: visible;
+  }
 
   &_min-width {
     min-width: 131px;
@@ -272,6 +316,9 @@ export default {
     &_black {
       color: $black800 !important;
     }
+  }
+  &__full-text {
+    overflow: visible;
   }
   &__top {
     align-items: flex-start;

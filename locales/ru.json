@@ -993,8 +993,7 @@
       "filters": {
         "titleAll": "Все фильтры"
       },
-      "attention": "Внимание!",
-      "disputePayment": "Оплата Спора",
+      "attention": "Внимание.",
       "saved": "Saved successfully",
       "cardAdd": "Add card",
       "addCase": "Add Case",
@@ -1065,7 +1064,7 @@
       "errorNetwork": "Ошибка, Вы используете не правильную сеть. Переключитесь на {network}",
       "youCan’tDeleteActiveQuest": "Вы не можете удалить активный квест",
       "youCantCreateDispute": "You cannot create a dispute until 24 hours have passed from the start of this quest",
-      "youCantCreateDispute3Days": "You cannot create a dispute until 3 days have passed from the complete of this quest",
+      "youCantCreateDispute3Days": "You cannot open a dispute within a period of 1 day after the completion of the quest",
       "dontHavePeople": "У вас нет пользователей для создания группового чата"
     },
     "chatCreate": {
@@ -1131,7 +1130,7 @@
     "fieldCountOf": "{countOf} amount",
     "countOfCollateral": "How much collateral to leave?",
     "percentageConversion": "Percentage conversion",
-    "conversionAdditionalInfo": "Information about {min_percent}% + {risks} risks",
+    "conversionAdditionalInfo": "{min_percent}% + {risks} risks",
     "highRisk": "High",
     "mediumRisk": "Medium",
     "lowRisk": "Low",
@@ -1163,12 +1162,12 @@
     "cardHolder": "Cardholder name",
     "SMSVerConnected": "SMS Verification connected",
     "enterPhone": "Enter your phone number to confirm SMS verification",
-    "enterSMSCode": "We have sent verification code to your phone number. Enter this code",
+    "enterSMSCode": "Verification code has been sent to your phone number. Please enter it to the input box below:",
     "userDataHasBeenSaved": "User data has been saved",
-    "workExpAddSuccessful": "Work experience add successful",
-    "educationAddSuccessful": "Education add successful",
+    "workExpAddSuccessful": "Work experience history added successfuly",
+    "educationAddSuccessful": "Education history added successfully",
     "pressSaveBtn": "Please press save button",
-    "imageLoadedSuccessful": "Image loaded successful",
+    "imageLoadedSuccessful": "Image uploaded successfully!",
     "yourRoleHasBeenChanged": "Your role has been changed",
     "pleaseDescribe": "Please describe the reason to change the role",
     "ifYouChangeRole": "If you change role now, you can change this only one month later. Do you want to continue?",
@@ -1254,7 +1253,7 @@
     "liquidationFee": "Liquidation fee",
     "saveCardForNextPayment": "Save the card for next use",
     "connectWallet": "Connect wallet",
-    "chooseTheCurrency": "Choose the currency",
+    "chooseTheCurrency": "Select your currency",
     "howMuchETHWouldYouLikeToOpen": "How much ETH would you like to open into your account?",
     "howMuchPercentWouldYouLikeToSet": "How much percent would you like to set?",
     "enterTermToReturnDebtBack": "Enter term to return debt back",
@@ -1622,7 +1621,7 @@
     "selectSkills": "Выберите навыки",
     "priority": "Приоритет",
     "description": "And you are beautiful",
-    "imgLoaded": "Image loaded successful",
+    "imgLoaded": "Image uploaded successfully!",
     "workExp": "Опыт работы",
     "vacancy": "Vacancy",
     "getVerification": "Завершите подтверждение профиля",
@@ -1675,7 +1674,7 @@
       "bothVariant": "Hybrid workplace"
     },
     "selectPayPeriod": "Выберите период оплаты",
-    "visabilitySettings": "Настройки видимости",
+    "visibilitySettings": "Настройки видимости",
     "securitySettings": "Настройки безопасности"
   },
   "raising-views": {
@@ -1728,7 +1727,7 @@
   "referral": {
     "inviteFriendsHead": "Invite friends.",
     "earnCryptoTogether": "Earn crypto together",
-    "headerSubtitle": "Earn up to 20$ in WQT every time your friends register and make first Quest on Work Quest platform.",
+    "headerSubtitle": "Receive up to 20$ in WQT every time your friend earns 1000$.",
     "referralReward": "Referral reward",
     "lastRefReward": "Last ref reward",
     "yourRefers": "Your referrals",
@@ -1904,7 +1903,7 @@
     "wantToGetWUSDTitle": "Want to get $WUSD quickly?",
     "howToGetWUSD": "You must select the collateral currency you want to deposit to purchase the stablecoin and the amount of collateral asset you are willing to keep. Follow a few simple steps to enjoy the WorkQuest platform's benefits.",
     "getWUSD": "Get WUSD",
-    "wantToGoAuctionTitle": "Liquidation auction.",
+    "wantToGoAuctionTitle": "Liquidation auction",
     "auctionDescription": "The secure and easiest way to buy the crypto-assets is with a discount. Platform users have the opportunity to purchase lots from collateral at a discount on the market value. Buy discounted $ETH, $BNB, $WQT, $USDT, or $USDC using $WUSD stablecoin",
     "goAuction": "Go to the auction",
     "faq1": "When can I return my collateral asset?",
@@ -2080,7 +2079,7 @@
       "notEnoughFunds": "Not enough funds"
     },
     "selectSpec": "Пожалуйста, выберите специализацию",
-    "incorrectPass": "Oops, something went wrong. Check the data and try again.",
+    "incorrectPass": "Error! New password should contain at least 8 characters.",
     "emptyData": {
       "emptyQuests": "Oops, there's no quests here yet",
       "emptyDisputes": "Oops, there are no disputes here yet",
@@ -2090,17 +2089,17 @@
       "employer": {
         "myQuests": {
           "desc": "You haven't done quests yet",
-          "btnText": "Create quest !"
+          "btnText": "Create quest!"
         },
         "allQuests": {
           "desc": "You haven't done quests yet",
-          "btnText": "Create quest !"
+          "btnText": "Create quest!"
         }
       },
       "worker": {
         "myQuests": {
           "desc": "You haven't done the quests yet",
-          "btnText": "Create quest !"
+          "btnText": "Create quest!"
         },
         "allQuests": {
           "desc": "You have not responded to quests yet",

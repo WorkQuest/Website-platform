@@ -196,11 +196,12 @@
             v-if="getEducation"
             class="profile__knowledge-added"
           >
-            <add-form
+            <ProfileDateForm
               v-for="(education, index) in profile.additionalInfo.educations"
               :key="education.id"
               :item="education"
               :is-adding="false"
+              action="Delete"
               @click="deleteKnowledge(profile.additionalInfo.educations, index)"
             />
           </div>
@@ -209,9 +210,12 @@
             tag="div"
             class="profile__validation"
           >
-            <add-form
+            <ProfileDateForm
+              action="Add"
               :item="newEducation"
               :is-adding="true"
+              type="Education"
+              :name="$t('settings.education.educationalInstitution')"
               :placeholder="$t('settings.education.educationalInstitution')"
               :data-selector="`ACTION-BTN-ADD-EDUCATION-${newEducation.place}`"
               @click="addNewKnowledge(profile.additionalInfo.educations, 'newEducation', 'education', 'education')"
@@ -231,12 +235,13 @@
             v-if="getWorkExp"
             class="profile__knowledge-added"
           >
-            <add-form
+            <ProfileDateForm
               v-for="(work, i) in profile.additionalInfo.workExperiences"
               :key="work.id"
               :item="work"
               :data-selector="`ACTION-BTN-DELETE-WORK-EXP-${i}`"
               :is-adding="false"
+              action="Delete"
               @click="deleteKnowledge(profile.additionalInfo.workExperiences, i)"
             />
           </div>
@@ -245,9 +250,11 @@
             tag="div"
             class="profile__validation"
           >
-            <add-form
+            <ProfileDateForm
+              action="Add"
               :item="newWorkExp"
               :is-adding="true"
+              :name="$t('settings.workExps.companyName')"
               :placeholder="$t('settings.workExps.companyName')"
               :data-selector="`ACTION-BTN-ADD-WORK-EXP-${newWorkExp.place}`"
               @click="addNewKnowledge(profile.additionalInfo.workExperiences, 'newWorkExp', 'work', 'work')"
@@ -300,16 +307,16 @@ import { GeoCode } from 'geo-coder';
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import StatusKYC from './StatusKYC.vue';
-import AddForm from './AddForm.vue';
 import { UserRole } from '~/utils/enums';
 import { images } from '~/utils/images';
 import debounce from '~/utils/debounce';
 import imageOptimization from '~/plugins/mixins/imageOptimization';
+import ProfileDateForm from './Profile/ProfileDateForm.vue';
 
 export default {
   name: 'SettingsProfile',
   images,
-  components: { StatusKYC, AddForm },
+  components: { StatusKYC, ProfileDateForm },
   directives: {
     ClickOutside,
   },
