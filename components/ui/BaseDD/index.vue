@@ -350,7 +350,8 @@ export default {
 
     &_wide {
       min-width: 131px;
-      right: calc(100% - 30px);
+      right: 30px;
+      top: 15px;
     }
   }
   &__item {
