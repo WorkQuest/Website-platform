@@ -3,9 +3,6 @@
     class="worker__card"
     data-selector="COMPONENT-WORKERS-LIST"
   >
-    <div class="worker__title">
-      {{ $t(`${isInvited ? 'meta.invited' : 'meta.responded'}`) }}
-    </div>
     <div
       v-if="getCurrUsersArr.length"
       class="invited__list"
@@ -15,6 +12,19 @@
         :key="response.worker.id"
         class="worker__container"
       >
+        <div class="worker__action-container">
+          <div class="worker__title">
+            {{ $t(`${isInvited ? 'meta.invited' : 'meta.responded'}`) }}
+          </div>
+          <base-dd
+            :data-selector="`WORKERS-LIST-USER-ACTIONS-${userActionsArr(response)}`"
+            class="worker__menu"
+            :placeholder="30"
+            :items="userActionsArr(response)"
+            is-dots-view
+            @input="handleUserAction($event, response)"
+          />
+        </div>
         <div class="worker user-data">
           <img
             class="worker__avatar"
@@ -38,14 +48,6 @@
           </div>
           <item-rating :rating="response.worker.ratingStatistic.status" />
         </div>
-        <base-dd
-          :data-selector="`WORKERS-LIST-USER-ACTIONS-${userActionsArr(response)}`"
-          class="worker__menu"
-          :placeholder="30"
-          :items="userActionsArr(response)"
-          is-dots-view
-          @input="handleUserAction($event, response)"
-        />
         <div class="worker__message-cont">
           <div class="worker__message">
             {{ response.message }}
@@ -226,6 +228,12 @@ export default {
   font-size: 16px;
   font-weight: 500;
   color: $black800;
+
+  &__action-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   &__menu {
     align-self: center;
     flex-shrink: 0;
@@ -244,8 +252,8 @@ export default {
  }
 
     &__container {
-    display: grid;
-    grid-template-columns: 1fr max-content;
+    display: flex;
+    flex-direction: column;
     gap: 10px;
   }
   &__avatar {
@@ -275,7 +283,6 @@ export default {
   }
  &__title {
     font-size: 18px;
-    margin-bottom: 20px;
   }
 }
 

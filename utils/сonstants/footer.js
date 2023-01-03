@@ -19,11 +19,11 @@ export const URLS = Object.freeze({
 });
 
 export const LEGAL_INFO = Object.freeze({
-  RISKS: 'https://workquest.co/risk_disclaimer',
-  PRIVACY_POLICY: 'https://workquest.co/privacy_policy',
-  TERM_CONDITIONS: 'https://workquest.co/terms_conditions',
-  AML_POLICY: 'https://workquest.co/aml_ctf_policy',
-  COOKIE_POLICY: 'https://workquest.co/aml_ctf_policy',
+  RISKS: 'https://workquest.co/risks_disclaimer.html',
+  PRIVACY_POLICY: 'https://workquest.co/privacy_policy.html',
+  TERM_CONDITIONS: 'https://workquest.co/terms_conditions.html',
+  AML_POLICY: 'https://workquest.co/aml_ctf_policy.html',
+  COOKIE_POLICY: 'https://workquest.co/aml_ctf_policy.html',
 });
 
 export const COMPANY = Object.freeze({
