@@ -16,19 +16,29 @@
           <div class="worker__title">
             {{ $t(`${isInvited ? 'meta.invited' : 'meta.responded'}`) }}
           </div>
-          <base-dd
-            :data-selector="`WORKERS-LIST-USER-ACTIONS-${userActionsArr(response)}`"
-            class="worker__menu"
-            :placeholder="30"
-            :items="userActionsArr(response)"
-            is-dots-view
-            @input="handleUserAction($event, response)"
-          />
+          <div class="dd__items">
+            <button
+              v-for="(item, i) in userActionsArr(response)"
+              :key="`dd__item-${i}`"
+              class="dd__item"
+              :data-selector="`ACTION-BTN-SELECT-ITEM-${`WORKERS-LIST-USER-ACTIONS-${userActionsArr(
+                response,
+              )}`.toUpperCase()}-${i}`"
+              @click="handleUserAction(i, response)"
+            >
+              {{ item }}
+            </button>
+            <slot name="buttonCard" />
+          </div>
         </div>
         <div class="worker user-data">
           <img
             class="worker__avatar"
-            :src="response.worker.avatar ? response.worker.avatar.url : $options.images.EMPTY_AVATAR"
+            :src="
+              response.worker.avatar
+                ? response.worker.avatar.url
+                : $options.images.EMPTY_AVATAR
+            "
             alt=""
             @click="toUserProfile(response)"
           >
@@ -37,10 +47,15 @@
               class="worker__name"
               @click="toUserProfile(response)"
             >
-              {{ UserName(response.worker.firstName, response.worker.lastName) }}
+              {{
+                UserName(response.worker.firstName, response.worker.lastName)
+              }}
             </div>
             <div
-              v-if="isInvited && response.status === $options.QuestsResponseStatus.Accepted"
+              v-if="
+                isInvited &&
+                  response.status === $options.QuestsResponseStatus.Accepted
+              "
               class="worker__status"
             >
               {{ $t('meta.accepted') }}
@@ -65,7 +80,13 @@
       v-else
       class="invited__title"
     >
-      {{ $t(`quests.${isInvited ? 'workersNotInvited' : 'employer.usersNotResponded'}`) }}
+      {{
+        $t(
+          `quests.${
+            isInvited ? 'workersNotInvited' : 'employer.usersNotResponded'
+          }`,
+        )
+      }}
     </div>
   </div>
 </template>
@@ -106,13 +127,12 @@ export default {
     ddUserChatActions() {
       return [this.$t('meta.btns.goToChat')]; // WaitWorkerOnAssign state
     },
-    ddUserInvitedActions() { // Worker accepted invitation
-      return [
-        this.$t('meta.btns.goToChat'),
-        this.$t('quests.startQuest'),
-      ];
+    ddUserInvitedActions() {
+      // Worker accepted invitation
+      return [this.$t('meta.btns.goToChat'), this.$t('quests.startQuest')];
     },
-    ddUserRespondedActions() { // Responds from worker
+    ddUserRespondedActions() {
+      // Responds from worker
       return [
         this.$t('meta.btns.goToChat'),
         this.$t('quests.startQuest'),
@@ -129,9 +149,11 @@ export default {
     },
     userActionsArr(response) {
       const { worker } = response;
-      if (this.questData?.assignedWorker?.id === worker?.id
+      if (
+        this.questData?.assignedWorker?.id === worker?.id
         // Waiting for worker (dis)agree invitation
-        || (this.isInvited && response.status === QuestsResponseStatus.Open)) {
+        || (this.isInvited && response.status === QuestsResponseStatus.Open)
+      ) {
         return this.ddUserChatActions;
       }
       if (this.isInvited && response.status === QuestsResponseStatus.Accepted) {
@@ -144,7 +166,10 @@ export default {
       this[funcKey](response);
     },
     goToChat(response) {
-      this.$router.push({ path: `${Path.MESSAGES}/${response.questChat.chatId}`, query: { type: ChatType.QUEST } });
+      this.$router.push({
+        path: `${Path.MESSAGES}/${response.questChat.chatId}`,
+        query: { type: ChatType.QUEST },
+      });
     },
     async getQuest() {
       await this.$store.dispatch('quests/getQuest', this.questData.id);
@@ -173,7 +198,10 @@ export default {
         title: this.$t('quests.startQuest'),
         isDontOffLoader: true,
         fields: {
-          from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
+          from: {
+            name: this.$t('meta.fromBig'),
+            value: this.userWalletAddress,
+          },
           to: { name: this.$t('meta.toBig'), value: contractAddress },
           fee: {
             name: this.$t('wallet.table.trxFee'),
@@ -184,7 +212,9 @@ export default {
         submitMethod: async () => {
           this.$store.commit('notifications/setWaitForUpdateQuest', {
             id: this.questData.id,
-            callback: () => this.$store.dispatch('modals/show', { key: modals.transactionSend }),
+            callback: () => this.$store.dispatch('modals/show', {
+              key: modals.transactionSend,
+            }),
           });
           const txRes = await this.$store.dispatch('quests/assignJob', {
             contractAddress,
@@ -199,10 +229,21 @@ export default {
     },
     async reject(response) {
       this.SetLoader(true);
-      if (await this.$store.dispatch('quests/rejectTheAnswerToTheQuest', response.id)) {
-        await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
+      if (
+        await this.$store.dispatch(
+          'quests/rejectTheAnswerToTheQuest',
+          response.id,
+        )
+      ) {
+        await this.$store.dispatch(
+          'quests/responsesToQuest',
+          this.questData.id,
+        );
       }
       this.SetLoader(false);
+    },
+    selectItem(i) {
+      this.$emit('input', i);
     },
   },
 };
@@ -211,7 +252,7 @@ export default {
 <style lang="scss" scoped>
 .invited {
   &__title {
-    color: #7C838DFF;
+    color: #7c838dff;
     font-size: 16px;
   }
   &__list {
@@ -238,20 +279,22 @@ export default {
     align-self: center;
     flex-shrink: 0;
   }
-   &__card {
+  &__card {
+    position: relative;
     background: $white;
     border-radius: 6px;
-     padding: 15px;
+    padding: 30px 15px;
   }
- &__message {
-   @include text-simple;
-   margin: 0 0 10px 0;
-   font-size: 16px;
-   color: $black500;
-   word-break: break-word;
- }
+  &__message {
+    @include text-simple;
+    max-width: 90%;
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    color: $black500;
+    word-break: break-word;
+  }
 
-    &__container {
+  &__container {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -262,7 +305,7 @@ export default {
     height: 40px;
     cursor: pointer;
     object-fit: cover;
- }
+  }
   &__status {
     background: $green;
     border-radius: 6px;
@@ -276,12 +319,12 @@ export default {
     @extend .worker;
     color: $black800;
     cursor: pointer;
-    transition: .3s;
+    transition: 0.3s;
     &:hover {
       color: $blue;
     }
   }
- &__title {
+  &__title {
     font-size: 18px;
   }
 }
@@ -314,6 +357,80 @@ export default {
 @include _350 {
   .worker__name {
     max-width: 80px;
+  }
+}
+.dd {
+  display: flex;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 130%;
+  color: $black500;
+  text-align: left;
+  &__items {
+    width: 120px;
+    flex-basis: 100%;
+    position: absolute;
+    background: #ffffff;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    grid-gap: 15px;
+    padding: 15px 20px;
+    z-index: 4;
+
+    &_underline-type {
+      width: fit-content;
+      min-width: fit-content;
+      right: 0;
+    }
+
+    &_small {
+      max-height: 200px;
+      grid-gap: 10px;
+      overflow-y: auto;
+      overscroll-behavior-y: contain;
+    }
+
+    &_wide {
+      min-width: 131px;
+      right: 30px;
+      top: 15px;
+    }
+  }
+  &__item {
+    text-align: left;
+    flex-basis: 100%;
+    width: 100%;
+    height: 100%;
+    color: $black500;
+    &:hover {
+      color: $black800;
+    }
+    &_disabled {
+      cursor: default;
+      color: $black300;
+      &:hover {
+        color: $black300;
+      }
+    }
+    &_icon {
+      display: flex;
+      align-items: center;
+      img {
+        margin-right: 5px;
+        height: 24px;
+        width: 24px;
+      }
+    }
+    &_hide {
+      display: none;
+    }
   }
 }
 </style>
