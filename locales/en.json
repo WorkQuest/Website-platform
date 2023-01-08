@@ -510,7 +510,8 @@
     },
     "worker": "Worker",
     "startQuest": "Start quest",
-    "pending": "Pending"
+    "pending": "Pending",
+    "conditionCheckbox": "You must confirm this condition!"
   },
   "filters": {
     "dd": {
