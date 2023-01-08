@@ -12,67 +12,69 @@
         :key="response.worker.id"
         class="worker__container"
       >
-        <div class="worker__action-container">
-          <div class="worker__title">
-            {{ $t(`${isInvited ? 'meta.invited' : 'meta.responded'}`) }}
+        <div class="worker__top-wrap">
+          <div class="worker__action-container">
+            <div class="worker__title">
+              {{ $t(`${isInvited ? 'meta.invited' : 'meta.responded'}`) }}
+            </div>
           </div>
-          <div class="dd__items">
-            <button
-              v-for="(item, i) in userActionsArr(response)"
-              :key="`dd__item-${i}`"
-              class="dd__item"
-              :data-selector="`ACTION-BTN-SELECT-ITEM-${`WORKERS-LIST-USER-ACTIONS-${userActionsArr(
-                response,
-              )}`.toUpperCase()}-${i}`"
-              @click="handleUserAction(i, response)"
-            >
-              {{ item }}
-            </button>
-            <slot name="buttonCard" />
-          </div>
-        </div>
-        <div class="worker user-data">
-          <img
-            class="worker__avatar"
-            :src="
-              response.worker.avatar
-                ? response.worker.avatar.url
-                : $options.images.EMPTY_AVATAR
-            "
-            alt=""
-            @click="toUserProfile(response)"
-          >
-          <div class="worker__user">
-            <div
-              class="worker__name"
+          <div class="worker user-data">
+            <img
+              class="worker__avatar"
+              :src="
+                response.worker.avatar
+                  ? response.worker.avatar.url
+                  : $options.images.EMPTY_AVATAR
+              "
+              alt=""
               @click="toUserProfile(response)"
             >
-              {{
-                UserName(response.worker.firstName, response.worker.lastName)
-              }}
+            <div class="worker__user">
+              <div
+                class="worker__name"
+                @click="toUserProfile(response)"
+              >
+                {{
+                  UserName(response.worker.firstName, response.worker.lastName)
+                }}
+              </div>
+              <div
+                v-if="
+                  isInvited &&
+                    response.status === $options.QuestsResponseStatus.Accepted
+                "
+                class="worker__status"
+              >
+                {{ $t('meta.accepted') }}
+              </div>
             </div>
-            <div
-              v-if="
-                isInvited &&
-                  response.status === $options.QuestsResponseStatus.Accepted
-              "
-              class="worker__status"
-            >
-              {{ $t('meta.accepted') }}
+            <item-rating :rating="response.worker.ratingStatistic.status" />
+          </div>
+          <div class="worker__message-cont">
+            <div class="worker__message">
+              {{ response.message }}
+            </div>
+            <div v-if="response.medias && response.medias.length">
+              <files-preview
+                :medias="response.medias"
+                small
+              />
             </div>
           </div>
-          <item-rating :rating="response.worker.ratingStatistic.status" />
         </div>
-        <div class="worker__message-cont">
-          <div class="worker__message">
-            {{ response.message }}
-          </div>
-          <div v-if="response.medias && response.medias.length">
-            <files-preview
-              :medias="response.medias"
-              small
-            />
-          </div>
+        <div class="dd__items">
+          <button
+            v-for="(item, i) in userActionsArr(response)"
+            :key="`dd__item-${i}`"
+            class="dd__item"
+            :data-selector="`ACTION-BTN-SELECT-ITEM-${`WORKERS-LIST-USER-ACTIONS-${userActionsArr(
+              response,
+            )}`.toUpperCase()}-${i}`"
+            @click="handleUserAction(i, response)"
+          >
+            {{ item }}
+          </button>
+          <slot name="buttonCard" />
         </div>
       </div>
     </div>
@@ -256,7 +258,8 @@ export default {
     font-size: 16px;
   }
   &__list {
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
     gap: 20px;
   }
 }
@@ -269,6 +272,9 @@ export default {
   font-size: 16px;
   font-weight: 500;
   color: $black800;
+  &__top-wrap {
+    padding: 15px;
+  }
 
   &__action-container {
     display: flex;
@@ -297,7 +303,11 @@ export default {
   &__container {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 10px;
+    flex-basis: calc((100% - 40px) / 3);
+    border: 1px solid #f0f0f0;
+    border-radius: 6px;
   }
   &__avatar {
     border-radius: 50%;
@@ -370,14 +380,9 @@ export default {
   color: $black500;
   text-align: left;
   &__items {
-    width: 120px;
-    flex-basis: 100%;
-    position: absolute;
-    background: #ffffff;
-    top: 15px;
-    right: 15px;
+    background: #fafafa;
+    border-top: 1px solid #f0f0f0;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     grid-gap: 15px;
@@ -404,13 +409,15 @@ export default {
     }
   }
   &__item {
-    text-align: left;
     flex-basis: 100%;
     width: 100%;
     height: 100%;
     color: $black500;
     &:hover {
-      color: $black800;
+      color: $blue;
+    }
+    &:not(:last-child) {
+      border-right: 1px solid #f0f0f0;
     }
     &_disabled {
       cursor: default;
