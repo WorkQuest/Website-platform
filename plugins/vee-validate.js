@@ -328,6 +328,13 @@ extend('geo_is_address', {
   },
 });
 
+extend('min_message', {
+  validate(value, { length }) {
+    return +value >= length;
+  },
+  params: ['length'],
+});
+
 export default ({ app }) => {
   configure({
     defaultMessage: (_field_, values) => app.i18n.t(`messages.${values._rule_}`, values),

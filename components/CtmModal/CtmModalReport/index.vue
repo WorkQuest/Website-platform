@@ -15,7 +15,7 @@
         <base-field
           v-model="title"
           :placeholder="$t('report.titlePlaceholder')"
-          :name="$t('report.title')"
+          :name="$t('report.title').toLowerCase()"
           rules="required|max:255"
           data-selector="SUBJECT"
         />
@@ -27,7 +27,7 @@
         <base-textarea
           v-model="description"
           :placeholder="$t('report.messagePlaceholder')"
-          rules="required|min:50|max:1000"
+          rules="required|min_message:50|max:1000"
         />
       </div>
       <base-btn
@@ -41,7 +41,6 @@
 </template>
 
 <script>
-
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
