@@ -147,7 +147,8 @@
         />
       </div>
       <validation-provider
-        :rules="{ required: { allowFalse: false } }"
+        v-slot="{ errors }"
+        rules="conditionCheckbox"
         class="page__edit-check"
         tag="div"
         name=" "
@@ -168,10 +169,9 @@
           </label>
         </div>
         <div
-          v-if="!isCheckedEditAfter"
           class="page__error"
         >
-          {{ $t('quests.conditionCheckbox') }}
+          {{ errors[0] }}
         </div>
       </validation-provider>
       <div class="page upload__container">

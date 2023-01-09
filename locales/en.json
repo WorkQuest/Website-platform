@@ -232,6 +232,7 @@
     "yourWallet": "Your wallet:"
   },
   "messages": {
+    "conditionCheckbox": "You must confirm this condition!",
     "min_percent": "The {_field_} field must be greater than {min}%",
     "alpha": "The {_field_} field may only contain alphabetic characters",
     "alpha_num": "The {_field_} field may only contain alpha-numeric characters",
@@ -511,8 +512,7 @@
     },
     "worker": "Worker",
     "startQuest": "Start quest",
-    "pending": "Pending",
-    "conditionCheckbox": "You must confirm this condition!"
+    "pending": "Pending"
   },
   "filters": {
     "dd": {
