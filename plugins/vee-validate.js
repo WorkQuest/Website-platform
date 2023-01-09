@@ -328,6 +328,36 @@ extend('geo_is_address', {
   },
 });
 
+extend('signUpRequiredField', {
+  validate(value) {
+    return {
+      required: true,
+      valid: ['', null, undefined].indexOf(value) === -1,
+    };
+  },
+  computesRequired: true,
+});
+
+extend('signUpRequiredPassword', {
+  validate(value) {
+    return {
+      required: true,
+      valid: ['', null, undefined].indexOf(value) === -1,
+    };
+  },
+  computesRequired: true,
+});
+
+extend('signUpRequiredRepeatPassword', {
+  validate(value) {
+    return {
+      required: true,
+      valid: ['', null, undefined].indexOf(value) === -1,
+    };
+  },
+  computesRequired: true,
+});
+
 extend('min_message', {
   validate(value, { length }) {
     return +value >= length;
