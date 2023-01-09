@@ -335,6 +335,12 @@ extend('min_message', {
   params: ['length'],
 });
 
+extend('conditionCheckbox', {
+  validate(value) {
+    return value;
+  },
+});
+
 export default ({ app }) => {
   configure({
     defaultMessage: (_field_, values) => app.i18n.t(`messages.${values._rule_}`, values),

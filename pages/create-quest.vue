@@ -5,7 +5,7 @@
   >
     <validation-observer
       ref="validate"
-      v-slot="{handleSubmit}"
+      v-slot="{ handleSubmit }"
       class="main__body page"
     >
       <h2 class="page__title">
@@ -35,7 +35,7 @@
             :label="$tc('meta.price')"
             placeholder="0 WUSD"
             rules="required|decimal|decimalPlaces:16|min_value:1"
-            :name="$tc('meta.price')"
+            :name="$tc('meta.price').toLowerCase()"
           />
         </div>
         <div class="page__dd">
@@ -75,7 +75,7 @@
       <validation-provider
         v-slot="{ errors }"
         rules="required|notEmptyArray"
-        :name="$t('settings.specialization')"
+        :name="$t('settings.specialization').toLowerCase()"
       >
         <specializations-selector
           v-model="selectedSpecAndSkills"
@@ -95,8 +95,11 @@
           data-selector="ADDRESS-FIELD"
           mode="icon"
           :selector="true"
-          :rules="{required: true, geo_is_address: { addresses: addressesBuffer } }"
-          :name="$tc('quests.address')"
+          :rules="{
+            required: true,
+            geo_is_address: { addresses: addressesBuffer },
+          }"
+          :name="$tc('quests.address').toLowerCase()"
           @selector="debouncedAddressSearch(address)"
         >
           <template v-slot:left>
@@ -128,7 +131,7 @@
           v-model="questTitle"
           data-selector="QUEST-TITLE-FIELD"
           rules="required|min:2|max:250"
-          :name="$tc('quests.questTitle')"
+          :name="$tc('quests.questTitle').toLowerCase()"
           :placeholder="$t('quests.questTitle')"
         />
       </div>
@@ -140,12 +143,12 @@
           data-selector="QUEST-DESC-TEXTAREA"
           class="page__textarea"
           :placeholder="$t('quests.questDesc')"
-          :name="$t('modals.description')"
+          :name="$t('modals.description').toLowerCase()"
         />
       </div>
       <validation-provider
         v-slot="{ errors }"
-        :rules="{ required: { allowFalse: false } }"
+        rules="conditionCheckbox"
         class="page__edit-check"
         tag="div"
         name=" "
@@ -165,7 +168,9 @@
             {{ $t('quests.impossibleEditAfterCreation') }}
           </label>
         </div>
-        <div class="page__error">
+        <div
+          class="page__error"
+        >
           {{ errors[0] }}
         </div>
       </validation-provider>
@@ -204,7 +209,12 @@ import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import debounce from '~/utils/debounce';
 import {
-  PriorityFilter, TokenMap, TokenSymbols, TypeOfEmployments, PayPeriodsIndex, WorkplaceIndex,
+  PriorityFilter,
+  TokenMap,
+  TokenSymbols,
+  TypeOfEmployments,
+  PayPeriodsIndex,
+  WorkplaceIndex,
 } from '~/utils/enums';
 import { LocalNotificationAction } from '~/utils/notifications';
 import { CommissionForCreatingAQuest } from '~/utils/сonstants/commission';
@@ -268,11 +278,16 @@ export default {
     },
     depositAmount() {
       if (!this.price) return '0';
-      return new BigNumber(this.price).multipliedBy(1 + CommissionForCreatingAQuest).toFixed(18).toString();
+      return new BigNumber(this.price)
+        .multipliedBy(1 + CommissionForCreatingAQuest)
+        .toFixed(18)
+        .toString();
     },
   },
   async beforeCreate() {
-    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+    await this.$store.dispatch('wallet/checkWalletConnected', {
+      nuxt: this.$nuxt,
+    });
   },
   async beforeMount() {
     const questDraft = this.$cookies.get('questDraft');
@@ -321,8 +336,17 @@ export default {
     async setQuestDraft() {
       this.SetLoader(true);
       const {
-        workplaceIndex, payPeriodsIndex, runtimeIndex, employmentIndex, questTitle,
-        textarea, price, selectedSpecAndSkills, address, coordinates: { lng, lat }, clearData,
+        workplaceIndex,
+        payPeriodsIndex,
+        runtimeIndex,
+        employmentIndex,
+        questTitle,
+        textarea,
+        price,
+        selectedSpecAndSkills,
+        address,
+        coordinates: { lng, lat },
+        clearData,
       } = this;
       if (!questTitle && !textarea && !price && !address) await clearData();
       else {
@@ -390,7 +414,10 @@ export default {
         if (address.length) {
           this.addresses = await this.geoCode.geolookup(address);
           this.addressesBuffer = this.addresses;
-          this.coordinates = { lng: this.addresses[0].lng, lat: this.addresses[0].lat };
+          this.coordinates = {
+            lng: this.addresses[0].lng,
+            lat: this.addresses[0].lat,
+          };
         } else this.addresses = [];
       } catch (e) {
         this.addresses = [];
@@ -421,18 +448,32 @@ export default {
         this.$store.dispatch('wallet/getBalance'),
       ]);
       // Not enough WUSD
-      if (new BigNumber(this.depositAmount).isGreaterThan(this.balanceData.WUSD.fullBalance)) {
-        this.ShowToast(`${this.$t('errors.transaction.notEnoughFunds')} (${TokenSymbols.WUSD})`);
+      if (
+        new BigNumber(this.depositAmount).isGreaterThan(
+          this.balanceData.WUSD.fullBalance,
+        )
+      ) {
+        this.ShowToast(
+          `${this.$t('errors.transaction.notEnoughFunds')} (${
+            TokenSymbols.WUSD
+          })`,
+        );
         this.SetLoader(false);
         return;
       }
       if (new BigNumber(allowance).isLessThan(this.depositAmount)) {
-        const approveFee = await this.$store.dispatch('wallet/getContractFeeData', {
-          method: 'approve',
-          abi: ERC20,
-          contractAddress: tokenAddress,
-          data: [tokenAddress, new BigNumber(this.depositAmount).shiftedBy(18).toString()],
-        });
+        const approveFee = await this.$store.dispatch(
+          'wallet/getContractFeeData',
+          {
+            method: 'approve',
+            abi: ERC20,
+            contractAddress: tokenAddress,
+            data: [
+              tokenAddress,
+              new BigNumber(this.depositAmount).shiftedBy(18).toString(),
+            ],
+          },
+        );
         if (!approveFee.ok) {
           this.ShowToast(approveFee.msg);
           this.SetLoader(false);
@@ -443,10 +484,24 @@ export default {
           key: modals.transactionReceipt,
           title: this.$t('meta.approve'),
           fields: {
-            from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
-            to: { name: this.$t('meta.toBig'), value: this.ENV.WORKNET_WQ_FACTORY },
-            amount: { name: this.$t('modals.amount'), value: this.depositAmount, symbol: TokenSymbols.WUSD },
-            fee: { name: this.$t('wallet.table.trxFee'), value: approveFee.result.fee, symbol: TokenSymbols.WQT },
+            from: {
+              name: this.$t('meta.fromBig'),
+              value: this.userWalletAddress,
+            },
+            to: {
+              name: this.$t('meta.toBig'),
+              value: this.ENV.WORKNET_WQ_FACTORY,
+            },
+            amount: {
+              name: this.$t('modals.amount'),
+              value: this.depositAmount,
+              symbol: TokenSymbols.WUSD,
+            },
+            fee: {
+              name: this.$t('wallet.table.trxFee'),
+              value: approveFee.result.fee,
+              symbol: TokenSymbols.WQT,
+            },
           },
           submitMethod: async () => {
             this.ShowToast('In progress…', 'Confirmation');
@@ -497,10 +552,24 @@ export default {
       this.ShowModal({
         key: modals.transactionReceipt,
         fields: {
-          from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
-          to: { name: this.$t('meta.toBig'), value: this.ENV.WORKNET_WQ_FACTORY },
-          amount: { name: this.$t('modals.amount'), value: this.depositAmount, symbol: TokenSymbols.WUSD },
-          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
+          from: {
+            name: this.$t('meta.fromBig'),
+            value: this.userWalletAddress,
+          },
+          to: {
+            name: this.$t('meta.toBig'),
+            value: this.ENV.WORKNET_WQ_FACTORY,
+          },
+          amount: {
+            name: this.$t('modals.amount'),
+            value: this.depositAmount,
+            symbol: TokenSymbols.WUSD,
+          },
+          fee: {
+            name: this.$t('wallet.table.trxFee'),
+            value: feeRes.result.fee,
+            symbol: TokenSymbols.WQT,
+          },
         },
         submitMethod: async () => {
           this.SetLoader(true);
@@ -523,7 +592,10 @@ export default {
               locationPlaceName: this.address,
             },
           };
-          const questRes = await this.$store.dispatch('quests/questCreate', payload);
+          const questRes = await this.$store.dispatch(
+            'quests/questCreate',
+            payload,
+          );
           if (questRes.ok) {
             const txRes = await this.$store.dispatch('quests/createQuest', {
               cost: this.price,
@@ -541,7 +613,10 @@ export default {
               img: require('assets/img/ui/questCreated.svg'),
               title: this.$t('modals.questCreated'),
             });
-            this.ShowToast(this.$t('toasts.questCreated'), this.$t('toasts.questCreated'));
+            this.ShowToast(
+              this.$t('toasts.questCreated'),
+              this.$t('toasts.questCreated'),
+            );
             await this.$router.push(`/quests/${questRes.result.id}`);
           }
           this.SetLoader(false);
@@ -553,7 +628,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .btn-container {
   display: flex;
   flex-direction: row;
@@ -614,7 +688,7 @@ export default {
     font-weight: 500;
     font-size: 12px;
     color: $white;
-    background: #F7CF00;
+    background: #f7cf00;
     border-radius: 3px;
     width: 120px;
     padding: 2px 5px;
@@ -667,7 +741,7 @@ export default {
     }
 
     &_gold {
-      border: 1px solid #F7CF00;
+      border: 1px solid #f7cf00;
     }
   }
 
@@ -726,7 +800,7 @@ export default {
     background: $white;
     padding: 12px 88px;
     border-radius: 6px;
-    transition: .5s;
+    transition: 0.5s;
     text-align: center;
     width: inherit;
     margin: 0 20px 0 0;
@@ -768,7 +842,7 @@ export default {
   &-white {
     @include main;
     background: $white;
-    background: #FFFFFF;
+    background: #ffffff;
     margin: 0 0 20px 0;
     border-radius: 6px;
     justify-content: center;
@@ -796,26 +870,26 @@ export default {
 
 .icon {
   &-close_small:before {
-    content: "\e949";
+    content: '\e949';
     color: $red;
     font-size: 20px;
     cursor: pointer;
   }
 
   &-check_big:before {
-    content: "\ea02";
+    content: '\ea02';
     color: $white;
     font-size: 20px;
   }
 
   &-off_outline_close::before {
-    content: "\ea2a";
+    content: '\ea2a';
     color: $red;
     font-size: 20px;
   }
 
   &-map::before {
-    content: "\ea28";
+    content: '\ea28';
     color: $blue;
     font-size: 20px;
   }
@@ -827,7 +901,7 @@ export default {
   z-index: 140;
 
   &__items {
-    background: #FFFFFF;
+    background: #ffffff;
     display: grid;
     grid-template-columns: 1fr;
     width: 100%;
@@ -836,12 +910,12 @@ export default {
   &__item {
     @include text-simple;
     padding: 15px 20px;
-    background: #FFFFFF;
+    background: #ffffff;
     font-weight: 500;
     font-size: 16px;
     color: $black800;
     cursor: pointer;
-    transition: .3s;
+    transition: 0.3s;
 
     &:hover {
       background: $black0;
@@ -860,17 +934,17 @@ export default {
   font-size: 16px;
   line-height: 130%;
   text-align: center;
-  transition: .3s;
-  background: #0083C7;
+  transition: 0.3s;
+  background: #0083c7;
   border-radius: 6px;
 
   &:hover {
-    background: #103D7C;
+    background: #103d7c;
   }
 
   &__passive {
     border: 1px solid rgba(0, 131, 199, 0.1);
-    background: #FFFFFF;
+    background: #ffffff;
     color: $blue;
 
     &:hover {
