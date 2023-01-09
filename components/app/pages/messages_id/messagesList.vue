@@ -46,7 +46,7 @@
                 :class="{ 'info-message__link_left': !message.itsMe }"
                 @click="openProfile(message.sender.userId)"
               >
-                {{ setFullName(message).trim() }}</span><span class="info-message__title">
+                {{ setFullName(message) }}</span><span class="info-message__title">
                 {{
                   setInfoMessageText(
                     message.infoMessage.messageAction,
