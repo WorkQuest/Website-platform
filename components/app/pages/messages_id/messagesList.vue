@@ -18,42 +18,66 @@
       <div
         v-for="(message, i) in messages.list"
         :key="message.id"
-        :ref="message.number === selStarredMessageNumber ? 'starredMessage' : ''"
+        :ref="
+          message.number === selStarredMessageNumber ? 'starredMessage' : ''
+        "
         class="message"
         :class="[
-          {'message_right' : message.itsMe},
-          {'message_blink' : message.number === selStarredMessageNumber},
-          {'message_info' : message.type === MessageType.INFO}
+          { message_right: message.itsMe },
+          { message_blink: message.number === selStarredMessageNumber },
+          { message_info: message.type === MessageType.INFO },
         ]"
       >
         <div
           v-if="message.type === MessageType.INFO && message.infoMessage"
           class="info-message"
         >
-          <template v-if="canShowActionUsers(message.infoMessage.messageAction, message.itsMe)">
-            <span
-              class="info-message__link"
-              :class="{'info-message__link_left' : !message.itsMe}"
-              @click="openProfile(message.sender.userId)"
-            >
-              {{ setFullName(message) }}
-            </span>
-            <span class="info-message__title">
-              {{ setInfoMessageText(message.infoMessage.messageAction, message.itsMe) }}
-            </span>
+          <template
+            v-if="
+              canShowActionUsers(
+                message.infoMessage.messageAction,
+                message.itsMe,
+              )
+            "
+          >
+            <p>
+              <span
+                class="info-message__link"
+                :class="{ 'info-message__link_left': !message.itsMe }"
+                @click="openProfile(message.sender.userId)"
+              >
+                {{ setFullName(message).trim() }}</span><span class="info-message__title">
+                {{
+                  setInfoMessageText(
+                    message.infoMessage.messageAction,
+                    message.itsMe,
+                  )
+                }}
+              </span>
+            </p>
             <span
               v-if="isNeedToShowInfoMessageMember(message)"
               class="info-message__link"
               @click="openProfile(message.infoMessage.member.user.id)"
             >
-              {{ UserName(message.infoMessage.member.user.firstName, message.infoMessage.member.user.lastName) }}
+              {{
+                UserName(
+                  message.infoMessage.member.user.firstName,
+                  message.infoMessage.member.user.lastName,
+                )
+              }}
             </span>
           </template>
           <div
             v-else
             class="info-message__title"
           >
-            {{ setInfoMessageText(message.infoMessage.messageAction, message.itsMe) }}
+            {{
+              setInfoMessageText(
+                message.infoMessage.messageAction,
+                message.itsMe,
+              )
+            }}
           </div>
         </div>
         <template v-else>
@@ -62,7 +86,9 @@
             :src="setSenderAvatar(message)"
             alt=""
             class="message__avatar"
-            :class="{'message__avatar_hidden' : isPrevMessageSameSender(i, message)}"
+            :class="{
+              message__avatar_hidden: isPrevMessageSameSender(i, message),
+            }"
           >
           <div class="message__data">
             <div
@@ -74,8 +100,8 @@
             <div
               class="message__bubble"
               :class="[
-                {'message__bubble_bl' : message.itsMe},
-                {'message__bubble_link' : chatId === 'starred'}
+                { message__bubble_bl: message.itsMe },
+                { message__bubble_link: chatId === 'starred' },
               ]"
               @click="goToCurrChat(message)"
             >
@@ -110,7 +136,7 @@
                       >
                     </video>
                     <span
-                      class="icon-play_circle_outline "
+                      class="icon-play_circle_outline"
                       @click="selFile($event, message.medias, file.url)"
                     />
                   </div>
@@ -128,7 +154,7 @@
               </div>
               <div
                 class="message__time message__title message__title_gray"
-                :class="{'message__title_white' : message.itsMe}"
+                :class="{ message__title_white: message.itsMe }"
               >
                 {{ setCurrDate(message.createdAt) }}
               </div>
@@ -136,7 +162,7 @@
           </div>
           <div
             class="message__star-cont"
-            :class="{'message__star-cont_left' : message.itsMe}"
+            :class="{ 'message__star-cont_left': message.itsMe }"
           >
             <div
               v-show="chatId !== 'starred'"
@@ -197,7 +223,12 @@ import moment from 'moment';
 import modals from '~/store/modals/modals';
 import { Path, RouterNames } from '~/utils/enums';
 import {
-  MessageAction, MessageType, UserRoles, FileTypes, GetInfoMessageText, ChatType,
+  MessageAction,
+  MessageType,
+  UserRoles,
+  FileTypes,
+  GetInfoMessageText,
+  ChatType,
 } from '~/utils/сonstants/chat';
 import { images } from '~/utils/images';
 
@@ -240,7 +271,7 @@ export default {
     chatMembers() {
       const res = {};
       if (!this.currChat?.members) return res;
-      this.currChat.members.forEach((item) => res[item.userId] = item);
+      this.currChat.members.forEach((item) => (res[item.userId] = item));
       return res;
     },
   },
@@ -256,7 +287,9 @@ export default {
   },
 
   async mounted() {
-    const selStarredMessageNumber = +localStorage.getItem('selStarredMessageNumber');
+    const selStarredMessageNumber = +localStorage.getItem(
+      'selStarredMessageNumber',
+    );
 
     let direction = 0;
     let bottomOffset = 0;
@@ -273,7 +306,11 @@ export default {
     this.scrollToBottom(true);
   },
   destroyed() {
-    this.$store.commit('chat/setMessagesList', { messages: [], count: 0, chat: null });
+    this.$store.commit('chat/setMessagesList', {
+      messages: [],
+      count: 0,
+      chat: null,
+    });
     this.$store.commit('chat/clearMessagesFilter');
   },
   methods: {
@@ -281,12 +318,15 @@ export default {
       return Object.values(FileTypes).includes(text) ? '' : text;
     },
     isNeedToShowInfoMessageMember(message) {
-      return message?.infoMessage?.member?.user
-        && [MessageAction.GROUP_CHAT_ADD_USERS,
+      return (
+        message?.infoMessage?.member?.user
+        && [
+          MessageAction.GROUP_CHAT_ADD_USERS,
           MessageAction.GROUP_CHAT_DELETE_USER,
           MessageAction.GROUP_CHAT_RESTORED_USER,
           MessageAction.GROUP_CHAT_DELETE_USER,
-        ].includes(message.infoMessage.messageAction);
+        ].includes(message.infoMessage.messageAction)
+      );
     },
     canShowActionUsers(messageAction, itsMe) {
       const isGroupChatCreateAction = messageAction === MessageAction.GROUP_CHAT_CREATE;
@@ -296,21 +336,27 @@ export default {
       const { list } = this.messages;
       const prevMessage = i ? list[i - 1] : null;
 
-      return prevMessage?.sender?.user?.id === message.sender?.user?.id && prevMessage?.type !== MessageType.INFO;
+      return (
+        prevMessage?.sender?.user?.id === message.sender?.user?.id
+        && prevMessage?.type !== MessageType.INFO
+      );
     },
     setSenderAvatar({ sender }) {
       if (sender?.type === UserRoles.ADMIN) return images.WQ_LOGO_ROUNDED;
-      return sender.user?.avatar ? sender.user?.avatar.url : images.EMPTY_AVATAR;
+      return sender.user?.avatar
+        ? sender.user?.avatar.url
+        : images.EMPTY_AVATAR;
     },
     async getMessages(direction, currBottomOffset) {
       const {
-        filter: {
-          topOffset,
-          bottomOffset,
-        }, chatId, messages: { list, count },
+        filter: { topOffset, bottomOffset },
+        chatId,
+        messages: { list, count },
       } = this;
 
-      const offset = direction ? currBottomOffset || bottomOffset : topOffset || (count - list[0]?.number + 1) || 0;
+      const offset = direction
+        ? currBottomOffset || bottomOffset
+        : topOffset || count - list[0]?.number + 1 || 0;
 
       const payload = {
         config: {
@@ -333,18 +379,34 @@ export default {
         const { HandleScrollContainer, ScrollContainer, starredMessage } = this.$refs;
 
         if (ScrollContainer) {
-          ScrollContainer.scrollIntoView(isInit === true ? false : {
-            block: 'end',
-            behavior: 'smooth',
-          });
+          ScrollContainer.scrollIntoView(
+            isInit === true
+              ? false
+              : {
+                block: 'end',
+                behavior: 'smooth',
+              },
+          );
         }
-        if (!this.minScrollDifference) this.minScrollDifference = (HandleScrollContainer?.scrollHeight - HandleScrollContainer?.scrollTop) * 2;
+        if (!this.minScrollDifference) {
+          this.minScrollDifference = (HandleScrollContainer?.scrollHeight
+              - HandleScrollContainer?.scrollTop)
+            * 2;
+        }
 
-        if (starredMessage && isInit) HandleScrollContainer.scrollTo(0, starredMessage[0].offsetTop - HandleScrollContainer.offsetTop - 20);
+        if (starredMessage && isInit) {
+          HandleScrollContainer.scrollTo(
+            0,
+            starredMessage[0].offsetTop - HandleScrollContainer.offsetTop - 20,
+          );
+        }
       }, 200);
     },
     async handleScroll({ target: { scrollTop, scrollHeight, clientHeight } }) {
-      const { minScrollDifference, filter: { canLoadToBottom, canLoadToTop } } = this;
+      const {
+        minScrollDifference,
+        filter: { canLoadToBottom, canLoadToTop },
+      } = this;
 
       const currScrollOffset = scrollHeight - scrollTop;
 
@@ -380,21 +442,30 @@ export default {
       itsMe, infoMessage, sender, type,
     }) {
       const user = infoMessage?.user;
-      if (itsMe || (type === MessageType.INFO && sender?.adminId) || (!itsMe && !sender?.user)) return '';
+      if (
+        itsMe
+        || (type === MessageType.INFO && sender?.adminId)
+        || (!itsMe && !sender?.user)
+      ) return '';
       return itsMe && user
         ? this.UserName(user?.firstName, user?.lastName)
         : this.UserName(sender.user?.firstName, sender.user?.lastName);
     },
     goToCurrChat(message) {
       if (this.chatId !== 'starred') return;
-      localStorage.setItem('selStarredMessageNumber', JSON.stringify(message.number));
+      localStorage.setItem(
+        'selStarredMessageNumber',
+        JSON.stringify(message.number),
+      );
       this.$router.push(`${Path.MESSAGES}/${message.chatId}`);
     },
     selFile(ev, files, fileUrl) {
       ev.preventDefault();
       ev.stopPropagation();
 
-      files = files.filter((file) => file.type === FileTypes.IMAGE || file.type === FileTypes.VIDEO);
+      files = files.filter(
+        (file) => file.type === FileTypes.IMAGE || file.type === FileTypes.VIDEO,
+      );
       const index = files.findIndex((file) => file.url === fileUrl);
 
       this.ShowModal({
@@ -425,10 +496,13 @@ export default {
       const messageId = message.id;
       const { chatId } = this;
 
-      await this.$store.dispatch(`chat/${message.star ? 'removeStarForMessage' : 'setStarForMessage'}`, {
-        messageId,
-        chatId,
-      });
+      await this.$store.dispatch(
+        `chat/${message.star ? 'removeStarForMessage' : 'setStarForMessage'}`,
+        {
+          messageId,
+          chatId,
+        },
+      );
       this.$forceUpdate();
     },
     async readMessages() {
@@ -449,7 +523,10 @@ export default {
       if (!sender) {
         if (!message.sender.id) return this.$t('profile.defaultName');
         if (message.sender.type === UserRoles.USER) {
-          return this.UserName(message.sender.user?.firstName, message.sender.user?.lastName);
+          return this.UserName(
+            message.sender.user?.firstName,
+            message.sender.user?.lastName,
+          );
         }
       }
       if (sender?.type === UserRoles.USER) return this.UserName(sender.user?.firstName, sender.user?.lastName);
@@ -472,7 +549,7 @@ export default {
     display: flex;
     padding: 50px 10px;
     justify-content: center;
-    color: #8D96A2;
+    color: #8d96a2;
     height: 100%;
     align-items: center;
   }
@@ -502,16 +579,16 @@ export default {
     width: 40px;
     border-radius: 50%;
     background-color: #fff;
-    border: 1px solid #E9EDF2;
+    border: 1px solid #e9edf2;
     margin-left: calc(100% - 62px);
     bottom: 20px;
-    opacity: .5;
-    transition: .3s;
+    opacity: 0.5;
+    transition: 0.3s;
     cursor: pointer;
 
     &:hover {
       background-color: $black0;
-      opacity: .8;
+      opacity: 0.8;
       box-shadow: 0 0 10px 2px rgba(34, 60, 80, 0.3);
     }
   }
@@ -539,7 +616,7 @@ export default {
 
   @keyframes blink {
     50% {
-      opacity: .5;
+      opacity: 0.5;
     }
     100% {
       opacity: 1;
@@ -580,7 +657,7 @@ export default {
     line-height: 1.2;
 
     &_gray {
-      color: #AAB0B9;
+      color: #aab0b9;
       font-size: 14px;
     }
 
@@ -588,7 +665,7 @@ export default {
       color: #fff;
     }
     &_user-text {
-      word-break: break-all
+      word-break: break-all;
     }
   }
 
@@ -617,7 +694,7 @@ export default {
     background-color: $black0;
 
     &_bl {
-      background-color: #0083C7;
+      background-color: #0083c7;
       color: #fff;
     }
 
@@ -632,8 +709,8 @@ export default {
   text-align: center;
 
   &__link {
-    text-decoration: underline #1D2127;
-    color: #1D2127;
+    text-decoration: underline #1d2127;
+    color: #1d2127;
     cursor: pointer;
     overflow: hidden;
     white-space: nowrap;
@@ -679,7 +756,7 @@ export default {
     padding: 10px;
     display: grid;
     grid-template-rows: 1fr;
-    border: 1px solid #E9EDF2;
+    border: 1px solid #e9edf2;
     text-decoration: unset;
   }
 
@@ -688,7 +765,7 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     font-weight: 400;
-    color: #4C5767;
+    color: #4c5767;
   }
 }
 
@@ -699,11 +776,11 @@ export default {
   align-items: center;
 
   &:before {
-    color: #AAB0B9;
+    color: #aab0b9;
     font-size: 60px;
   }
 }
-.icon-play_circle_outline{
+.icon-play_circle_outline {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -721,7 +798,6 @@ export default {
   }
 
   &:hover {
-
     .star {
       &__hover {
         display: flex;
@@ -763,7 +839,7 @@ export default {
     }
   }
   .message {
-    &__bubble{
+    &__bubble {
       width: 100%;
     }
     &__title {
@@ -774,7 +850,7 @@ export default {
 
       &_user-text {
         width: 100%;
-        word-break: break-all
+        word-break: break-all;
       }
     }
   }
