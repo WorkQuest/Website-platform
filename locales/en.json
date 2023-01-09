@@ -232,6 +232,7 @@
     "yourWallet": "Your wallet:"
   },
   "messages": {
+    "conditionCheckbox": "You must confirm this condition!",
     "min_percent": "The {_field_} field must be greater than {min}%",
     "alpha": "The {_field_} field may only contain alphabetic characters",
     "alpha_num": "The {_field_} field may only contain alpha-numeric characters",
@@ -253,11 +254,12 @@
     "mimes": "The {_field_} field must have a valid file type",
     "min_value": "The {_field_} field must be {min} or more",
     "min": "The {_field_} field must be at least {length} characters",
+    "min_message": "Your message must contain at least {length} characters!",
     "numeric": "The {_field_} field may only contain numeric characters",
     "oneOf": "The {_field_} field is not a valid value",
     "regex": "The {_field_} field format is invalid",
     "required_if": "The {_field_} field is required",
-    "required": "The {_field_} field is required",
+    "required": "The {_field_} is required!",
     "size": "The {_field_} field size must be less than {size}KB",
     "decimal": "The {_field_} field must contain only decimal values",
     "decimalPlaces": "The {_field_} field must contain maximum {places} decimal places",

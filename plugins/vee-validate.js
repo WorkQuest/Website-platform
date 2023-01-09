@@ -358,6 +358,19 @@ extend('signUpRequiredRepeatPassword', {
   computesRequired: true,
 });
 
+extend('min_message', {
+  validate(value, { length }) {
+    return +value >= length;
+  },
+  params: ['length'],
+});
+
+extend('conditionCheckbox', {
+  validate(value) {
+    return value;
+  },
+});
+
 export default ({ app }) => {
   configure({
     defaultMessage: (_field_, values) => app.i18n.t(`messages.${values._rule_}`, values),
