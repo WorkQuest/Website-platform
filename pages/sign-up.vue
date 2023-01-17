@@ -75,7 +75,7 @@
           mode="icon"
           :name="$t('signUp.passwordSmall')"
           :placeholder="$t('signUp.password')"
-          rules="signUpRequiredPassword|min:8"
+          rules="requiredSymbols|signUpRequiredPassword|min:8|capitalLetterRequired|lowerCaseLetterRequired|numberRequired|specialCharacterRequired"
           autocomplete="new-password"
           :type="isPasswordVisible ? 'text' : 'password'"
           vid="confirmation"

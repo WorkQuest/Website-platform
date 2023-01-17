@@ -35,8 +35,12 @@ extend('numberOfCard', {
     const cardNumber = value.replaceAll(/[^0-9]/g, '');
     const maxNumberLength = 19;
     const checkCardNumber = (number) => (americanExpress.test(number)
-        || dinersClub.test(number) || discover.test(number) || jcb.test(number)
-        || maestro.test(number) || mastercard.test(number) || visa.test(number))
+        || dinersClub.test(number)
+        || discover.test(number)
+        || jcb.test(number)
+        || maestro.test(number)
+        || mastercard.test(number)
+        || visa.test(number))
       && number.length <= maxNumberLength;
     return {
       required: true,
@@ -68,11 +72,7 @@ extend('date', {
 extend('between-date', {
   params: ['from', 'to'],
   validate(value, { from, to }) {
-    if (
-      from === 'null'
-      || to === 'null'
-      || from === ''
-      || to === '') {
+    if (from === 'null' || to === 'null' || from === '' || to === '') {
       return {
         required: true,
         valid: true,
@@ -90,11 +90,7 @@ extend('between-date', {
 extend('from-to', {
   params: ['from', 'to'],
   validate(value, { from, to }) {
-    if (
-      from === 'null'
-      || to === 'null'
-      || from === ''
-      || to === '') {
+    if (from === 'null' || to === 'null' || from === '' || to === '') {
       return {
         required: true,
         valid: true,
@@ -238,7 +234,7 @@ extend('percent', {
 
 extend('greaterThanZero', {
   validate(value) {
-    return (value > 0);
+    return value > 0;
   },
 });
 
@@ -253,7 +249,11 @@ extend('zeroFail', {
 
 extend('notMoreDecimalPlaces', {
   validate(value) {
-    return (((value.toString().includes('.')) ? (value.toString().split('.').pop().length) : (0)) < 4);
+    return (
+      (value.toString().includes('.')
+        ? value.toString().split('.').pop().length
+        : 0) < 4
+    );
   },
 });
 
@@ -282,7 +282,7 @@ extend('alpha_spaces_dash', {
 
 extend('notEmptyArray', {
   validate(value) {
-    return (value.length > 0);
+    return value.length > 0;
   },
 });
 
@@ -368,6 +368,41 @@ extend('min_message', {
 extend('conditionCheckbox', {
   validate(value) {
     return value;
+  },
+});
+
+extend('specialCharacterRequired', {
+  validate(value) {
+    const regex = /(?=.*[!@#$%^&*_])/;
+    return { valid: regex.test(value) };
+  },
+});
+
+extend('lowerCaseLetterRequired', {
+  validate(value) {
+    const regex = /(?=.*[a-z])/g;
+    return { valid: regex.test(value) };
+  },
+});
+
+extend('capitalLetterRequired', {
+  validate(value) {
+    const regex = /(?=.*[A-Z])/g;
+    return { valid: regex.test(value) };
+  },
+});
+
+extend('numberRequired', {
+  validate(value) {
+    const regex = /(?=.*[0-9])/g;
+    return { valid: regex.test(value) };
+  },
+});
+
+extend('requiredSymbols', {
+  validate(value) {
+    const regex = /(?=.*[0-9a-zA-Z!@#$%^&*_])[0-9a-zA-Z!@#$%^&*_]{1,}$/g;
+    return { valid: regex.test(value) };
   },
 });
 
