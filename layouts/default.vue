@@ -26,7 +26,7 @@
       </div>
     </div>
     <transition name="fade">
-      <loader v-if="isLoading" />
+      <loader v-show="isLoading" />
     </transition>
     <ctm-modal />
   </div>
