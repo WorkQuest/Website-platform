@@ -378,6 +378,41 @@ extend('emailValidation', {
   },
 });
 
+extend('specialCharacterRequired', {
+  validate(value) {
+    const regex = /(?=.*[!@#$%^&*_])/;
+    return { valid: regex.test(value) };
+  },
+});
+
+extend('lowerCaseLetterRequired', {
+  validate(value) {
+    const regex = /(?=.*[a-z])/g;
+    return { valid: regex.test(value) };
+  },
+});
+
+extend('capitalLetterRequired', {
+  validate(value) {
+    const regex = /(?=.*[A-Z])/g;
+    return { valid: regex.test(value) };
+  },
+});
+
+extend('numberRequired', {
+  validate(value) {
+    const regex = /(?=.*[0-9])/g;
+    return { valid: regex.test(value) };
+  },
+});
+
+extend('requiredSymbols', {
+  validate(value) {
+    const regex = /(?=.*[0-9a-zA-Z!@#$%^&*_])[0-9a-zA-Z!@#$%^&*_]{1,}$/g;
+    return { valid: regex.test(value) };
+  },
+});
+
 export default ({ app }) => {
   configure({
     defaultMessage: (_field_, values) => app.i18n.t(`messages.${values._rule_}`, values),

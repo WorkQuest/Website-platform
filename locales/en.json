@@ -290,14 +290,13 @@
     "notEmptyArray": "Please select a {_field_}",
     "not_enough_funds": "Not enough funds",
     "have_funds": "Not enough {symbol} to complete this transaction",
-    "min_buy_wqt" : "To avoid unnecessary fees and network slippage, the minimum amount for this pair is ${min} {symbol}",
+    "min_buy_wqt": "To avoid unnecessary fees and network slippage, the minimum amount for this pair is ${min} {symbol}",
     "max_buy_wqt": "To avoid unnecessary fees and network slippage, the maximum amount for this pair is ${max} {symbol}",
     "min_tokens_amount": "Insufficient tokens, min amount {min} {symbol}.",
     "geo_is_address": "Please enter correct address",
     "signUpRequiredField": "Enter your {_field_}.",
     "signUpRequiredPassword": "Create your {_field_}.",
-    "signUpRequiredRepeatPassword": "Repeate your {_field_}.",
-    "emailValidation": "Error. Invalid email."
+"signUpRequiredRepeatPassword": "Repeate your {_field_}."
   },
   "about": {
     "text": "Work Quest is a social project based on the blockchain technology for finding work and solving any tasks from the employer's side in quest mode. Are you looking for a job? A work quest will help you find a quest next to you and your city. Do you need workers to carry out the goals? Just create a quest on the site of the work quest. The service assumes the warranty obligations for performing quests. Employer funds are kept with us , if the employee gives a confirmation of the performance of work, he receives a deposit of funds on his account. The system of ratings, reviews and a list of completed quests will help to easily find honest people and the best specialists.\n\n          Our goal is to simplify the communication between the employer and the employee, to help employ millions of people, to improve their financial situation, to solve the lifelong problem of finding reliable professionals in all sectors to create a progressive digital economy built on the principles of trust, mutual respect and the well-being of all its participants."
@@ -1490,7 +1489,7 @@
     "questWorkSentForReview": "Work sent for review",
     "questCompleted": "Quest completed",
     "PaidReferral": "New referral reward",
-    "ReportDecided":  "Complaint accepted",
+    "ReportDecided": "Complaint accepted",
     "ReportSubmitted": "Complaint submitted",
     "ReportRejected": "Complaint rejected",
 
