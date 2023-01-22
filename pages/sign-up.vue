@@ -28,7 +28,7 @@
           mode="icon"
           :name="$t('meta.firstNameSmall')"
           :placeholder="$t('meta.firstNameBig')"
-          rules="signUpRequiredField|alpha_spaces_dash|max:15"
+          rules="signUpRequiredField|alpha|max:15"
           autocomplete="off"
           data-selector="FIRST_NAME"
         >
@@ -44,7 +44,7 @@
           mode="icon"
           :name="$t('meta.lastNameSmall')"
           :placeholder="$t('meta.lastNameBig')"
-          rules="signUpRequiredField|alpha_spaces_dash|max:15"
+          rules="signUpRequiredField|alpha|max:15"
           data-selector="LAST_NAME"
         >
           <template v-slot:left>
@@ -59,7 +59,7 @@
           mode="icon"
           :name="$t('signUp.emailSmall')"
           :placeholder="$t('signUp.email')"
-          rules="signUpRequiredField|email"
+          rules="signUpRequiredField|emailValidation"
           autocomplete="username"
           data-selector="EMAIL"
         >
