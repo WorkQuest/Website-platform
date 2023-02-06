@@ -1,17 +1,17 @@
 <template>
   <ValidationProvider
-    v-slot="{errors}"
+    v-slot="{ errors }"
     data-selector="COMPONENT-BASE-INPUT"
     tag="div"
     class="ctm-field ctm-field_default"
     :class="[
-      {'ctm-field_big': big},
-      {'ctm-field_disabled': disabled},
-      {'ctm-field_search': isSearch},
-      {'ctm-field_icon': mode === 'icon'},
-      {'ctm-field_smallError': mode === 'smallError'},
-      {'ctm-field_white': mode === 'white'},
-      {'ctm-field_chat': mode === 'chat'},
+      { 'ctm-field_big': big },
+      { 'ctm-field_disabled': disabled },
+      { 'ctm-field_search': isSearch },
+      { 'ctm-field_icon': mode === 'icon' },
+      { 'ctm-field_smallError': mode === 'smallError' },
+      { 'ctm-field_white': mode === 'white' },
+      { 'ctm-field_chat': mode === 'chat' },
     ]"
     :rules="rules"
     :name="name"
@@ -21,7 +21,10 @@
   >
     <div
       v-if="label !== ''"
-      :class="[{'ctm-field__header' : !tip}, {'ctm-field__header ctm-field__header_mar5' : tip}]"
+      :class="[
+        { 'ctm-field__header': !tip },
+        { 'ctm-field__header ctm-field__header_mar5': tip },
+      ]"
     >
       {{ label }}
     </div>
@@ -49,8 +52,13 @@
         ref="input"
         :step="step"
         class="ctm-field__input"
-        :class="[{'ctm-field__input_error': errors[0]},
-                 {'ctm-field__input_padding-r' : $slots['right-absolute'] || (value && isSearch && !isBusySearch)}]"
+        :class="[
+          { 'ctm-field__input_error': errors[0] },
+          {
+            'ctm-field__input_padding-r':
+              $slots['right-absolute'] || (value && isSearch && !isBusySearch),
+          },
+        ]"
         :placeholder="placeholder"
         :data-selector="`BASE-INPUT-FIELD-${dataSelector.toUpperCase()}`"
         :value="mode === 'convertDate' ? convertDate(value) : value"
@@ -63,6 +71,7 @@
         @focus="$emit('focus')"
         @blur="$emit('blur')"
       >
+      <password-input-tooltip v-if="errors.length > 0 && showTooltipIcon" />
       <div
         v-if="value && isSearch && !isBusySearch"
         class="ctm-field__clear"
@@ -90,7 +99,6 @@
   </ValidationProvider>
 </template>
 <script>
-
 export default {
   props: {
     autoFocus: {
@@ -184,6 +192,10 @@ export default {
       type: String,
       default: '',
     },
+    showTooltipIcon: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     customType() {
@@ -197,11 +209,23 @@ export default {
   methods: {
     addMaxMinDate() {
       if (this.type === 'date' && this.name === this.$t('meta.fromBig')) {
-        this.$refs.input.setAttribute('max', this.$moment().format('yyyy-MM-DD'));
-        this.$refs.input.setAttribute('min', this.$moment().add(-100, 'y').format('yyyy-MM-DD'));
+        this.$refs.input.setAttribute(
+          'max',
+          this.$moment().format('yyyy-MM-DD'),
+        );
+        this.$refs.input.setAttribute(
+          'min',
+          this.$moment().add(-100, 'y').format('yyyy-MM-DD'),
+        );
       } else if (this.type === 'date' && this.name === this.$t('meta.toBig')) {
-        this.$refs.input.setAttribute('max', this.$moment().add(10, 'y').format('yyyy-MM-DD'));
-        this.$refs.input.setAttribute('min', this.$moment().format('yyyy-MM-DD'));
+        this.$refs.input.setAttribute(
+          'max',
+          this.$moment().add(10, 'y').format('yyyy-MM-DD'),
+        );
+        this.$refs.input.setAttribute(
+          'min',
+          this.$moment().format('yyyy-MM-DD'),
+        );
       }
     },
     focus() {
@@ -215,7 +239,10 @@ export default {
         let selStart = this.$refs.input.selectionStart;
 
         const { data } = e;
-        let val = e.target.value.toString().replace(/,/g, '.').replace(/[^0-9.]/g, '');
+        let val = e.target.value
+          .toString()
+          .replace(/,/g, '.')
+          .replace(/[^0-9.]/g, '');
 
         const indexFirst = val.indexOf('.');
         const indexLast = val.lastIndexOf('.');
@@ -225,9 +252,19 @@ export default {
 
         if (data && data === '.' && val[0] === '.') {
           selStart += 1;
-        } else if (data && (/[^0-9.,]/.test(data) || (isDot && !isEquals && indexLast !== -1 && selStart !== val.length))) {
+        } else if (
+          data
+          && (/[^0-9.,]/.test(data)
+            || (isDot && !isEquals && indexLast !== -1 && selStart !== val.length))
+        ) {
           selStart -= 1;
-        } else if (!data && indexFirst === -1 && indexLast === -1 && selStart === 1 && val[0] === '0') selStart -= 1;
+        } else if (
+          !data
+          && indexFirst === -1
+          && indexLast === -1
+          && selStart === 1
+          && val[0] === '0'
+        ) selStart -= 1;
 
         if (e.target.value) {
           const dotIndex = val.indexOf('.');
@@ -236,15 +273,21 @@ export default {
             if (dotIndex !== dotIndexLast) {
               const len = val.length;
               if (!isNewDot) {
-                val = val.substr(0, dotIndex + 1) + val.substr(dotIndex + 1, len).replace(/[.]/g, '');
+                val = val.substr(0, dotIndex + 1)
+                  + val.substr(dotIndex + 1, len).replace(/[.]/g, '');
               } else {
-                val = val.substr(0, dotIndex + 1).replace(/[.]/g, '') + val.substr(dotIndex + 1, len);
+                val = val.substr(0, dotIndex + 1).replace(/[.]/g, '')
+                  + val.substr(dotIndex + 1, len);
               }
             }
           }
 
           if (val[0] === '.') val = `${0}${val}`;
-          while (val.startsWith('0') && val.length > 1 && !(val.startsWith('0,') || val.startsWith('0.'))) {
+          while (
+            val.startsWith('0')
+            && val.length > 1
+            && !(val.startsWith('0,') || val.startsWith('0.'))
+          ) {
             val = val.substr(1, val.length);
           }
           e.target.value = val;
@@ -288,7 +331,7 @@ export default {
     font-size: 14px;
     padding: 7px;
     &::after {
-      content: " ";
+      content: ' ';
       position: absolute;
       top: 100%;
       left: 50%;
@@ -350,7 +393,7 @@ export default {
 
     &_sub {
       margin-bottom: 5px;
-      color: #7C838D !important;
+      color: #7c838d !important;
       font-weight: 400;
       font-size: 16px;
       height: unset;
@@ -366,7 +409,7 @@ export default {
     left: 13px;
     &:before {
       font-size: 24px;
-      background: #0083C7;
+      background: #0083c7;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -376,10 +419,10 @@ export default {
     border-radius: 6px;
     border: 2px solid transparent;
     padding: 0 10px 0 20px;
-    transition: width .3s;
+    transition: width 0.3s;
     width: 100%;
     &_error {
-      border: 1px solid red !important
+      border: 1px solid red !important;
     }
     &_padding-r {
       padding-right: 50px !important;
@@ -395,10 +438,10 @@ export default {
       padding: 0 20px 0 50px;
       background: transparent !important;
       &:hover {
-        border: 1px solid #E6EAEE !important;
+        border: 1px solid #e6eaee !important;
       }
       &:focus {
-        border: 1px solid #E6EAEE !important;
+        border: 1px solid #e6eaee !important;
       }
     }
   }
@@ -412,23 +455,23 @@ export default {
         color: $black300;
       }
       &:focus {
-        background: #FFFFFF;
-        border: 1px solid #0083C7;
+        background: #ffffff;
+        border: 1px solid #0083c7;
       }
     }
   }
   &_white {
     .ctm-field__input {
       color: $black700;
-      background: #FFFFFF;
+      background: #ffffff;
       border-radius: 6px;
       border: 1px solid $black0;
       &::placeholder {
         color: $black300;
       }
       &:focus {
-        background: #FFFFFF;
-        border: 1px solid #0083C7;
+        background: #ffffff;
+        border: 1px solid #0083c7;
       }
     }
   }

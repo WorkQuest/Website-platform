@@ -28,7 +28,7 @@
           mode="icon"
           :name="$t('meta.firstNameSmall')"
           :placeholder="$t('meta.firstNameBig')"
-          rules="signUpRequiredField|alpha|max:15"
+          rules="signUpRequiredField|fullNameValidation|max:15"
           autocomplete="off"
           data-selector="FIRST_NAME"
         >
@@ -44,7 +44,7 @@
           mode="icon"
           :name="$t('meta.lastNameSmall')"
           :placeholder="$t('meta.lastNameBig')"
-          rules="signUpRequiredField|alpha|max:15"
+          rules="signUpRequiredField|fullNameValidation|max:15"
           data-selector="LAST_NAME"
         >
           <template v-slot:left>
@@ -75,11 +75,11 @@
           mode="icon"
           :name="$t('signUp.passwordSmall')"
           :placeholder="$t('signUp.password')"
-          rules="requiredSymbols|signUpRequiredPassword|min:8|capitalLetterRequired|lowerCaseLetterRequired|numberRequired|specialCharacterRequired"
+          rules="|signUpRequiredPassword|requiredSymbols|min:8|capitalLetterRequired|lowerCaseLetterRequired|numberRequired|specialCharacterRequired"
           autocomplete="new-password"
           :type="isPasswordVisible ? 'text' : 'password'"
-          vid="confirmation"
           data-selector="PASSWORD"
+          :show-tooltip-icon="true"
         >
           <template v-slot:left>
             <img
@@ -103,7 +103,7 @@
           mode="icon"
           :name="$t('signUp.passwordSmall')"
           :placeholder="$t('signUp.confirmPassword')"
-          rules="signUpRequiredRepeatPassword|min:8|confirmed:confirmation"
+          :rules="`signUpRequiredRepeatPassword|min:8|passwordMatch:${model.password}`"
           :type="isPasswordConfirmVisible ? 'text' : 'password'"
           data-selector="CONFIRM_PASSWORD"
         >
@@ -158,7 +158,6 @@ export default {
       isPasswordVisible: false,
       isPasswordConfirmVisible: false,
       inProgress: false,
-
       referralId: null,
     };
   },
