@@ -2225,7 +2225,7 @@
     "counter": "{n} of {c}"
   },
   "uploader": {
-    "uploadFile": "Drag files to upload or Browse Filess",
+    "uploadFile": "Drag files to upload or Browse Files",
     "maxFileSize": "Max file size: {n} Mb",
     "supportedFileTypes": "Supported file types: {n}",
     "errors": {
