@@ -214,7 +214,9 @@ export default {
         }
 
         if (this.limit && this.files.length >= this.limit) {
-          this.showError(this.$t('uploader.errors.filesLimit', { n: this.limit }));
+          this.showError(
+            this.$t('uploader.errors.filesLimit', { n: this.limit }),
+          );
           return;
         }
 
@@ -233,21 +235,57 @@ export default {
         }
 
         const type = originalFile.type.split('/')[0];
-        if (type === 'image' && this.limitBytes && file.size >= this.limitBytes) {
-          if (this.limitSize.image.mb >= 1) this.showError(this.$t('uploader.errors.fileSizeLimit', { n: this.$t('meta.units.mb', { count: this.limitSize.image.mb }) }));
-          else this.showError(this.$t('uploader.errors.fileSizeLimit', { n: this.$t('meta.units.kb', { count: this.limitSize.image.kb }) }));
+        if (
+          type === 'image'
+          && this.limitBytes
+          && file.size >= this.limitBytes
+        ) {
+          if (this.limitSize.image.mb >= 1) {
+            this.showError(
+              this.$t('uploader.errors.fileSizeLimit', {
+                n: this.$t('meta.units.mb', { count: this.limitSize.image.mb }),
+              }),
+            );
+          } else {
+            this.showError(
+              this.$t('uploader.errors.fileSizeLimit', {
+                n: this.$t('meta.units.kb', { count: this.limitSize.image.kb }),
+              }),
+            );
+          }
           // eslint-disable-next-line no-continue
           continue;
         }
-        if (type === 'video' && this.limitBytesVideo && file.size >= this.limitBytesVideo) {
-          if (this.limitSize.video.mb >= 1) this.showError(this.$t('uploader.errors.fileSizeLimit', { n: this.$t('meta.units.mb', { count: this.limitSize.video.mb }) }));
-          else this.showError(this.$t('uploader.errors.fileSizeLimit', { n: this.$t('meta.units.kb', { count: this.limitSize.video.kb }) }));
+        if (
+          type === 'video'
+          && this.limitBytesVideo
+          && file.size >= this.limitBytesVideo
+        ) {
+          if (this.limitSize.video.mb >= 1) {
+            this.showError(
+              this.$t('uploader.errors.fileSizeLimit', {
+                n: this.$t('meta.units.mb', { count: this.limitSize.video.mb }),
+              }),
+            );
+          } else {
+            this.showError(
+              this.$t('uploader.errors.fileSizeLimit', {
+                n: this.$t('meta.units.kb', { count: this.limitSize.video.kb }),
+              }),
+            );
+          }
           // eslint-disable-next-line no-continue
           continue;
         }
-        if (!this.acceptDuplicates && this.files?.filter((item) => !item.mediaId && item.file?.size === file?.size
-          && item.file?.lastModified === file?.lastModified
-          && item.file?.name === file?.name).length) {
+        if (
+          !this.acceptDuplicates
+          && this.files?.filter(
+            (item) => !item.mediaId
+              && item.file?.size === file?.size
+              && item.file?.lastModified === file?.lastModified
+              && item.file?.name === file?.name,
+          ).length
+        ) {
           // eslint-disable-next-line no-continue
           continue;
         }
@@ -306,6 +344,9 @@ export default {
       color: $blue !important;
       background: $black0 !important;
     }
+    span:not(:first-child) {
+      font-size: 12px;
+    }
   }
   &__input {
     visibility: hidden;
@@ -326,7 +367,7 @@ export default {
   padding: 15px;
   display: flex;
   flex-wrap: wrap;
-  & >* {
+  & > * {
     margin: 5px;
   }
   margin: -5px;

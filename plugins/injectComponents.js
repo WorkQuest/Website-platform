@@ -41,6 +41,7 @@ import BtnPasswordVisibility from '~/components/app/BtnPasswordVisibility';
 import RaiseViewsPanel from '~/components/app/panels/RaiseViewsPanel';
 import SkeletonBlock from '~/components/app/SkeletonBlock';
 import ButtonCopy from '~/components/ui/BaseButtonCopy/index';
+import PasswordInputTooltip from '~/components/app/PasswordInputTooltip';
 
 Vue.component('Header', Header);
 Vue.component('Footer', Footer);
@@ -82,3 +83,4 @@ Vue.component('btn-password-visibility', BtnPasswordVisibility);
 Vue.component('raise-views-panel', RaiseViewsPanel);
 Vue.component('skeleton-block', SkeletonBlock);
 Vue.component('button-copy', ButtonCopy);
+Vue.component('password-input-tooltip', PasswordInputTooltip);

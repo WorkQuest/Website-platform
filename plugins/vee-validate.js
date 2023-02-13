@@ -373,7 +373,7 @@ extend('conditionCheckbox', {
 
 extend('emailValidation', {
   validate(value) {
-    const regex = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9.])+\.([A-Za-z]{2,4})$/;
+    const regex = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9]|[a-zA-Z0-9]+-[a-zA-Z0-9])+\.([A-Za-z]{2,4})$/;
     return { valid: regex.test(value) };
   },
 });
@@ -408,7 +408,21 @@ extend('numberRequired', {
 
 extend('requiredSymbols', {
   validate(value) {
-    const regex = /(?=.*[0-9a-zA-Z!@#$%^&*_])[0-9a-zA-Z!@#$%^&*_]{1,}$/g;
+    const regex = /^(?=.*[0-9a-zA-Z!@#$%^&*_])^[0-9a-zA-Z!@#$%^&*_]{1,}$/g;
+    return { valid: regex.test(value) };
+  },
+});
+
+extend('passwordMatch', {
+  validate(value, { password }) {
+    return value === password;
+  },
+  params: ['password'],
+});
+
+extend('fullNameValidation', {
+  validate(value) {
+    const regex = /^[a-zA-Z]+-[a-zA-Z]+$|^[a-zA-Z]+$/;
     return { valid: regex.test(value) };
   },
 });
