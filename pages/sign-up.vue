@@ -62,6 +62,7 @@
           rules="required|email"
           autocomplete="username"
           data-selector="EMAIL"
+          validation-mode="lazy"
         >
           <template v-slot:left>
             <img
