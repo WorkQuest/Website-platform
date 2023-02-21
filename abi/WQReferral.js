@@ -2,7 +2,7 @@ const WQReferral = [
   {
     inputs: [],
     stateMutability: 'nonpayable',
-    type: 'constructor',
+    type: 'constructor'
   },
   {
     anonymous: false,
@@ -11,17 +11,17 @@ const WQReferral = [
         indexed: false,
         internalType: 'address',
         name: 'previousAdmin',
-        type: 'address',
+        type: 'address'
       },
       {
         indexed: false,
         internalType: 'address',
         name: 'newAdmin',
-        type: 'address',
-      },
+        type: 'address'
+      }
     ],
     name: 'AdminChanged',
-    type: 'event',
+    type: 'event'
   },
   {
     anonymous: false,
@@ -30,11 +30,24 @@ const WQReferral = [
         indexed: true,
         internalType: 'address',
         name: 'beacon',
-        type: 'address',
-      },
+        type: 'address'
+      }
     ],
     name: 'BeaconUpgraded',
-    type: 'event',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint8',
+        name: 'version',
+        type: 'uint8'
+      }
+    ],
+    name: 'Initialized',
+    type: 'event'
   },
   {
     anonymous: false,
@@ -43,23 +56,36 @@ const WQReferral = [
         indexed: false,
         internalType: 'address',
         name: 'referral',
-        type: 'address',
+        type: 'address'
       },
       {
         indexed: false,
         internalType: 'address',
         name: 'affiliate',
-        type: 'address',
+        type: 'address'
       },
       {
         indexed: false,
         internalType: 'uint256',
         name: 'amount',
-        type: 'uint256',
-      },
+        type: 'uint256'
+      }
     ],
     name: 'PaidReferral',
-    type: 'event',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256'
+      }
+    ],
+    name: 'Received',
+    type: 'event'
   },
   {
     anonymous: false,
@@ -68,17 +94,17 @@ const WQReferral = [
         indexed: false,
         internalType: 'address',
         name: 'referral',
-        type: 'address',
+        type: 'address'
       },
       {
         indexed: false,
         internalType: 'address',
         name: 'affiliate',
-        type: 'address',
-      },
+        type: 'address'
+      }
     ],
     name: 'RegisteredAffiliat',
-    type: 'event',
+    type: 'event'
   },
   {
     anonymous: false,
@@ -87,17 +113,17 @@ const WQReferral = [
         indexed: false,
         internalType: 'address',
         name: 'affiliate',
-        type: 'address',
+        type: 'address'
       },
       {
         indexed: false,
         internalType: 'uint256',
         name: 'amount',
-        type: 'uint256',
-      },
+        type: 'uint256'
+      }
     ],
     name: 'RewardClaimed',
-    type: 'event',
+    type: 'event'
   },
   {
     anonymous: false,
@@ -106,23 +132,23 @@ const WQReferral = [
         indexed: true,
         internalType: 'bytes32',
         name: 'role',
-        type: 'bytes32',
+        type: 'bytes32'
       },
       {
         indexed: true,
         internalType: 'bytes32',
         name: 'previousAdminRole',
-        type: 'bytes32',
+        type: 'bytes32'
       },
       {
         indexed: true,
         internalType: 'bytes32',
         name: 'newAdminRole',
-        type: 'bytes32',
-      },
+        type: 'bytes32'
+      }
     ],
     name: 'RoleAdminChanged',
-    type: 'event',
+    type: 'event'
   },
   {
     anonymous: false,
@@ -131,23 +157,23 @@ const WQReferral = [
         indexed: true,
         internalType: 'bytes32',
         name: 'role',
-        type: 'bytes32',
+        type: 'bytes32'
       },
       {
         indexed: true,
         internalType: 'address',
         name: 'account',
-        type: 'address',
+        type: 'address'
       },
       {
         indexed: true,
         internalType: 'address',
         name: 'sender',
-        type: 'address',
-      },
+        type: 'address'
+      }
     ],
     name: 'RoleGranted',
-    type: 'event',
+    type: 'event'
   },
   {
     anonymous: false,
@@ -156,23 +182,23 @@ const WQReferral = [
         indexed: true,
         internalType: 'bytes32',
         name: 'role',
-        type: 'bytes32',
+        type: 'bytes32'
       },
       {
         indexed: true,
         internalType: 'address',
         name: 'account',
-        type: 'address',
+        type: 'address'
       },
       {
         indexed: true,
         internalType: 'address',
         name: 'sender',
-        type: 'address',
-      },
+        type: 'address'
+      }
     ],
     name: 'RoleRevoked',
-    type: 'event',
+    type: 'event'
   },
   {
     anonymous: false,
@@ -181,11 +207,11 @@ const WQReferral = [
         indexed: true,
         internalType: 'address',
         name: 'implementation',
-        type: 'address',
-      },
+        type: 'address'
+      }
     ],
     name: 'Upgraded',
-    type: 'event',
+    type: 'event'
   },
   {
     inputs: [],
@@ -194,11 +220,11 @@ const WQReferral = [
       {
         internalType: 'bytes32',
         name: '',
-        type: 'bytes32',
-      },
+        type: 'bytes32'
+      }
     ],
     stateMutability: 'view',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [],
@@ -207,11 +233,11 @@ const WQReferral = [
       {
         internalType: 'bytes32',
         name: '',
-        type: 'bytes32',
-      },
+        type: 'bytes32'
+      }
     ],
     stateMutability: 'view',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [],
@@ -220,11 +246,11 @@ const WQReferral = [
       {
         internalType: 'bytes32',
         name: '',
-        type: 'bytes32',
-      },
+        type: 'bytes32'
+      }
     ],
     stateMutability: 'view',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [],
@@ -233,77 +259,77 @@ const WQReferral = [
       {
         internalType: 'bytes32',
         name: '',
-        type: 'bytes32',
-      },
+        type: 'bytes32'
+      }
     ],
     stateMutability: 'view',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [
       {
         internalType: 'uint8',
         name: 'v',
-        type: 'uint8',
+        type: 'uint8'
       },
       {
         internalType: 'bytes32',
         name: 'r',
-        type: 'bytes32',
+        type: 'bytes32'
       },
       {
         internalType: 'bytes32',
         name: 's',
-        type: 'bytes32',
+        type: 'bytes32'
       },
       {
         internalType: 'address[]',
         name: 'referral',
-        type: 'address[]',
-      },
+        type: 'address[]'
+      }
     ],
     name: 'addReferrals',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [
       {
         internalType: 'address',
         name: 'referral',
-        type: 'address',
+        type: 'address'
       },
       {
         internalType: 'uint256',
         name: 'earnedAmount',
-        type: 'uint256',
-      },
+        type: 'uint256'
+      }
     ],
     name: 'calcReferral',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [],
     name: 'claim',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [
       {
         internalType: 'address',
         name: 'referral',
-        type: 'address',
-      },
+        type: 'address'
+      }
     ],
     name: 'delAffiliate',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [],
@@ -312,11 +338,11 @@ const WQReferral = [
       {
         internalType: 'uint256',
         name: '',
-        type: 'uint256',
-      },
+        type: 'uint256'
+      }
     ],
     stateMutability: 'view',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [],
@@ -325,119 +351,119 @@ const WQReferral = [
       {
         internalType: 'contract WorkQuestFactory',
         name: '',
-        type: 'address',
-      },
+        type: 'address'
+      }
     ],
     stateMutability: 'view',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [
       {
         internalType: 'address',
         name: 'user',
-        type: 'address',
-      },
+        type: 'address'
+      }
     ],
     name: 'getRewards',
     outputs: [
       {
         internalType: 'uint256',
         name: '',
-        type: 'uint256',
-      },
+        type: 'uint256'
+      }
     ],
     stateMutability: 'view',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [
       {
         internalType: 'bytes32',
         name: 'role',
-        type: 'bytes32',
-      },
+        type: 'bytes32'
+      }
     ],
     name: 'getRoleAdmin',
     outputs: [
       {
         internalType: 'bytes32',
         name: '',
-        type: 'bytes32',
-      },
+        type: 'bytes32'
+      }
     ],
     stateMutability: 'view',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [
       {
         internalType: 'bytes32',
         name: 'role',
-        type: 'bytes32',
+        type: 'bytes32'
       },
       {
         internalType: 'address',
         name: 'account',
-        type: 'address',
-      },
+        type: 'address'
+      }
     ],
     name: 'grantRole',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [
       {
         internalType: 'bytes32',
         name: 'role',
-        type: 'bytes32',
+        type: 'bytes32'
       },
       {
         internalType: 'address',
         name: 'account',
-        type: 'address',
-      },
+        type: 'address'
+      }
     ],
     name: 'hasRole',
     outputs: [
       {
         internalType: 'bool',
         name: '',
-        type: 'bool',
-      },
+        type: 'bool'
+      }
     ],
     stateMutability: 'view',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [
       {
         internalType: 'address',
         name: '_oracle',
-        type: 'address',
+        type: 'address'
       },
       {
         internalType: 'address',
         name: '_service',
-        type: 'address',
+        type: 'address'
       },
       {
         internalType: 'uint256',
         name: '_referralBonus',
-        type: 'uint256',
+        type: 'uint256'
       },
       {
         internalType: 'uint256',
         name: '_earnedThreshold',
-        type: 'uint256',
-      },
+        type: 'uint256'
+      }
     ],
     name: 'initialize',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [],
@@ -446,11 +472,11 @@ const WQReferral = [
       {
         internalType: 'contract WQPriceOracleInterface',
         name: '',
-        type: 'address',
-      },
+        type: 'address'
+      }
     ],
     stateMutability: 'view',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [],
@@ -459,11 +485,11 @@ const WQReferral = [
       {
         internalType: 'bytes32',
         name: '',
-        type: 'bytes32',
-      },
+        type: 'bytes32'
+      }
     ],
     stateMutability: 'view',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [],
@@ -472,207 +498,198 @@ const WQReferral = [
       {
         internalType: 'uint256',
         name: '',
-        type: 'uint256',
-      },
+        type: 'uint256'
+      }
     ],
     stateMutability: 'view',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [
       {
         internalType: 'address',
         name: '',
-        type: 'address',
-      },
+        type: 'address'
+      }
     ],
     name: 'referrals',
     outputs: [
       {
         internalType: 'address',
         name: 'affiliat',
-        type: 'address',
+        type: 'address'
       },
       {
         internalType: 'uint256',
         name: 'earnedAmount',
-        type: 'uint256',
+        type: 'uint256'
       },
       {
         internalType: 'uint256',
         name: 'rewardTotal',
-        type: 'uint256',
+        type: 'uint256'
       },
       {
         internalType: 'uint256',
         name: 'rewardPaid',
-        type: 'uint256',
+        type: 'uint256'
       },
       {
         internalType: 'uint256',
         name: 'referredCount',
-        type: 'uint256',
+        type: 'uint256'
       },
       {
         internalType: 'bool',
         name: 'paid',
-        type: 'bool',
-      },
+        type: 'bool'
+      }
     ],
     stateMutability: 'view',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [
       {
         internalType: 'bytes32',
         name: 'role',
-        type: 'bytes32',
+        type: 'bytes32'
       },
       {
         internalType: 'address',
         name: 'account',
-        type: 'address',
-      },
+        type: 'address'
+      }
     ],
     name: 'renounceRole',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [
       {
         internalType: 'bytes32',
         name: 'role',
-        type: 'bytes32',
+        type: 'bytes32'
       },
       {
         internalType: 'address',
         name: 'account',
-        type: 'address',
-      },
+        type: 'address'
+      }
     ],
     name: 'revokeRole',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'referral',
-        type: 'address',
-      },
-    ],
-    name: 'setEarned',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [
       {
         internalType: 'uint256',
         name: '_earnedThreshold',
-        type: 'uint256',
-      },
+        type: 'uint256'
+      }
     ],
     name: 'setEarnedThreshold',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [
       {
         internalType: 'address',
         name: '_factory',
-        type: 'address',
-      },
+        type: 'address'
+      }
     ],
     name: 'setFactory',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [
       {
         internalType: 'address',
         name: '_oracle',
-        type: 'address',
-      },
+        type: 'address'
+      }
     ],
     name: 'setOracle',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [
       {
         internalType: 'uint256',
         name: '_referralBonus',
-        type: 'uint256',
-      },
+        type: 'uint256'
+      }
     ],
     name: 'setReferralBonus',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [
       {
         internalType: 'bytes4',
         name: 'interfaceId',
-        type: 'bytes4',
-      },
+        type: 'bytes4'
+      }
     ],
     name: 'supportsInterface',
     outputs: [
       {
         internalType: 'bool',
         name: '',
-        type: 'bool',
-      },
+        type: 'bool'
+      }
     ],
     stateMutability: 'view',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [
       {
         internalType: 'address',
         name: 'newImplementation',
-        type: 'address',
-      },
+        type: 'address'
+      }
     ],
     name: 'upgradeTo',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
+    type: 'function'
   },
   {
     inputs: [
       {
         internalType: 'address',
         name: 'newImplementation',
-        type: 'address',
+        type: 'address'
       },
       {
         internalType: 'bytes',
         name: 'data',
-        type: 'bytes',
-      },
+        type: 'bytes'
+      }
     ],
     name: 'upgradeToAndCall',
     outputs: [],
     stateMutability: 'payable',
-    type: 'function',
+    type: 'function'
   },
+  {
+    stateMutability: 'payable',
+    type: 'receive'
+  }
 ];
 
 export default WQReferral;
