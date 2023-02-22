@@ -33,7 +33,7 @@
             type="number"
             data-selector="PRICE-FIELD"
             :label="$tc('meta.price')"
-            placeholder="0 WUSD"
+            placeholder="0 USDT"
             rules="required|decimal|decimalPlaces:16|min_value:1"
             :name="$tc('meta.price').toLowerCase()"
           />
@@ -433,7 +433,7 @@ export default {
     },
     async toCreateQuest() {
       this.SetLoader(true);
-      const tokenAddress = TokenMap[TokenSymbols.WUSD];
+      const tokenAddress = TokenMap[TokenSymbols.USDT];
       const spenderAddress = this.ENV.WORKNET_WQ_FACTORY;
       const [allowance] = await Promise.all([
         this.$store.dispatch('wallet/getAllowance', {
@@ -443,19 +443,19 @@ export default {
         this.$store.dispatch('wallet/fetchWalletData', {
           address: this.userWalletAddress,
           token: tokenAddress,
-          symbol: TokenSymbols.WUSD,
+          symbol: TokenSymbols.USDT,
         }),
         this.$store.dispatch('wallet/getBalance'),
       ]);
-      // Not enough WUSD
+      // Not enough USDT
       if (
         new BigNumber(this.depositAmount).isGreaterThan(
-          this.balanceData.WUSD.fullBalance,
+          this.balanceData.USDT.fullBalance,
         )
       ) {
         this.ShowToast(
           `${this.$t('errors.transaction.notEnoughFunds')} (${
-            TokenSymbols.WUSD
+            TokenSymbols.USDT
           })`,
         );
         this.SetLoader(false);
@@ -495,7 +495,7 @@ export default {
             amount: {
               name: this.$t('modals.amount'),
               value: this.depositAmount,
-              symbol: TokenSymbols.WUSD,
+              symbol: TokenSymbols.USDT,
             },
             fee: {
               name: this.$t('wallet.table.trxFee'),
@@ -535,8 +535,8 @@ export default {
         }),
         this.$store.dispatch('wallet/fetchWalletData', {
           address: this.userWalletAddress,
-          token: TokenMap[TokenSymbols.WUSD],
-          symbol: TokenSymbols.WUSD,
+          token: TokenMap[TokenSymbols.USDT],
+          symbol: TokenSymbols.USDT,
         }),
         this.$store.dispatch('wallet/getBalance'),
       ]);
@@ -563,7 +563,7 @@ export default {
           amount: {
             name: this.$t('modals.amount'),
             value: this.depositAmount,
-            symbol: TokenSymbols.WUSD,
+            symbol: TokenSymbols.USDT,
           },
           fee: {
             name: this.$t('wallet.table.trxFee'),
