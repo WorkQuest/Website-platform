@@ -254,7 +254,7 @@ export default {
       const address = ENV.WORKNET_WQ_FACTORY;
       const walletAddress = getWalletAddress();
       const hash = hashText(description);
-      cost = new BigNumber(cost).shiftedBy(18).toString();
+      cost = new BigNumber(cost).shiftedBy(6).toString();
       const data = [hash, cost, this.$moment().add(1, 'day').unix(), nonce];
       const inst = createInstance(WQFactory, address);
       const sendData = inst.methods.newWorkQuest.apply(null, data).encodeABI();
@@ -291,7 +291,7 @@ export default {
     try {
       const hash = hashText(description);
       const address = ENV.WORKNET_WQ_FACTORY;
-      cost = new BigNumber(cost).shiftedBy(18).toString();
+      cost = new BigNumber(cost).shiftedBy(6).toString();
       return await getContractFeeData(
         'newWorkQuest',
         WQFactory,
