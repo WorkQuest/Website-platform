@@ -2,399 +2,399 @@ const WorkQuest = [
   {
     inputs: [
       {
-        internalType: "bytes32",
-        name: "_jobHash",
-        type: "bytes32"
+        internalType: 'bytes32',
+        name: '_jobHash',
+        type: 'bytes32',
       },
       {
-        internalType: "uint256",
-        name: "_cost",
-        type: "uint256"
+        internalType: 'uint256',
+        name: '_cost',
+        type: 'uint256',
       },
       {
-        internalType: "uint256",
-        name: "_deadline",
-        type: "uint256"
+        internalType: 'uint256',
+        name: '_deadline',
+        type: 'uint256',
       },
       {
-        internalType: "address",
-        name: "_employer",
-        type: "address"
-      }
+        internalType: 'address',
+        name: '_employer',
+        type: 'address',
+      },
     ],
-    stateMutability: "nonpayable",
-    type: "constructor"
+    stateMutability: 'nonpayable',
+    type: 'constructor',
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: false,
-        internalType: "uint256",
-        name: "timestamp",
-        type: "uint256"
-      }
+        internalType: 'uint256',
+        name: 'timestamp',
+        type: 'uint256',
+      },
     ],
-    name: "ArbitrationAcceptWork",
-    type: "event"
+    name: 'ArbitrationAcceptWork',
+    type: 'event',
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: false,
-        internalType: "uint256",
-        name: "timestamp",
-        type: "uint256"
-      }
+        internalType: 'uint256',
+        name: 'timestamp',
+        type: 'uint256',
+      },
     ],
-    name: "ArbitrationRejectWork",
-    type: "event"
+    name: 'ArbitrationRejectWork',
+    type: 'event',
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: false,
-        internalType: "uint256",
-        name: "timestamp",
-        type: "uint256"
-      }
+        internalType: 'uint256',
+        name: 'timestamp',
+        type: 'uint256',
+      },
     ],
-    name: "ArbitrationRework",
-    type: "event"
+    name: 'ArbitrationRework',
+    type: 'event',
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: false,
-        internalType: "uint256",
-        name: "timestamp",
-        type: "uint256"
-      }
+        internalType: 'uint256',
+        name: 'timestamp',
+        type: 'uint256',
+      },
     ],
-    name: "ArbitrationStarted",
-    type: "event"
+    name: 'ArbitrationStarted',
+    type: 'event',
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: false,
-        internalType: "address",
-        name: "worker",
-        type: "address"
-      }
+        internalType: 'address',
+        name: 'worker',
+        type: 'address',
+      },
     ],
-    name: "Assigned",
-    type: "event"
+    name: 'Assigned',
+    type: 'event',
   },
   {
     anonymous: false,
     inputs: [],
-    name: "JobCancelled",
-    type: "event"
+    name: 'JobCancelled',
+    type: 'event',
   },
   {
     anonymous: false,
     inputs: [],
-    name: "JobDone",
-    type: "event"
+    name: 'JobDone',
+    type: 'event',
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: false,
-        internalType: "uint256",
-        name: "cost",
-        type: "uint256"
-      }
+        internalType: 'uint256',
+        name: 'cost',
+        type: 'uint256',
+      },
     ],
-    name: "JobEdited",
-    type: "event"
+    name: 'JobEdited',
+    type: 'event',
   },
   {
     anonymous: false,
     inputs: [],
-    name: "JobFinished",
-    type: "event"
+    name: 'JobFinished',
+    type: 'event',
   },
   {
     anonymous: false,
     inputs: [],
-    name: "JobStarted",
-    type: "event"
+    name: 'JobStarted',
+    type: 'event',
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: false,
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256"
-      }
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
     ],
-    name: "Received",
-    type: "event"
+    name: 'Received',
+    type: 'event',
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: false,
-        internalType: "bytes32",
-        name: "jobHash",
-        type: "bytes32"
-      }
+        internalType: 'bytes32',
+        name: 'jobHash',
+        type: 'bytes32',
+      },
     ],
-    name: "WorkQuestCreated",
-    type: "event"
+    name: 'WorkQuestCreated',
+    type: 'event',
   },
   {
     inputs: [],
-    name: "ARBITER_ROLE",
+    name: 'ARBITER_ROLE',
     outputs: [
       {
-        internalType: "bytes32",
-        name: "",
-        type: "bytes32"
-      }
+        internalType: 'bytes32',
+        name: '',
+        type: 'bytes32',
+      },
     ],
-    stateMutability: "view",
-    type: "function"
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "acceptJob",
+    name: 'acceptJob',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "acceptJobResult",
+    name: 'acceptJobResult',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "arbitration",
+    name: 'arbitration',
     outputs: [],
-    stateMutability: "payable",
-    type: "function"
+    stateMutability: 'payable',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "arbitrationAcceptWork",
+    name: 'arbitrationAcceptWork',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "arbitrationRejectWork",
+    name: 'arbitrationRejectWork',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "arbitrationRework",
+    name: 'arbitrationRework',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "address",
-        name: "_worker",
-        type: "address"
-      }
+        internalType: 'address',
+        name: '_worker',
+        type: 'address',
+      },
     ],
-    name: "assignJob",
+    name: 'assignJob',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "cancelJob",
+    name: 'cancelJob',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "cost",
+    name: 'cost',
     outputs: [
       {
-        internalType: "uint256",
-        name: "",
-        type: "uint256"
-      }
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
     ],
-    stateMutability: "view",
-    type: "function"
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "deadline",
+    name: 'deadline',
     outputs: [
       {
-        internalType: "uint256",
-        name: "",
-        type: "uint256"
-      }
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
     ],
-    stateMutability: "view",
-    type: "function"
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "uint256",
-        name: "_cost",
-        type: "uint256"
-      }
+        internalType: 'uint256',
+        name: '_cost',
+        type: 'uint256',
+      },
     ],
-    name: "editJob",
+    name: 'editJob',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "employer",
+    name: 'employer',
     outputs: [
       {
-        internalType: "address",
-        name: "",
-        type: "address"
-      }
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
     ],
-    stateMutability: "view",
-    type: "function"
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "factory",
+    name: 'factory',
     outputs: [
       {
-        internalType: "contract WorkQuestFactoryInterface",
-        name: "",
-        type: "address"
-      }
+        internalType: 'contract WorkQuestFactoryInterface',
+        name: '',
+        type: 'address',
+      },
     ],
-    stateMutability: "view",
-    type: "function"
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "getInfo",
+    name: 'getInfo',
     outputs: [
       {
-        internalType: "bytes32",
-        name: "_jobHash",
-        type: "bytes32"
+        internalType: 'bytes32',
+        name: '_jobHash',
+        type: 'bytes32',
       },
       {
-        internalType: "uint256",
-        name: "_cost",
-        type: "uint256"
+        internalType: 'uint256',
+        name: '_cost',
+        type: 'uint256',
       },
       {
-        internalType: "address",
-        name: "_employer",
-        type: "address"
+        internalType: 'address',
+        name: '_employer',
+        type: 'address',
       },
       {
-        internalType: "address",
-        name: "_worker",
-        type: "address"
+        internalType: 'address',
+        name: '_worker',
+        type: 'address',
       },
       {
-        internalType: "address",
-        name: "_factory",
-        type: "address"
+        internalType: 'address',
+        name: '_factory',
+        type: 'address',
       },
       {
-        internalType: "enum WorkQuest.JobStatus",
-        name: "_status",
-        type: "uint8"
+        internalType: 'enum WorkQuest.JobStatus',
+        name: '_status',
+        type: 'uint8',
       },
       {
-        internalType: "uint256",
-        name: "_deadline",
-        type: "uint256"
-      }
+        internalType: 'uint256',
+        name: '_deadline',
+        type: 'uint256',
+      },
     ],
-    stateMutability: "view",
-    type: "function"
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "jobHash",
+    name: 'jobHash',
     outputs: [
       {
-        internalType: "bytes32",
-        name: "",
-        type: "bytes32"
-      }
+        internalType: 'bytes32',
+        name: '',
+        type: 'bytes32',
+      },
     ],
-    stateMutability: "view",
-    type: "function"
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "status",
+    name: 'status',
     outputs: [
       {
-        internalType: "enum WorkQuest.JobStatus",
-        name: "",
-        type: "uint8"
-      }
+        internalType: 'enum WorkQuest.JobStatus',
+        name: '',
+        type: 'uint8',
+      },
     ],
-    stateMutability: "view",
-    type: "function"
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "timeDone",
+    name: 'timeDone',
     outputs: [
       {
-        internalType: "uint256",
-        name: "",
-        type: "uint256"
-      }
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
     ],
-    stateMutability: "view",
-    type: "function"
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "verificationJob",
+    name: 'verificationJob',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "worker",
+    name: 'worker',
     outputs: [
       {
-        internalType: "address",
-        name: "",
-        type: "address"
-      }
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
     ],
-    stateMutability: "view",
-    type: "function"
-  }
+    stateMutability: 'view',
+    type: 'function',
+  },
 ];
 
 export default WorkQuest;
