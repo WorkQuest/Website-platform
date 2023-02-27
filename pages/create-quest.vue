@@ -280,7 +280,7 @@ export default {
       if (!this.price) return '0';
       return new BigNumber(this.price)
         .multipliedBy(1 + CommissionForCreatingAQuest)
-        .toFixed(18)
+        .toFixed(6)
         .toString();
     },
   },
@@ -461,7 +461,7 @@ export default {
         this.SetLoader(false);
         return;
       }
-      if (new BigNumber(allowance).isLessThan(this.depositAmount)) {
+      if (new BigNumber(allowance).isLessThanOrEqualTo(this.depositAmount)) {
         const approveFee = await this.$store.dispatch(
           'wallet/getContractFeeData',
           {
@@ -470,7 +470,7 @@ export default {
             contractAddress: tokenAddress,
             data: [
               tokenAddress,
-              new BigNumber(this.depositAmount).shiftedBy(18).toString(),
+              new BigNumber(this.depositAmount).shiftedBy(6).toString(),
             ],
           },
         );
@@ -581,7 +581,7 @@ export default {
             typeOfEmployment: TypeOfEmployments[this.employmentIndex],
             title: this.questTitle.trim(),
             description,
-            price: new BigNumber(this.price).shiftedBy(18).toString(),
+            price: new BigNumber(this.price).shiftedBy(6).toString(),
             medias,
             specializationKeys: this.selectedSpecAndSkills,
             locationFull: {
