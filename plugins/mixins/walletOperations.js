@@ -82,7 +82,7 @@ export default {
     async MakeApprove({
       tokenAddress, contractAddress, amount,
       approveTitle = this.$t('meta.approve'),
-      symbol = TokenSymbols.WUSD,
+      symbol = TokenSymbols.USDT,
       nativeTokenSymbol = TokenSymbols.WQT,
       isHexUserWalletAddress,
     }) {

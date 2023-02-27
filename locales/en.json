@@ -37,6 +37,7 @@
     },
     "coins": {
       "eth": "ETH",
+      "usdt": "USDT",
       "bnb": "BNB",
       "wqt": "WQT",
       "wusd": "WUSD",
