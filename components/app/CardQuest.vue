@@ -176,7 +176,7 @@
             class="card-quest__amount"
             :class="getAmountStyles(quest)"
           >
-            {{ `${questReward}  ${$options.TokenSymbols.WUSD}` }}
+            {{ `${questReward}  ${$options.TokenSymbols.USDT}` }}
           </div>
         </div>
         <div
@@ -269,7 +269,7 @@ export default {
       return this.quest.yourReview?.mark || 0;
     },
     questReward() {
-      return new BigNumber(this.quest.price).shiftedBy(-18).toString();
+      return new BigNumber(this.quest.price).shiftedBy(-6).toString();
     },
     isWorker() {
       return this.userRole === UserRole.WORKER;
