@@ -43,8 +43,8 @@
                 type="number"
                 :label="$tc('meta.price')"
                 data-selector="PRICE-FIELD"
-                placeholder="0 WUSD"
-                rules="required|decimal|decimalPlaces:18|min_value:1"
+                placeholder="0 USDT"
+                rules="required|decimal|decimalPlaces:6|min_value:1"
                 :name="$tc('meta.price')"
               />
             </div>
@@ -465,7 +465,7 @@ export default {
       if (!this.levelPrices) return;
       this.SetLoader(true);
 
-      const tokenAddress = this.ENV.WORKNET_WUSD_TOKEN;
+      const tokenAddress = this.ENV.WORKNET_USDT_TOKEN;
       const promotionAddress = this.ENV.WORKNET_PROMOTION;
       const { contractAddress } = this.questData;
       const levelPrice = this.levelPrices[TariffByIndex[this.level]][this.period];
@@ -474,10 +474,10 @@ export default {
         await this.$store.dispatch('wallet/fetchWalletData', {
           address: this.userWalletAddress,
           token: tokenAddress,
-          symbol: TokenSymbols.WUSD,
+          symbol: TokenSymbols.USDT,
         });
-        if (new BigNumber(this.balanceData.WUSD.fullBalance).isLessThan(levelPrice)) {
-          this.ShowToast(`${this.$t('errors.transaction.notEnoughFunds')} (${TokenSymbols.WUSD})`);
+        if (new BigNumber(this.balanceData.USDT.fullBalance).isLessThan(levelPrice)) {
+          this.ShowToast(`${this.$t('errors.transaction.notEnoughFunds')} (${TokenSymbols.USDT})`);
           this.SetLoader(false);
           reject();
           return;
@@ -506,7 +506,7 @@ export default {
           this.$store.dispatch('wallet/fetchWalletData', {
             address: this.userWalletAddress,
             token: tokenAddress,
-            symbol: TokenSymbols.WUSD,
+            symbol: TokenSymbols.USDT,
           }),
         ]);
         this.SetLoader(false);
@@ -521,7 +521,7 @@ export default {
           fields: {
             from: { name: this.$t('meta.fromBig'), value: this.convertToBech32('wq', this.$store.getters['user/getUserWalletAddress']) },
             to: { name: this.$t('meta.toBig'), value: promotionAddress },
-            amount: { name: this.$t('modals.amount'), value: levelPrice, symbol: TokenSymbols.WUSD },
+            amount: { name: this.$t('modals.amount'), value: levelPrice, symbol: TokenSymbols.USDT },
             fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WQT },
           },
           submitMethod: async () => {
@@ -580,7 +580,7 @@ export default {
       }
 
       const { contractAddress } = this.questData;
-      const wusdAddress = TokenMap[TokenSymbols.WUSD];
+      const usdtAddress = TokenMap[TokenSymbols.USDT];
 
       new Promise(async (resolve, reject) => {
         // Quest Cost Increased
@@ -591,17 +591,17 @@ export default {
           this.SetLoader(true);
           await this.$store.dispatch('wallet/fetchWalletData', {
             address: this.userWalletAddress,
-            token: wusdAddress,
-            symbol: TokenSymbols.WUSD,
+            token: usdtAddress,
+            symbol: TokenSymbols.USDT,
           });
-          if (new BigNumber(this.balanceData.WUSD.fullBalance).isLessThan(depositAmount)) {
-            this.ShowToast(`${this.$t('errors.transaction.notEnoughFunds')} (${TokenSymbols.WUSD})`);
+          if (new BigNumber(this.balanceData.USDT.fullBalance).isLessThan(depositAmount)) {
+            this.ShowToast(`${this.$t('errors.transaction.notEnoughFunds')} (${TokenSymbols.USDT})`);
             this.SetLoader(false);
             reject();
             return;
           }
           await this.MakeApprove({
-            tokenAddress: wusdAddress,
+            tokenAddress: usdtAddress,
             contractAddress,
             amount: depositAmount,
             approveTitle: `${this.$t('meta.btns.edit')} ${this.$t('meta.approve')}`,
@@ -674,7 +674,7 @@ export default {
         fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
       };
       if (depositAmount) {
-        fields.amount = { name: this.$t('modals.amount'), value: depositAmount, symbol: TokenSymbols.WUSD };
+        fields.amount = { name: this.$t('modals.amount'), value: depositAmount, symbol: TokenSymbols.USDT };
       }
 
       await this.$store.dispatch('wallet/getBalance');
