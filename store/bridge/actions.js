@@ -47,8 +47,8 @@ export default {
           status: swap.canRedeemed,
           chain: BlockchainByIndex[swap.chainTo],
           direction: [
-            SwapAddresses.get(BlockchainByIndex[swap.chainFrom]).icon,
-            SwapAddresses.get(BlockchainByIndex[swap.chainTo]).icon,
+            SwapAddresses.get(BlockchainByIndex[swap.chainFrom])?.icon,
+            SwapAddresses.get(BlockchainByIndex[swap.chainTo])?.icon,
           ],
           amount: new BigNumber(swap.amount).shiftedBy(-decimals || -18).toString(),
           created: swap.timestamp,
