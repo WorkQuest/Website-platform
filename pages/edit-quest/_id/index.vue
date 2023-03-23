@@ -421,7 +421,7 @@ export default {
     this.workplaceIndex = WorkplaceIndex.indexOf(workplace);
     this.questTitle = title;
     this.address = locationPlaceName;
-    this.price = new BigNumber(price).shiftedBy(-18).toString();
+    this.price = new BigNumber(price).shiftedBy(-6).toString();
     this.textarea = description;
     this.coordinates.lng = location.longitude;
     this.coordinates.lat = location.latitude;
