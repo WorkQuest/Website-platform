@@ -33,9 +33,10 @@
             type="number"
             data-selector="PRICE-FIELD"
             :label="$tc('meta.price')"
-            placeholder="0 WUSD"
+            placeholder=""
             rules="required|decimal|decimalPlaces:16|min_value:1"
             :name="$tc('meta.price').toLowerCase()"
+            :currency-dd="true"
           />
         </div>
         <div class="page__dd">
@@ -168,9 +169,7 @@
             {{ $t('quests.impossibleEditAfterCreation') }}
           </label>
         </div>
-        <div
-          class="page__error"
-        >
+        <div class="page__error">
           {{ errors[0] }}
         </div>
       </validation-provider>
