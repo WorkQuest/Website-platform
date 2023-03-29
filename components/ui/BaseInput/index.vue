@@ -54,6 +54,7 @@
         class="ctm-field__input"
         :class="[
           { 'ctm-field__input_error': errors[0] },
+          { 'currencies-input': currencyDd },
           {
             'ctm-field__input_padding-r':
               $slots['right-absolute'] || (value && isSearch && !isBusySearch),
@@ -329,6 +330,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.currencies-input {
+  padding-right: 84px !important;
+}
 .ctm-field {
   position: relative;
 

@@ -33,7 +33,7 @@
             type="number"
             data-selector="PRICE-FIELD"
             :label="$tc('meta.price')"
-            placeholder=""
+            placeholder="0 USDT"
             rules="required|decimal|decimalPlaces:16|min_value:1"
             :name="$tc('meta.price').toLowerCase()"
             :currency-dd="true"
