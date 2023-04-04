@@ -394,11 +394,11 @@ export default {
       switch (this.infoDataMode) {
         case Created: {
           arr = [{
-            name: this.$t('meta.raiseViews'),
-            funcKey: 'toRaisingViews',
-            disabled: false,
-          },
-          {
+          //   {
+          //   name: this.$t('meta.raiseViews'),
+          //   funcKey: 'toRaisingViews',
+          //   disabled: false,
+          // },
             name: this.$t('meta.btns.closeQuest'),
             mode: 'delete',
             funcKey: 'closeQuest',
