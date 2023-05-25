@@ -5,12 +5,12 @@ export default {
   // SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
   WQ_PROVIDER: 'https://testnet-gate.workquest.co',
-  ETH_PROVIDER: 'https://purple-newest-replica.rinkeby.quiknode.pro/c6df441ce132d1593e56f9b29f3eec92ec666709',
+  ETH_PROVIDER: 'https://intensive-thrumming-night.ethereum-goerli.quiknode.pro/62e1ee4e542943278b953001a921399044b1e69e/',
   BSC_PROVIDER: 'https://falling-solemn-tab.bsc-testnet.quiknode.pro/f9994103eaa58d8a21af4e462e9dc21009e2ee8c',
   POLYGON_PROVIDER: 'https://thrumming-broken-crater.matic-testnet.quiknode.pro/c63d640e4507796d4278309bfbaa707f6c276cac',
 
   WQ_WS_PROVIDER: 'wss://testnet-gate-01.workquest.co/tendermint-rpc/websocket',
-  ETH_WS_PROVIDER: 'wss://purple-newest-replica.rinkeby.quiknode.pro/c6df441ce132d1593e56f9b29f3eec92ec666709',
+  ETH_WS_PROVIDER: 'wss://intensive-thrumming-night.ethereum-goerli.quiknode.pro/62e1ee4e542943278b953001a921399044b1e69e/',
   BSC_WS_PROVIDER: 'wss://falling-solemn-tab.bsc-testnet.quiknode.pro/f9994103eaa58d8a21af4e462e9dc21009e2ee8c',
   POLYGON_WS_PROVIDER: 'wss://thrumming-broken-crater.matic-testnet.quiknode.pro/c63d640e4507796d4278309bfbaa707f6c276cac',
 
