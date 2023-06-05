@@ -5,14 +5,14 @@ export default {
   // SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
   WQ_PROVIDER: 'https://testnet-gate.workquest.co',
-  ETH_PROVIDER: 'https://intensive-thrumming-night.ethereum-goerli.quiknode.pro/62e1ee4e542943278b953001a921399044b1e69e/',
-  BSC_PROVIDER: 'https://falling-solemn-tab.bsc-testnet.quiknode.pro/f9994103eaa58d8a21af4e462e9dc21009e2ee8c',
-  POLYGON_PROVIDER: 'https://thrumming-broken-crater.matic-testnet.quiknode.pro/c63d640e4507796d4278309bfbaa707f6c276cac',
+  ETH_PROVIDER: 'https://purple-winter-diamond.ethereum-sepolia.quiknode.pro/a40c0d95abb1c01eb30eac053be37d62b6574eee/',
+  BSC_PROVIDER: 'https://falling-solemn-tab.bsc-testnet.quiknode.pro/fd8c2128e175ba3f8ed7ed077387645a124d778c/',
+  POLYGON_PROVIDER: 'https://thrumming-broken-crater.matic-testnet.quiknode.pro/d9af54827388928b18f1d1768ece9a76a4ce7c4f/',
 
   WQ_WS_PROVIDER: 'wss://testnet-gate-01.workquest.co/tendermint-rpc/websocket',
-  ETH_WS_PROVIDER: 'wss://intensive-thrumming-night.ethereum-goerli.quiknode.pro/62e1ee4e542943278b953001a921399044b1e69e/',
-  BSC_WS_PROVIDER: 'wss://falling-solemn-tab.bsc-testnet.quiknode.pro/f9994103eaa58d8a21af4e462e9dc21009e2ee8c',
-  POLYGON_WS_PROVIDER: 'wss://thrumming-broken-crater.matic-testnet.quiknode.pro/c63d640e4507796d4278309bfbaa707f6c276cac',
+  ETH_WS_PROVIDER: 'wss://purple-winter-diamond.ethereum-sepolia.quiknode.pro/a40c0d95abb1c01eb30eac053be37d62b6574eee/',
+  BSC_WS_PROVIDER: 'wss://falling-solemn-tab.bsc-testnet.quiknode.pro/fd8c2128e175ba3f8ed7ed077387645a124d778c/',
+  POLYGON_WS_PROVIDER: 'wss://thrumming-broken-crater.matic-testnet.quiknode.pro/d9af54827388928b18f1d1768ece9a76a4ce7c4f/',
 
   WQ_EXPLORER: 'https://testnet-explorer-api.workquest.co/api/v1',
   WQ_ORACLE_URL: 'https://testnet-oracle.workquest.co/api/v1',
@@ -26,13 +26,13 @@ export default {
   BSCSCAN_API_URL: 'https://api-testnet.bscscan.com/api',
   POLYGONSCAN_API_URL: 'https://api-testnet.polygonscan.com/api',
 
-  ETHEREUM_BRIDGE: '0x219f5F6B816bd771bc9EdBBfa3D9F88ba36Fc69d',
+  ETHEREUM_BRIDGE: '0x6c08Ca1c46E9607F9E45894483fa129F76d22A0E',
   ETHEREUM_STABLE_BRIDGE: '0x9870a749Ae5CdbC4F96E3D0C067eB212779a8FA1',
-  ETHEREUM_USDC_TOKEN: '0xeb8f08a975Ab53E34D8a0330E0D34de942C95926',
-  ETHEREUM_USDT_TOKEN: '0x55Ca68111bDF746A76F4Ac19FDf2Cc516Bfd48cc',
+  ETHEREUM_USDC_TOKEN: '0x3cd175eb5915625FF272ab40Fb63FcE6481F6770',
+  ETHEREUM_USDT_TOKEN: '0x0f3c00Cd6247297e07c4b6b7E34E1029318A0955',
   ETHEREUM_LP_TOKEN: '0x6dc948fF7AC50B60ecFd208974aE79f9A444Fe18',
   ETHEREUM_MINING: '0x917dc1a9E858deB0A5bDCb44C7601F655F728DfE',
-  ETHEREUM_WQT_TOKEN: '0x73F188C779587eD79415D93F7032b9DA45B60f3A',
+  ETHEREUM_WQT_TOKEN: '0xA4eC093C0896EE585b30b432D47B5C7FdCb003ED',
   // ETHEREUM_RPC_URL: process.env.ETHEREUM_RPC_URL,
 
   BSC_BRIDGE: '0x07444a4EbE513FA77BEefCd2dCEF18626e6A2ab6',
