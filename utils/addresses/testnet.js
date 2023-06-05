@@ -22,7 +22,7 @@ export default {
   WS_NOTIFS_URL: 'wss://testnet-notification.workquest.co/api/v1/notifications',
   WS_CHAT_ACTIONS_URL: 'wss://testnet-app.workquest.co/api/v1/notifications/chat',
 
-  ETHERSCAN_API_URL: 'https://api-rinkeby.etherscan.io/api',
+  ETHERSCAN_API_URL: 'https://api-sepolia.etherscan.io/api',
   BSCSCAN_API_URL: 'https://api-testnet.bscscan.com/api',
   POLYGONSCAN_API_URL: 'https://api-testnet.polygonscan.com/api',
 
