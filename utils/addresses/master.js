@@ -4,14 +4,14 @@ export default {
   // GMAPKEY: process.env.GMAPKEY,
 
   WQ_PROVIDER: 'https://mainnet-gate.workquest.co',
-  ETH_PROVIDER: 'https://clean-maximum-meadow.quiknode.pro/4d90578f8b3b03330a88b58d7060725102f5a328',
-  BSC_PROVIDER: 'https://attentive-icy-arm.bsc.quiknode.pro/caed81fb5c0fdefe552f07da3b2c880129a25edf',
-  POLYGON_PROVIDER: 'https://frosty-chaotic-violet.matic.quiknode.pro/083a2c0dc1dfdab3c26092f6e53005217e7a09ba',
+  ETH_PROVIDER: 'https://powerful-spring-glitter.quiknode.pro/ccf0d5bf1c16cb2a8c4a10ed4c6ac93842310e72/',
+  BSC_PROVIDER: 'https://light-indulgent-sunset.bsc.quiknode.pro/77092a18f05e8ff927c5ea62f38ee859f1d6d92d/',
+  POLYGON_PROVIDER: 'https://ultra-lingering-cherry.matic.quiknode.pro/fb0477bccf35f42d6756ef58948313e289b52c45/',
 
   WQ_WS_PROVIDER: 'wss://mainnet-gate.workquest.co/tendermint-rpc/websocket',
-  ETH_WS_PROVIDER: 'wss://clean-maximum-meadow.quiknode.pro/4d90578f8b3b03330a88b58d7060725102f5a328',
-  BSC_WS_PROVIDER: 'wss://attentive-icy-arm.bsc.quiknode.pro/caed81fb5c0fdefe552f07da3b2c880129a25edf',
-  POLYGON_WS_PROVIDER: 'wss://frosty-chaotic-violet.matic.quiknode.pro/083a2c0dc1dfdab3c26092f6e53005217e7a09ba',
+  ETH_WS_PROVIDER: 'wss://powerful-spring-glitter.quiknode.pro/ccf0d5bf1c16cb2a8c4a10ed4c6ac93842310e72/',
+  BSC_WS_PROVIDER: 'wss://light-indulgent-sunset.bsc.quiknode.pro/77092a18f05e8ff927c5ea62f38ee859f1d6d92d/',
+  POLYGON_WS_PROVIDER: 'wss://ultra-lingering-cherry.matic.quiknode.pro/fb0477bccf35f42d6756ef58948313e289b52c45/',
 
   WQ_EXPLORER: 'https://mainnet-explorer-api.workquest.co/api/v1',
   WQ_ORACLE_URL: 'https://mainnet-oracle.workquest.co/api/v1',
