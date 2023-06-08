@@ -4,7 +4,7 @@ import { images } from '~/utils/images';
 import ENV from '~/utils/addresses/index';
 
 export const PoolURL = Object.freeze({
-  BNB: 'https://pancakeswap.finance/add/BNB/0xe89508D74579A06A65B907c91F697CF4F8D9Fac7',
+  BNB: 'https://pancakeswap.finance/add/BNB/0xBC648Cbd7B2B2c666f9f46aC5C5Ce6ee77f9C407',
   ETH: 'https://app.uniswap.org/#/add/v2/0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf/ETH',
 });
 
