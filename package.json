@@ -46,6 +46,7 @@
     "ua-parser-js": "1.0.1"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.0-placeholder-for-preset-env.2",
     "@nuxt/types": "^2.14.12",
     "@nuxtjs/color-mode": "^1.1.1",
     "@nuxtjs/dotenv": "^1.4.1",
