@@ -4,7 +4,7 @@ import { images } from '~/utils/images';
 import ENV from '~/utils/addresses/index';
 
 export const PoolURL = Object.freeze({
-  BNB: 'https://pancakeswap.finance/add/BNB/0xbc648cbd7b2b2c666f9f46ac5c5ce6ee77f9c407',
+  BNB: 'https://pancakeswap.finance/add/BNB/0xBC648Cbd7B2B2c666f9f46aC5C5Ce6ee77f9C407',
   ETH: 'https://app.uniswap.org/#/add/v2/0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf/ETH',
 });
 
@@ -35,7 +35,7 @@ export const Pool = new Map([
       icon: images.BNB,
       guestProvider: ENV.BSC_RPC_URL,
       // need only for testnet, in mainnet we can use stakingToken
-      lpToken: isProd ? ENV.BSC_LP_TOKEN : '0x39f21593aa5d8fc4a6d0a7e49d80d57f8798eb05',
+      lpToken: isProd ? ENV.BSC_LP_TOKEN : '0x3EA2de549ae9DcB7992F91227e8d6629A22C3b40',
       miningAddress: isProd ? ENV.BSC_MINING : '0x7F31d9c6Cf99DDB89E2a068fE7B96d230b9D19d1',
     },
   ],
