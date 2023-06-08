@@ -301,7 +301,7 @@ export const ExplorerUrl = {
 
 export const EthereumExplorerUrl = {
   master: 'https://etherscan.io',
-  testnet: 'https://rinkeby.etherscan.io',
+  testnet: 'https://sepolia.etherscan.io/',
   stage: 'https://etherscan.io',
   develop: 'https://rinkeby.etherscan.io',
 }[process.env.BRANCH];
