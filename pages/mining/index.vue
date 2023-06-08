@@ -117,7 +117,7 @@ export default {
         },
         {
           id: 'BNB',
-          poolAddress: '0xe89508D74579A06A65B907c91F697CF4F8D9Fac7',
+          poolAddress: '0xbc648cbd7b2b2c666f9f46ac5c5ce6ee77f9c407',
           assets: '50% WQT / 50% BNB',
           chooseBtn: this.$t('mining.choose'),
           disabled: false,
