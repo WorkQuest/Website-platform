@@ -176,7 +176,7 @@ export default {
         provider,
       });
       if (
-        from.nativeSymbol === symbol
+        from.nativeSymbol === symbol && this.options.from.chain === Chains.ETHEREUM && this.options.to.chain === Chains.WORKNET
       ) {
         this.$store.commit('bridge/setToken', {
           ...this.currentToken,
