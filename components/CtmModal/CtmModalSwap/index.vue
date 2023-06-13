@@ -182,7 +182,7 @@ export default {
         if (tokenAmount) {
           this.$store.commit('bridge/setToken', {
             ...this.currentToken,
-            amount: Number(tokenAmount.div(new BigNumber(10).exponentiatedBy(18)));,
+            amount: Number(tokenAmount.div(new BigNumber(10).exponentiatedBy(18))),
             decimals: 18,
           });
         }
