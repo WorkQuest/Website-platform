@@ -91,7 +91,12 @@ import { mapActions, mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import { Chains, ConnectionTypes, TokenSymbols } from '~/utils/enums';
 import { BlockchainIndex, BridgeAddresses, SwapAddresses } from '~/utils/сonstants/bridge';
-import { getChainIdByChain, GetWeb3Provider } from '~/utils/web3';
+import {
+  getChainIdByChain,
+  GetWeb3Provider,
+  getNativeBalance,
+  getTransactionCount,
+} from '~/utils/web3';
 import { GetWalletProvider } from '~/utils/wallet';
 
 export default {
@@ -178,11 +183,15 @@ export default {
       if (
         from.nativeSymbol === symbol && this.options.from.chain === Chains.ETHEREUM && this.options.to.chain === Chains.WORKNET
       ) {
-        const tokenAmount = this.$store.getters['bridge/getToken'].amount;
-        if (tokenAmount) {
+        const [balance] = await Promise.all([
+          getNativeBalance(this.account.address, provider),
+        ]);
+        if (balance) {
+          const tokenBalance = balance.toNumber();
+          console.log(tokenBalance);
           this.$store.commit('bridge/setToken', {
             ...this.currentToken,
-            amount: Number(tokenAmount.div(new BigNumber(10).exponentiatedBy(18))),
+            amount: new BigNumber(tokenBalance).div(new BigNumber(10).exponentiatedBy(18)),
             decimals: 18,
           });
         }
