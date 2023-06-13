@@ -187,7 +187,7 @@ export default {
           getNativeBalance(this.account.address, provider),
         ]);
         if (balance) {
-          const tokenBalance = balance.toNumber();
+          const tokenBalance = Number(balance);
           console.log(tokenBalance);
           this.$store.commit('bridge/setToken', {
             ...this.currentToken,
