@@ -175,6 +175,15 @@ export default {
         isNative: from.nativeSymbol === symbol,
         provider,
       });
+      if (
+        from.nativeSymbol === symbol
+      ) {
+        this.$store.commit('bridge/setToken', {
+          ...this.currentToken,
+          amount: new BigNumber(this.currentToken.amount).div(new BigNumber(10).exponentiatedBy(18)).decimalPlaces(4).toString(),
+          decimals: 4,
+        });
+      }
       // Bridge contract from BSC net for USDT & USDC decimals limit 6
       if (from.chain === Chains.BINANCE && [TokenSymbols.USDT, TokenSymbols.USDC].includes(this.currentToken.symbol)) {
         this.$store.commit('bridge/setToken', {
