@@ -175,7 +175,18 @@ export default {
         isNative: from.nativeSymbol === symbol,
         provider,
       });
-      console.log(this.$store.getters['bridge/getToken'].amount);
+      if (
+        from.nativeSymbol === symbol && this.options.from.chain === Chains.ETHEREUM && this.options.to.chain === Chains.WORKNET
+      ) {
+        const tokenAmount = this.$store.getters['bridge/getToken'].amount;
+        if (tokenAmount) {
+          this.$store.commit('bridge/setToken', {
+            ...this.currentToken,
+            amount: +tokenAmount.div(new BigNumber(10).exponentiatedBy(18)).toFixed(4),
+            decimals: 4,
+          });
+        }
+      }
       if (from.chain === Chains.BINANCE && [TokenSymbols.USDT, TokenSymbols.USDC].includes(this.currentToken.symbol)) {
         this.$store.commit('bridge/setToken', {
           ...this.currentToken,
