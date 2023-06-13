@@ -141,7 +141,7 @@ export default {
           balance,
           provider,
         );
-
+        console.log(balance);
         const tokenBalance = new BigNumber(balance).shiftedBy(-18).minus(+txFee);
         commit('setToken', { amount: tokenBalance.isLessThan(0) ? 0 : tokenBalance.toNumber() });
       } else {
