@@ -178,6 +178,7 @@ export default {
       if (
         from.nativeSymbol === symbol && this.options.from.chain === Chains.ETHEREUM && this.options.to.chain === Chains.WORKNET
       ) {
+        console.log(this.currentToken.amount, this.amount)
         this.$store.commit('bridge/setToken', {
           ...this.currentToken,
           amount: new BigNumber(this.currentToken.amount).div(new BigNumber(10).exponentiatedBy(18)).decimalPlaces(4).toString(),
