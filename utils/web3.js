@@ -163,7 +163,7 @@ export const initProvider = async (payload) => {
       } else if (chain === Chains.BINANCE) {
         walletOptions = {
           rpc: {
-            97: 'https://data-seed-prebsc-2-s1.binance.org:8545/',
+            97: 'https://falling-solemn-tab.bsc-testnet.quiknode.pro/fd8c2128e175ba3f8ed7ed077387645a124d778c/',
           },
           // network: 'binance',
         };
