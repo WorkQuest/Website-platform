@@ -69,11 +69,6 @@ export default {
   async redeemSwap({ commit }, {
     signData, chainTo, provider, accountAddress,
   }) {
-    console.log(`signData${signData}`);
-    console.log(`chainTo${chainTo}`);
-    console.log(`provider${provider}`);
-    console.log(`accountAddress${accountAddress}`);
-
     try {
       showToast('Redeeming', 'Redeem...', 'success');
 
