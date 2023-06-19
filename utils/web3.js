@@ -156,7 +156,7 @@ export const initProvider = async (payload) => {
       if (chain === Chains.ETHEREUM) {
         walletOptions = {
           rpc: {
-            4: 'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+            4: 'https://purple-winter-diamond.ethereum-sepolia.quiknode.pro/a40c0d95abb1c01eb30eac053be37d62b6574eee/',
           },
           // network: 'ethereum',
         };
