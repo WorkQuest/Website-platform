@@ -181,7 +181,7 @@ export default {
         const [balance] = await Promise.all([
           getNativeBalance(this.account.address, provider),
         ]);
-        console.log(symbol)
+        console.log(symbol);
         if (balance) {
           const tokenBalance = Number(balance);
           this.$store.commit('bridge/setToken', {
