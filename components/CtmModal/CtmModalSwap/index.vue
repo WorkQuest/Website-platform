@@ -91,8 +91,8 @@ import { mapActions, mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import { Chains, ConnectionTypes, TokenSymbols } from '~/utils/enums';
 import { BlockchainIndex, BridgeAddresses, SwapAddresses } from '~/utils/сonstants/bridge';
-import { getChainIdByChain, GetWeb3Provider } from '~/utils/web3';
-import { GetWalletProvider, getNativeBalance } from '~/utils/wallet';
+import { getChainIdByChain, GetWeb3Provider, getNativeBalance } from '~/utils/web3';
+import { GetWalletProvider } from '~/utils/wallet';
 
 export default {
   name: 'ModalSwap',
