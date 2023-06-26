@@ -175,18 +175,22 @@ export default {
         isNative: from.nativeSymbol === symbol,
         provider,
       });
-      console.log(`${this.options.from.chain} + ${this.options.to.chain}`);
       if (
         this.options.from.chain === Chains.WORKNET && this.options.to.chain === Chains.BSC
       ) {
-        console.log(this.currentToken.symbol);
+        console.log(symbol);
         const [balance] = await Promise.all([
           getNativeBalance(this.account.address, provider),
         ]);
-        if (balance) {
+         if (balance) {
           const tokenBalance = Number(balance);
-          console.log(tokenBalance);
+          this.$store.commit('bridge/setToken', {
+            ...this.currentToken,
+            amount: tokenBalance,
+            decimals: 18,
+          });
         }
+      }
       }
       // Bridge contract from BSC net for USDT & USDC decimals limit 6
       if (from.chain === Chains.BINANCE && [TokenSymbols.USDT, TokenSymbols.USDC].includes(this.currentToken.symbol)) {
