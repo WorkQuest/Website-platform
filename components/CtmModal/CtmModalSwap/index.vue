@@ -176,17 +176,17 @@ export default {
         provider,
       });
       if (
-        this.options.from.chain === Chains.WORKNET && this.options.to.chain === Chains.BINANCE
+        symbol === 'WQT' && this.options.from.chain === Chains.WORKNET
       ) {
         const [balance] = await Promise.all([
           getNativeBalance(this.account.address, provider),
         ]);
-        console.log(symbol);
         if (balance) {
           const tokenBalance = Number(balance);
+          const tokenBalanceFormated = (new BigNumber(tokenBalance).div('1e+18'));
           this.$store.commit('bridge/setToken', {
             ...this.currentToken,
-            amount: tokenBalance,
+            amount: tokenBalanceFormated.toNumber(),
             decimals: 18,
           });
         }
