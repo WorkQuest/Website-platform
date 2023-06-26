@@ -182,7 +182,7 @@ export default {
         const [balance] = await Promise.all([
           getNativeBalance(this.account.address, provider),
         ]);
-         if (balance) {
+        if (balance) {
           const tokenBalance = Number(balance);
           this.$store.commit('bridge/setToken', {
             ...this.currentToken,
@@ -190,7 +190,6 @@ export default {
             decimals: 18,
           });
         }
-      }
       }
       // Bridge contract from BSC net for USDT & USDC decimals limit 6
       if (from.chain === Chains.BINANCE && [TokenSymbols.USDT, TokenSymbols.USDC].includes(this.currentToken.symbol)) {
