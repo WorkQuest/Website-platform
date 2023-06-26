@@ -123,12 +123,13 @@ export default {
         || (from.chain === Chains.ETHEREUM && to.chain === Chains.BINANCE)) {
         return [TokenSymbols.WQT];
       }
-      const toRemoveSymbol = to.chain === Chains.BINANCE ? TokenSymbols.ETH : TokenSymbols.BNB;
+      // const toRemoveSymbol = to.chain === Chains.BINANCE ? TokenSymbols.ETH : TokenSymbols.BNB;
+      const toRemoveSymbols = [TokenSymbols.ETH, TokenSymbols.BNB];
       const swapsData = SwapAddresses.get(from.chain);
       return [
         swapsData.nativeSymbol,
         ...Object.keys(SwapAddresses.get(from.chain).tokenAddress),
-      ].filter((item) => item !== toRemoveSymbol);
+      ].filter((item) => !toRemoveSymbols.includes(item));
     },
     accountAddress() {
       const chain = this.options?.to?.chain;
