@@ -326,7 +326,7 @@ export const NetworksData = {
   ETH_MAIN: {
     chainId: ChainsId.ETH_MAIN,
     chainName: 'Ethereum Mainnet',
-    rpcUrls: ['https://mainnet.infura.io/v3/'],
+    rpcUrls: ['https://powerful-spring-glitter.quiknode.pro/'],
   },
   ETH_TEST: {
     chainId: ChainsId.ETH_TEST,
@@ -336,7 +336,7 @@ export const NetworksData = {
   BSC_MAIN: {
     chainId: ChainsId.BSC_MAIN,
     chainName: 'BSC Mainnet',
-    rpcUrls: ['https://bsc-dataseed1.binance.org/'],
+    rpcUrls: ['https://light-indulgent-sunset.bsc.quiknode.pro/'],
     nativeCurrency: {
       name: 'BNB',
       symbol: 'BNB',
