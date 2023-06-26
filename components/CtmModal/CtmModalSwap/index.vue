@@ -176,12 +176,12 @@ export default {
         provider,
       });
       if (
-        this.options.from.chain === Chains.WORKNET && this.options.to.chain === Chains.BSC
+        this.options.from.chain === Chains.WORKNET && this.options.to.chain === Chains.BINANCE
       ) {
-        console.log(symbol);
         const [balance] = await Promise.all([
           getNativeBalance(this.account.address, provider),
         ]);
+        console.log(symbol)
         if (balance) {
           const tokenBalance = Number(balance);
           this.$store.commit('bridge/setToken', {
