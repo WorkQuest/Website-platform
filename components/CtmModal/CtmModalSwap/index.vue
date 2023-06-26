@@ -91,12 +91,7 @@ import { mapActions, mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import { Chains, ConnectionTypes, TokenSymbols } from '~/utils/enums';
 import { BlockchainIndex, BridgeAddresses, SwapAddresses } from '~/utils/сonstants/bridge';
-import {
-  getChainIdByChain,
-  GetWeb3Provider,
-  getNativeBalance,
-  getTransactionCount,
-} from '~/utils/web3';
+import { getChainIdByChain, GetWeb3Provider } from '~/utils/web3';
 import { GetWalletProvider } from '~/utils/wallet';
 
 export default {
@@ -180,22 +175,20 @@ export default {
         isNative: from.nativeSymbol === symbol,
         provider,
       });
+      console.log(`${this.options.from.chain} + ${this.options.to.chain}`);
       if (
-        from.nativeSymbol === symbol && this.options.from.chain === Chains.ETHEREUM && this.options.to.chain === Chains.WORKNET
+        this.options.from.chain === Chains.WORKNET && this.options.to.chain === Chains.BSC
       ) {
+        console.log(this.currentToken.symbol);
         const [balance] = await Promise.all([
           getNativeBalance(this.account.address, provider),
         ]);
         if (balance) {
           const tokenBalance = Number(balance);
           console.log(tokenBalance);
-          this.$store.commit('bridge/setToken', {
-            ...this.currentToken,
-            amount: new BigNumber(tokenBalance).div(new BigNumber(10).exponentiatedBy(18)),
-            decimals: 18,
-          });
         }
       }
+      // Bridge contract from BSC net for USDT & USDC decimals limit 6
       if (from.chain === Chains.BINANCE && [TokenSymbols.USDT, TokenSymbols.USDC].includes(this.currentToken.symbol)) {
         this.$store.commit('bridge/setToken', {
           ...this.currentToken,
