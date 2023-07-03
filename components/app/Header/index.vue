@@ -401,31 +401,31 @@ export default {
     },
     additionalMenuLinks() {
       return [
-        {
-          title: this.$t('ui.menu.pension.title'),
-          desc: this.$t('ui.menu.pension.desc'),
-          path: Path.RETIREMENT,
-        },
-        {
-          title: this.$t('ui.menu.referral.title'),
-          desc: this.$t('ui.menu.referral.desc'),
-          path: Path.REFERRAL,
-        },
-        {
-          title: this.$t('ui.menu.p2p.title'),
-          desc: this.$t('ui.menu.p2p.desc'),
-          path: Path.INSURING,
-        },
-        {
-          title: this.$t('ui.menu.savings.title'),
-          desc: this.$t('ui.menu.savings.desc'),
-          path: Path.SAVINGS,
-        },
-        {
-          title: this.$t('ui.menu.crediting.title'),
-          desc: this.$t('ui.menu.crediting.desc'),
-          path: Path.LENDING,
-        },
+        // {
+        //   title: this.$t('ui.menu.pension.title'),
+        //   desc: this.$t('ui.menu.pension.desc'),
+        //   path: Path.RETIREMENT,
+        // },
+        // {
+        //   title: this.$t('ui.menu.referral.title'),
+        //   desc: this.$t('ui.menu.referral.desc'),
+        //   path: Path.REFERRAL,
+        // },
+        // {
+        //   title: this.$t('ui.menu.p2p.title'),
+        //   desc: this.$t('ui.menu.p2p.desc'),
+        //   path: Path.INSURING,
+        // },
+        // {
+        //   title: this.$t('ui.menu.savings.title'),
+        //   desc: this.$t('ui.menu.savings.desc'),
+        //   path: Path.SAVINGS,
+        // },
+        // {
+        //   title: this.$t('ui.menu.crediting.title'),
+        //   desc: this.$t('ui.menu.crediting.desc'),
+        //   path: Path.LENDING,
+        // },
         {
           title: this.$t('ui.menu.mining.title'),
           desc: this.$t('ui.menu.mining.desc'),
@@ -436,16 +436,16 @@ export default {
           desc: this.$t('ui.menu.bridge.desc'),
           path: Path.BRIDGE,
         },
-        {
-          title: this.$t('ui.menu.staking.title'),
-          desc: this.$t('ui.menu.staking.desc'),
-          path: Path.STAKING,
-        },
-        {
-          title: this.$t('ui.menu.collateral.title'),
-          desc: this.$t('ui.menu.collateral.desc'),
-          path: Path.COLLATERAL,
-        },
+        // {
+        //   title: this.$t('ui.menu.staking.title'),
+        //   desc: this.$t('ui.menu.staking.desc'),
+        //   path: Path.STAKING,
+        // },
+        // {
+        //   title: this.$t('ui.menu.collateral.title'),
+        //   desc: this.$t('ui.menu.collateral.desc'),
+        //   path: Path.COLLATERAL,
+        // },
       ];
     },
     headerLinks() {
