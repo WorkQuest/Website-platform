@@ -1095,7 +1095,7 @@ export default {
   min-width: 790px;
   width: 100%;
   left: -100%;
-  min-height: 230px;
+  min-height: 140px;
   z-index: 10000000;
 
   &__top {
@@ -1123,7 +1123,7 @@ export default {
 
   &__items {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     padding: 20px;
     grid-gap: 10px;
   }
