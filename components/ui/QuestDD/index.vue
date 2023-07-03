@@ -38,7 +38,7 @@
                 {{ $t('modals.share') }}
               </div>
             </div>
-            <!-- <div
+            <div
               v-if="canEditOrDelete"
               class="menu__item"
               :data-selector="`ACTION-BTN-TO-EDIT-QUEST-${questIndex}`"
@@ -47,7 +47,7 @@
               <div class="menu__text">
                 {{ $t('meta.btns.edit') }}
               </div>
-            </div> -->
+            </div>
             <div
               v-if="canEditOrDelete"
               class="menu__item"
