@@ -373,7 +373,7 @@ extend('conditionCheckbox', {
 
 extend('emailValidation', {
   validate(value) {
-    const regex = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9]|[a-zA-Z0-9]+-[a-zA-Z0-9])+\.([A-Za-z]{2,4})$/;
+    const regex = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])+(\.([A-Za-z]{2,4}|[A-Za-z]{2}\.[A-Za-z]{2}))$/;
     return { valid: regex.test(value) };
   },
 });
