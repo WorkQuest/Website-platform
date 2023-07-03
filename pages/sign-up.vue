@@ -62,6 +62,7 @@
           rules="signUpRequiredField|emailValidation"
           autocomplete="username"
           data-selector="EMAIL"
+          validation-mode="lazy"
         >
           <template v-slot:left>
             <img
