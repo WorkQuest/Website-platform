@@ -130,12 +130,12 @@
           >
             <span class="icon-google" />
           </button>
-          <button
+          <!-- <button
             class="auth__btn auth__btn_twitter"
             @click="redirectSocialLink('twitter')"
           >
             <span class="icon-twitter" />
-          </button>
+          </button> -->
           <button
             class="auth__btn auth__btn_facebook"
             @click="redirectSocialLink('facebook')"
