@@ -112,7 +112,8 @@
       "swap": "Swap",
       "generate": "Generate",
       "remove": "Remove",
-      "init": "Init"
+      "init": "Init",
+      "saveChanges": "Save changes"
     },
     "placeholders": {
       "default": "",
