@@ -163,12 +163,17 @@
           </div>
           <div class="upload btn btn__container btn__container_right">
             <div class="btn__create">
-              <base-btn
+              <!-- <base-btn
                 data-selector="TO-RAISED-VIEWS"
                 :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
                 @click="handleSubmit(setCurrentStepEditQuest($options.EditQuestState.RAISE_VIEWS))"
+              > -->
+              <base-btn
+                data-selector="TO-EDIT-QUEST"
+                :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
+                @click="toEditQuest"
               >
-                {{ $t('meta.btns.next') }}
+                {{ $t('meta.btns.saveChanges') }}
               </base-btn>
             </div>
           </div>
