@@ -27,7 +27,7 @@
         <base-textarea
           v-model="description"
           :placeholder="$t('report.messagePlaceholder')"
-          rules="required|min_message:50|max:1000"
+          rules="required|min:50|max:1000"
         />
       </div>
       <base-btn
