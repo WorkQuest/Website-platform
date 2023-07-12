@@ -664,7 +664,7 @@ export default {
           contractAddress,
           abi: WorkQuest,
           method: QuestMethods.EditJob,
-          data: [new BigNumber(this.price).shiftedBy(18).toString()],
+          data: [new BigNumber(this.price).shiftedBy(6).toString()],
         }),
         this.$store.dispatch('wallet/getBalance'),
       ]);
@@ -683,6 +683,7 @@ export default {
       }
 
       await this.$store.dispatch('wallet/getBalance');
+      this.SetLoader(false);
       this.ShowModal({
         key: modals.transactionReceipt,
         isDontOffLoader: true,
