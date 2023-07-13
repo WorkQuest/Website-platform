@@ -328,6 +328,13 @@ extend('geo_is_address', {
   },
 });
 
+extend('emailValidation', {
+  validate(value) {
+    const regex = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])+(\.([A-Za-z]{2,4}|[A-Za-z]{2}\.[A-Za-z]{2}))$/;
+    return { valid: regex.test(value) };
+  },
+});
+
 export default ({ app }) => {
   configure({
     defaultMessage: (_field_, values) => app.i18n.t(`messages.${values._rule_}`, values),

@@ -309,7 +309,7 @@ export const getContractFeeData = async (_method, _abi, _contractAddress, data, 
     const tx = {
       from: wallet.address,
     };
-    if (recipient) tx.to = recipient;
+    if (recipient) { tx.to = recipient; }
     if (amount) {
       amount = new BigNumber(amount).shiftedBy(18).toString();
       tx.value = amount;
@@ -319,7 +319,7 @@ export const getContractFeeData = async (_method, _abi, _contractAddress, data, 
       web3.eth.getGasPrice(),
       inst.methods[_method].apply(null, data).estimateGas(tx),
     ]);
-    if (isEthNetwork) gasPrice = new BigNumber(gasPrice.toString()).multipliedBy(ethBoost).toFixed(0);
+    if (isEthNetwork) { gasPrice = new BigNumber(gasPrice.toString()).multipliedBy(ethBoost).toFixed(0); }
     return success({
       gasPrice,
       gasEstimate,

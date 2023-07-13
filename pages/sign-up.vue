@@ -59,9 +59,10 @@
           mode="icon"
           :name="$t('signUp.email')"
           :placeholder="$t('signUp.email')"
-          rules="required|email"
+          rules="required|emailValidation"
           autocomplete="username"
           data-selector="EMAIL"
+          validation-mode="lazy"
         >
           <template v-slot:left>
             <img
