@@ -26,9 +26,9 @@
         <base-field
           v-model="model.firstName"
           mode="icon"
-          :name="$t('meta.firstNameSmall')"
+          :name="$t('meta.firstNameBig')"
           :placeholder="$t('meta.firstNameBig')"
-          rules="signUpRequiredField|fullNameValidation|max:15"
+          rules="required_if|alpha_spaces_dash|max:15"
           autocomplete="off"
           data-selector="FIRST_NAME"
         >
@@ -42,9 +42,9 @@
         <base-field
           v-model="model.lastName"
           mode="icon"
-          :name="$t('meta.lastNameSmall')"
+          :name="$t('meta.lastNameBig')"
           :placeholder="$t('meta.lastNameBig')"
-          rules="signUpRequiredField|fullNameValidation|max:15"
+          rules="required_if|alpha_spaces_dash|max:15"
           data-selector="LAST_NAME"
         >
           <template v-slot:left>
@@ -57,9 +57,9 @@
         <base-field
           v-model="model.email"
           mode="icon"
-          :name="$t('signUp.emailSmall')"
+          :name="$t('signUp.email')"
           :placeholder="$t('signUp.email')"
-          rules="signUpRequiredField|emailValidation"
+          rules="required|emailValidation"
           autocomplete="username"
           data-selector="EMAIL"
           validation-mode="lazy"
@@ -74,13 +74,13 @@
         <base-field
           v-model="model.password"
           mode="icon"
-          :name="$t('signUp.passwordSmall')"
+          :name="$t('signUp.password')"
           :placeholder="$t('signUp.password')"
-          rules="|signUpRequiredPassword|requiredSymbols|min:8|capitalLetterRequired|lowerCaseLetterRequired|numberRequired|specialCharacterRequired"
+          rules="required_if|min:8"
           autocomplete="new-password"
-          :type="isPasswordVisible ? 'text' : 'password'"
+          :type="isPasswordVisible?'text':'password'"
+          vid="confirmation"
           data-selector="PASSWORD"
-          :show-tooltip-icon="true"
         >
           <template v-slot:left>
             <img
@@ -102,10 +102,10 @@
         <base-field
           v-model="model.passwordConfirm"
           mode="icon"
-          :name="$t('signUp.passwordSmall')"
+          :name="$t('signUp.confirmPassword')"
           :placeholder="$t('signUp.confirmPassword')"
-          :rules="`signUpRequiredRepeatPassword|min:8|passwordMatch:${model.password}`"
-          :type="isPasswordConfirmVisible ? 'text' : 'password'"
+          rules="required_if|min:8|confirmed:confirmation"
+          :type="isPasswordConfirmVisible?'text':'password'"
           data-selector="CONFIRM_PASSWORD"
         >
           <template v-slot:left>
@@ -159,6 +159,7 @@ export default {
       isPasswordVisible: false,
       isPasswordConfirmVisible: false,
       inProgress: false,
+
       referralId: null,
     };
   },
@@ -185,13 +186,10 @@ export default {
       const response = await this.$store.dispatch('user/signUp', payload);
       if (response.ok) {
         sessionStorage.removeItem('referralId');
-        sessionStorage.setItem(
-          'resend-timer',
-          JSON.stringify({
-            timerValue: resendEmailLifetime,
-            createdAt: Date.now(),
-          }),
-        );
+        sessionStorage.setItem('resend-timer', JSON.stringify({
+          timerValue: resendEmailLifetime,
+          createdAt: Date.now(),
+        }));
         await this.$router.push(Path.SIGN_IN);
         this.ShowModal({
           key: modals.status,
@@ -235,7 +233,7 @@ export default {
       padding-left: 5px;
       font-weight: 300;
       font-size: 16px;
-      color: #0083c7;
+      color: #0083C7;
       text-decoration: underline;
     }
   }
@@ -263,7 +261,7 @@ export default {
       cursor: pointer;
       &:hover::before {
         color: $blue;
-      }
+    }
     }
   }
   &__confirm-phrase {
