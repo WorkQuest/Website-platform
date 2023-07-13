@@ -309,7 +309,7 @@ export const getContractFeeData = async (_method, _abi, _contractAddress, data, 
     const tx = {
       from: wallet.address,
     };
-    if (recipient) tx.to = recipient;
+    if (recipient) { tx.to = recipient; }
     if (amount) {
       amount = new BigNumber(amount).shiftedBy(18).toString();
       tx.value = amount;

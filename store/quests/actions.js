@@ -308,7 +308,7 @@ export default {
     contractAddress, cost,
   }) {
     try {
-      cost = new BigNumber(cost).shiftedBy(18).toString();
+      cost = new BigNumber(cost).shiftedBy(6).toString();
       return await dispatch('sendQuestTransaction', {
         contractAddress,
         method: QuestMethods.EditJob,
