@@ -280,6 +280,7 @@ export default {
    * Get create quest tx fee
    * @param commit
    * @param cost - price for a quest
+   * @param 0 - USDT
    * @param depositAmount - deposit = cost * 1% (create quests fee)
    * @param description
    * @param nonce
