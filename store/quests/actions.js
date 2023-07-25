@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { ResponsesType, UserRole } from '~/utils/enums';
-
+import { ethers } from 'ethers';
 import {
   QuestMethods, QuestsResponseStatus,
   QuestStatuses,
@@ -293,11 +293,12 @@ export default {
       const hash = hashText(description);
       const address = ENV.WORKNET_WQ_FACTORY;
       cost = new BigNumber(cost).shiftedBy(6).toString();
+      const deadline = ethers.constants.Uint256Max;
       return await getContractFeeData(
         'newWorkQuest',
         WQFactory,
         address,
-        [hash, cost, 'USDT', nonce],
+        [hash, cost, 'USDT', deadline, nonce],
         address,
       );
     } catch (e) {
