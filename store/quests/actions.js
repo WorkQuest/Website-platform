@@ -297,7 +297,7 @@ export default {
         'newWorkQuest',
         WQFactory,
         address,
-        [hash, cost, 0, nonce],
+        [hash, cost, 'USDT', nonce],
         address,
       );
     } catch (e) {
