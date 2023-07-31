@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
+import { ethers } from 'ethers';
 import { ResponsesType, UserRole } from '~/utils/enums';
-
 import {
   QuestMethods, QuestsResponseStatus,
   QuestStatuses,
@@ -254,8 +254,9 @@ export default {
       const address = ENV.WORKNET_WQ_FACTORY;
       const walletAddress = getWalletAddress();
       const hash = hashText(description);
-      cost = new BigNumber(cost).shiftedBy(18).toString();
-      const data = [hash, cost, this.$moment().add(1, 'day').unix(), nonce];
+      cost = new BigNumber(cost).shiftedBy(6).toString();
+      const deadline = ethers.constants.MaxUint256;
+      const data = [hash, cost, 'USDT', deadline, nonce];
       const inst = createInstance(WQFactory, address);
       const sendData = inst.methods.newWorkQuest.apply(null, data).encodeABI();
       const [gasPrice, gasEstimate] = await Promise.all([
@@ -280,6 +281,7 @@ export default {
    * Get create quest tx fee
    * @param commit
    * @param cost - price for a quest
+   * @param 0 - USDT
    * @param depositAmount - deposit = cost * 1% (create quests fee)
    * @param description
    * @param nonce
@@ -291,12 +293,13 @@ export default {
     try {
       const hash = hashText(description);
       const address = ENV.WORKNET_WQ_FACTORY;
-      cost = new BigNumber(cost).shiftedBy(18).toString();
+      const deadline = ethers.constants.MaxUint256;
+      cost = new BigNumber(cost).shiftedBy(6).toString();
       return await getContractFeeData(
         'newWorkQuest',
         WQFactory,
         address,
-        [hash, cost, 0, nonce],
+        [hash, cost, 'USDT', deadline, nonce],
         address,
       );
     } catch (e) {

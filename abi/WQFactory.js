@@ -227,6 +227,30 @@ const WQFactory = [
     type: 'function',
   },
   {
+    inputs: [
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string',
+      },
+    ],
+    name: 'assets',
+    outputs: [
+      {
+        internalType: 'contract IERC20Upgradeable',
+        name: 'token',
+        type: 'address',
+      },
+      {
+        internalType: 'bool',
+        name: 'enabled',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [],
     name: 'feeEmployer',
     outputs: [
@@ -400,11 +424,6 @@ const WQFactory = [
         name: '_referral',
         type: 'address',
       },
-      {
-        internalType: 'address',
-        name: '_wusd',
-        type: 'address',
-      },
     ],
     name: 'initialize',
     outputs: [],
@@ -422,6 +441,11 @@ const WQFactory = [
         internalType: 'uint256',
         name: 'cost',
         type: 'uint256',
+      },
+      {
+        internalType: 'string',
+        name: 'symbol',
+        type: 'string',
       },
       {
         internalType: 'uint256',
@@ -596,11 +620,21 @@ const WQFactory = [
     inputs: [
       {
         internalType: 'address',
-        name: '_wusd',
+        name: '_token',
         type: 'address',
       },
+      {
+        internalType: 'bool',
+        name: '_enabled',
+        type: 'bool',
+      },
+      {
+        internalType: 'string',
+        name: '_symbol',
+        type: 'string',
+      },
     ],
-    name: 'setWusd',
+    name: 'setToken',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -691,19 +725,6 @@ const WQFactory = [
     outputs: [
       {
         internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'wusd',
-    outputs: [
-      {
-        internalType: 'contract IERC20Upgradeable',
         name: '',
         type: 'address',
       },
