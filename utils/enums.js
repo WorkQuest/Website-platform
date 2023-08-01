@@ -454,14 +454,14 @@ export const WalletTokensData = Object.freeze({
     explorer: ExplorerUrl,
     chain: Chains.WORKNET,
     tokenAddresses: [
-      ENV.WORKNET_WUSD_TOKEN,
+      // ENV.WORKNET_WUSD_TOKEN, // WOR-288
       ENV.WORKNET_WBNB_TOKEN,
       ENV.WORKNET_WETH_TOKEN,
       ENV.WORKNET_USDT_TOKEN,
     ],
     tokenList: [
       { title: TokenSymbols.WQT, icon: images.WQT }, // FIRST IS NATIVE TOKEN!
-      { title: TokenSymbols.WUSD, icon: images.WUSD, tokenAddress: ENV.WORKNET_WUSD_TOKEN },
+      // { title: TokenSymbols.WUSD, icon: images.WUSD, tokenAddress: ENV.WORKNET_WUSD_TOKEN }, // WOR-288
       { title: TokenSymbols.BNB, icon: images.BNB, tokenAddress: ENV.WORKNET_WBNB_TOKEN },
       { title: TokenSymbols.ETH, icon: images.ETH_BLACK, tokenAddress: ENV.WORKNET_WETH_TOKEN },
       { title: TokenSymbols.USDT, icon: images.USDT, tokenAddress: ENV.WORKNET_USDT_TOKEN },
