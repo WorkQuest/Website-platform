@@ -328,7 +328,7 @@ extend('geo_is_address', {
   },
 });
 
-extend(‚conditionCheckbox’, {
+extend('conditionCheckbox', {
   validate(value) {
     return value;
   },
