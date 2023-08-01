@@ -5,7 +5,7 @@
   >
     <validation-observer
       ref="validate"
-      v-slot="{handleSubmit}"
+      v-slot="{ handleSubmit }"
       class="main__body page"
     >
       <h2 class="page__title">
@@ -33,9 +33,9 @@
             type="number"
             data-selector="PRICE-FIELD"
             :label="$tc('meta.price')"
-            placeholder="0 WUSD"
+            placeholder="0 USDT"
             rules="required|decimal|decimalPlaces:16|min_value:1"
-            :name="$tc('meta.price')"
+            :name="$tc('meta.price').toLowerCase()"
           />
         </div>
         <div class="page__dd">
@@ -75,7 +75,7 @@
       <validation-provider
         v-slot="{ errors }"
         rules="required|notEmptyArray"
-        :name="$t('settings.specialization')"
+        :name="$t('settings.specialization').toLowerCase()"
       >
         <specializations-selector
           v-model="selectedSpecAndSkills"
@@ -95,8 +95,11 @@
           data-selector="ADDRESS-FIELD"
           mode="icon"
           :selector="true"
-          :rules="{required: true, geo_is_address: { addresses: addressesBuffer } }"
-          :name="$tc('quests.address')"
+          :rules="{
+            required: true,
+            geo_is_address: { addresses: addressesBuffer },
+          }"
+          :name="$tc('quests.address').toLowerCase()"
           @selector="debouncedAddressSearch(address)"
         >
           <template v-slot:left>
@@ -128,7 +131,7 @@
           v-model="questTitle"
           data-selector="QUEST-TITLE-FIELD"
           rules="required|min:2|max:250"
-          :name="$tc('quests.questTitle')"
+          :name="$tc('quests.questTitle').toLowerCase()"
           :placeholder="$t('quests.questTitle')"
         />
       </div>
@@ -140,12 +143,12 @@
           data-selector="QUEST-DESC-TEXTAREA"
           class="page__textarea"
           :placeholder="$t('quests.questDesc')"
-          :name="$t('modals.description')"
+          :name="$t('modals.description').toLowerCase()"
         />
       </div>
       <validation-provider
         v-slot="{ errors }"
-        :rules="{ required: { allowFalse: false } }"
+        rules="conditionCheckbox"
         class="page__edit-check"
         tag="div"
         name=" "
@@ -165,7 +168,9 @@
             {{ $t('quests.impossibleEditAfterCreation') }}
           </label>
         </div>
-        <div class="page__error">
+        <div
+          class="page__error"
+        >
           {{ errors[0] }}
         </div>
       </validation-provider>
@@ -204,7 +209,12 @@ import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import debounce from '~/utils/debounce';
 import {
-  PriorityFilter, TokenMap, TokenSymbols, TypeOfEmployments, PayPeriodsIndex, WorkplaceIndex,
+  PriorityFilter,
+  TokenMap,
+  TokenSymbols,
+  TypeOfEmployments,
+  PayPeriodsIndex,
+  WorkplaceIndex,
 } from '~/utils/enums';
 import { LocalNotificationAction } from '~/utils/notifications';
 import { CommissionForCreatingAQuest } from '~/utils/сonstants/commission';
@@ -268,11 +278,16 @@ export default {
     },
     depositAmount() {
       if (!this.price) return '0';
-      return new BigNumber(this.price).multipliedBy(1 + CommissionForCreatingAQuest).toFixed(18).toString();
+      return new BigNumber(this.price)
+        .multipliedBy(1 + CommissionForCreatingAQuest)
+        .toFixed(6)
+        .toString();
     },
   },
   async beforeCreate() {
-    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+    await this.$store.dispatch('wallet/checkWalletConnected', {
+      nuxt: this.$nuxt,
+    });
   },
   async beforeMount() {
     const questDraft = this.$cookies.get('questDraft');
@@ -321,8 +336,17 @@ export default {
     async setQuestDraft() {
       this.SetLoader(true);
       const {
-        workplaceIndex, payPeriodsIndex, runtimeIndex, employmentIndex, questTitle,
-        textarea, price, selectedSpecAndSkills, address, coordinates: { lng, lat }, clearData,
+        workplaceIndex,
+        payPeriodsIndex,
+        runtimeIndex,
+        employmentIndex,
+        questTitle,
+        textarea,
+        price,
+        selectedSpecAndSkills,
+        address,
+        coordinates: { lng, lat },
+        clearData,
       } = this;
       if (!questTitle && !textarea && !price && !address) await clearData();
       else {
@@ -390,7 +414,10 @@ export default {
         if (address.length) {
           this.addresses = await this.geoCode.geolookup(address);
           this.addressesBuffer = this.addresses;
-          this.coordinates = { lng: this.addresses[0].lng, lat: this.addresses[0].lat };
+          this.coordinates = {
+            lng: this.addresses[0].lng,
+            lat: this.addresses[0].lat,
+          };
         } else this.addresses = [];
       } catch (e) {
         this.addresses = [];
@@ -406,7 +433,7 @@ export default {
     },
     async toCreateQuest() {
       this.SetLoader(true);
-      const tokenAddress = TokenMap[TokenSymbols.WUSD];
+      const tokenAddress = TokenMap[TokenSymbols.USDT];
       const spenderAddress = this.ENV.WORKNET_WQ_FACTORY;
       const [allowance] = await Promise.all([
         this.$store.dispatch('wallet/getAllowance', {
@@ -416,23 +443,37 @@ export default {
         this.$store.dispatch('wallet/fetchWalletData', {
           address: this.userWalletAddress,
           token: tokenAddress,
-          symbol: TokenSymbols.WUSD,
+          symbol: TokenSymbols.USDT,
         }),
         this.$store.dispatch('wallet/getBalance'),
       ]);
-      // Not enough WUSD
-      if (new BigNumber(this.depositAmount).isGreaterThan(this.balanceData.WUSD.fullBalance)) {
-        this.ShowToast(`${this.$t('errors.transaction.notEnoughFunds')} (${TokenSymbols.WUSD})`);
+      // Not enough USDT
+      if (
+        new BigNumber(this.depositAmount).isGreaterThan(
+          this.balanceData.USDT.fullBalance,
+        )
+      ) {
+        this.ShowToast(
+          `${this.$t('errors.transaction.notEnoughFunds')} (${
+            TokenSymbols.USDT
+          })`,
+        );
         this.SetLoader(false);
         return;
       }
-      if (new BigNumber(allowance).isLessThan(this.depositAmount)) {
-        const approveFee = await this.$store.dispatch('wallet/getContractFeeData', {
-          method: 'approve',
-          abi: ERC20,
-          contractAddress: tokenAddress,
-          data: [tokenAddress, new BigNumber(this.depositAmount).shiftedBy(18).toString()],
-        });
+      if (new BigNumber(allowance).isLessThanOrEqualTo(this.depositAmount)) {
+        const approveFee = await this.$store.dispatch(
+          'wallet/getContractFeeData',
+          {
+            method: 'approve',
+            abi: ERC20,
+            contractAddress: tokenAddress,
+            data: [
+              tokenAddress,
+              new BigNumber(this.depositAmount).shiftedBy(6).toString(),
+            ],
+          },
+        );
         if (!approveFee.ok) {
           this.ShowToast(approveFee.msg);
           this.SetLoader(false);
@@ -443,10 +484,24 @@ export default {
           key: modals.transactionReceipt,
           title: this.$t('meta.approve'),
           fields: {
-            from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
-            to: { name: this.$t('meta.toBig'), value: this.ENV.WORKNET_WQ_FACTORY },
-            amount: { name: this.$t('modals.amount'), value: this.depositAmount, symbol: TokenSymbols.WUSD },
-            fee: { name: this.$t('wallet.table.trxFee'), value: approveFee.result.fee, symbol: TokenSymbols.WQT },
+            from: {
+              name: this.$t('meta.fromBig'),
+              value: this.userWalletAddress,
+            },
+            to: {
+              name: this.$t('meta.toBig'),
+              value: this.ENV.WORKNET_WQ_FACTORY,
+            },
+            amount: {
+              name: this.$t('modals.amount'),
+              value: this.depositAmount,
+              symbol: TokenSymbols.USDT,
+            },
+            fee: {
+              name: this.$t('wallet.table.trxFee'),
+              value: approveFee.result.fee,
+              symbol: TokenSymbols.WQT,
+            },
           },
           submitMethod: async () => {
             this.ShowToast('In progress…', 'Confirmation');
@@ -480,8 +535,8 @@ export default {
         }),
         this.$store.dispatch('wallet/fetchWalletData', {
           address: this.userWalletAddress,
-          token: TokenMap[TokenSymbols.WUSD],
-          symbol: TokenSymbols.WUSD,
+          token: TokenMap[TokenSymbols.USDT],
+          symbol: TokenSymbols.USDT,
         }),
         this.$store.dispatch('wallet/getBalance'),
       ]);
@@ -497,10 +552,24 @@ export default {
       this.ShowModal({
         key: modals.transactionReceipt,
         fields: {
-          from: { name: this.$t('meta.fromBig'), value: this.userWalletAddress },
-          to: { name: this.$t('meta.toBig'), value: this.ENV.WORKNET_WQ_FACTORY },
-          amount: { name: this.$t('modals.amount'), value: this.depositAmount, symbol: TokenSymbols.WUSD },
-          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WQT },
+          from: {
+            name: this.$t('meta.fromBig'),
+            value: this.userWalletAddress,
+          },
+          to: {
+            name: this.$t('meta.toBig'),
+            value: this.ENV.WORKNET_WQ_FACTORY,
+          },
+          amount: {
+            name: this.$t('modals.amount'),
+            value: this.depositAmount,
+            symbol: TokenSymbols.USDT,
+          },
+          fee: {
+            name: this.$t('wallet.table.trxFee'),
+            value: feeRes.result.fee,
+            symbol: TokenSymbols.WQT,
+          },
         },
         submitMethod: async () => {
           this.SetLoader(true);
@@ -512,7 +581,7 @@ export default {
             typeOfEmployment: TypeOfEmployments[this.employmentIndex],
             title: this.questTitle.trim(),
             description,
-            price: new BigNumber(this.price).shiftedBy(18).toString(),
+            price: new BigNumber(this.price).shiftedBy(6).toString(),
             medias,
             specializationKeys: this.selectedSpecAndSkills,
             locationFull: {
@@ -523,7 +592,10 @@ export default {
               locationPlaceName: this.address,
             },
           };
-          const questRes = await this.$store.dispatch('quests/questCreate', payload);
+          const questRes = await this.$store.dispatch(
+            'quests/questCreate',
+            payload,
+          );
           if (questRes.ok) {
             const txRes = await this.$store.dispatch('quests/createQuest', {
               cost: this.price,
@@ -541,7 +613,10 @@ export default {
               img: require('assets/img/ui/questCreated.svg'),
               title: this.$t('modals.questCreated'),
             });
-            this.ShowToast(this.$t('toasts.questCreated'), this.$t('toasts.questCreated'));
+            this.ShowToast(
+              this.$t('toasts.questCreated'),
+              this.$t('toasts.questCreated'),
+            );
             await this.$router.push(`/quests/${questRes.result.id}`);
           }
           this.SetLoader(false);
