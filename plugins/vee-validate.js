@@ -328,6 +328,12 @@ extend('geo_is_address', {
   },
 });
 
+extend(‚conditionCheckbox’, {
+  validate(value) {
+    return value;
+  },
+});
+
 extend('emailValidation', {
   validate(value) {
     const regex = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])+(\.([A-Za-z]{2,4}|[A-Za-z]{2}\.[A-Za-z]{2}))$/;
