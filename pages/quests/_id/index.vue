@@ -87,7 +87,7 @@
               @input="showReviewModal($event, quest.id)"
             />
             <span class="worker-data__price">
-              {{ questReward }} {{ $t('meta.coins.wusd') }}
+              {{ questReward }} {{ $t('meta.coins.usdt') }}
             </span>
             <div class="worker-data__payPeriod">
               {{ $tc(`quests.payPeriods.${quest.payPeriod}`) }}
@@ -214,7 +214,7 @@ export default {
       return this.userRole === UserRole.EMPLOYER;
     },
     questReward() {
-      return new BigNumber(this.quest.price).shiftedBy(-18).toString();
+      return new BigNumber(this.quest.price).shiftedBy(-6).toString();
     },
     rating() {
       return this.quest.yourReview?.mark || 0;
@@ -394,11 +394,11 @@ export default {
       switch (this.infoDataMode) {
         case Created: {
           arr = [{
-            name: this.$t('meta.raiseViews'),
-            funcKey: 'toRaisingViews',
-            disabled: false,
-          },
-          {
+          //   {
+          //   name: this.$t('meta.raiseViews'),
+          //   funcKey: 'toRaisingViews',
+          //   disabled: false,
+          // },
             name: this.$t('meta.btns.closeQuest'),
             mode: 'delete',
             funcKey: 'closeQuest',
