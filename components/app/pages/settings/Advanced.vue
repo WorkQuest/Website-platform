@@ -67,6 +67,13 @@
             </base-btn>
           </div>
         </div>
+        <!-- <div
+          :key="index"
+          :data-selector="`ADVANCED-SETTINGS-RIGHT-SIDE-BTNS-${button.title}`"
+          class="advanced__option advanced__option_blue"
+        >
+          dfs
+        </div> -->
       </div>
     </div>
   </div>
@@ -129,6 +136,14 @@ export default {
           secondButtonName: 'meta.btns.change',
           firstModal: 'changeRoleWarning',
           secondModal: 'neededToEnable2FA',
+          isSwitcher: true,
+        },
+        {
+          title: 'settings.deleteProfile',
+          firstButtonName: 'meta.btns.delete',
+          secondButtonName: 'meta.btns.delete',
+          firstModal: 'deleteProfile',
+          secondModal: 'deleteProfile',
           isSwitcher: true,
         },
       ];
