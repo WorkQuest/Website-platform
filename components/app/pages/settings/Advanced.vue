@@ -52,11 +52,20 @@
             class="advanced__option-buttons"
           >
             <base-btn
-              :data-selector="!statusTotp ? button.secondModal : button.firstModal"
+              v-if="statusTotp"
+              :data-selector="button.firstModal"
               :mode="button.mode"
-              @click="!statusTotp ? showModalKey(button.secondModal) : showModalKey(button.firstModal)"
+              @click="showModalKey(button.firstModal)"
             >
-              {{ !statusTotp ? $t(button.secondButtonName) : $t(button.firstButtonName) }}
+              {{ $t(button.firstButtonName) }}
+            </base-btn>
+            <base-btn
+              v-else
+              :data-selector="button.secondModal"
+              :mode="button.mode"
+              @click="showModalKey(button.secondModal)"
+            >
+              {{ $t(button.secondButtonName) }}
             </base-btn>
           </div>
           <base-btn
@@ -139,7 +148,7 @@ export default {
           firstButtonName: 'meta.btns.delete',
           secondButtonName: 'meta.btns.delete',
           firstModal: 'deleteProfile',
-          secondModal: 'neededToEnable2FA',
+          secondModal: 'deleteProfile',
           isSwitcher: true,
         },
       ];
