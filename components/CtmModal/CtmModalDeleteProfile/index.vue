@@ -1,14 +1,10 @@
 <template>
   <ctm-modal-box
-    :title="$tc('modals.titles.changePass')"
+    title=" "
+    title-img-alt="Are you sure to delete?"
     class="confirm"
   >
     <div class="confirm__content content">
-      <img
-        src="~assets/img/ui/coolicon.svg"
-        alt="Are you sure to delete?"
-        class="content__picture"
-      >
       <div class="content__title">
         {{ $t('modals.areYouSure') }}
       </div>
