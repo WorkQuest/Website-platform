@@ -4,10 +4,8 @@
     :title-img-alt="step === 1 ? 'Are you sure to delete?' : null"
     class="confirm"
   >
-    <!-- v-slot="{invalid, handleSubmit}" -->
-
     <validation-observer
-      v-slot="{invalid}"
+      v-slot="{invalid, handleSubmit}"
       tag="div"
       class="confirm__content"
     >
@@ -37,18 +35,17 @@
         </div>
       </div>
       <div v-if="step === 2">
-        <!-- handleSubmit(deleteProfile) -->
-        <form @submit.prevent="success()">
+        <form @submit.prevent="handleSubmit(deleteProfile)">
           <base-field
             v-model="totp"
             :label="$tc('meta.googleConfCode')"
-            class="change-role__action"
+            class="delete-profile__action"
             data-selector="GOOGLE-CONF-CODE"
             :placeholder="$t('meta.googleConfCode')"
             rules="min:6|numeric|max:6|required"
             :name="$tc('meta.googleConfCode')"
           />
-          <div class="change-role__sub">
+          <div class="delete-profile__sub">
             {{ $t('meta.googleConfCodeDesc') }}
           </div>
           <div class="btn__container">
@@ -89,15 +86,13 @@ export default {
       this.step += 1;
     },
     async deleteProfile() {
-      // const result = await this.$store.dispatch('user/deleteProfile', { totp: this.totp });
-      // if (result.ok) {
-      //   this.success();
-      // } else {
-      // }
-    },
-    async success() {
+      const result = await this.$store.dispatch('user/deleteProfile', { totp: this.totp });
+      if (result.ok) {
+        await this.$store.dispatch('user/logout', false);
+      } else {
+        console.log('Error occured while deleting user profile');
+      }
       this.CloseModal();
-      await this.$store.dispatch('user/logout', false);
       await this.$router.push(Path.SIGN_IN);
     },
   },
@@ -136,6 +131,14 @@ export default {
   grid-auto-flow: column;
   &__button {
     max-width: 143px!important;
+  }
+}
+.delete-profile {
+  &__sub{
+    margin-bottom: 25px;
+    color:  #8D96A1;
+    font-size: 14px;
+    font-weight: 400;
   }
 }
 </style>
