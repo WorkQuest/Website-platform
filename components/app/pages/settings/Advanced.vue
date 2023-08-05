@@ -42,30 +42,40 @@
           v-for="(button, index) in rightSideButtons"
           :key="index"
           :data-selector="`ADVANCED-SETTINGS-RIGHT-SIDE-BTNS-${button.title}`"
-          class="advanced__option advanced__option_blue"
+          :class="`advanced__option advanced__option_button-container ${button.color ?? 'blue'}`"
         >
           <div class="advanced__option-title">
             {{ $t(button.title) }}
           </div>
+          <div
+            v-if="button.isSwitcher"
+            class="advanced__option-buttons"
+          >
+            <base-btn
+              v-if="statusTotp"
+              :data-selector="button.firstModal"
+              :mode="button.mode"
+              @click="showModalKey(button.firstModal)"
+            >
+              {{ $t(button.firstButtonName) }}
+            </base-btn>
+            <base-btn
+              v-else
+              :data-selector="button.secondModal"
+              :mode="button.mode"
+              @click="showModalKey(button.secondModal)"
+            >
+              {{ $t(button.secondButtonName) }}
+            </base-btn>
+          </div>
           <base-btn
-            v-if="!button.isSwitcher"
+            v-else
             :disabled="button.disabled"
             :data-selector="button.modal"
             @click="showModalKey(button.modal)"
           >
             {{ $t(button.buttonName) }}
           </base-btn>
-          <div
-            v-if="button.isSwitcher"
-            class="advanced__option-buttons"
-          >
-            <base-btn
-              :data-selector="!statusTotp ? button.secondModal : button.firstModal"
-              @click="!statusTotp ? showModalKey(button.secondModal) : showModalKey(button.firstModal)"
-            >
-              {{ !statusTotp ? $t(button.secondButtonName) : $t(button.firstButtonName) }}
-            </base-btn>
-          </div>
         </div>
       </div>
     </div>
@@ -129,6 +139,16 @@ export default {
           secondButtonName: 'meta.btns.change',
           firstModal: 'changeRoleWarning',
           secondModal: 'neededToEnable2FA',
+          isSwitcher: true,
+        },
+        {
+          title: 'settings.deleteProfile',
+          mode: 'delete',
+          color: 'red',
+          firstButtonName: 'meta.btns.delete',
+          secondButtonName: 'meta.btns.delete',
+          firstModal: 'deleteProfile',
+          secondModal: 'deleteProfile',
           isSwitcher: true,
         },
       ];
@@ -223,16 +243,19 @@ export default {
   display: grid;
   grid-template-columns: 2fr 3fr;
   gap: 20px;
+
   &__left {
     background: $white;
     padding: 20px;
     border-radius: 6px;
   }
+
   &__right {
     background: $white;
     padding: 20px;
     border-radius: 6px;
   }
+
   &__title {
     font-family: Inter, Arial, sans-serif;
     font-weight: 400;
@@ -241,6 +264,7 @@ export default {
     color: #1D2127;
     margin-bottom: 20px;
   }
+
   &__subtitle {
     font-family: Inter, Arial, sans-serif;
     font-weight: normal;
@@ -249,6 +273,7 @@ export default {
     color: #7C838D;
     margin-bottom: 8px;
   }
+
   &__input {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -258,45 +283,62 @@ export default {
     height: 25px;
     border: 1px solid $blue;
     cursor: pointer;
+
     &:checked {
       background: radial-gradient($blue 40%, rgba(255, 0, 0, 0) 45%);
     }
   }
+
   &__options {
     display: grid;
     grid-template-columns: 1fr;
     row-gap: 20px;
+
     &_left {
       row-gap: 12px;
     }
+
     &_left:not(:last-child) {
       margin-bottom: 20px;
     }
   }
+
   &__option {
     display: flex;
     gap: 10px;
-    &_blue {
-      background: rgba(0, 131, 199, 0.1);
+
+    &_button-container {
       display: flex;
       justify-content: space-between;
       border-radius: 6px;
       padding: 10.5px 20px;
       align-items: center;
+
       button {
         min-width: 220px;
         max-width: 220px;
       }
+
+      &.blue {
+        background: rgba(0, 131, 199, 0.1);
+      }
+
+      &.red {
+        background: rgba(223, 51, 51, 0.1);
+      }
     }
   }
+
   &__checkBox {
     width: fit-content;
   }
+
   &__option-buttons {
     min-width: 220px;
     display: grid;
     gap: 10px;
   }
+
   label {
     margin: 0;
   }
@@ -307,26 +349,30 @@ export default {
     grid-template-columns: 1fr;
   }
 }
+
 @include _575 {
   .advanced {
     &__left {
       border-radius: 0;
     }
+
     &__right {
       border-radius: 0;
     }
+
     &__option_blue {
       flex-direction: column;
+
       button {
         min-width: auto;
         max-width: none;
         width: 100%;
       }
     }
+
     &__option-buttons {
       width: 100%;
     }
   }
 }
-
 </style>

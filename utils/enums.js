@@ -326,7 +326,7 @@ export const NetworksData = {
   ETH_MAIN: {
     chainId: ChainsId.ETH_MAIN,
     chainName: 'Ethereum Mainnet',
-    rpcUrls: ['https://mainnet.infura.io/v3/'],
+    rpcUrls: ['https://powerful-spring-glitter.quiknode.pro/'],
   },
   ETH_TEST: {
     chainId: ChainsId.ETH_TEST,
@@ -336,7 +336,7 @@ export const NetworksData = {
   BSC_MAIN: {
     chainId: ChainsId.BSC_MAIN,
     chainName: 'BSC Mainnet',
-    rpcUrls: ['https://bsc-dataseed1.binance.org/'],
+    rpcUrls: ['https://light-indulgent-sunset.bsc.quiknode.pro/'],
     nativeCurrency: {
       name: 'BNB',
       symbol: 'BNB',
@@ -454,14 +454,14 @@ export const WalletTokensData = Object.freeze({
     explorer: ExplorerUrl,
     chain: Chains.WORKNET,
     tokenAddresses: [
-      ENV.WORKNET_WUSD_TOKEN,
+      // ENV.WORKNET_WUSD_TOKEN, // WOR-288
       ENV.WORKNET_WBNB_TOKEN,
       ENV.WORKNET_WETH_TOKEN,
       ENV.WORKNET_USDT_TOKEN,
     ],
     tokenList: [
       { title: TokenSymbols.WQT, icon: images.WQT }, // FIRST IS NATIVE TOKEN!
-      { title: TokenSymbols.WUSD, icon: images.WUSD, tokenAddress: ENV.WORKNET_WUSD_TOKEN },
+      // { title: TokenSymbols.WUSD, icon: images.WUSD, tokenAddress: ENV.WORKNET_WUSD_TOKEN }, // WOR-288
       { title: TokenSymbols.BNB, icon: images.BNB, tokenAddress: ENV.WORKNET_WBNB_TOKEN },
       { title: TokenSymbols.ETH, icon: images.ETH_BLACK, tokenAddress: ENV.WORKNET_WETH_TOKEN },
       { title: TokenSymbols.USDT, icon: images.USDT, tokenAddress: ENV.WORKNET_USDT_TOKEN },

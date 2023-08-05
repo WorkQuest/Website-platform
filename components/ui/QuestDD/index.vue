@@ -19,7 +19,7 @@
       >
         <div class="menu menu__items">
           <div class="menu__container">
-            <!-- <div
+            <div
               v-if="canRaiseViews"
               class="menu__item"
               :data-selector="`ACTION-BTN-TO-RAISING-VIEWS-${questIndex}`"
@@ -28,7 +28,7 @@
               <div class="menu__text">
                 {{ $t('meta.raiseViews') }}
               </div>
-            </div> -->
+            </div>
             <div
               class="menu__item"
               :data-selector="`ACTION-BTN-SHARE-MODAL-${questIndex}`"

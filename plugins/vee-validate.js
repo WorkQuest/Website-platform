@@ -35,12 +35,8 @@ extend('numberOfCard', {
     const cardNumber = value.replaceAll(/[^0-9]/g, '');
     const maxNumberLength = 19;
     const checkCardNumber = (number) => (americanExpress.test(number)
-        || dinersClub.test(number)
-        || discover.test(number)
-        || jcb.test(number)
-        || maestro.test(number)
-        || mastercard.test(number)
-        || visa.test(number))
+        || dinersClub.test(number) || discover.test(number) || jcb.test(number)
+        || maestro.test(number) || mastercard.test(number) || visa.test(number))
       && number.length <= maxNumberLength;
     return {
       required: true,
@@ -72,7 +68,11 @@ extend('date', {
 extend('between-date', {
   params: ['from', 'to'],
   validate(value, { from, to }) {
-    if (from === 'null' || to === 'null' || from === '' || to === '') {
+    if (
+      from === 'null'
+      || to === 'null'
+      || from === ''
+      || to === '') {
       return {
         required: true,
         valid: true,
@@ -90,7 +90,11 @@ extend('between-date', {
 extend('from-to', {
   params: ['from', 'to'],
   validate(value, { from, to }) {
-    if (from === 'null' || to === 'null' || from === '' || to === '') {
+    if (
+      from === 'null'
+      || to === 'null'
+      || from === ''
+      || to === '') {
       return {
         required: true,
         valid: true,
@@ -234,7 +238,7 @@ extend('percent', {
 
 extend('greaterThanZero', {
   validate(value) {
-    return value > 0;
+    return (value > 0);
   },
 });
 
@@ -249,11 +253,7 @@ extend('zeroFail', {
 
 extend('notMoreDecimalPlaces', {
   validate(value) {
-    return (
-      (value.toString().includes('.')
-        ? value.toString().split('.').pop().length
-        : 0) < 4
-    );
+    return (((value.toString().includes('.')) ? (value.toString().split('.').pop().length) : (0)) < 4);
   },
 });
 
@@ -282,7 +282,7 @@ extend('alpha_spaces_dash', {
 
 extend('notEmptyArray', {
   validate(value) {
-    return value.length > 0;
+    return (value.length > 0);
   },
 });
 
@@ -328,43 +328,6 @@ extend('geo_is_address', {
   },
 });
 
-extend('signUpRequiredField', {
-  validate(value) {
-    return {
-      required: true,
-      valid: ['', null, undefined].indexOf(value) === -1,
-    };
-  },
-  computesRequired: true,
-});
-
-extend('signUpRequiredPassword', {
-  validate(value) {
-    return {
-      required: true,
-      valid: ['', null, undefined].indexOf(value) === -1,
-    };
-  },
-  computesRequired: true,
-});
-
-extend('signUpRequiredRepeatPassword', {
-  validate(value) {
-    return {
-      required: true,
-      valid: ['', null, undefined].indexOf(value) === -1,
-    };
-  },
-  computesRequired: true,
-});
-
-extend('min_message', {
-  validate(value, { length }) {
-    return +value >= length;
-  },
-  params: ['length'],
-});
-
 extend('conditionCheckbox', {
   validate(value) {
     return value;
@@ -374,55 +337,6 @@ extend('conditionCheckbox', {
 extend('emailValidation', {
   validate(value) {
     const regex = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])+(\.([A-Za-z]{2,4}|[A-Za-z]{2}\.[A-Za-z]{2}))$/;
-    return { valid: regex.test(value) };
-  },
-});
-
-extend('specialCharacterRequired', {
-  validate(value) {
-    const regex = /(?=.*[!@#$%^&*_])/;
-    return { valid: regex.test(value) };
-  },
-});
-
-extend('lowerCaseLetterRequired', {
-  validate(value) {
-    const regex = /(?=.*[a-z])/g;
-    return { valid: regex.test(value) };
-  },
-});
-
-extend('capitalLetterRequired', {
-  validate(value) {
-    const regex = /(?=.*[A-Z])/g;
-    return { valid: regex.test(value) };
-  },
-});
-
-extend('numberRequired', {
-  validate(value) {
-    const regex = /(?=.*[0-9])/g;
-    return { valid: regex.test(value) };
-  },
-});
-
-extend('requiredSymbols', {
-  validate(value) {
-    const regex = /^(?=.*[0-9a-zA-Z!@#$%^&*_])^[0-9a-zA-Z!@#$%^&*_]{1,}$/g;
-    return { valid: regex.test(value) };
-  },
-});
-
-extend('passwordMatch', {
-  validate(value, { password }) {
-    return value === password;
-  },
-  params: ['password'],
-});
-
-extend('fullNameValidation', {
-  validate(value) {
-    const regex = /^[a-zA-Z]+-[a-zA-Z]+$|^[a-zA-Z]+$/;
     return { valid: regex.test(value) };
   },
 });

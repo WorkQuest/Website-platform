@@ -63,6 +63,7 @@ export default {
     [modals.sharingQuest]: () => import('./CtmModalSharing'),
     [modals.support]: () => import('./CtmModalSupport'),
     [modals.changeRoleWarning]: () => import('./CtmModalChangeRoleWarning'),
+    [modals.deleteProfile]: () => import('./CtmModalDeleteProfile'),
     [modals.changeRoleReason]: () => import('./CtmModalChangeRoleReason'),
     [modals.chooseNecessarySkills]: () => import('./CtmModalChooseNecessarySkills'),
     [modals.smsVerification]: () => import('./CtmModalSmsVerification'),

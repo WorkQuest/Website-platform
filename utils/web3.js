@@ -189,21 +189,21 @@ export const initProvider = async (payload) => {
       if (chain === Chains.ETHEREUM) {
         walletOptions = {
           rpc: {
-            1: 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+            1: 'https://powerful-spring-glitter.quiknode.pro/ccf0d5bf1c16cb2a8c4a10ed4c6ac93842310e72',
           },
           // network: 'ethereum',
         };
       } else if (chain === Chains.BINANCE) {
         walletOptions = {
           rpc: {
-            56: 'https://bsc-dataseed.binance.org/',
+            56: 'https://light-indulgent-sunset.bsc.quiknode.pro/77092a18f05e8ff927c5ea62f38ee859f1d6d92d',
           },
           // network: 'binance',
         };
       } else if (chain === Chains.WORKNET) {
         walletOptions = {
           rpc: {
-            2009: 'https://mainnet-gate.workquest.co/',
+            2009: 'https://mainnet-gate.workquest.co',
           },
           // network: 'worknet',
         };

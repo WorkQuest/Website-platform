@@ -91,12 +91,7 @@ import { mapActions, mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import { Chains, ConnectionTypes, TokenSymbols } from '~/utils/enums';
 import { BlockchainIndex, BridgeAddresses, SwapAddresses } from '~/utils/сonstants/bridge';
-import {
-  getChainIdByChain,
-  GetWeb3Provider,
-  getNativeBalance,
-  getTransactionCount,
-} from '~/utils/web3';
+import { getChainIdByChain, GetWeb3Provider, getNativeBalance } from '~/utils/web3';
 import { GetWalletProvider } from '~/utils/wallet';
 
 export default {
@@ -128,12 +123,13 @@ export default {
         || (from.chain === Chains.ETHEREUM && to.chain === Chains.BINANCE)) {
         return [TokenSymbols.WQT];
       }
-      const toRemoveSymbol = to.chain === Chains.BINANCE ? TokenSymbols.ETH : TokenSymbols.BNB;
+      // const toRemoveSymbol = to.chain === Chains.BINANCE ? TokenSymbols.ETH : TokenSymbols.BNB;
+      const toRemoveSymbols = [TokenSymbols.ETH, TokenSymbols.BNB];
       const swapsData = SwapAddresses.get(from.chain);
       return [
         swapsData.nativeSymbol,
         ...Object.keys(SwapAddresses.get(from.chain).tokenAddress),
-      ].filter((item) => item !== toRemoveSymbol);
+      ].filter((item) => !toRemoveSymbols.includes(item));
     },
     accountAddress() {
       const chain = this.options?.to?.chain;
@@ -181,21 +177,22 @@ export default {
         provider,
       });
       if (
-        from.nativeSymbol === symbol && this.options.from.chain === Chains.ETHEREUM && this.options.to.chain === Chains.WORKNET
+        symbol === 'WQT' && this.options.from.chain === Chains.WORKNET
       ) {
         const [balance] = await Promise.all([
           getNativeBalance(this.account.address, provider),
         ]);
         if (balance) {
           const tokenBalance = Number(balance);
-          console.log(tokenBalance);
+          const tokenBalanceFormated = (new BigNumber(tokenBalance).div('1e+18'));
           this.$store.commit('bridge/setToken', {
             ...this.currentToken,
-            amount: new BigNumber(tokenBalance).div(new BigNumber(10).exponentiatedBy(18)),
+            amount: tokenBalanceFormated.toNumber(),
             decimals: 18,
           });
         }
       }
+      // Bridge contract from BSC net for USDT & USDC decimals limit 6
       if (from.chain === Chains.BINANCE && [TokenSymbols.USDT, TokenSymbols.USDC].includes(this.currentToken.symbol)) {
         this.$store.commit('bridge/setToken', {
           ...this.currentToken,

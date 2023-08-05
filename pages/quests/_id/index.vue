@@ -1,9 +1,5 @@
 <template>
-  <div
-    v-if="quest"
-    class="quest-page"
-    data-selector="PAGE-QUESTS-ID"
-  >
+  <div v-if="quest" class="quest-page" data-selector="PAGE-QUESTS-ID">
     <info />
     <div class="main main-white">
       <div class="main__body main__body_20gap">
@@ -16,33 +12,20 @@
             {{ quest.description }}
           </span>
         </div>
-        <div
-          v-if="quest.medias && quest.medias.length"
-          class="main__quest_materials"
-        >
+        <div v-if="quest.medias && quest.medias.length" class="main__quest_materials">
           <div class="quest_materials__title">
             {{ $t('quests.questMaterials') }}
           </div>
           <files-preview :medias="quest.medias" />
         </div>
-        <div
-          v-if="assignedWorker"
-          class="worker-data"
-        >
+        <div v-if="assignedWorker" class="worker-data">
           <div class="worker-data__title">
             {{ $t('quests.worker') }}
           </div>
           <div class="worker-data__container">
-            <nuxt-link
-              :to="`${$options.Path.PROFILE}/${assignedWorker.id}`"
-              :data-selector="`TO-ASSIGNED-WORKER-PROFILE-${assignedWorker.id}`"
-              class="worker-data__user-cont"
-            >
-              <img
-                class="worker-data__avatar"
-                :src="avatar"
-                alt=""
-              >
+            <nuxt-link :to="`${$options.Path.PROFILE}/${assignedWorker.id}`"
+              :data-selector="`TO-ASSIGNED-WORKER-PROFILE-${assignedWorker.id}`" class="worker-data__user-cont">
+              <img class="worker-data__avatar" :src="avatar" alt="">
               <div class="worker-data__title worker-data__title_small">
                 {{ assignedWorker.firstName }} {{ assignedWorker.lastName }}
               </div>
@@ -51,51 +34,27 @@
           </div>
         </div>
         <div class="worker-data worker-data__more-data">
-          <div
-            v-if="actionBtnsArr.length"
-            class="worker-data__btns"
-          >
-            <div
-              v-for="(btn, i) in actionBtnsArr"
-              :key="i"
-              class="worker-data__button"
-            >
-              <base-btn
-                :class="btn.class"
-                :mode="btn.mode"
-                :selector="`ACTION-BTNS-ARRAY-${i}`"
-                :disabled="btn.disabled"
-                @click="handleClickSpecBtn(btn.funcKey)"
-              >
+          <div v-if="actionBtnsArr.length" class="worker-data__btns">
+            <div v-for="(btn, i) in actionBtnsArr" :key="i" class="worker-data__button">
+              <base-btn :class="btn.class" :mode="btn.mode" :selector="`ACTION-BTNS-ARRAY-${i}`" :disabled="btn.disabled"
+                @click="handleClickSpecBtn(btn.funcKey)">
                 {{ btn.name }}
-                <template
-                  v-if="btn.icon"
-                  v-slot:right
-                >
+                <template v-if="btn.icon" v-slot:right>
                   <span :class="btn.icon" />
                 </template>
               </base-btn>
             </div>
           </div>
           <div class="worker-data__priority">
-            <star-rating
-              v-if="starRating(quest)"
-              rating-type="questPage"
-              :stars-number="5"
-              :rating="rating"
-              :is-disabled="!!rating"
-              @input="showReviewModal($event, quest.id)"
-            />
+            <star-rating v-if="starRating(quest)" rating-type="questPage" :stars-number="5" :rating="rating"
+              :is-disabled="!!rating" @input="showReviewModal($event, quest.id)" />
             <span class="worker-data__price">
               {{ questReward }} {{ $t('meta.coins.usdt') }}
             </span>
             <div class="worker-data__payPeriod">
               {{ $tc(`quests.payPeriods.${quest.payPeriod}`) }}
             </div>
-            <div
-              class="worker-data__priority-title"
-              :class="priorityClass"
-            >
+            <div class="worker-data__priority-title" :class="priorityClass">
               {{ priority }}
             </div>
           </div>
@@ -103,32 +62,22 @@
       </div>
     </div>
 
-    <g-map-loader
-      class="map"
-      :is-draggable="false"
-    />
+    <g-map-loader class="map" :is-draggable="false" />
 
     <div class="main">
       <div class="main__body main__body_30gap">
         <template
           v-if="userRole === $options.UserRole.EMPLOYER
-            && (infoDataMode === $options.QuestStatuses.Created || infoDataMode === $options.QuestStatuses.WaitWorkerOnAssign)"
-        >
+            && (infoDataMode === $options.QuestStatuses.Created || infoDataMode === $options.QuestStatuses.WaitWorkerOnAssign)">
           <workers-list is-invited />
           <workers-list />
         </template>
-        <div
-          v-if="userRole === $options.UserRole.WORKER"
-          class="spec__container"
-        >
+        <div v-if="userRole === $options.UserRole.WORKER" class="spec__container">
           <div class="quest__group">
             <h2 class="quest__spec">
               {{ $t('quests.otherQuestsSpec') }}
-              <nuxt-link
-                :data-selector="`ACTION-TO-SPEC-${randomSpec}`"
-                :to="`${$options.Path.QUESTS}?specializations=${randomSpec}&statuses=0`"
-                class="spec__link"
-              >
+              <nuxt-link :data-selector="`ACTION-TO-SPEC-${randomSpec}`"
+                :to="`${$options.Path.QUESTS}?specializations=${randomSpec}&statuses=0`" class="spec__link">
                 "{{ $t(`filters.skills.${randomSpec}.title`) }}"
               </nuxt-link>
             </h2>
@@ -137,26 +86,16 @@
             </div>
           </div>
           <div class="quest__card">
-            <card-quest
-              v-if="otherQuestsCount"
-              :key="sameQuest.id"
-              :quest="sameQuest"
-            />
-            <empty-data
-              v-else
-              :description="$tc(`errors.emptyData.emptyQuests`)"
-            />
+            <card-quest v-if="otherQuestsCount" :key="sameQuest.id" :quest="sameQuest" />
+            <empty-data v-else :description="$tc(`errors.emptyData.emptyQuests`)" />
           </div>
         </div>
       </div>
     </div>
   </div>
   <div v-else-if="!isLoading">
-    <empty-data
-      :description="$tc('errors.emptyData.emptyQuests')"
-      :link="$options.Path.QUESTS"
-      :btn-text="$tc('meta.btns.ok')"
-    />
+    <empty-data :description="$tc('errors.emptyData.emptyQuests')" :link="$options.Path.QUESTS"
+      :btn-text="$tc('meta.btns.ok')" />
   </div>
 </template>
 
@@ -393,17 +332,18 @@ export default {
       let arr = [];
       switch (this.infoDataMode) {
         case Created: {
-          arr = [{
-          //   {
-          //   name: this.$t('meta.raiseViews'),
-          //   funcKey: 'toRaisingViews',
-          //   disabled: false,
-          // },
-            name: this.$t('meta.btns.closeQuest'),
-            mode: 'delete',
-            funcKey: 'closeQuest',
-            disabled: false,
-          }];
+          arr = [
+            {
+              name: this.$t('meta.raiseViews'),
+              funcKey: 'toRaisingViews',
+              disabled: false,
+            },
+            {
+              name: this.$t('meta.btns.closeQuest'),
+              mode: 'delete',
+              funcKey: 'closeQuest',
+              disabled: false,
+            }];
           break;
         }
         case WaitWorker: {
@@ -1083,6 +1023,7 @@ export default {
       color: $yellow
     }
   }
+
   &__payPeriod {
     @include text-simple;
     display: flex;
@@ -1177,6 +1118,7 @@ export default {
   .main__body {
     padding: 10px;
   }
+
   .map {
     margin-bottom: 0;
   }
@@ -1186,6 +1128,7 @@ export default {
   .main-white {
     display: block;
   }
+
   .worker-data {
     &__btns {
       margin-bottom: 10px;
@@ -1225,6 +1168,7 @@ export default {
         height: 100%;
       }
     }
+
     &__payPeriod {
       height: 100%;
       font-size: 16px;
@@ -1259,16 +1203,21 @@ export default {
       grid-gap: 5px;
     }
   }
+
   .icon {
-    &-clock, &-location {
+
+    &-clock,
+    &-location {
       width: 30px;
     }
   }
+
   .quest {
     &__spec {
       font-size: 16px;
     }
   }
+
   .spec {
     &__link {
       font-size: 16px;
