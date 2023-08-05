@@ -148,7 +148,7 @@ export default {
           firstButtonName: 'meta.btns.delete',
           secondButtonName: 'meta.btns.delete',
           firstModal: 'deleteProfile',
-          secondModal: 'deleteProfile',
+          secondModal: 'neededToEnable2FA',
           isSwitcher: true,
         },
       ];
