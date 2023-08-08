@@ -406,11 +406,11 @@ export default {
         //   desc: this.$t('ui.menu.pension.desc'),
         //   path: Path.RETIREMENT,
         // },
-        // {
-        //   title: this.$t('ui.menu.referral.title'),
-        //   desc: this.$t('ui.menu.referral.desc'),
-        //   path: Path.REFERRAL,
-        // },
+        {
+          title: this.$t('ui.menu.referral.title'),
+          desc: this.$t('ui.menu.referral.desc'),
+          path: Path.REFERRAL,
+        },
         // {
         //   title: this.$t('ui.menu.p2p.title'),
         //   desc: this.$t('ui.menu.p2p.desc'),
