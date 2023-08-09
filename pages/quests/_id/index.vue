@@ -175,6 +175,7 @@ import {
   EditQuestState,
   QuestMethods,
   QuestStatuses,
+  DisputeUnlockSeconds,
 } from '~/utils/сonstants/quests';
 import { images } from '~/utils/images';
 import { WorkQuest, WQFactory } from '~/abi';
@@ -589,8 +590,7 @@ export default {
       }
 
       const currentTime = this.$moment().utc(false).valueOf();
-      const amountToAdd = status === QuestStatuses.WaitWorker ? 1 : 3;
-      const unlockTime = this.$moment(this.quest.startedAt).add(amountToAdd, 'day').utc(false).valueOf();
+      const unlockTime = this.$moment(this.quest.startedAt).add(DisputeUnlockSeconds, 'seconds').utc(false).valueOf();
 
       if (currentTime <= unlockTime) {
         this.ShowModal({

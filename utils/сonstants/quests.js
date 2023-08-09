@@ -50,3 +50,9 @@ export const PaidTariff = Object.freeze({
   Silver: 'Silver',
   Bronze: 'Bronze',
 });
+
+export const DisputeUnlockSeconds = {
+  develop: 30,
+  testnet: 30,
+  master: 86400, // one day
+}[process.env.BRANCH];
