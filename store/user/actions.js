@@ -103,7 +103,7 @@ export default {
   },
   async deleteProfile({ commit }, totp) {
     try {
-      return await this.$axios.$delete(`/v1/profile/${totp}`);
+      return await this.$axios.$delete('/v1/profile', totp);
     } catch (e) {
       return error();
     }
