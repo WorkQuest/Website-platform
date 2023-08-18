@@ -43,6 +43,7 @@ export default {
   changeRoleReason: 'changeRoleReason',
   changeRoleSecureCheck: 'changeRoleSecureCheck',
   chooseNecessarySkills: 'chooseNecessarySkills',
+  deleteProfile: 'deleteProfile',
   creditingLoan: 'creditingLoan',
   smsVerification: 'smsVerification',
   reviewDetails: 'reviewDetails',

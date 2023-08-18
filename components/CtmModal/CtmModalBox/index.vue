@@ -5,6 +5,12 @@
       class="ctm-modal__header"
     >
       <div class="ctm-modal__title">
+        <img
+          v-if="titleImgAlt"
+          src="~assets/img/ui/attention-warning-outline.svg"
+          :alt="titleImgAlt"
+          class="ctm-modal__title-image"
+        >
         {{ title || options.title || 'Default' }}
       </div>
       <button
@@ -13,7 +19,7 @@
         @click="close()"
       >
         <img
-          src="~assets/img/ui/close.svg"
+          src="~assets/img/ui/close-big.svg"
           alt="x"
         >
       </button>
@@ -38,6 +44,10 @@ export default {
     isHeader: {
       type: Boolean,
       default: true,
+    },
+    titleImgAlt: {
+      type: String,
+      default: null,
     },
   },
   computed: {

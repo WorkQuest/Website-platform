@@ -200,6 +200,7 @@ export default {
         smsVerification: modals.smsVerification,
         changeRoleWarning: modals.changeRoleWarning,
         neededToEnable2FA: modals.neededToEnable2FA,
+        deleteProfile: modals.deleteProfile,
       };
       return keys[modalKey];
     },
