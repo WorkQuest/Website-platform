@@ -16,7 +16,7 @@
             class="header__btn"
             :disabled="connectionType !== $options.ConnectionTypes.WEB3"
             :data-selector="!isConnected ? 'CONNECT-WALLET' : 'DISCONNECT-FROM-WALLET'"
-            @click="toggleConnection"
+            @click="toggleConnection(true)"
           >
             {{ connectionButtonText }}
           </base-btn>
@@ -323,7 +323,7 @@ export default {
   async mounted() {
     const connect = async () => {
       if ((this.connectionType === ConnectionTypes.WEB3 && !this.isConnected) || !this.swapsCount) {
-        await this.toggleConnection();
+        await this.toggleConnection(true);
       }
     };
     if (!this.token) {
@@ -374,14 +374,14 @@ export default {
       if (chainTo === 1) return CutTxn(convertToBech32('wq', recipient));
       return CutTxn(recipient);
     },
-    async toggleConnection() {
+    async toggleConnection(hideConnectError) {
       const {
         isWeb3Connection, isConnected, addresses, sourceAddressInd,
       } = this;
       if (isWeb3Connection && isConnected) await this.handlerDisconnect();
       else {
         const { chain } = addresses[sourceAddressInd];
-        if (isWeb3Connection) await this.connectWallet({ chain });
+        if (isWeb3Connection) await this.connectWallet({ chain, hideConnectError });
         else if (this.token) {
           await this.$store.dispatch('wallet/checkWalletConnected', {
             nuxt: this.$nuxt,
