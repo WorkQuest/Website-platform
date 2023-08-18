@@ -101,7 +101,13 @@ export default {
       return error();
     }
   },
-
+  async deleteProfile({ commit }, totp) {
+    try {
+      return await this.$axios.$delete('/v1/profile', totp);
+    } catch (e) {
+      return error();
+    }
+  },
   async getAllUserReviews({ commit }, { userId, params }) {
     try {
       const { result } = await this.$axios.$get(`/v1/user/${userId}/reviews`, { params });
