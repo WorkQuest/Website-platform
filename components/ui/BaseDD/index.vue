@@ -318,7 +318,9 @@ export default {
     }
   }
   &__full-text {
+    padding: 13px 0;
     overflow: visible;
+    white-space: normal;
   }
   &__top {
     align-items: flex-start;
