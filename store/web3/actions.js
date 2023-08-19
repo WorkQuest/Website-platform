@@ -51,7 +51,9 @@ export default {
       return true;
     }
     commit('setIsConnected', false);
-    showToast('Error connect to wallet', `${response.data}`, 'danger');
+    if (!payload.hideConnectError) {
+      showToast('Error connect to wallet', `${response.data}`, 'danger');
+    }
     return false;
   },
 
